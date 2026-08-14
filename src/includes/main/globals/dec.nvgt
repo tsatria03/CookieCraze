@@ -192,7 +192,6 @@ int playergender = 0;
 string currentSaveSlot = APPDATA_DIR + "saves/game1.crz";
 string playername;
 string playername2;
-string version;
 bool config_loaded = false;
 
 timer clicktimer;

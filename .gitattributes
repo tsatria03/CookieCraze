@@ -1,5 +1,15 @@
-# Auto detect text files and perform LF normalization
+# Auto-detect text files; pin code/data files to CRLF (below) so NVGT's parsers and the
+# AngelScript compiler always see Windows line endings on every platform.
 * text=auto
+
+*.sif text eol=crlf
+*.nvgt text eol=crlf
+*.py text eol=crlf
+*.txt text eol=crlf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.md text eol=crlf
+*.ini text eol=crlf
 
 #binary files
 *.dat linguist-language=Binary

@@ -4,7 +4,6 @@ void main()
 if (!directory_exists(DIRECTORY_APPDATA + "tsatria03/CookieCraze/logs/")) directory_create(DIRECTORY_APPDATA + "tsatria03/CookieCraze/logs/");
 if (!directory_exists(DIRECTORY_APPDATA + "tsatria03/CookieCraze/preffs/")) directory_create(DIRECTORY_APPDATA + "tsatria03/CookieCraze/preffs/");
 if (!directory_exists(DIRECTORY_APPDATA + "tsatria03/CookieCraze/saves/")) directory_create(DIRECTORY_APPDATA + "tsatria03/CookieCraze/saves/");
-getver();
 show_window("CookieCraze, version "+version);
 if(gamstence.is_already_running)
 {
@@ -139,12 +138,6 @@ mainmenu();
 }
 }
 
-void getver()
-{
-dockver.open("docks/version.txt","rb");
-version=dockver.read();
-dockver.close();
-}
 void resetgame(bool prestige = false)
 {
 if (prestige)
@@ -289,7 +282,7 @@ cookiesrequiered = (cookiemod * (rank * (rank * difmod)));
 if (prestige_rank_discount > 0) cookiesrequiered *= max(0.01, 1.0 - (prestige_rank_discount / 100.0));
 }
 
-void restart(string appid, string scriptid="cycrz.nvgt")
+void restart(string appid, string scriptid="../src/cycrz.nvgt")
 {
 if(SCRIPT_COMPILED)
 {
@@ -301,7 +294,7 @@ alert("error", "Unable to restart "+appid+"!");
 }
 else
 {
-bool success=run("c:\\nvgt\\nvgtw.exe", scriptid,false,false);
+bool success=run("c:\\nvgt2\\nvgtw.exe", scriptid,false,false);
 if(!success)
 {
 alert("error", "Unable to restart "+scriptid+"!");
