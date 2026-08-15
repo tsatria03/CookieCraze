@@ -1,3 +1,7 @@
+####These are the things that need to be finished for future versions of the game.
+
+**Unfinished. Add a way to quikly mute frequently used buffers in the game settings, or in the game itself.
+
 ##These are the things that are already finished from earlier versions of the game.
 
 **Ffinished. Replace raw coins with a realistic currency system using dollar and cent display.
