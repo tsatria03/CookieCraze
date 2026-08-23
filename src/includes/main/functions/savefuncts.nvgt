@@ -1,3 +1,30 @@
+/* Prestige store schema 2 renumbered every tier's item_id suffix so it reads 1..11 in
+prestige-level order. This remaps a schema 1 purchased id (old suffix) to its schema 2
+equivalent (new suffix) so already-bought upgrades keep pointing at the same tier. */
+string migrate_prestige_id_v2(string id)
+{
+int us = -1;
+for (int i = int(id.length()) - 1; i >= 0; i--)
+{
+if (id.substr(i, 1) == "_") { us = i; break; }
+}
+if (us == -1) return id;
+string prefix = id.substr(0, us);
+int n = string_to_int(id.substr(us + 1));
+if (n <= 0) return id;
+int m = n;
+if (n == 6) m = 3;
+else if (n == 3) m = 4;
+else if (n == 7) m = 5;
+else if (n == 4) m = 6;
+else if (n == 8) m = 7;
+else if (n == 9) m = 8;
+else if (n == 10) m = 9;
+else if (n == 11) m = 10;
+else if (n == 5) m = 11;
+return prefix + "_" + string(m);
+}
+
 void readdata()
 {
 sd.load();
@@ -106,6 +133,13 @@ if (sd.d.exists("prestigePurchasedCount"))
     prestigePurchased.resize(0);
     for (int i = 0; i < pcount; i++)
         prestigePurchased.insert_last(sd.read_string("prestigePurchased_" + string(i)));
+    int prestigeStoreSchema = 1;
+    if (sd.d.exists("prestigeStoreSchema")) prestigeStoreSchema = sd.read_int("prestigeStoreSchema");
+    if (prestigeStoreSchema < 2)
+    {
+        for (uint i = 0; i < prestigePurchased.length(); i++)
+            prestigePurchased[i] = migrate_prestige_id_v2(prestigePurchased[i]);
+    }
 }
 if (sd.d.exists("questRerollCount")) questRerollCount = sd.read_int("questRerollCount");
 if (sd.d.exists("activeQuestCount"))
@@ -262,6 +296,7 @@ for (uint i = 0; i < autobakeSlotEnabled.length(); i++)
 sd.add("baking_slot_count", baking_slots.length());
 sd.add("prestigeLevel", prestigeLevel);
 sd.add("prestige_points", prestige_points);
+sd.add("prestigeStoreSchema", 2);
 sd.add("prestigePurchasedCount", int(prestigePurchased.length()));
 for (uint i = 0; i < prestigePurchased.length(); i++)
     sd.add("prestigePurchased_" + string(i), prestigePurchased[i]);

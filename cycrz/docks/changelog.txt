@@ -1,4 +1,6 @@
 New in 6.3.
+Renumbered the prestige store upgrades so that within each track the tier numbers now count up in step with the prestige levels that unlock them. Previously the numbers appeared out of sequence, for example showing cookie multiplier 6 at prestige level 2 and cookie multiplier 5 at prestige level 10. Any prestige upgrades you already purchased are migrated automatically, so no bonuses are lost.
+Fixed a bug where the starting auto cookies and starting manual cookies prestige upgrades could be bought but never actually applied their bonus. They now correctly give you their head start amount at the beginning of each run.
 Fixed a bug where very large numbers, including your cookies, money, production rates, and lifetime statistics, could climb high enough to display as Inf. Every value is now held to a safe maximum so it always reads as a real number, and this applies everywhere, including the shops, minigames, and prestige rewards.
 New in 6.2.
 Fixed a bug where exporting all buffers at once saved log files to the local data/logs folder instead of the AppData logs folder.

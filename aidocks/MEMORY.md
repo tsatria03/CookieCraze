@@ -14,6 +14,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Save-data layout](project_save_data_layout.md) — writable data in AppData under tsatria03/CookieCraze/ (logs/preffs/saves); multiple save slots.
 - [Repo hygiene](project_repo_hygiene.md) — .gitattributes CRLF enforcement + binary rules; what's gitignored; CLAUDE.md + aidocks/ are committed.
 - [Engine pinned to nvgt](project_engine_pinned_nvgt2.md) — runs on the legacy fork at C:\nvgt (BASS); upstream C:\nvgt2 (miniaudio) is incompatible; don't target it or suggest upgrading.
+- [Prestige store schema](project_prestige_store_schema.md) — prestige.store item_id suffixes count up in prestige-level order (1..11 per track); save schema key + `migrate_prestige_id_v2` migration protects already-purchased ids. Renumbered in 6.3.
 - [Number overflow cap](project_number_overflow_cap.md) — shipped 6.3: stop `Inf`/`$inf` by clamping the growing balances + `stat_*` totals to 1e308 (via `floor(safe_cap(x))` normalizers, a loop clamp, and capped display locals), not just cost formulas.
 
 ## NVGT / AngelScript gotchas — these cause compile failures (game won't launch)

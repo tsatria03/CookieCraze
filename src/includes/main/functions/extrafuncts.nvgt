@@ -653,9 +653,9 @@ void apply_prestige_store_upgrade(string item_id)
             prestige_rank_discount += amt;
         else if (id.substr(0, 14) == "starting_coins")
             prestige_starting_coins += amt;
-        else if (id.substr(0, 17) == "starting_autocookie")
+        else if (id.substr(0, 19) == "starting_autocookie")
             prestige_starting_autocookie += amt;
-        else if (id.substr(0, 19) == "starting_manualcookie")
+        else if (id.substr(0, 21) == "starting_manualcookie")
             prestige_starting_manualcookie += amt;
         break;
     }
@@ -686,9 +686,9 @@ void apply_all_prestige_store_upgrades()
                 prestige_rank_discount += amt;
             else if (id.substr(0, 14) == "starting_coins")
                 prestige_starting_coins += amt;
-            else if (id.substr(0, 17) == "starting_autocookie")
+            else if (id.substr(0, 19) == "starting_autocookie")
                 prestige_starting_autocookie += amt;
-            else if (id.substr(0, 19) == "starting_manualcookie")
+            else if (id.substr(0, 21) == "starting_manualcookie")
                 prestige_starting_manualcookie += amt;
             break;
         }
