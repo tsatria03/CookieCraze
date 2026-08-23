@@ -18,32 +18,35 @@ while(true)
 wait(5);
 form.monitor();
 clicker_game_input();
-autocookie = floor(autocookie);
+autocookie = floor(safe_cap(autocookie));
 if(autocookie<=0)
 {
 bakemode=0;
 autocookie=0;
 }
-coins = floor(coins);
+coins = floor(safe_cap(coins));
 if(coins<=0)
 {
 coins=0;
 }
-cookies = floor(cookies);
+cookies = floor(safe_cap(cookies));
 if(cookies<=0)
 {
 cookies=0;
 }
-cookiespeed = floor(cookiespeed);
+cookiespeed = floor(safe_cap(cookiespeed));
 if(cookiespeed<=0)
 {
 cookiespeed=0;
 }
-manulcookie = floor(manulcookie);
+manulcookie = floor(safe_cap(manulcookie));
 if(manulcookie<=0)
 {
 manulcookie=0;
 }
+stat_cookies_baked = safe_cap(stat_cookies_baked);
+stat_coins_earned = safe_cap(stat_coins_earned);
+stat_coins_spent = safe_cap(stat_coins_spent);
 if(clicktime<=50)
 {
 clicktime=50;

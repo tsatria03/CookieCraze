@@ -225,7 +225,7 @@ double apply_amount_effect(string target, double amount, int polarity, bool use_
     if (use_percent && base <= 0) return 0;
     if (polarity == 2 && base < 1) return 0;
     double actual = use_percent ? base * (amount / 100.0) : amount;
-    actual = max(1.0, floor(actual));
+    actual = safe_cap(max(1.0, floor(actual)));
     if (polarity == 1)
     {
         if (target == "coins")           { coins += actual; stat_coins_earned += actual; }

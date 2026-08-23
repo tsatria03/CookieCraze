@@ -43,7 +43,7 @@ SRC_DIR      = os.path.join(REPO_DIR, "src")                     # entry .nvgt l
 ASSETS_DIR   = os.path.join(REPO_DIR, NVGT_OUT)                  # asset folder (data/docks/sounds); its name == NVGT_OUT
 BUNDLE       = os.path.join(SRC_DIR, NVGT_OUT)                   # nvgt -c (run from src) produces this bundle folder
 VERSION_NVGT = os.path.join(SRC_DIR, "includes", "version.nvgt") # mirror of build/version.txt, read by the running game
-ASSET_FOLDERS = ["data", "docks", "sounds"]                     # copied into the bundle after compile (pragmas were dropped)
+ASSET_FOLDERS = ["data", "docks", "lib", "sounds"]              # copied into the bundle after compile (pragmas were dropped). lib is optional: skipped if the folder is absent (see the copy loop); it would hold runtime DLLs / plugins / helper exes if this game ever needs them.
 
 SKIP = 0
 DO = 1
@@ -424,6 +424,8 @@ def run_release(skip_compile, skip_package, skip_release, skip_website, skip_emp
         for folder in ASSET_FOLDERS:
             asset_src = os.path.join(ASSETS_DIR, folder)
             if not os.path.isdir(asset_src):
+                if folder == "lib":
+                    continue  # optional: only some games ship a lib/ folder of runtime DLLs / helper exes
                 print(f"ERROR: missing asset folder: {asset_src}")
                 return
             shutil.copytree(asset_src, os.path.join(BUNDLE, folder), dirs_exist_ok=True)

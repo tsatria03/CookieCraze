@@ -13,7 +13,8 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Audio model](project_audio_model.md) — sound_pool + HRTF; cycrz/sounds/ layout (ambience/menu/misc/dlg/store/combos/events/minigames/buffer); no sound packs.
 - [Save-data layout](project_save_data_layout.md) — writable data in AppData under tsatria03/CookieCraze/ (logs/preffs/saves); multiple save slots.
 - [Repo hygiene](project_repo_hygiene.md) — .gitattributes CRLF enforcement + binary rules; what's gitignored; CLAUDE.md + aidocks/ are committed.
-- [Engine pinned to nvgt2](project_engine_pinned_nvgt2.md) — runs on the legacy fork at C:\nvgt2 (BASS); upstream C:\nvgt (miniaudio) is incompatible; don't target it or suggest upgrading.
+- [Engine pinned to nvgt](project_engine_pinned_nvgt2.md) — runs on the legacy fork at C:\nvgt (BASS); upstream C:\nvgt2 (miniaudio) is incompatible; don't target it or suggest upgrading.
+- [Number overflow cap](project_number_overflow_cap.md) — shipped 6.3: stop `Inf`/`$inf` by clamping the growing balances + `stat_*` totals to 1e308 (via `floor(safe_cap(x))` normalizers, a loop clamp, and capped display locals), not just cost formulas.
 
 ## NVGT / AngelScript gotchas — these cause compile failures (game won't launch)
 - [AngelScript braceless if](project_angelscript_braceless_if.md) — a braceless if/else governs one statement; a second orphans the else → compile error.

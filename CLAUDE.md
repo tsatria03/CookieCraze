@@ -21,11 +21,11 @@ Core loop: bake cookies → sell for money → buy upgrades → rank up → unlo
 
 **The cwd trick:** `cycrz/cycrz.py` runs `../src/cycrz.nvgt` through NVGT but sets **cwd = `cycrz/`**, so bare `data/…`, `sounds/…`, `docks/…` strings resolve under `cycrz/`, while `#include"includes/…"` resolves relative to the script → `src/includes/`. No `#pragma asset` lines; `build/tools.py` copies assets into the bundle. Full path map: **[[project_path_conventions]]**. Include architecture (the `main/{deps,functions,globals,menus,parsers}` glob tree + vendored deps incl. `dget`/`rotation`): **[[project_include_tree]]**.
 
-**Engine is pinned to the legacy fork at `C:\nvgt2`** (BASS audio); upstream `C:\nvgt` (miniaudio) is incompatible — don't target it or suggest upgrading. **[[project_engine_pinned_nvgt2]]**.
+**Engine is pinned to the legacy fork at `C:\nvgt`** (BASS audio); upstream `C:\nvgt2` (miniaudio) is incompatible — don't target it or suggest upgrading. **[[project_engine_pinned_nvgt2]]**.
 
 ## Running & building
 
-No test suite or linter. The game launches via `cycrz/cycrz.py` (runs `src/cycrz.nvgt` under `C:\nvgt2\nvgt.exe`, cwd `cycrz/`, compile errors → `cycrz/errors.txt`) and is compiled/packaged/released via `build/tools.py` — but **the dev runs and builds, not Claude** ([[feedback_dont_run_or_build_the_game]]). The version source of truth is `build/version.txt`, mirrored into `src/includes/version.nvgt` on launch and compile — never hand-edit `version.nvgt` ([[feedback_update_build_version_txt]]). Full pipeline: **[[project_build_pipeline]]**.
+No test suite or linter. The game launches via `cycrz/cycrz.py` (runs `src/cycrz.nvgt` under `C:\nvgt\nvgt.exe`, cwd `cycrz/`, compile errors → `cycrz/errors.txt`) and is compiled/packaged/released via `build/tools.py` — but **the dev runs and builds, not Claude** ([[feedback_dont_run_or_build_the_game]]). The version source of truth is `build/version.txt`, mirrored into `src/includes/version.nvgt` on launch and compile — never hand-edit `version.nvgt` ([[feedback_update_build_version_txt]]). Full pipeline: **[[project_build_pipeline]]**.
 
 ## Where the detail lives (read before working in an area)
 

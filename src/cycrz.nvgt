@@ -294,7 +294,7 @@ alert("error", "Unable to restart "+appid+"!");
 }
 else
 {
-bool success=run("c:\\nvgt2\\nvgtw.exe", scriptid,false,false);
+bool success=run("c:\\nvgt\\nvgtw.exe", scriptid,false,false);
 if(!success)
 {
 alert("error", "Unable to restart "+scriptid+"!");

@@ -1,3 +1,5 @@
+New in 6.3.
+Fixed a bug where very large numbers, including your cookies, money, production rates, and lifetime statistics, could climb high enough to display as Inf. Every value is now held to a safe maximum so it always reads as a real number, and this applies everywhere, including the shops, minigames, and prestige rewards.
 New in 6.2.
 Fixed a bug where exporting all buffers at once saved log files to the local data/logs folder instead of the AppData logs folder.
 Made it so buffer mute states are now saved automatically whenever you toggle them and restored when you load your game. You no longer need to re-mute buffers after restarting.

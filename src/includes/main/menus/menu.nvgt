@@ -485,7 +485,7 @@ double cookiesToSell = floor(string_to_number(sailam));
     }
     if (cookiesToSell > sellableCookies)
         cookiesToSell = sellableCookies;
-double totalCoinsEarned = cookiesToSell * cookieSellPrice;
+double totalCoinsEarned = safe_cap(cookiesToSell * cookieSellPrice);
 if (prestige_coin_multiplier > 0) totalCoinsEarned *= 1.0 + (prestige_coin_multiplier / 100.0);
 cookies -= cookiesToSell;
 coins += totalCoinsEarned;
@@ -1056,7 +1056,7 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
             {
                 if (items[i].use_percent)
                 {
-                    double gained = (autocookie * (items[i].amount / 100.0)) * quantity;
+                    double gained = safe_cap((autocookie * (items[i].amount / 100.0)) * quantity);
                     autocookie += gained;
                     autoPercentGained += items[i].amount * quantity;
                 }
@@ -1071,7 +1071,7 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
             {
                 if (items[i].use_percent)
                 {
-                    double gained = (manulcookie * (items[i].amount / 100.0)) * quantity;
+                    double gained = safe_cap((manulcookie * (items[i].amount / 100.0)) * quantity);
                     manulcookie += gained;
                     manulPercentGained += items[i].amount * quantity;
                 }
@@ -1086,7 +1086,7 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
             {
                 if (items[i].use_percent)
                 {
-                    double gained = (cookiespeed * (items[i].amount / 100.0)) * quantity;
+                    double gained = safe_cap((cookiespeed * (items[i].amount / 100.0)) * quantity);
                     cookiespeed += gained;
                     clicktime -= gained;
                     speedPercentGained += items[i].amount * quantity;
@@ -1176,7 +1176,7 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
             {
                 if (items[i].use_percent)
                 {
-                    double gained = (cookiespeed * (items[i].amount / 100.0)) * quantity;
+                    double gained = safe_cap((cookiespeed * (items[i].amount / 100.0)) * quantity);
                     cookiespeed += gained;
                     clicktime -= gained;
                 }

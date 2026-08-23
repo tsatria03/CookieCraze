@@ -9,10 +9,10 @@ metadata:
 
 No test suite or linter. Running and building are scripted but manual; **the dev runs them, not Claude** ([[feedback_dont_run_or_build_the_game]]).
 
-**Launcher — `cycrz/cycrz.py`:** runs `../src/cycrz.nvgt` under `C:\nvgt2\nvgt.exe` with cwd = `cycrz/` (the [[project_path_conventions]] cwd trick), `CREATE_NO_WINDOW`, hides its own console, and watches ~5s for an early compile-error exit → writes `cycrz/errors.txt` (+ a popup) on failure, otherwise detaches. An absent/empty `errors.txt` means "no errors." It mirrors `build/version.txt` → `src/includes/version.nvgt` before launch, preserving the file's line ending.
+**Launcher — `cycrz/cycrz.py`:** runs `../src/cycrz.nvgt` under `C:\nvgt\nvgt.exe` with cwd = `cycrz/` (the [[project_path_conventions]] cwd trick), `CREATE_NO_WINDOW`, hides its own console, and watches ~5s for an early compile-error exit → writes `cycrz/errors.txt` (+ a popup) on failure, otherwise detaches. An absent/empty `errors.txt` means "no errors." It mirrors `build/version.txt` → `src/includes/version.nvgt` before launch, preserving the file's line ending.
 
 **Release — `build/tools.py`** (via `build/tools.bat`, or 5 flag args non-interactively). Interactive menu = commit tools (commit / undo / push / history / create-tag) + release stages:
-- **compile:** mirror version into `version.nvgt`, run `nvgt -c -Q cycrz.nvgt` from `src/` (bundle lands in `src/cycrz`), copy `data`,`docks`,`sounds` from `cycrz/` into the bundle, move it to `releases/windows/CookieCraze_windows_portable_password_is_<pw>/cycrz`.
+- **compile:** mirror version into `version.nvgt`, run `nvgt -c -Q cycrz.nvgt` from `src/` (bundle lands in `src/cycrz`), copy the `ASSET_FOLDERS` list — `data`,`docks`,`lib`,`sounds` — from `cycrz/` into the bundle, move it to `releases/windows/CookieCraze_windows_portable_password_is_<pw>/cycrz`. `lib` is OPTIONAL: the copy loop skips it when the folder is absent (which it currently is for this game). It's in the list so that if this game ever ships a `cycrz/lib/` of runtime DLLs / plugins / helper exes it auto-bundles, and so tools.py stays uniform with the other tsatria03 games (added 2026-08-15; ToyMania actually uses its lib for nvgt_curl + lame + 7zr).
 - **package:** a password-protected 7z portable archive **and** an Inno Setup installer (`build/installer.iss` via ISCC).
 - **release:** `gh release create`, attaching archive + installer.
 - **website:** `site_updater.ps1` updates the github.io page and writes the site's `version.txt`.
