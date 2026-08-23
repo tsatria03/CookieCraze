@@ -145,7 +145,7 @@ else if(manulcookie>=1)
                 comboWindow = random(combosConfig.combo_window_min, combosConfig.combo_window_max);
                 combotimer.restart();
                 stat_combos_started++;
-                if (combosConfig.start_sound != "") pool.play_stationary("sounds/" + combosConfig.start_sound, false);
+                if (combosConfig.start_sound != "" && !buffer_muted("combos")) pool.play_stationary("sounds/" + combosConfig.start_sound, false);
                 speak_buffer(combosConfig.start_message, "combos");
             }
         }
@@ -162,7 +162,7 @@ else if(manulcookie>=1)
             {
                 lastComboTierIndex = tierIdx;
                 combo_tier_item@ tier = combosConfig.tiers[tierIdx];
-                if (tier.sound != "") pool.play_stationary("sounds/" + tier.sound, false);
+                if (tier.sound != "" && !buffer_muted("combos")) pool.play_stationary("sounds/" + tier.sound, false);
                 if (tier.message != "") speak_buffer(format_combo_message(tier.message, comboCount, comboMult), "combos");
             }
         }
@@ -236,7 +236,7 @@ if (combosConfig.enabled && rank >= combosConfig.enabled_rank && comboCount > 0 
     comboCount = 0;
     lastComboTierIndex = -1;
     stat_combos_broken++;
-    if (combosConfig.stop_sound != "") pool.play_stationary("sounds/" + combosConfig.stop_sound, false);
+    if (combosConfig.stop_sound != "" && !buffer_muted("combos")) pool.play_stationary("sounds/" + combosConfig.stop_sound, false);
     speak_buffer(breakMsg, "combos");
 }
 if (cookies >= cookiesrequiered)
@@ -248,7 +248,7 @@ if (cookies >= cookiesrequiered)
     {
         string defaultMsg = apply_rank_reward(rankDefault[0], rank);
         play_rank_sound(lastRewardAmount);
-        if (ranksfx == true) pool.play_stationary("sounds/misc/rankach" + random(1, 2) + ".ogg", false);
+        if (!buffer_muted("ranks")) pool.play_stationary("sounds/misc/rankach" + random(1, 2) + ".ogg", false);
         handle_rank_unlock(rankDefault[0].unlock);
         speak_buffer(defaultMsg, "ranks");
     }
@@ -263,7 +263,7 @@ if (cookies >= cookiesrequiered)
         rank_reward_item@ milestone = matching[random(0, matching.length() - 1)];
         string milestoneMsg = apply_rank_reward(milestone, rank);
         play_rank_sound(lastRewardAmount);
-        if (ranksfx == true) pool.play_stationary("sounds/misc/rankach" + random(1, 2) + ".ogg", false);
+        if (!buffer_muted("ranks")) pool.play_stationary("sounds/misc/rankach" + random(1, 2) + ".ogg", false);
         handle_rank_unlock(milestone.unlock);
         if (bakemode == 1)
             speak_buffer(milestoneMsg, "critical");

@@ -107,7 +107,7 @@ string apply_event(event_item@ item)
 
 void play_event_sounds(event_item@ item)
 {
-    if (eventsfx == false) return;
+    if (buffer_muted("events")) return;
     if (item.polarity == 1)
         pool.play_stationary("sounds/misc/alert_big.ogg", false);
     else

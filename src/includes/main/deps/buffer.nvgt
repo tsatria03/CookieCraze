@@ -41,6 +41,12 @@ if(buffers[i].name==name) return i;
 }
 return -1;
 }
+bool buffer_muted(string name)
+{
+int b = get_buffer_index(name);
+if (b <= -1) return false;
+return buffers[b].muted;
+}
 void create_buffer(string name)
 {
 if(get_buffer_index("all")<=-1)

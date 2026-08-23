@@ -1,9 +1,6 @@
 const string APPDATA_DIR = DIRECTORY_APPDATA + "tsatria03/CookieCraze/";
 
-bool achsfx = true;
 bool bakesfx = true;
-bool coinsfx = true;
-bool eventsfx = true;
 bool exitsfx = true;
 bool flipmode = true;
 bool ingame = false;
@@ -15,7 +12,6 @@ bool dicemode = true;
 bool playervents = true;
 bool playervents2 = true;
 bool playerprofed = false;
-bool ranksfx = true;
 bool savesfx = true;
 bool show_locked_shops = true;
 bool slotmode = true;

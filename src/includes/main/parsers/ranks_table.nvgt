@@ -96,7 +96,7 @@ string apply_rank_reward(rank_reward_item@ item, double current_rank)
 
 void play_rank_sound(double amount)
 {
-    if (coinsfx == false) return;
+    if (buffer_muted("ranks")) return;
     string soundfile = "";
     for (int i = rankSounds.length() - 1; i >= 0; i--)
     {

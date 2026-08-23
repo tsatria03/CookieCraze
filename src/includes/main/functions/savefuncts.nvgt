@@ -379,14 +379,6 @@ if(st.d.exists("bakesfx"))
 {
 bakesfx=st.read_bool("bakesfx");
 }
-if(st.d.exists("coinsfx"))
-{
-coinsfx=st.read_bool("coinsfx");
-}
-if(st.d.exists("eventsfx"))
-{
-eventsfx=st.read_bool("eventsfx");
-}
 if(st.d.exists("exitsfx"))
 {
 exitsfx=st.read_bool("exitsfx");
@@ -398,14 +390,6 @@ introsfx=st.read_bool("introsfx");
 if(st.d.exists("logosfx"))
 {
 logosfx=st.read_bool("logosfx");
-}
-if(st.d.exists("ranksfx"))
-{
-ranksfx=st.read_bool("ranksfx");
-}
-if(st.d.exists("achsfx"))
-{
-achsfx=st.read_bool("achsfx");
 }
 if(st.d.exists("savesfx"))
 {
@@ -498,13 +482,9 @@ for (uint i = 0; i < buffers.length(); i++)
 void writepreffs()
 {
 st.add("bakesfx",bakesfx);
-st.add("coinsfx",coinsfx);
-st.add("eventsfx",eventsfx);
 st.add("exitsfx",exitsfx);
 st.add("introsfx",introsfx);
 st.add("logosfx",logosfx);
-st.add("ranksfx",ranksfx);
-st.add("achsfx",achsfx);
 st.add("savesfx",savesfx);
 st.add("slotDistribution",slotDistribution);
 st.add("manualSlotDistribution",manualSlotDistribution);
