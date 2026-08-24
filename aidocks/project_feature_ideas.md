@@ -47,13 +47,13 @@ A press-your-luck card game, deliberately different from blackjack (hand-based):
    - Tie → configurable: push (re-draw, streak intact), win, or lose.
 5. Cash out pays `bet * accumulated multiplier` in the bet currency.
 
-**Config (`data/config/tables/higher_lower.table`)** — mirror the other minigame tables (jacks/slots/dice):
-- `unlock_rank` (gate it at an ascending rank like the others — dice 40, slots 50, so maybe 60).
+**Config — a DRAFT table exists at `data/config/tables/highlow.table`** (mirrors jacks/slots/dice conventions; config only, nothing reads it yet). **The draft carries verbose field-by-field `;` comments for review only — the shipped table must strip those and match the other minigame tables' minimal style: just `; Section` headers and `; Required header` markers, no explanatory prose.** The field explanations instead go in the readme's **"Configuration files for modders"** reference, matching the `dice.table`/`jacks.table` format there: `Location:` line, a one-line description, then each field name on its own line followed by a prose explanation; row/section formats get a `Format: a:b:c:d` line with per-column notes; message placeholders get `%token% is replaced with …` lines. Also add a **player-facing gameplay blurb** to the readme's minigames section (this is separate from the config reference — every minigame has both). Follow the house format: `Higher or lower. Unlocked at rank 50.` / a difficulty tier + one-line note (Beginner/Intermediate/Advanced) / a one-sentence hook / then detail paragraphs covering betting (item choice; money entered as a dollar value like "type 1 for $1.00", other items as whole numbers), the streak/cash-out mechanic, the tie rule, ace high/low, a pointer to `highlow.table`, the manual/auto reveal toggle, and the confirmation-prompt note. Insert it in unlock order **between the dice roller (rank 40) and the slot machine** — and because of the rank shuffle, the slot machine, baking slots manager, and combos headers in this gameplay section also move (slots 50 → 60, manager 60 → 70, combos 70 → 80).
+- `unlock_rank` — **rank 50** (decided; see the "Unlock rank arrangement" note below). The minigame access gates are **hardcoded** in `menu.nvgt`, not read from a table, so higher or lower needs a hardcoded `rank < 50` check like the other five — and the slot machine's own hardcoded check moves `50 → 60`.
 - `min_bet`, `max_bet`, and a `confirm_threshold` (big-bet confirmation, like slots/dice).
 - Deck definition: card names + numeric values (Ace high/low configurable); default a standard 52.
 - `payout_per_correct` / streak multiplier growth curve.
 - `tie_rule` = push | win | lose.
-- Sounds: card flip, correct, wrong, streak-up, cash-out (subfolder-prefix syntax supported, e.g. `higher_lower/flip.ogg`).
+- Sounds live in `sounds/minigames/higher_or_lower/` (subfolder-prefix + `(1,2)` random-pick syntax supported, like the other minigame tables). Draft fields → files: `draw_sound` → `player_draw(1,2).ogg` (card reveal, 2 random variants, analogous to blackjack's `player_draw`/`dealer_draw`), `correct_sound` → `correct.ogg`, `wrong_sound` → `wrong.ogg`, `streak_sound` → `streak.ogg` (optional flavor), `win_sound` → `win.ogg` (cash-out). **Files needed: `player_draw1.ogg`, `player_draw2.ogg`, `correct.ogg`, `wrong.ogg`, `streak.ogg`, `win.ogg`.**
 - Messages with tokens (`%card%`, `%streak%`, `%multiplier%`, `%payout%`).
 - Auto-reveal toggle, matching the per-minigame auto settings (`jackmode`/`slotmode`/etc.).
 
@@ -66,3 +66,15 @@ A press-your-luck card game, deliberately different from blackjack (hand-based):
 - Add to the readme minigames section (in correct unlock order) and the changelog when built.
 
 **Why it's a good fit:** reuses the entire minigame scaffold (table + parser + `minigame_input` + auto-toggle + stats/achievements/quests), but the streak/cash-out tension gives it a distinct feel from the existing five.
+
+**Unlock rank arrangement (decided, NOT yet applied — do it as part of the build, not standalone).** Higher or lower unlocks at **rank 50**. **Rationale:** the minigames panel is **alphabetized**, so "Higher or lower" (H) sorts before "Slot machine" (S) and must unlock at an *earlier* rank than slots, otherwise unlock order wouldn't match the panel order. So slots and everything after it each shift up 10.
+- Current `ranks.table` ladder: 10 blackjack, 20 flipper, 30 lottery, 40 dice, **50 slots, 60 slot manager, 70 combos**.
+- New ladder: 10 blackjack, 20 flipper, 30 lottery, 40 dice, **50 higher or lower, 60 slots, 70 slot manager, 80 combos**.
+
+Concrete edits when building:
+- `ranks.table`: change the slots line to rank 60, the slotmanager line to rank 70, the combos line to rank 80, and add a rank-50 `higherlower` unlock line (same format as the others).
+- `combos.table`: change `enabled=true:70` → `enabled=true:80` (the combos *gate* lives here; the ranks.table line is only the announcement).
+- Slot-manager gate needs no code change: `slotManagerUnlockRank` auto-derives from the ranks.table slotmanager line (`ranks_table.nvgt`).
+- **Hardcoded minigame gates in `menu.nvgt`** ("rank X or higher" checks): move the **slot machine** check `50 → 60`, and add a new `rank < 50` check for higher or lower.
+
+**Why bundle it with the build, not now:** doing the shift standalone would (because gates re-derive on launch) **temporarily re-lock the slot machine for existing saves at rank 50–59, the slot manager at 60–69, and combos at 70–79** until they rank up, and leave rank 50 with no new unlock until the minigame ships. Shipping the shift together with the rank-50 unlock avoids that.

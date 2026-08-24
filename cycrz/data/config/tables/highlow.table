@@ -1,0 +1,46 @@
+; Settings
+
+min_bet=1
+max_bet=0
+confirm_threshold=1000:false
+ace_high=true
+tie_rule=push
+starting_multiplier=1.5
+streak_multiplier_growth=0.5
+max_streak=0
+
+; Deck
+
+[deck]
+
+; Required header — removing or renaming this will break the file.
+
+two:2
+three:3
+four:4
+five:5
+six:6
+seven:7
+eight:8
+nine:9
+ten:10
+jack:11
+queen:12
+king:13
+ace:14
+
+; Sounds
+
+draw_sound=higher_or_lower/player_draw(1,2).ogg
+correct_sound=higher_or_lower/correct.ogg
+wrong_sound=higher_or_lower/wrong.ogg
+streak_sound=higher_or_lower/streak.ogg
+win_sound=higher_or_lower/win.ogg
+
+; Messages
+
+start_message=You drew the %card%. Will the next card be higher or lower?
+correct_message=Correct, it was the %card%. Streak %streak%, and your pot is now %payout% %item%. Guess again or cash out.
+wrong_message=Wrong, it was the %card%. Your streak of %streak% is broken and you lost your bet of %bet% %item%.
+tie_message=A tie, another %card%. Your streak holds at %streak%.
+win_message=You cashed out on a streak of %streak% and banked %payout% %item%!
