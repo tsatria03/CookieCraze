@@ -17,6 +17,9 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Prestige store schema](project_prestige_store_schema.md) — prestige.store item_id suffixes count up in prestige-level order (1..11 per track); save schema key + `migrate_prestige_id_v2` migration protects already-purchased ids. Renumbered in 6.3.
 - [Number overflow cap](project_number_overflow_cap.md) — shipped 6.3: stop `Inf`/`$inf` by clamping the growing balances + `stat_*` totals to 1e308 (via `floor(safe_cap(x))` normalizers, a loop clamp, and capped display locals), not just cost formulas.
 
+## Ideas / backlog
+- [Feature ideas](project_feature_ideas.md) — 6.4+ wish list (offline progress, golden-cookie bonus, daily streak, auto-buyer, boosts shop, achievement rewards, QoL) + a detailed spec for a 6th minigame, higher or lower. None built yet.
+
 ## NVGT / AngelScript gotchas — these cause compile failures (game won't launch)
 - [AngelScript braceless if](project_angelscript_braceless_if.md) — a braceless if/else governs one statement; a second orphans the else → compile error.
 - [AngelScript reserved words](project_angelscript_reserved_words.md) — never name a variable `out` (or in/inout/shared/final/from…); reserved keyword → compile error.

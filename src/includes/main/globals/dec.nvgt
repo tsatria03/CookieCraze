@@ -14,6 +14,7 @@ bool playervents2 = true;
 bool playerprofed = false;
 bool savesfx = true;
 bool show_locked_shops = true;
+int numberFormatMode = 0;
 bool slotmode = true;
 
 double autocookie = 0;

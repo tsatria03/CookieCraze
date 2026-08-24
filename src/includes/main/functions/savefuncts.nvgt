@@ -395,6 +395,10 @@ if(st.d.exists("savesfx"))
 {
 savesfx=st.read_bool("savesfx");
 }
+if(st.d.exists("numberFormatMode"))
+{
+numberFormatMode=st.read_int("numberFormatMode");
+}
 if (st.d.exists("slotDistribution"))
 {
 slotDistribution = st.read_bool("slotDistribution");
@@ -486,6 +490,7 @@ st.add("exitsfx",exitsfx);
 st.add("introsfx",introsfx);
 st.add("logosfx",logosfx);
 st.add("savesfx",savesfx);
+st.add("numberFormatMode",numberFormatMode);
 st.add("slotDistribution",slotDistribution);
 st.add("manualSlotDistribution",manualSlotDistribution);
 st.add("playervents",playervents);

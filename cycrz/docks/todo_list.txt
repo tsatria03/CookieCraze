@@ -1,9 +1,8 @@
 ####These are the things that need to be finished for future versions of the game.
 
-**Unfinished. Add a way to quikly mute frequently used buffers in the game settings, or in the game itself.
-
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Add a way to quikly mute frequently used buffers in the game settings, or in the game itself.
 **Ffinished. Replace raw coins with a realistic currency system using dollar and cent display.
 **Finished. Add a configurable bet confirmation prompt to the slot machine and blackjack minigames. When a bet reaches or exceeds a set threshold, a yes or no menu appears before the bet is committed. Threshold is set in slots.table and jacks.table, defaulting to 1000. Set to 0 to disable.
 **Finished. Add a baker info screen showing current auto cookies, manual cookies, baking speed, bake interval, slot counts, rank, cookies, and coins all in one place. Accessible as a button from the main game interface.
