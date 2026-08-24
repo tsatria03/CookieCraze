@@ -1051,19 +1051,19 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
             double quantity = (bulkQuantity < maxbuy) ? bulkQuantity : maxbuy;
             double totalCost = calc_total_upgrade_cost(level, quantity, items[i].base_cost, items[i].cost_multiplier);
             if (chosenCurrency == "cookies") { cookies -= totalCost; } else { coins -= totalCost; stat_coins_spent += totalCost; }
-            totalSpent += totalCost;
+            totalSpent = safe_cap(totalSpent + totalCost);
             if (items[i].target == 1)
             {
                 if (items[i].use_percent)
                 {
                     double gained = safe_cap((autocookie * (items[i].amount / 100.0)) * quantity);
                     autocookie += gained;
-                    autoPercentGained += items[i].amount * quantity;
+                    autoPercentGained = safe_cap(autoPercentGained + items[i].amount * quantity);
                 }
                 else
                 {
                     autocookie += quantity * items[i].amount;
-                    autoGained += quantity * items[i].amount;
+                    autoGained = safe_cap(autoGained + quantity * items[i].amount);
                 }
                 autocookie_purchases += quantity;
             }
@@ -1073,12 +1073,12 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
                 {
                     double gained = safe_cap((manulcookie * (items[i].amount / 100.0)) * quantity);
                     manulcookie += gained;
-                    manulPercentGained += items[i].amount * quantity;
+                    manulPercentGained = safe_cap(manulPercentGained + items[i].amount * quantity);
                 }
                 else
                 {
                     manulcookie += quantity * items[i].amount;
-                    manulGained += quantity * items[i].amount;
+                    manulGained = safe_cap(manulGained + quantity * items[i].amount);
                 }
                 manulcookie_purchases += quantity;
             }
@@ -1089,13 +1089,13 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
                     double gained = safe_cap((cookiespeed * (items[i].amount / 100.0)) * quantity);
                     cookiespeed += gained;
                     clicktime -= gained;
-                    speedPercentGained += items[i].amount * quantity;
+                    speedPercentGained = safe_cap(speedPercentGained + items[i].amount * quantity);
                 }
                 else
                 {
                     cookiespeed += quantity * items[i].amount;
                     clicktime -= cookiespeed;
-                    speedGained += quantity * items[i].amount;
+                    speedGained = safe_cap(speedGained + quantity * items[i].amount);
                 }
                 cookiespeed_purchases += quantity;
             }
@@ -1222,6 +1222,23 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
     }
     }
 }
+double calc_bundle_total(bundle_item@ bundle, store_item[]@ storeItems)
+{
+    double total = 0;
+    for (uint j = 0; j < bundle.entries.length(); j++)
+    {
+        for (uint k = 0; k < storeItems.length(); k++)
+        {
+            if (storeItems[k].item_type == bundle.entries[j].item_type)
+            {
+                double level = (storeItems[k].target == 2) ? manulcookie_purchases : (storeItems[k].target == 3) ? cookiespeed_purchases : autocookie_purchases;
+                total = safe_cap(total + calc_total_upgrade_cost(level, bundle.entries[j].quantity, storeItems[k].base_cost, storeItems[k].cost_multiplier));
+                break;
+            }
+        }
+    }
+    return total;
+}
 void bundlemenu()
 {
     bundle_item[] bundles;
@@ -1250,19 +1267,7 @@ void bundlemenu()
                 if (bundles[j].menu != menus[i].name) continue;
                 totalBundles++;
                 if (bundles[j].min_rank > 0 && rank < bundles[j].min_rank) continue;
-                double totalCost = 0;
-                for (uint k = 0; k < bundles[j].entries.length(); k++)
-                {
-                    for (uint l = 0; l < storeItems.length(); l++)
-                    {
-                        if (storeItems[l].item_type == bundles[j].entries[k].item_type)
-                        {
-                            double level = (storeItems[l].target == 2) ? manulcookie_purchases : (storeItems[l].target == 3) ? cookiespeed_purchases : autocookie_purchases;
-                            totalCost += calc_total_upgrade_cost(level, bundles[j].entries[k].quantity, storeItems[l].base_cost, storeItems[l].cost_multiplier);
-                            break;
-                        }
-                    }
-                }
+                double totalCost = calc_bundle_total(bundles[j], storeItems);
                 double bundleMenuBalance = (menus[i].currency == "cookies") ? cookies : coins;
                 if (bundleMenuBalance >= totalCost)
                     affordableBundles++;
@@ -1319,19 +1324,7 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
             m.add_item(bundles[i].name + ". Unlocked at rank " + string(bundles[i].min_rank) + ". Description: " + bundles[i].description, "locked" + string(i));
             continue;
         }
-        double totalCost = 0;
-        for (uint j = 0; j < bundles[i].entries.length(); j++)
-        {
-            for (uint k = 0; k < storeItems.length(); k++)
-            {
-                if (storeItems[k].item_type == bundles[i].entries[j].item_type)
-                {
-                    double level = (storeItems[k].target == 2) ? manulcookie_purchases : (storeItems[k].target == 3) ? cookiespeed_purchases : autocookie_purchases;
-                    totalCost += calc_total_upgrade_cost(level, bundles[i].entries[j].quantity, storeItems[k].base_cost, storeItems[k].cost_multiplier);
-                    break;
-                }
-            }
-        }
+        double totalCost = calc_bundle_total(bundles[i], storeItems);
         double canAfford = (totalCost > 0) ? floor(balance / totalCost) : 0;
         string costStr = (chosenCurrency == "cookies") ? format_number(totalCost) + " baked cookies" : convert_to_currency(totalCost);
         m.add_item(bundles[i].name + ". Costs " + costStr + ". You can buy " + format_number(canAfford) + ". Description: " + bundles[i].description, "bundle" + string(i));
@@ -1341,19 +1334,7 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
     {
         if (bundles[i].menu != chosenMenu) continue;
         if (bundles[i].min_rank > 0 && rank < bundles[i].min_rank) continue;
-        double totalCost = 0;
-        for (uint j = 0; j < bundles[i].entries.length(); j++)
-        {
-            for (uint k = 0; k < storeItems.length(); k++)
-            {
-                if (storeItems[k].item_type == bundles[i].entries[j].item_type)
-                {
-                    double level = (storeItems[k].target == 2) ? manulcookie_purchases : (storeItems[k].target == 3) ? cookiespeed_purchases : autocookie_purchases;
-                    totalCost += calc_total_upgrade_cost(level, bundles[i].entries[j].quantity, storeItems[k].base_cost, storeItems[k].cost_multiplier);
-                    break;
-                }
-            }
-        }
+        double totalCost = calc_bundle_total(bundles[i], storeItems);
         if (balance >= totalCost) { anyBundleAffordable = true; break; }
     }
     if (anyBundleAffordable)
@@ -1384,19 +1365,7 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
         {
             if (bundles[i].menu != chosenMenu) continue;
             if (bundles[i].min_rank > 0 && rank < bundles[i].min_rank) continue;
-            double totalCost = 0;
-            for (uint j = 0; j < bundles[i].entries.length(); j++)
-            {
-                for (uint k = 0; k < storeItems.length(); k++)
-                {
-                    if (storeItems[k].item_type == bundles[i].entries[j].item_type)
-                    {
-                        double level = (storeItems[k].target == 2) ? manulcookie_purchases : (storeItems[k].target == 3) ? cookiespeed_purchases : autocookie_purchases;
-                        totalCost += calc_total_upgrade_cost(level, bundles[i].entries[j].quantity, storeItems[k].base_cost, storeItems[k].cost_multiplier);
-                        break;
-                    }
-                }
-            }
+            double totalCost = calc_bundle_total(bundles[i], storeItems);
             if (balance >= totalCost)
                 onePassCost += totalCost;
         }
@@ -1415,23 +1384,11 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
             {
                 if (bundles[i].menu != chosenMenu) continue;
                 if (bundles[i].min_rank > 0 && rank < bundles[i].min_rank) continue;
-                double totalCost = 0;
-                for (uint j = 0; j < bundles[i].entries.length(); j++)
-                {
-                    for (uint k = 0; k < storeItems.length(); k++)
-                    {
-                        if (storeItems[k].item_type == bundles[i].entries[j].item_type)
-                        {
-                            double level = (storeItems[k].target == 2) ? manulcookie_purchases : (storeItems[k].target == 3) ? cookiespeed_purchases : autocookie_purchases;
-                            totalCost += calc_total_upgrade_cost(level, bundles[i].entries[j].quantity, storeItems[k].base_cost, storeItems[k].cost_multiplier);
-                            break;
-                        }
-                    }
-                }
+                double totalCost = calc_bundle_total(bundles[i], storeItems);
                 double passBalance = (chosenCurrency == "cookies") ? cookies : coins;
                 if (passBalance < totalCost) continue;
                 if (chosenCurrency == "cookies") { cookies -= totalCost; } else { coins -= totalCost; stat_coins_spent += totalCost; }
-                totalSpent += totalCost;
+                totalSpent = safe_cap(totalSpent + totalCost);
                 if (pass == 0) boughtNames.insert_last(bundles[i].name);
                 for (uint j = 0; j < bundles[i].entries.length(); j++)
                 {
@@ -1440,9 +1397,9 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
                         if (storeItems[k].item_type == bundles[i].entries[j].item_type)
                         {
                             double amount = bundles[i].entries[j].quantity;
-                            if (storeItems[k].target == 1) { autocookie += amount * storeItems[k].amount; autocookie_purchases += amount; autoGained += amount * storeItems[k].amount; }
-                            else if (storeItems[k].target == 2) { manulcookie += amount * storeItems[k].amount; manulcookie_purchases += amount; manulGained += amount * storeItems[k].amount; }
-                            else if (storeItems[k].target == 3) { cookiespeed += amount * storeItems[k].amount; clicktime -= amount * storeItems[k].amount; cookiespeed_purchases += amount; speedGained += amount * storeItems[k].amount; }
+                            if (storeItems[k].target == 1) { autocookie += amount * storeItems[k].amount; autocookie_purchases += amount; autoGained = safe_cap(autoGained + amount * storeItems[k].amount); }
+                            else if (storeItems[k].target == 2) { manulcookie += amount * storeItems[k].amount; manulcookie_purchases += amount; manulGained = safe_cap(manulGained + amount * storeItems[k].amount); }
+                            else if (storeItems[k].target == 3) { cookiespeed += amount * storeItems[k].amount; clicktime -= amount * storeItems[k].amount; cookiespeed_purchases += amount; speedGained = safe_cap(speedGained + amount * storeItems[k].amount); }
                             break;
                         }
                     }
@@ -1483,19 +1440,7 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
     if (sel.substr(0, 6) == "bundle")
     {
         int idx = string_to_int(sel.substr(6));
-        double totalCost = 0;
-        for (uint j = 0; j < bundles[idx].entries.length(); j++)
-        {
-            for (uint k = 0; k < storeItems.length(); k++)
-            {
-                if (storeItems[k].item_type == bundles[idx].entries[j].item_type)
-                {
-                    double level = (storeItems[k].target == 2) ? manulcookie_purchases : (storeItems[k].target == 3) ? cookiespeed_purchases : autocookie_purchases;
-                    totalCost += calc_total_upgrade_cost(level, bundles[idx].entries[j].quantity, storeItems[k].base_cost, storeItems[k].cost_multiplier);
-                    break;
-                }
-            }
-        }
+        double totalCost = calc_bundle_total(bundles[idx], storeItems);
         vd.set_disallowed_chars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()[]{};:'\"\\|,.<>?/+-=`~_", false, "This character is not allowed.");
         double maxBundles = (totalCost > 0) ? floor(balance / totalCost) : 0;
         string input = vd.input_box("", "How many " + bundles[idx].name + " would you like to buy? Press enter to buy the maximum amount.", string(maxBundles));
@@ -1528,20 +1473,20 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
                     {
                         autocookie += amount * storeItems[k].amount;
                         autocookie_purchases += amount;
-                        autoGained += amount * storeItems[k].amount;
+                        autoGained = safe_cap(autoGained + amount * storeItems[k].amount);
                     }
                     else if (storeItems[k].target == 2)
                     {
                         manulcookie += amount * storeItems[k].amount;
                         manulcookie_purchases += amount;
-                        manulGained += amount * storeItems[k].amount;
+                        manulGained = safe_cap(manulGained + amount * storeItems[k].amount);
                     }
                     else if (storeItems[k].target == 3)
                     {
                         cookiespeed += amount * storeItems[k].amount;
                         clicktime -= amount * storeItems[k].amount;
                         cookiespeed_purchases += amount;
-                        speedGained += amount * storeItems[k].amount;
+                        speedGained = safe_cap(speedGained + amount * storeItems[k].amount);
                     }
                     break;
                 }
