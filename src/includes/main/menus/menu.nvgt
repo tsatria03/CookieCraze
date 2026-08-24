@@ -2272,9 +2272,10 @@ int difficultyRankModifierSlider = form.create_slider("Difficulty rank Modifier.
 int autoChanceSlider = form.create_slider("Auto-Baking Event chance.", 100 - evchanse, 0, 100, "percent", 1);
 int manualChanceSlider = form.create_slider("Manual-Baking Event chance.", 100 - evchanse2, 0, 100, "percent", 1);
 int sellPriceSlider = form.create_slider("Cookie sell price.", cookieSellPrice, 1, 100, "cents", 1);
-int numberFormatList = form.create_list("&Number format", 3);
+int numberFormatList = form.create_list("&Number format", 4);
 form.add_list_item(numberFormatList, "Raw. Example, 5,230.");
-form.add_list_item(numberFormatList, "Suffix. Example, 5.23 K.");
+form.add_list_item(numberFormatList, "Suffix short. Example, 5.23 K.");
+form.add_list_item(numberFormatList, "Suffix long. Example, 5.23 million.");
 form.add_list_item(numberFormatList, "Scientific. Example, 5.23 e plus 3.");
 form.set_list_position(numberFormatList, numberFormatMode);
 int savesets = form.create_button("&save settings", true);
