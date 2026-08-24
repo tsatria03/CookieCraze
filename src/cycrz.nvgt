@@ -45,6 +45,12 @@ if (rankSounds.length() == 0 || rankDefault.length() == 0)
 }
 parse_jacks_table("data/config/tables/jacks.table", jacksConfig);
 parse_dice_table("data/config/tables/dice.table");
+parse_highlow_table("data/config/tables/highlow.table");
+if (highlowConfig.deck.length() == 0)
+{
+    alert("Error", "Could not load higher or lower data from data/config/tables/highlow.table. Please check the file and try again.");
+    exit();
+}
 parse_combos_table("data/config/tables/combos.table", combosConfig);
 parse_achievements("data/config/tables/achievements.table", loadedAchievements, loadedAchievementCategories);
 parse_prestige_table("data/config/tables/prestige.table");

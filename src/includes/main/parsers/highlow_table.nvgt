@@ -1,0 +1,94 @@
+class highlow_card
+{
+    string name;
+    int value;
+}
+
+class highlow_config
+{
+    double min_bet = 1.0;
+    double max_bet = 0.0;
+    double confirm_threshold = 0.0;
+    bool confirm_use_percent = false;
+    bool ace_high = true;
+    string tie_rule = "push";
+    double starting_multiplier = 1.5;
+    double streak_multiplier_growth = 0.5;
+    int max_streak = 0;
+    string draw_sound = "higher_or_lower/player_draw(1,2).ogg";
+    string correct_sound = "higher_or_lower/correct.ogg";
+    string wrong_sound = "higher_or_lower/wrong.ogg";
+    string streak_sound = "higher_or_lower/streak.ogg";
+    string win_sound = "higher_or_lower/win.ogg";
+    string start_message = "You drew the %card%. Will the next card be higher or lower?";
+    string correct_message = "Correct, it was the %card%. Streak %streak%, and your pot is now %payout% %item%. Guess again or cash out.";
+    string wrong_message = "Wrong, it was the %card%. Your streak of %streak% is broken and you lost your bet of %bet% %item%.";
+    string tie_message = "A tie, another %card%. Your streak holds at %streak%.";
+    string win_message = "You cashed out on a streak of %streak% and banked %payout% %item%!";
+    highlow_card[] deck;
+}
+
+highlow_config highlowConfig;
+
+void parse_highlow_table(string filepath)
+{
+    highlowConfig.deck.resize(0);
+    file f;
+    if (!f.open(filepath, "r"))
+        return;
+    string section = "";
+    while (!f.eof)
+    {
+        string line = f.read_line();
+        while (line.length() > 0 && (line.substr(line.length() - 1) == "\n" || line.substr(line.length() - 1) == "\r"))
+            line = line.substr(0, line.length() - 1);
+        if (line.length() == 0 || line.substr(0, 2) == "//" || line.substr(0, 1) == "#" || line.substr(0, 1) == ";")
+            continue;
+        if (line == "[deck]") { section = "deck"; continue; }
+        int eq = line.find("=");
+        if (eq != -1)
+        {
+            string key = line.substr(0, eq);
+            string val = line.substr(eq + 1);
+            if (key == "min_bet") highlowConfig.min_bet = max(1.0, string_to_number(val));
+            else if (key == "max_bet") highlowConfig.max_bet = max(0.0, string_to_number(val));
+            else if (key == "confirm_threshold")
+            {
+                int colon = val.find(":");
+                if (colon != -1)
+                {
+                    highlowConfig.confirm_threshold = max(0.0, string_to_number(val.substr(0, colon)));
+                    highlowConfig.confirm_use_percent = (val.substr(colon + 1) == "true");
+                }
+                else
+                    highlowConfig.confirm_threshold = max(0.0, string_to_number(val));
+            }
+            else if (key == "ace_high") highlowConfig.ace_high = (val == "true");
+            else if (key == "tie_rule") highlowConfig.tie_rule = val;
+            else if (key == "starting_multiplier") highlowConfig.starting_multiplier = string_to_number(val);
+            else if (key == "streak_multiplier_growth") highlowConfig.streak_multiplier_growth = string_to_number(val);
+            else if (key == "max_streak") highlowConfig.max_streak = max(0, string_to_int(val));
+            else if (key == "draw_sound") highlowConfig.draw_sound = val;
+            else if (key == "correct_sound") highlowConfig.correct_sound = val;
+            else if (key == "wrong_sound") highlowConfig.wrong_sound = val;
+            else if (key == "streak_sound") highlowConfig.streak_sound = val;
+            else if (key == "win_sound") highlowConfig.win_sound = val;
+            else if (key == "start_message") highlowConfig.start_message = val;
+            else if (key == "correct_message") highlowConfig.correct_message = val;
+            else if (key == "wrong_message") highlowConfig.wrong_message = val;
+            else if (key == "tie_message") highlowConfig.tie_message = val;
+            else if (key == "win_message") highlowConfig.win_message = val;
+            continue;
+        }
+        if (section == "deck")
+        {
+            int colon = line.find(":");
+            if (colon == -1) continue;
+            highlow_card c;
+            c.name = line.substr(0, colon);
+            c.value = string_to_int(line.substr(colon + 1));
+            highlowConfig.deck.insert_last(c);
+        }
+    }
+    f.close();
+}
