@@ -1,4 +1,5 @@
 New in 6.3.
+Fixed the fire spark event so its message now matches what actually happens. It always burned a percentage of your cookies, but the message read it as a small flat number, for example saying you lost 20 cookies when it really burned 20 percent of your stockpile. The message now reports both the percentage and the real amount lost, in line with the other percentage events.
 Added quick mute keys on the main game screen and inside every minigame for the four buffers that play sound effects. F1 toggles the achievements buffer, F2 toggles the combos buffer, F3 toggles the events buffer, and F4 toggles the ranks buffer. Alt plus F4 still exits the game without saving from the main game screen.
 Made it so the critical buffer is no longer mutable. Important messages such as milestone rank rewards and locked minigame notices always come through and can no longer be silenced.
 Moved the announcement for entering the cookie store from the critical buffer to the misc buffer.
