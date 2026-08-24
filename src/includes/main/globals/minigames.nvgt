@@ -954,3 +954,285 @@ void dicegame()
 }
 
 void dice_game_input() { minigame_input("dice"); }
+
+void highlow_draw(string &out cardName, int &out cardVal)
+{
+    int idx = random(0, highlowConfig.deck.length() - 1);
+    cardName = highlowConfig.deck[idx].name;
+    cardVal = highlowConfig.deck[idx].value;
+    if (!highlowConfig.ace_high && cardName == "ace") cardVal = 1;
+}
+
+string highlow_fill(string msg, string token, string value)
+{
+    int ph = msg.find(token);
+    while (ph != -1)
+    {
+        int start = (value == "" && ph > 0 && msg.substr(ph - 1, 1) == " ") ? ph - 1 : ph;
+        msg = msg.substr(0, start) + value + msg.substr(ph + int(token.length()));
+        ph = msg.find(token);
+    }
+    return msg;
+}
+
+void highlowgame()
+{
+    form.reset();
+    form.create_window("Higher or Lower", false);
+    int betChoice = form.create_list("Choose an &item to bet:", 5);
+    form.add_list_item(betChoice, "Cookies");
+    form.add_list_item(betChoice, "Currency");
+    form.add_list_item(betChoice, "Auto Cookies");
+    form.add_list_item(betChoice, "Auto Cookie Speeds");
+    form.add_list_item(betChoice, "Manual Cookies");
+    int betInput = form.create_input_box("Enter your &bet amount:", "", "", 0, false, false, false);
+    int dealButton = form.create_button("&Deal", true);
+    int higherButton = form.create_button("&Higher");
+    int lowerButton = form.create_button("&Lower");
+    int cashButton = form.create_button("&Cash out");
+    form.set_disallowed_chars(betInput, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()[]{};:'\"\\|,<>?/+-=`~_", false, "This character is not allowed.");
+    form.focus(betChoice);
+    int selectedBet = 0;
+    double betAmount = 0;
+    string betItemName = "";
+    bool in_round = false;
+    int streak = 0;
+    double currentMultiplier = 0;
+    string curName = "";
+    int curVal = 0;
+    while (true)
+    {
+        wait(5);
+        form.monitor();
+        if (autocookie <= 0) { bakemode = 0; autocookie = 0; }
+        if (coins <= 0) coins = 0;
+        if (cookies <= 0) cookies = 0;
+        if (cookiespeed <= 0) cookiespeed = 0;
+        if (manulcookie <= 0) manulcookie = 0;
+        if (clicktime <= 50) clicktime = 50;
+        if (clicktime >= 1000) clicktime = 1000;
+        if (form.get_current_focus() != betInput)
+            highlow_game_input();
+        if (key_pressed(KEY_ESCAPE))
+        {
+            pool.destroy_sound(gameslot);
+            mingamsmenu();
+        }
+        check_rank();
+        check_achievements(loadedAchievements, achievementsUnlocked);
+        if (key_pressed(KEY_B))
+        {
+            if (!in_round)
+                speak_buffer("You are not in a round, so place a bet and deal to begin.");
+            else
+            {
+                double potNow = floor(safe_cap(betAmount * currentMultiplier));
+                string potStr = (streak < 1) ? "nothing yet" : ((selectedBet == 1) ? convert_to_currency(potNow) : (format_number(potNow) + (betItemName != "" ? " " + betItemName : "")));
+                speak_buffer("Your streak is " + streak + ", your pot is " + potStr + ", and the last card was the " + curName + ".");
+            }
+        }
+        if (form.is_pressed(dealButton))
+        {
+            if (in_round)
+            {
+                dlg_buffer("You are already in a round. Guess higher or lower, or cash out.");
+                continue;
+            }
+            selectedBet = form.get_list_position(betChoice);
+            string betStr = form.get_text(betInput);
+            double betNum = floor(selectedBet == 1 ? string_to_number(betStr) * 100.0 : string_to_number(betStr));
+            if (betNum <= 0)
+            {
+                pool.play_stationary("sounds/misc/gamefail.ogg", false);
+                dlg_buffer("Error! Please enter a valid bet amount.");
+                continue;
+            }
+            if (betNum < highlowConfig.min_bet)
+            {
+                pool.play_stationary("sounds/misc/gamefail.ogg", false);
+                dlg_buffer("Error! The minimum bet is " + (selectedBet == 1 ? convert_to_currency(highlowConfig.min_bet) : format_number(highlowConfig.min_bet)) + ".");
+                continue;
+            }
+            if (highlowConfig.max_bet > 0 && betNum > highlowConfig.max_bet)
+            {
+                pool.play_stationary("sounds/misc/gamefail.ogg", false);
+                dlg_buffer("Your bet has been capped at the maximum of " + (selectedBet == 1 ? convert_to_currency(highlowConfig.max_bet) : format_number(highlowConfig.max_bet)) + ".");
+                betNum = highlowConfig.max_bet;
+            }
+            if (selectedBet == 0) betNum = min(betNum, floor(cookies));
+            else if (selectedBet == 1) betNum = min(betNum, floor(coins));
+            else if (selectedBet == 2) betNum = min(betNum, floor(autocookie));
+            else if (selectedBet == 3) betNum = min(betNum, floor(cookiespeed));
+            else if (selectedBet == 4) betNum = min(betNum, floor(manulcookie));
+            if (betNum <= 0)
+            {
+                pool.play_stationary("sounds/misc/gamefail.ogg", false);
+                dlg_buffer("Error! You don't have enough of that item to bet!");
+                continue;
+            }
+            if (highlowConfig.confirm_threshold > 0)
+            {
+                double statTotal = (selectedBet == 0 ? floor(cookies) : (selectedBet == 1 ? floor(coins) : (selectedBet == 2 ? floor(autocookie) : (selectedBet == 3 ? floor(cookiespeed) : floor(manulcookie)))));
+                double effectiveThreshold = highlowConfig.confirm_use_percent ? (statTotal * (highlowConfig.confirm_threshold / 100.0)) : highlowConfig.confirm_threshold;
+                if (betNum >= effectiveThreshold)
+                {
+                    string betItemName2 = (selectedBet == 0 ? "cookies" : (selectedBet == 1 ? "currency" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies"))));
+                    setupmenu(false);
+                    m.add_item("Yes", "yes");
+                    m.add_item("No", "no");
+                    m.intro_text = "Are you sure you want to bet " + (selectedBet == 1 ? convert_to_currency(betNum) : format_number(betNum) + " " + betItemName2) + "?";
+                    int cres = m.run(0, true);
+                    string csel = m.get_item_id(cres);
+                    if (cres == -1 || csel == "no")
+                        continue;
+                }
+            }
+            betAmount = betNum;
+            betItemName = (selectedBet == 0 ? "cookies" : (selectedBet == 1 ? "" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies"))));
+            if (selectedBet == 0) { cookies -= betAmount; cookies = floor(safe_cap(cookies)); }
+            else if (selectedBet == 1) { coins -= betAmount; coins = floor(safe_cap(coins)); }
+            else if (selectedBet == 2) { autocookie -= betAmount; autocookie = floor(safe_cap(autocookie)); }
+            else if (selectedBet == 3) { cookiespeed -= betAmount; clicktime += betAmount; cookiespeed = floor(safe_cap(cookiespeed)); }
+            else if (selectedBet == 4) { manulcookie -= betAmount; manulcookie = floor(safe_cap(manulcookie)); }
+            in_round = true;
+            streak = 0;
+            currentMultiplier = 0;
+            stat_highlow_games++;
+            highlow_draw(curName, curVal);
+            pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.draw_sound), false);
+            if (highlowmode) mini_wait_async(random(1000, 2000), "highlow");
+            string smsg = highlow_fill(highlowConfig.start_message, "%card%", curName);
+            if (highlowmode) speak_buffer(smsg);
+            else dlg_buffer(smsg);
+            form.focus(higherButton);
+        }
+        bool guessPressed = false;
+        bool guessHigher = false;
+        if (form.is_pressed(higherButton)) { guessPressed = true; guessHigher = true; }
+        else if (form.is_pressed(lowerButton)) { guessPressed = true; guessHigher = false; }
+        if (guessPressed)
+        {
+            if (!in_round)
+            {
+                dlg_buffer("Please place a bet and deal first.");
+                continue;
+            }
+            pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.draw_sound), false);
+            if (highlowmode) mini_wait_async(random(1000, 2000), "highlow");
+            string nextName = "";
+            int nextVal = 0;
+            highlow_draw(nextName, nextVal);
+            int outcome = 0;
+            if (nextVal == curVal) outcome = 0;
+            else if ((nextVal > curVal) == guessHigher) outcome = 1;
+            else outcome = -1;
+            if (outcome == 0 && highlowConfig.tie_rule == "win") outcome = 1;
+            else if (outcome == 0 && highlowConfig.tie_rule == "lose") outcome = -1;
+            if (outcome == 0)
+            {
+                curName = nextName;
+                curVal = nextVal;
+                string tmsg = highlow_fill(highlowConfig.tie_message, "%card%", nextName);
+                tmsg = highlow_fill(tmsg, "%streak%", string(streak));
+                if (highlowmode) speak_buffer(tmsg);
+                else dlg_buffer(tmsg);
+                form.focus(higherButton);
+            }
+            else if (outcome == 1)
+            {
+                streak++;
+                currentMultiplier = highlowConfig.starting_multiplier + (streak - 1) * highlowConfig.streak_multiplier_growth;
+                if (double(streak) > stat_highlow_highest_streak) stat_highlow_highest_streak = streak;
+                curName = nextName;
+                curVal = nextVal;
+                pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.correct_sound), false);
+                if (streak >= 3 && highlowConfig.streak_sound != "") pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.streak_sound), false);
+                double pot = floor(safe_cap(betAmount * currentMultiplier));
+                string potStr = (selectedBet == 1) ? convert_to_currency(pot) : format_number(pot);
+                bool forced = (highlowConfig.max_streak > 0 && streak >= highlowConfig.max_streak);
+                if (forced)
+                {
+                    if (highlowmode) speak_buffer("Correct, and you reached the maximum streak of " + streak + "!");
+                    else dlg_buffer("Correct, and you reached the maximum streak of " + streak + "!");
+                    if (selectedBet == 0) { cookies += pot; cookies = floor(safe_cap(cookies)); }
+                    else if (selectedBet == 1) { coins += pot; coins = floor(safe_cap(coins)); stat_coins_earned += pot; }
+                    else if (selectedBet == 2) { autocookie += pot; autocookie = floor(safe_cap(autocookie)); }
+                    else if (selectedBet == 3) { cookiespeed += pot; clicktime -= pot; if (cookiespeed < 0) cookiespeed = 0; if (clicktime < 50) clicktime = 50; cookiespeed = floor(safe_cap(cookiespeed)); }
+                    else if (selectedBet == 4) { manulcookie += pot; manulcookie = floor(safe_cap(manulcookie)); }
+                    stat_highlow_wins++;
+                    pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.win_sound), false);
+                    string vmsg = highlow_fill(highlowConfig.win_message, "%streak%", string(streak));
+                    vmsg = highlow_fill(vmsg, "%payout%", potStr);
+                    vmsg = highlow_fill(vmsg, "%item%", betItemName);
+                    dlg_buffer(vmsg);
+                    in_round = false;
+                    betAmount = 0;
+                    streak = 0;
+                    currentMultiplier = 0;
+                    form.focus(dealButton);
+                }
+                else
+                {
+                    string cmsg = highlow_fill(highlowConfig.correct_message, "%card%", nextName);
+                    cmsg = highlow_fill(cmsg, "%streak%", string(streak));
+                    cmsg = highlow_fill(cmsg, "%payout%", potStr);
+                    cmsg = highlow_fill(cmsg, "%item%", betItemName);
+                    if (highlowmode) speak_buffer(cmsg);
+                    else dlg_buffer(cmsg);
+                    form.focus(higherButton);
+                }
+            }
+            else
+            {
+                stat_highlow_losses++;
+                int brokenStreak = streak;
+                pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.wrong_sound), false);
+                string wmsg = highlow_fill(highlowConfig.wrong_message, "%card%", nextName);
+                wmsg = highlow_fill(wmsg, "%streak%", string(brokenStreak));
+                string betStr2 = (selectedBet == 1) ? convert_to_currency(betAmount) : format_number(betAmount);
+                wmsg = highlow_fill(wmsg, "%bet%", betStr2);
+                wmsg = highlow_fill(wmsg, "%item%", betItemName);
+                if (highlowmode) speak_buffer(wmsg);
+                else dlg_buffer(wmsg);
+                in_round = false;
+                betAmount = 0;
+                streak = 0;
+                currentMultiplier = 0;
+                form.focus(dealButton);
+            }
+        }
+        if (form.is_pressed(cashButton))
+        {
+            if (!in_round)
+            {
+                dlg_buffer("Please place a bet and deal first.");
+                continue;
+            }
+            if (streak < 1)
+            {
+                dlg_buffer("You need at least one correct guess before you can cash out.");
+                continue;
+            }
+            double pot = floor(safe_cap(betAmount * currentMultiplier));
+            if (selectedBet == 0) { cookies += pot; cookies = floor(safe_cap(cookies)); }
+            else if (selectedBet == 1) { coins += pot; coins = floor(safe_cap(coins)); stat_coins_earned += pot; }
+            else if (selectedBet == 2) { autocookie += pot; autocookie = floor(safe_cap(autocookie)); }
+            else if (selectedBet == 3) { cookiespeed += pot; clicktime -= pot; if (cookiespeed < 0) cookiespeed = 0; if (clicktime < 50) clicktime = 50; cookiespeed = floor(safe_cap(cookiespeed)); }
+            else if (selectedBet == 4) { manulcookie += pot; manulcookie = floor(safe_cap(manulcookie)); }
+            stat_highlow_wins++;
+            pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.win_sound), false);
+            string potStr = (selectedBet == 1) ? convert_to_currency(pot) : format_number(pot);
+            string vmsg = highlow_fill(highlowConfig.win_message, "%streak%", string(streak));
+            vmsg = highlow_fill(vmsg, "%payout%", potStr);
+            vmsg = highlow_fill(vmsg, "%item%", betItemName);
+            dlg_buffer(vmsg);
+            in_round = false;
+            betAmount = 0;
+            streak = 0;
+            currentMultiplier = 0;
+            form.focus(dealButton);
+        }
+    }
+}
+
+void highlow_game_input() { minigame_input("highlow"); }
