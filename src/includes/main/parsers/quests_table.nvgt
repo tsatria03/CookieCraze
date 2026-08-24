@@ -374,11 +374,13 @@ string get_stat_display_name(string stat)
     else if (stat == STAT_PENNY_FLIPS)       return "penny flips";
     else if (stat == STAT_DICE_ROLLS)        return "dice rolls";
     else if (stat == STAT_DICE_WINS)         return "dice wins";
-    else if (stat == STAT_DICE_LOSSES)       return "dice losses";
     else if (stat == STAT_SLOT_SPINS)        return "slot machine spins";
     else if (stat == STAT_SLOT_WINS)         return "slot machine wins";
     else if (stat == STAT_BLACKJACK_HANDS)   return "blackjack hands played";
     else if (stat == STAT_BLACKJACK_WINS)    return "blackjack wins";
+    else if (stat == STAT_LOTTERY_TICKETS_BOUGHT)    return "lottery tickets bought";
+    else if (stat == STAT_LOTTERY_TICKETS_SCRATCHED) return "lottery tickets scratched";
+    else if (stat == STAT_LOTTERY_WINS)              return "lottery wins";
     else if (stat == STAT_AUTO_SLOTS_PURCHASED) return "auto slots purchased";
     else if (stat == STAT_AUTO_SLOTS_ENABLED)   return "auto slots enabled";
     else if (stat == STAT_RANK)                    return "rank";

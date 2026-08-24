@@ -150,14 +150,6 @@ win_dice_75:Win 75 dice rolls:dice_wins:75:false:false:true:3:Win %threshold% di
 win_dice_150:Win 150 dice rolls:dice_wins:150:false:false:true:4:Win %threshold% dice rolls.
 win_dice_300:Win 300 dice rolls:dice_wins:300:false:false:true:5:Win %threshold% dice rolls.
 
-; Blackjack losses
-
-lose_blackjack_5:Lose 5 blackjack hands:blackjack_losses:5:false:false:true:1:Lose %threshold% rounds of blackjack.
-lose_blackjack_25:Lose 25 blackjack hands:blackjack_losses:25:false:false:true:2:Lose %threshold% rounds of blackjack.
-lose_blackjack_75:Lose 75 blackjack hands:blackjack_losses:75:false:false:true:3:Lose %threshold% rounds of blackjack.
-lose_blackjack_150:Lose 150 blackjack hands:blackjack_losses:150:false:false:true:4:Lose %threshold% rounds of blackjack.
-lose_blackjack_300:Lose 300 blackjack hands:blackjack_losses:300:false:false:true:5:Lose %threshold% rounds of blackjack.
-
 ; Blackjack pushes
 
 push_blackjack_5:Push 5 blackjack hands:blackjack_pushes:5:false:false:true:1:Push %threshold% rounds of blackjack.
@@ -165,6 +157,30 @@ push_blackjack_25:Push 25 blackjack hands:blackjack_pushes:25:false:false:true:2
 push_blackjack_75:Push 75 blackjack hands:blackjack_pushes:75:false:false:true:3:Push %threshold% rounds of blackjack.
 push_blackjack_150:Push 150 blackjack hands:blackjack_pushes:150:false:false:true:4:Push %threshold% rounds of blackjack.
 push_blackjack_300:Push 300 blackjack hands:blackjack_pushes:300:false:false:true:5:Push %threshold% rounds of blackjack.
+
+; Lottery tickets bought
+
+buy_lottery_tickets_10:Buy 10 scratch tickets:lottery_tickets_bought:10:false:false:true:1:Buy %threshold% scratch tickets.
+buy_lottery_tickets_50:Buy 50 scratch tickets:lottery_tickets_bought:50:false:false:true:2:Buy %threshold% scratch tickets.
+buy_lottery_tickets_150:Buy 150 scratch tickets:lottery_tickets_bought:150:false:false:true:3:Buy %threshold% scratch tickets.
+buy_lottery_tickets_400:Buy 400 scratch tickets:lottery_tickets_bought:400:false:false:true:4:Buy %threshold% scratch tickets.
+buy_lottery_tickets_1000:Buy 1K scratch tickets:lottery_tickets_bought:1000:false:false:true:5:Buy %threshold% scratch tickets.
+
+; Lottery tickets scratched
+
+scratch_lottery_tickets_10:Scratch 10 tickets:lottery_tickets_scratched:10:false:false:true:1:Scratch %threshold% tickets.
+scratch_lottery_tickets_50:Scratch 50 tickets:lottery_tickets_scratched:50:false:false:true:2:Scratch %threshold% tickets.
+scratch_lottery_tickets_150:Scratch 150 tickets:lottery_tickets_scratched:150:false:false:true:3:Scratch %threshold% tickets.
+scratch_lottery_tickets_400:Scratch 400 tickets:lottery_tickets_scratched:400:false:false:true:4:Scratch %threshold% tickets.
+scratch_lottery_tickets_1000:Scratch 1K tickets:lottery_tickets_scratched:1000:false:false:true:5:Scratch %threshold% tickets.
+
+; Lottery wins
+
+win_lottery_5:Win 5 lottery tickets:lottery_wins:5:false:false:true:1:Win %threshold% scratch tickets.
+win_lottery_25:Win 25 lottery tickets:lottery_wins:25:false:false:true:2:Win %threshold% scratch tickets.
+win_lottery_75:Win 75 lottery tickets:lottery_wins:75:false:false:true:3:Win %threshold% scratch tickets.
+win_lottery_150:Win 150 lottery tickets:lottery_wins:150:false:false:true:4:Win %threshold% scratch tickets.
+win_lottery_300:Win 300 lottery tickets:lottery_wins:300:false:false:true:5:Win %threshold% scratch tickets.
 
 ; Auto slots purchased
 

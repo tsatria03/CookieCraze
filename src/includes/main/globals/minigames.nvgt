@@ -989,7 +989,7 @@ void highlowgame()
     int dealButton = form.create_button("&Deal", true);
     int higherButton = form.create_button("&Higher");
     int lowerButton = form.create_button("&Lower");
-    int cashButton = form.create_button("&Cash out");
+    int cashButton = form.create_button("Bank &earnings");
     form.set_disallowed_chars(betInput, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()[]{};:'\"\\|,<>?/+-=`~_", false, "This character is not allowed.");
     form.focus(betChoice);
     int selectedBet = 0;
@@ -1035,7 +1035,7 @@ void highlowgame()
         {
             if (in_round)
             {
-                dlg_buffer("You are already in a round. Guess higher or lower, or cash out.");
+                dlg_buffer("You are already in a round. Guess higher or lower, or bank your earnings.");
                 continue;
             }
             selectedBet = form.get_list_position(betChoice);
@@ -1210,7 +1210,7 @@ void highlowgame()
             }
             if (streak < 1)
             {
-                dlg_buffer("You need at least one correct guess before you can cash out.");
+                dlg_buffer("You need at least one correct guess before you can bank your earnings.");
                 continue;
             }
             double pot = floor(safe_cap(betAmount * currentMultiplier));
