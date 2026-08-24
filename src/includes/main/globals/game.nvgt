@@ -184,7 +184,7 @@ else if(coins>=1)
 {
 ambpool.destroy_sound(ambslot);
 muspool.destroy_sound(mustrackslot);
-speak_buffer("You're now entering the cookie store.", "critical");
+speak_buffer("You're now entering the cookie store.", "misc");
 dlgplay("sounds/store/door_open.ogg");
 alertslot=pool.play_stationary("sounds/store/welcome.ogg",false);
 storambslot=storambpool.play_stationary_extended("sounds/store/amb.ogg",true,0,0,storambvolume,storambpitch,false);

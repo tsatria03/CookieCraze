@@ -1,4 +1,6 @@
 New in 6.3.
+Made it so the critical buffer is no longer mutable. Important messages such as milestone rank rewards and locked minigame notices always come through and can no longer be silenced.
+Moved the announcement for entering the cookie store from the critical buffer to the misc buffer.
 Made it so combo sounds are now tied to the combos buffer, so muting it silences the combo start, tier, and break sounds along with their messages.
 Removed the currency, event, achievement, and rank sound effect toggles from the game settings menu. These sounds are now silenced by muting their category's message buffer instead, so muting the ranks buffer stops the rank up and rank reward coin sounds, the events buffer stops event sounds, and the achievements buffer stops achievement sounds. Muting a buffer now stops both its announcements and its sound effects, and unmuting restores them.
 Renumbered the prestige store upgrades so that within each track the tier numbers now count up in step with the prestige levels that unlock them. Previously the numbers appeared out of sequence, for example showing cookie multiplier 6 at prestige level 2 and cookie multiplier 5 at prestige level 10. Any prestige upgrades you already purchased are migrated automatically, so no bonuses are lost.

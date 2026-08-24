@@ -20,7 +20,7 @@ name=n;
 }
 void toggle_mute()
 {
-if(name=="alerts" or name=="all")
+if(name=="alerts" or name=="all" or name=="critical")
 {
 speak("This buffer can not be muted.",true);
 }
