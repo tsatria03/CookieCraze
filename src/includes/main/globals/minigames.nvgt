@@ -1120,8 +1120,8 @@ void highlowgame()
                 dlg_buffer("Please place a bet and deal first.");
                 continue;
             }
-            if (highlowmode) speak_buffer((guessHigher ? "Higher" : "Lower") + ", drawing the next card.");
-            else dlg_buffer((guessHigher ? "Higher" : "Lower") + ", drawing the next card. Press enter or space to reveal.");
+            if (highlowmode) speak_buffer((guessHigher ? "Higher chosen" : "Lower chosen") + ", drawing the next card.");
+            else dlg_buffer((guessHigher ? "Higher chosen" : "Lower chosen") + ", drawing the next card. Press enter or space to reveal.");
             pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.draw_sound), false);
             if (highlowmode) mini_wait_async(random(1000, 2000), "highlow");
             string nextName = "";
