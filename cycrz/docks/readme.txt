@@ -415,13 +415,13 @@ There are eight buffer categories.
 All is a special aggregate buffer that receives a copy of every message from every other buffer. It gives you a single place to review all game activity in the order it occurred. It cannot be muted.
 Achievements holds messages for every achievement you earn during play.
 Combos holds messages from the manual baking combo system, including combo starts, tier milestones, and breaks.
-Critical holds important notifications like rank ups and game milestones.
+Critical holds important notifications like milestone rank rewards and locked minigame notices. It cannot be muted, so these messages always come through.
 Events holds messages from random events and flipper flips.
 General holds status updates and informational messages.
 Misc holds things like save confirmations and other game actions.
 Ranks holds regular rank up announcements.
 
-All of the named buffers, except for All, can be muted independently so they stop being spoken aloud while still logging messages for later review. Mute states are saved automatically the moment you toggle them and restored the next time you load your game, so you never need to re-mute buffers after restarting.
+All of the named buffers, except for All and Critical, can be muted independently so they stop being spoken aloud while still logging messages for later review. Mute states are saved automatically the moment you toggle them and restored the next time you load your game, so you never need to re-mute buffers after restarting. The four buffers that play sound effects, achievements, combos, events, and ranks, can also be muted or unmuted instantly from the main game screen using the F1 through F4 keys, and muting one of them stops both its messages and its sound effects.
 You can also export all of the buffer contents to log files at any time. Log files are saved to the logs folder inside the game's AppData directory.
 
 Keyboard commands
@@ -450,6 +450,10 @@ Shift plus Left Bracket: Jumps to the first buffer category. Announces the categ
 Shift plus Right Bracket: Jumps to the last buffer category. Announces the category name, item count, and current item.
 Shift plus C: Copies the current buffer message to the clipboard.
 Shift plus M: Toggles mute or unmute on the focused buffer.
+F1: Toggles mute or unmute on the achievements buffer.
+F2: Toggles mute or unmute on the combos buffer.
+F3: Toggles mute or unmute on the events buffer.
+F4: Toggles mute or unmute on the ranks buffer.
 Shift plus Backslash: Exports all buffer items to log files in the logs folder.
 
 Forms and menus.

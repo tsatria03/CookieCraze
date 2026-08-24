@@ -439,9 +439,12 @@ if(key_pressed(KEY_J))
     else
         speak_buffer("You produce " + format_number(manulcookie) + " " + cookieWord + " per press.", "misc");
 }
-if(alt_is_down())
-{
+if(key_pressed(KEY_F1)) toggle_buffer_by_name("achievements");
+if(key_pressed(KEY_F2)) toggle_buffer_by_name("combos");
+if(key_pressed(KEY_F3)) toggle_buffer_by_name("events");
 if(key_pressed(KEY_F4))
+{
+if(alt_is_down())
 {
 ambpool.destroy_sound(ambslot);
 muspool.destroy_sound(mustrackslot);
@@ -450,6 +453,10 @@ speak_buffer("Exiting the game without saving.");
 if(exitsfx==false) wait(500);
 if(exitsfx==true) dlgplay("sounds/misc/exitgame.ogg");
 mainmenu();
+}
+else
+{
+toggle_buffer_by_name("ranks");
 }
 }
 if(key_repeating(KEY_ESCAPE))

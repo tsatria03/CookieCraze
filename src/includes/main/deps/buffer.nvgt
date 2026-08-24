@@ -47,6 +47,12 @@ int b = get_buffer_index(name);
 if (b <= -1) return false;
 return buffers[b].muted;
 }
+void toggle_buffer_by_name(string name)
+{
+int b = get_buffer_index(name);
+if (b <= -1) return;
+buffers[b].toggle_mute();
+}
 void create_buffer(string name)
 {
 if(get_buffer_index("all")<=-1)
