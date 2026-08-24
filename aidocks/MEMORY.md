@@ -29,6 +29,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 ## Feedback — how the dev wants you to work
 - [Confirm before implementing](feedback_confirm_before_implementing.md) — a design discussion or any `?` is a request for a plan, not a green light to edit; wait for explicit go-ahead.
 - [Ask one question at a time](feedback_ask_one_question_at_a_time.md) — surface ONE question per turn and wait; don't batch a numbered list.
+- [Ignore bang commands](feedback_ignore_bang_commands.md) — ignore the user's in-session `!` command runs and their output; act only on the user's typed prose unless they explicitly reference them.
 - [List modified files](feedback_list_modified_files.md) — end every editing turn with a bare-filename "Files changed:" list; then note whether a relaunch is needed.
 - [Don't run or build the game](feedback_dont_run_or_build_the_game.md) — never launch/compile (cycrz.py, tools.py, nvgt -c); edit and report, the dev runs and verifies.
 - [Verify code while fixing](feedback_verify_code_while_fixing.md) — re-locate by symbol not line number, confirm the finding is true, flag adjacent bugs.

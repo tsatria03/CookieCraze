@@ -1,3 +1,5 @@
+New in 6.5.
+Shifted several rank unlocks up by 10 to make room for the new higher or lower minigame at rank 50. The slot machine now unlocks at rank 60, the baking slots manager at rank 70, and the manual baking combo system at rank 80. If your rank is between an unlock's old and new requirement, that feature will be locked again until you reach its new rank, but nothing you have already unlocked or purchased is lost.
 New in 6.4.
 Added 15 quests for the higher or lower minigame across three tracks: games played, wins, and highest streak. Each track has 5 difficulty tiers, matching the pattern of every other quest category.
 Added 37 achievements for the higher or lower minigame across four tracks: games played, wins, losses, and highest streak. Each track climbs from your very first milestone up to extreme dedication, with the streak achievements topping out at a run of twenty correct guesses in a row.
