@@ -337,10 +337,12 @@ string convert_to_currency(double number, string currency_symbol = "$")
     if (dollars == 0)
         return cents + " cent" + (cents == 1 ? "" : "s");
     if (dollars >= 1000)
-        return currency_symbol + format_number(dollars);
-    string cents_str = "" + cents;
-    if (string_len(cents_str) == 1) cents_str = "0" + cents_str;
-    return currency_symbol + format_number(dollars) + "." + cents_str;
+        return format_number(dollars) + " dollars";
+    string dollarWord = (dollars == 1) ? "dollar" : "dollars";
+    if (cents == 0)
+        return format_number(dollars) + " " + dollarWord;
+    string centWord = (cents == 1) ? "cent" : "cents";
+    return format_number(dollars) + " " + dollarWord + " and " + cents + " " + centWord;
 }
 
 string resolve_sound(string raw)
