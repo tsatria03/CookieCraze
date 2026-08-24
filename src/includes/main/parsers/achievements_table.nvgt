@@ -15,6 +15,9 @@ class achievement_item
     string category;
     bool silent;
     bool hidden;
+    string reward_target;
+    string reward_amount;
+    string reward_message;
 }
 
 void parse_achievements(string filepath, achievement_item[]@ items, achievement_category[]@ categories)
@@ -42,7 +45,7 @@ void parse_achievements(string filepath, achievement_item[]@ items, achievement_
             categories.insert_last(cat);
             continue;
         }
-        string[] parts = parse_delimited_line(line, 8);
+        string[] parts = parse_delimited_line(line, 11);
         if (parts.length() < 9)
             continue;
         achievement_item item;
@@ -63,6 +66,12 @@ void parse_achievements(string filepath, achievement_item[]@ items, achievement_
         item.name = parts[6];
         item.description = parts[7];
         item.hint = parts[8];
+        if (parts.length() >= 12)
+        {
+            item.reward_target = parts[9];
+            item.reward_amount = parts[10];
+            item.reward_message = parts[11];
+        }
         bool isCoinAch = (item.stat == STAT_COINS_EARNED || item.stat == STAT_COINS_SPENT);
         string threshStr = isCoinAch ? convert_to_currency(item.threshold) : format_number(item.threshold);
         int ph = item.description.find("%threshold%");
@@ -158,14 +167,46 @@ void check_achievements(achievement_item[]@ achievements, dictionary@ unlocked)
     }
 }
 
+string grant_achievement_reward(achievement_item@ item)
+{
+    if (item.reward_target == "" || item.reward_amount == "") return "";
+    double amount = floor(eval_event_amount(item.reward_amount, rank));
+    if (amount <= 0) return "";
+    if (item.reward_target == "cookiespeed")
+    {
+        cookiespeed += amount;
+        clicktime -= amount;
+        if (clicktime < 50) clicktime = 50;
+        cookiespeed = floor(safe_cap(cookiespeed));
+    }
+    else
+        apply_amount_effect(item.reward_target, amount, 1, false);
+    string amtStr = (item.reward_target == "coins") ? convert_to_currency(amount) : format_number(amount);
+    string msg = item.reward_message;
+    int ph = msg.find("%amount%");
+    while (ph != -1) { msg = msg.substr(0, ph) + amtStr + msg.substr(ph + 8); ph = msg.find("%amount%"); }
+    return msg;
+}
+
 void show_achievement(achievement_item@ item)
 {
-    if (item.silent) return;
+    string rewardMsg = grant_achievement_reward(item);
+    if (item.silent)
+    {
+        if (rewardMsg != "")
+        {
+            if (bakemode == 1) speak_buffer(rewardMsg, "achievements");
+            else dlg_buffer(rewardMsg, "achievements");
+        }
+        return;
+    }
     if (!buffer_muted("achievements")) pool.play_stationary("sounds/misc/gameach" + random(1, 2) + ".ogg", false);
+    string full = "Achievement unlocked! " + item.name + ". " + item.description;
+    if (rewardMsg != "") full += " " + rewardMsg;
     if (bakemode == 1)
-        speak_buffer("Achievement unlocked! " + item.name + ". " + item.description, "achievements");
+        speak_buffer(full, "achievements");
     else
-        dlg_buffer("Achievement unlocked! " + item.name + ". " + item.description, "achievements");
+        dlg_buffer(full, "achievements");
 }
 
 int count_category_by_name(achievement_item[]@ achievements, string catName)
