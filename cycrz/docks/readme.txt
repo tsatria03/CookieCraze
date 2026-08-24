@@ -455,6 +455,7 @@ F2: Toggles mute or unmute on the combos buffer.
 F3: Toggles mute or unmute on the events buffer.
 F4: Toggles mute or unmute on the ranks buffer.
 Shift plus Backslash: Exports all buffer items to log files in the logs folder.
+All of the buffer keys in this section, including the F1 through F4 mute keys, also work inside every minigame.
 
 Forms and menus.
 

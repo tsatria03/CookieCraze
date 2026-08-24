@@ -840,6 +840,10 @@ void set_save_slot(int slot)
 void minigame_input(string game)
 {
     buffer_check_keys();
+    if (key_pressed(KEY_F1)) toggle_buffer_by_name("achievements");
+    if (key_pressed(KEY_F2)) toggle_buffer_by_name("combos");
+    if (key_pressed(KEY_F3)) toggle_buffer_by_name("events");
+    if (key_pressed(KEY_F4) && !alt_is_down()) toggle_buffer_by_name("ranks");
     if (key_pressed(KEY_C)) speak_buffer("You have " + format_number(cookies) + " cookies.");
     if (key_pressed(KEY_A)) speak_buffer("You have " + format_number(autocookie) + " auto cookies.");
     if (key_pressed(KEY_S)) speak_buffer("You have " + format_number(cookiespeed) + " auto cookie speeds.");
