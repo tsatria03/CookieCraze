@@ -149,7 +149,19 @@ The higher you set the target relative to what your dice can realistically roll,
 
 You can roll manually, or enable automatic rolling in the settings so the result appears after a short random delay. When disabled, the result is held until you press enter or space.
 
-Slot machine. Unlocked at rank 50.
+Higher or lower. Unlocked at rank 50.
+Intermediate. Simple to guess but tense to play, since knowing when to stop matters as much as guessing right.
+Bet on whether the next card will be higher or lower, then build a streak and bank your winnings before a wrong guess breaks it.
+
+Before playing, choose an item to bet and enter your bet amount. When betting money, you can enter the amount as a dollar value, for example type 1 to bet $1.00 or 0.50 to bet 50 cents. All other items are entered as whole numbers. Deal to draw the first card, then guess whether the next card will be higher or lower than it.
+
+Each correct guess extends your streak and grows your pot by a rising multiplier. After any correct guess you can bank your earnings to keep the pot and end the round, or risk it all on another guess. A wrong guess loses your bet. A tie, when the next card matches the current one, follows the configurable tie rule, which by default holds your streak and draws again. Whether the ace counts as the highest or the lowest card is also configurable.
+
+The deck, starting multiplier, streak growth, tie rule, ace ranking, sounds, messages, and bet limits are all configurable in highlow.table. A configurable confirmation prompt can be set to appear when your bet reaches a certain threshold.
+
+You can reveal cards manually, or enable automatic card revealing in the settings so each card appears after a short random delay. When disabled, each result is held until you press enter or space.
+
+Slot machine. Unlocked at rank 60.
 Intermediate. Multiple reels, payout combinations, and bet management make it more complex than early minigames.
 Spin the reels and match symbols to win multiples of your bet.
 
@@ -160,7 +172,7 @@ A configurable confirmation prompt can be set to appear when your bet reaches a 
 
 Rank ups and achievement unlocks are checked and can fire while you are playing any of the minigames mentioned above.
 
-Baking slots manager. Unlocked at rank 60.
+Baking slots manager. Unlocked at rank 70.
 Advanced. Requires understanding the entire baking system deeply enough to configure and automate it effectively.
 Manage and configure your baking slots to balance automated and manual cookie production.
 
@@ -169,10 +181,10 @@ Auto slots bake cookies passively without any input, scaling with your auto cook
 Manual slots multiply the output of each bake press, scaling with your manual cookie stat.
 
 You can purchase additional slots of either type, and toggle individual auto slots on or off to fine-tune how much of your production is automated versus manual.
-Both submenus are locked behind a rank requirement, defaulting to rank 60.
+Both submenus are locked behind a rank requirement, defaulting to rank 70.
 The slot manager menu itself is always accessible so you can see what is coming, but you cannot enter either submenu until you reach the required rank.
 
-Combos. Unlocked at rank 70.
+Combos. Unlocked at rank 80.
 Advanced. Demands consistent timing, significant progression in manual upgrades, and understanding of multiplier stacking to use effectively. Build a combo by pressing the bake button multiple times in quick succession. The combo does not activate immediately — you must reach a minimum number of consecutive presses within the time window before it kicks in. Once activated, a sound plays and a message announces that the combo has started. From that point, each press within the window increments your combo count and applies a multiplier to your manual cookie output. Reaching a combo tier plays a sound and announces the new multiplier. Missing the window at any point breaks your combo, plays a break sound, and resets everything back to zero.
 
 The combo multiplier applies to both your base manual cookies and your manual slots, so higher slot counts make each combo tier even more rewarding.
@@ -958,6 +970,86 @@ The text spoken after the roll. Supports the following placeholders.
 %target% is replaced with the target score the player set.
 %margin% is replaced with how much the roll exceeded or fell short of the target.
 %amount% is replaced with the amount won.
+%item% is replaced with the name of the item bet, for example cookies or auto cookies.
+
+highlow.table
+
+Location: data/config/tables/highlow.table
+
+Defines all higher or lower settings including the deck, streak multipliers, tie handling, ace ranking, bet limits, sounds, and messages.
+
+min_bet
+The minimum amount of any item a player must bet per round. Set to 1 to allow any positive bet.
+
+max_bet
+The maximum amount of any item a player can bet per round. Set to 0 to allow unlimited bets.
+
+confirm_threshold
+Format: confirm_threshold=amount:use_percent
+
+Triggers a yes or no confirmation prompt when the bet meets or exceeds the threshold. Works the same way as in jacks.table and slots.table.
+
+ace_high
+Whether the ace is the highest card in the deck. Set to true for ace high, where the ace beats the king, or false for ace low, where the ace ranks below the two.
+
+tie_rule
+What happens when the next card matches the current one. Set to push to redraw with your streak intact, win to count the tie as a correct guess, or lose to count it as a wrong guess.
+
+starting_multiplier
+The pot multiplier after your first correct guess. For example 1.5 pays back one and a half times your bet at a streak of one.
+
+streak_multiplier_growth
+How much the multiplier grows with each additional correct guess. For example 0.5 raises the multiplier by half for each further streak.
+
+max_streak
+The highest streak allowed before the round is automatically banked for you. Set to 0 for no limit.
+
+Deck section.
+Header: [deck]
+Format: name:value
+
+Defines the cards in the deck and their values. Each line is one card, listed from lowest to highest.
+
+name
+The spoken name of the card, for example two, jack, or ace.
+
+value
+The numeric value used to compare cards. Higher values beat lower ones. The ace value is overridden to the lowest when ace_high is set to false.
+
+draw_sound
+Sound to play when a card is drawn. Relative to sounds/minigames/. Supports random range syntax.
+
+correct_sound
+Sound to play after a correct guess. Relative to sounds/minigames/.
+
+wrong_sound
+Sound to play after a wrong guess. Relative to sounds/minigames/.
+
+streak_sound
+Optional sound to play once you reach a longer streak. Relative to sounds/minigames/. Leave blank to disable.
+
+win_sound
+Sound to play when you bank your earnings. Relative to sounds/minigames/.
+
+start_message
+The text spoken when the first card is drawn. Supports the following placeholders.
+
+correct_message
+The text spoken after a correct guess. Supports the following placeholders.
+
+wrong_message
+The text spoken after a wrong guess. Supports the following placeholders.
+
+tie_message
+The text spoken on a tie. Supports the following placeholders.
+
+win_message
+The text spoken when you bank your earnings. Supports the following placeholders.
+
+%card% is replaced with the name of the card just drawn.
+%streak% is replaced with your current streak count.
+%payout% is replaced with your current pot, or the amount banked when you cash out.
+%bet% is replaced with the amount you bet.
 %item% is replaced with the name of the item bet, for example cookies or auto cookies.
 
 jacks.table

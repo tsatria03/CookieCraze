@@ -36,7 +36,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Stage commits before big changes](feedback_stage_commits_before_big_changes.md) — flag a commit break point before a risky stage so safe pieces land first.
 - [CLAUDE.md length limit](feedback_claudemd_length.md) — keep CLAUDE.md a dispatcher under 40,000 chars; move detail into memory files.
 - [Docks last](feedback_docks_last.md) — in any multi-section build plan, reserve the final section for dock updates (readme + changelog + version); code/config first, docs last.
-- [Changelog rules](feedback_changelog_rules.md) — docks/changelog.txt: player-facing prose, reverse-chronological, a record not a manual; bump version.txt with each block.
+- [Changelog rules](feedback_changelog_rules.md) — docks/changelog.txt: player-facing prose, reverse-chronological, a record not a manual; bump version.txt with each block; cap 10 entries per minor block, 20 per major.
 - [Dock line length 1024](feedback_dock_line_length_1024.md) — keep every line in cycrz/docks/ at or under 1024 chars; the screen reader splits longer lines.
 - [One-sentence game messages](feedback_one_sentence_game_messages.md) — in-game spoken feedback is exactly one sentence; no trailing advice.
 - [Menus say canceled](feedback_menus_say_canceled.md) — every menu/input escape/Back/No path speaks "canceled".
