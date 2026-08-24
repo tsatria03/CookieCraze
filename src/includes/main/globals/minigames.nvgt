@@ -1137,6 +1137,7 @@ void highlowgame()
             {
                 curName = nextName;
                 curVal = nextVal;
+                pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.tie_sound), false);
                 string tmsg = highlow_fill(highlowConfig.tie_message, "%card%", nextName);
                 tmsg = highlow_fill(tmsg, "%streak%", string(streak));
                 if (highlowmode) speak_buffer(tmsg);

@@ -1059,6 +1059,9 @@ Sound to play after a correct guess. Relative to sounds/minigames/.
 wrong_sound
 Sound to play after a wrong guess. Relative to sounds/minigames/.
 
+tie_sound
+Sound to play on a tie, when the next card matches the current one. Relative to sounds/minigames/. Supports random range syntax.
+
 streak_sound
 Optional sound to play once you reach a longer streak. Relative to sounds/minigames/. Leave blank to disable.
 

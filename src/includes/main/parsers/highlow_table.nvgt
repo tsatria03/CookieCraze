@@ -19,6 +19,7 @@ class highlow_config
     string draw_sound = "higher_or_lower/player_draw(1,2).ogg";
     string correct_sound = "higher_or_lower/correct.ogg";
     string wrong_sound = "higher_or_lower/wrong.ogg";
+    string tie_sound = "higher_or_lower/tie.ogg";
     string streak_sound = "higher_or_lower/streak.ogg";
     string win_sound = "higher_or_lower/win.ogg";
     string start_message = "You drew the %card%. Will the next card be higher or lower?";
@@ -74,6 +75,7 @@ void parse_highlow_table(string filepath)
             else if (key == "draw_sound") highlowConfig.draw_sound = val;
             else if (key == "correct_sound") highlowConfig.correct_sound = val;
             else if (key == "wrong_sound") highlowConfig.wrong_sound = val;
+            else if (key == "tie_sound") highlowConfig.tie_sound = val;
             else if (key == "streak_sound") highlowConfig.streak_sound = val;
             else if (key == "win_sound") highlowConfig.win_sound = val;
             else if (key == "start_message") highlowConfig.start_message = val;

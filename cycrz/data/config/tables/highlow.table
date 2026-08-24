@@ -33,6 +33,7 @@ ace:14
 draw_sound=higher_or_lower/draw(1,2).ogg
 correct_sound=higher_or_lower/correct.ogg
 wrong_sound=higher_or_lower/incorrect.ogg
+tie_sound=higher_or_lower/tie.ogg
 streak_sound=higher_or_lower/streak.ogg
 win_sound=higher_or_lower/win.ogg
 
