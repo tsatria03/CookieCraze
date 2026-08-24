@@ -21,7 +21,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Minigame build guide](project_minigame_build_guide.md) — repeatable steps to add a new minigame: blueprint first, plan sections, code one section per turn and wait for commit, docks last; full file/function wiring map.
 
 ## Ideas / backlog
-- [Feature ideas](project_feature_ideas.md) — 6.4+ wish list (offline progress, golden-cookie bonus, daily streak, auto-buyer, boosts shop, achievement rewards, QoL) + a detailed spec for a 6th minigame, higher or lower. None built yet.
+- [Feature ideas](project_feature_ideas.md) — 6.4+ wish list (offline progress, golden-cookie bonus, daily streak, auto-buyer, boosts shop, achievement rewards, QoL) + future-minigame candidates (roulette with multi-bet, mines, video poker, keno, audio Simon). Higher or lower + number-format shipped in 6.4; rest unbuilt.
 
 ## NVGT / AngelScript gotchas — these cause compile failures (game won't launch)
 - [AngelScript braceless if](project_angelscript_braceless_if.md) — a braceless if/else governs one statement; a second orphans the else → compile error.
@@ -41,6 +41,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [CLAUDE.md length limit](feedback_claudemd_length.md) — keep CLAUDE.md a dispatcher under 40,000 chars; move detail into memory files.
 - [Docks last](feedback_docks_last.md) — in any multi-section build plan, reserve the final section for dock updates (readme + changelog + version); code/config first, docs last.
 - [Changelog rules](feedback_changelog_rules.md) — docks/changelog.txt: player-facing prose, reverse-chronological, a record not a manual; bump version.txt with each block; cap 10 entries per minor block, 20 per major.
+- [Todo list format](feedback_todo_list_format.md) — docks/todo_list.txt: `**Finished. …` for done, `****Unfinished. …` for pending; plain-text sentences, no markdown/numbers; unfinished section on top.
 - [Dock line length 1024](feedback_dock_line_length_1024.md) — keep every line in cycrz/docks/ at or under 1024 chars; the screen reader splits longer lines.
 - [One-sentence game messages](feedback_one_sentence_game_messages.md) — in-game spoken feedback is exactly one sentence; no trailing advice.
 - [Menus say canceled](feedback_menus_say_canceled.md) — every menu/input escape/Back/No path speaks "canceled".

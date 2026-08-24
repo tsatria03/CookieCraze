@@ -15,6 +15,7 @@ class highlow_config
     double starting_multiplier = 1.5;
     double streak_multiplier_growth = 0.5;
     int max_streak = 0;
+    int streak_sound_threshold = 3;
     string draw_sound = "higher_or_lower/player_draw(1,2).ogg";
     string correct_sound = "higher_or_lower/correct.ogg";
     string wrong_sound = "higher_or_lower/wrong.ogg";
@@ -68,6 +69,7 @@ void parse_highlow_table(string filepath)
             else if (key == "starting_multiplier") highlowConfig.starting_multiplier = string_to_number(val);
             else if (key == "streak_multiplier_growth") highlowConfig.streak_multiplier_growth = string_to_number(val);
             else if (key == "max_streak") highlowConfig.max_streak = max(0, string_to_int(val));
+            else if (key == "streak_sound_threshold") highlowConfig.streak_sound_threshold = max(1, string_to_int(val));
             else if (key == "draw_sound") highlowConfig.draw_sound = val;
             else if (key == "correct_sound") highlowConfig.correct_sound = val;
             else if (key == "wrong_sound") highlowConfig.wrong_sound = val;

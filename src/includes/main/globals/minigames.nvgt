@@ -1146,7 +1146,7 @@ void highlowgame()
                 curName = nextName;
                 curVal = nextVal;
                 pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.correct_sound), false);
-                if (streak >= 3 && highlowConfig.streak_sound != "") pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.streak_sound), false);
+                if (streak >= highlowConfig.streak_sound_threshold && highlowConfig.streak_sound != "") pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.streak_sound), false);
                 double pot = floor(safe_cap(betAmount * currentMultiplier));
                 string potStr = (selectedBet == 1) ? convert_to_currency(pot) : format_number(pot);
                 bool forced = (highlowConfig.max_streak > 0 && streak >= highlowConfig.max_streak);

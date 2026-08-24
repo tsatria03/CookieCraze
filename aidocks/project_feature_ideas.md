@@ -1,6 +1,6 @@
 ---
 name: project_feature_ideas
-description: "Backlog of candidate features for 6.4+ (offline progress, golden-cookie bonus, a 6th minigame — higher or lower, auto-buyer, boosts shop, achievement rewards, QoL). Ideas only, none built yet."
+description: "Backlog of candidate features for 6.4+ (offline progress, golden-cookie bonus, new minigames incl. roulette/mines/video poker, auto-buyer, boosts shop, achievement rewards, QoL). Higher or lower and the number-format setting shipped in 6.4; the rest are unbuilt ideas."
 metadata:
   node_type: memory
   type: project
@@ -8,7 +8,7 @@ metadata:
 
 # Feature ideas backlog (6.4+)
 
-Brainstormed 2026-08-23, right after 6.3 shipped. **None of these are built** — this is a wish list to pull from. All should follow the data-driven, modder-tunable ethos ([[project_data_driven_config]]) and the audio-only UX. See [[project_game_vision]] for the systems these extend.
+Brainstormed 2026-08-23, right after 6.3 shipped. **Most are unbuilt** — this is a wish list to pull from — but **higher or lower** and the **number-format setting** have since shipped in 6.4. All should follow the data-driven, modder-tunable ethos ([[project_data_driven_config]]) and the audio-only UX. See [[project_game_vision]] for the systems these extend, and [[project_minigame_build_guide]] for how a new minigame gets built.
 
 **Suggested first-release trio (cohesive, hits idle + meta + active play):** offline progress (headline) → daily streak (cheap, rides its timestamp) → golden-cookie bonus (the "wow").
 
@@ -20,9 +20,28 @@ Brainstormed 2026-08-23, right after 6.3 shipped. **None of these are built** �
 
 ## New content
 
-- **6th minigame: higher or lower** — detailed spec below. Also viable: memory/Simon audio-sequence, wheel of fortune. *Medium-high.*
+- **6th minigame: higher or lower** — ✅ **SHIPPED in 6.4** (unlocks at rank 50). Detailed spec + build record below; more minigame ideas in the candidates section that follows.
 - **Auto-buyer automation** — late-game unlock that auto-purchases the cheapest affordable upgrade on a timer (the classic idle "manager"); extends automation from baking into spending. Rank-gated, toggleable. *Medium.*
 - **Temporary boosts shop** — spend cookies/coins on timed power-ups (2x production 60s, auto-bake burst, combo-window extension); adds active decisions to the idle loop; reuses store/config machinery. *Low-medium.*
+
+## Future minigame candidates (7th minigame and beyond)
+
+Brainstormed 2026-08-24 after higher or lower shipped. **The bar:** reuse the wagering scaffold (bet selector, reveal toggle, confirmation prompt, `safe_cap` payouts, stats/achievements/quests, config table — see [[project_minigame_build_guide]]) but add **one genuinely new decision**, so it feels distinct rather than a reskin (the way higher or lower added the streak/bank tension). Ranked by fit:
+
+- **Roulette** ⭐⭐ — reuses the bet selector + spin/reveal (slots) + a payout table keyed by bet type. **The standout new mechanic: MULTIPLE simultaneous bets on a single spin** (some on red, some on a single number, some on even, etc.). *Every current minigame is one wager per round*, so multi-betting is roulette's real justification, not a reskin. Also brings bet-type-driven odds (single number pays big, red/black/even/odd pays small) — a discrete cousin of dice's target-setting.
+  - **Decided (dev, 2026-08-24): multi-bet is retained, but constrained to a SINGLE item per round.** You pick one currency at the start of the round, then stack multiple bets — all in that same item — on different outcomes; you cannot mix items across bets in one spin. This keeps the multi-bet hook while collapsing resolution to one currency bucket (no per-item payout splitting or five-way balance checks — much simpler than per-bet currency).
+  - Betting flow: pick item → place a bet (type + number/amount) → add to a running placed-bets list → stack more → **Spin** resolves all placed bets against the winning pocket and reports one net result in the chosen item.
+  - Bet types (audio-friendly, menu-selectable): red/black, even/odd, low/high (1:1); dozen/column (2:1); straight single number (35:1). Consider a "custom number set" bet with auto-computed `floor(36/count):1` odds as an audio-native inside-bet generalization. Wheel defaults to European (37 pockets, single zero); `pocket_count` + red/black sets + payout table in `roulette.table`.
+  - Still needs a new betting UI (the placed-bets list + add/remove/clear + spin) — the one part that genuinely extends the shared betting shell rather than filling in "the middle." *Medium-high.*
+- **Mines / cash-out grid** ⭐ — reuses higher or lower's streak + bank-or-risk + `safe_cap`. Reveal safe tiles one at a time; each safe pick grows the pot, one mine busts the round, cash out anytime. New mechanic: spatial safe/unsafe picking. Reads great in audio ("tile three, safe, pot is now X"). *Medium.*
+- **Video poker** — reuses the card deck (blackjack / higher or lower) + payout-by-rank tiers (dice). New mechanic: **hold and redraw** — choose which of five dealt cards to keep before the second draw; payout by final hand rank. *Medium-high.*
+- **Keno** — reuses lottery's weighted draw + slots' match-count payout. New mechanic: **pick your numbers** before the draw; payout scales with how many you match. *Medium.*
+- **Audio Simon / memory** ⭐ (signature) — reuses higher or lower's streak payout. New mechanic: remember and repeat a growing sound sequence. The one idea where audio-only is an **advantage**, not a constraint — a sighted and a blind player play it identically. *Medium.*
+- **Wheel of fortune** — reuses slots spin + lottery weighted prizes; a single weighted spin lands on a prize/multiplier segment. Thin on new mechanics unless paired with a risk choice. *Low-medium.*
+- **Craps** — reuses the dice roller; adds a pass / don't-pass rule layer over rolls. Rules-heavy to convey in audio. *Medium.*
+- **Skip — War / high card:** it's higher or lower with the streak removed. Too redundant to justify a slot.
+
+**Unlock-rank note:** the minigames panel is alphabetized, so any new game's unlock rank must fit its alphabetical position and will shift later games up 10 ranks (see [[project_minigame_build_guide]], Section 5).
 
 ## Meta / progression
 
@@ -30,7 +49,7 @@ Brainstormed 2026-08-23, right after 6.3 shipped. **None of these are built** �
 
 ## Quality of life
 
-- **Number-format setting** — `format_number` already has a `scientific` flag; expose a preference (suffix / scientific / raw). *Low.*
+- **Number-format setting** — ✅ **SHIPPED in 6.4** (Raw / Suffix short / Suffix long / Scientific, in game settings).
 - **Session summary on exit** — "This session: baked X, earned Y, ranked up Z" from stats already tracked. *Low.*
 
 ## Higher or lower — detailed design

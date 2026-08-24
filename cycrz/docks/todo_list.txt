@@ -1,7 +1,14 @@
 ####These are the things that need to be finished for future versions of the game.
 
+****Unfinished. Add a roulette minigame where you bet a single item on one or more outcomes at once, such as a color, even or odd, or a single number, then spin the wheel to see which of your bets pay out.
+****Unfinished. Add an auto-buyer that automatically purchases the cheapest upgrade you can afford on a timer, extending automation from baking into spending. Unlocked at a late rank and toggleable in the settings.
+****Unfinished. Add a temporary boosts shop where you spend cookies or coins on timed power-ups, such as double production for 60 seconds, an auto-bake burst, or an extended combo window.
+****Unfinished. Make some achievements grant a small permanent bonus when unlocked, such as a production percentage or prestige points, defined through a reward field in the achievements config.
+****Unfinished. Add a session summary shown when you exit that reports what you did this session, such as cookies baked, money earned, and ranks gained, built from stats the game already tracks.
+
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Add a higher or lower card minigame where you bet on whether the next card will be higher or lower, build a streak with a growing multiplier, and bank your earnings or risk them on another guess.
 **Finished. Add a way to quikly mute frequently used buffers in the game settings, or in the game itself.
 **Ffinished. Replace raw coins with a realistic currency system using dollar and cent display.
 **Finished. Add a configurable bet confirmation prompt to the slot machine and blackjack minigames. When a bet reaches or exceeds a set threshold, a yes or no menu appears before the bet is committed. Threshold is set in slots.table and jacks.table, defaulting to 1000. Set to 0 to disable.

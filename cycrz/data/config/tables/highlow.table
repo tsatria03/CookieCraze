@@ -8,8 +8,7 @@ tie_rule=push
 starting_multiplier=1.5
 streak_multiplier_growth=0.5
 max_streak=0
-
-; Deck
+streak_sound_threshold=3
 
 [deck]
 
@@ -31,9 +30,9 @@ ace:14
 
 ; Sounds
 
-draw_sound=higher_or_lower/player_draw(1,2).ogg
+draw_sound=higher_or_lower/draw(1,2).ogg
 correct_sound=higher_or_lower/correct.ogg
-wrong_sound=higher_or_lower/wrong.ogg
+wrong_sound=higher_or_lower/incorrect.ogg
 streak_sound=higher_or_lower/streak.ogg
 win_sound=higher_or_lower/win.ogg
 

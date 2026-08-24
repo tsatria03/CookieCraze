@@ -1035,6 +1035,9 @@ How much the multiplier grows with each additional correct guess. For example 0.
 max_streak
 The highest streak allowed before the round is automatically banked for you. Set to 0 for no limit.
 
+streak_sound_threshold
+How many correct guesses in a row you must reach before the streak_sound begins playing on top of the correct sound. For example 3 starts the streak sound at a streak of three. Minimum 1, which plays it from the very first correct guess.
+
 Deck section.
 Header: [deck]
 Format: name:value
