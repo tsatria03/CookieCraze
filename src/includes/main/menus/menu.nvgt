@@ -2272,12 +2272,13 @@ int difficultyRankModifierSlider = form.create_slider("Difficulty rank Modifier.
 int autoChanceSlider = form.create_slider("Auto-Baking Event chance.", 100 - evchanse, 0, 100, "percent", 1);
 int manualChanceSlider = form.create_slider("Manual-Baking Event chance.", 100 - evchanse2, 0, 100, "percent", 1);
 int sellPriceSlider = form.create_slider("Cookie sell price.", cookieSellPrice, 1, 100, "cents", 1);
-int numberFormatList = form.create_list("&Number format", 4);
+int numberFormatList = form.create_list("Number format", 4);
 form.add_list_item(numberFormatList, "Raw. Example, 5,230.");
 form.add_list_item(numberFormatList, "Suffix short. Example, 5.23 K.");
 form.add_list_item(numberFormatList, "Suffix long. Example, 5.23 million.");
 form.add_list_item(numberFormatList, "Scientific. Example, 5.23 e plus 3.");
 form.set_list_position(numberFormatList, numberFormatMode);
+int restsets = form.create_button("&reset settings");
 int savesets = form.create_button("&save settings", true);
 int cansets = form.create_button("&cancel");
 form.focus(logoSFX);
@@ -2310,6 +2311,27 @@ jackmode = form.is_checked(jackautodraw);
 lotterymode = form.is_checked(lotteryautoscratch);
 flipmode = form.is_checked(flipautoflip);
 dicemode = form.is_checked(diceautoroll);
+        if (form.is_pressed(restsets))
+        {
+setupmenu(false);
+m.add_item("Yes", "yes");
+m.add_item("No", "no");
+m.intro_text = "Are you sure you want to reset your game settings to their defaults? This action cannot be undone.";
+int resmres = m.run();
+string rescfm = m.get_item_id(resmres);
+if (resmres == -1 || rescfm == "no")
+{
+speak("canceled");
+gamsetsmenu();
+}
+if (rescfm == "yes")
+{
+reset_game_settings();
+dlgmessage_return("Game settings reset.");
+if (ingame) { form.reset(); clickergame(); }
+else mainmenu();
+}
+        }
         if (form.is_pressed(savesets))
         {
 writepreffs();
@@ -2357,6 +2379,7 @@ int gameAmbienceVolumeSlider = form.create_slider("game ambience volume, ", (amb
 int gameMusicVolumeSlider = form.create_slider("game music volume, ", (musvolume + 50) * 2, 0, 100, "percent", 1);
 int storeAmbienceVolumeSlider = form.create_slider("store ambience volume, ", (storambvolume + 50) * 2, 0, 100, "percent", 1);
 int storeMusicVolumeSlider = form.create_slider("store music volume, ", (stormusvolume + 50) * 2, 0, 100, "percent", 1);
+int restsets = form.create_button("&reset settings");
 int savesets = form.create_button("&save settings", true);
 int cansets = form.create_button("&cancel");
 form.focus(amblist);
@@ -2385,6 +2408,27 @@ if(ingame==true) musicIndex = form.get_list_position(musslist);
             mustype = musOptions[musicIndex];
             muspool.destroy_sound(mustrackslot);
             mustrackslot = muspool.play_stationary_extended("sounds/ambience/"+mustype + ".ogg", true, 0, 0, musvolume, muspitch, false);
+        }
+        if (form.is_pressed(restsets))
+        {
+setupmenu(false);
+m.add_item("Yes", "yes");
+m.add_item("No", "no");
+m.intro_text = "Are you sure you want to reset your sound settings to their defaults? This action cannot be undone.";
+int resmres = m.run();
+string rescfm = m.get_item_id(resmres);
+if (resmres == -1 || rescfm == "no")
+{
+speak("canceled");
+soundsetsmenu();
+}
+if (rescfm == "yes")
+{
+reset_sound_settings();
+dlgmessage_return("Sound settings reset.");
+if (ingame) { form.reset(); clickergame(); }
+else mainmenu();
+}
         }
         if (form.is_pressed(savesets))
         {
@@ -2433,6 +2477,7 @@ else
 {
         form.set_list_position(chargender, playergender);
     }
+int restsets = form.create_button("&reset settings");
 int savesets = form.create_button("&save settings", true);
 int cansets = form.create_button("&cancel");
 form.focus(charname);
@@ -2481,6 +2526,26 @@ playername2=fn2;
             usersetsmenu();
 }
 }
+        if (form.is_pressed(restsets))
+        {
+setupmenu(false);
+m.add_item("Yes", "yes");
+m.add_item("No", "no");
+m.intro_text = "Are you sure you want to reset your user settings? This will restart the game and take you back to profile setup. This action cannot be undone.";
+int resmres = m.run();
+string rescfm = m.get_item_id(resmres);
+if (resmres == -1 || rescfm == "no")
+{
+speak("canceled");
+usersetsmenu();
+}
+if (rescfm == "yes")
+{
+if (file_exists(APPDATA_DIR + "preffs/usersets.crz")) file_delete(APPDATA_DIR + "preffs/usersets.crz");
+speak("restarting");
+restart("cycrz.exe");
+}
+        }
         if (form.is_pressed(savesets))
         {
             writepreffs3();

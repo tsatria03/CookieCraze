@@ -483,6 +483,50 @@ for (uint i = 0; i < buffers.length(); i++)
         buffers[i].muted = st.read_bool(key);
 }
 }
+void reset_game_settings()
+{
+bakesfx=true;
+exitsfx=true;
+introsfx=true;
+logosfx=true;
+savesfx=true;
+playervents=true;
+playervents2=true;
+flipmode=true;
+jackmode=true;
+lotterymode=true;
+dicemode=true;
+slotmode=true;
+orderedSyms=true;
+show_locked_shops=true;
+numberFormatMode=0;
+slotDistribution=false;
+manualSlotDistribution=false;
+automationMultiplier=1.01;
+slotMultiplier=1.01;
+manualSlotMultiplier=1.01;
+cookiemod=5;
+difmod=10;
+cookieSellPrice=50;
+evchanse=50;
+evchanse2=50;
+if (file_exists(APPDATA_DIR + "preffs/gamesets.crz")) file_delete(APPDATA_DIR + "preffs/gamesets.crz");
+writepreffs();
+}
+void reset_sound_settings()
+{
+menumusvolume=0;
+ambvolume=0;
+musvolume=0;
+storambvolume=0;
+stormusvolume=0;
+ambienceIndex=0;
+musicIndex=0;
+ambtype="room1";
+mustype="music1";
+if (file_exists(APPDATA_DIR + "preffs/soundsets.crz")) file_delete(APPDATA_DIR + "preffs/soundsets.crz");
+writepreffs2();
+}
 void writepreffs()
 {
 st.add("bakesfx",bakesfx);
