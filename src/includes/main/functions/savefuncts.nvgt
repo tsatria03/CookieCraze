@@ -475,13 +475,6 @@ if(st.d.exists("evchanse2"))
 {
 evchanse2=st.read_int("evchanse2");
 }
-for (uint i = 0; i < buffers.length(); i++)
-{
-    if (buffers[i].name == "all" || buffers[i].name == "alerts" || buffers[i].name == "critical") continue;
-    string key = "buffer_muted_" + buffers[i].name;
-    if (st.d.exists(key))
-        buffers[i].muted = st.read_bool(key);
-}
 }
 void reset_game_settings()
 {
@@ -554,11 +547,6 @@ st.add("cookiemod",cookiemod);
 st.add("cookieSellPrice",cookieSellPrice);
 st.add("evchanse",evchanse);
 st.add("evchanse2",evchanse2);
-for (uint i = 0; i < buffers.length(); i++)
-{
-    if (buffers[i].name == "all" || buffers[i].name == "alerts" || buffers[i].name == "critical") continue;
-    st.add("buffer_muted_" + buffers[i].name, buffers[i].muted);
-}
 st.save();
 }
 void readpreffs2()
@@ -633,6 +621,13 @@ if(st3.d.exists("playername2"))
 {
 playername2=st3.read_string("playername2");
 }
+for (uint i = 0; i < buffers.length(); i++)
+{
+    if (buffers[i].name == "all" || buffers[i].name == "alerts" || buffers[i].name == "critical") continue;
+    string key = "buffer_muted_" + buffers[i].name;
+    if (st3.d.exists(key))
+        buffers[i].muted = st3.read_bool(key);
+}
 }
 void writepreffs3()
 {
@@ -640,5 +635,10 @@ st3.add("playerprofed",playerprofed);
 st3.add("playergender",playergender);
 st3.add("playername",playername);
 st3.add("playername2",playername2);
+for (uint i = 0; i < buffers.length(); i++)
+{
+    if (buffers[i].name == "all" || buffers[i].name == "alerts" || buffers[i].name == "critical") continue;
+    st3.add("buffer_muted_" + buffers[i].name, buffers[i].muted);
+}
 st3.save();
 }

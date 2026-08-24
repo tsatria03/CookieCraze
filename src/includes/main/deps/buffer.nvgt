@@ -29,7 +29,7 @@ else
 muted = !muted;
 spool.play_stationary(muted ? "sounds/buffer/off.ogg" : "sounds/buffer/on.ogg", false);
 speak(name + " " + (muted ? "muted" : "unmuted"), true);
-writepreffs();
+writepreffs3();
 }
 }
 }
