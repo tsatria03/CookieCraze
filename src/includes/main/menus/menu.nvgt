@@ -250,6 +250,7 @@ int jack=form.create_button("Play &blackjack");
 int flip=form.create_button("Play &cookie flipper");
 int lottery=form.create_button("Play cookie &lottery");
 int dice=form.create_button("Play &dice roller");
+int highlow=form.create_button("Play &higher or lower");
 int slots=form.create_button("play &slot machine");
 form.focus(jack);
 while(true)
@@ -321,12 +322,27 @@ gameslot=pool.play_stationary("sounds/misc/gamelaunch.ogg", false);
 dicegame();
 }
 }
-if(form.is_pressed(slots))
+if(form.is_pressed(highlow))
 {
 if(rank<50)
 {
 gameslot=pool.play_stationary("sounds/misc/gamefail.ogg", false);
 dlg_buffer("Sorry "+playername+". This mini game is locked. Please be at rank 50 or higher to play this.", "critical");
+form.reset();
+mingamsmenu();
+}
+else
+{
+gameslot=pool.play_stationary("sounds/misc/gamelaunch.ogg", false);
+highlowgame();
+}
+}
+if(form.is_pressed(slots))
+{
+if(rank<60)
+{
+gameslot=pool.play_stationary("sounds/misc/gamefail.ogg", false);
+dlg_buffer("Sorry "+playername+". This mini game is locked. Please be at rank 60 or higher to play this.", "critical");
 form.reset();
 mingamsmenu();
 }

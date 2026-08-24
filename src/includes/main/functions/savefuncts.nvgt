@@ -501,6 +501,7 @@ flipmode=true;
 jackmode=true;
 lotterymode=true;
 dicemode=true;
+highlowmode=true;
 slotmode=true;
 orderedSyms=true;
 show_locked_shops=true;

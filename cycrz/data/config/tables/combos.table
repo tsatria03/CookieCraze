@@ -2,7 +2,7 @@
 
 ; Required header — removing or renaming this will break the file.
 
-enabled=true:70
+enabled=true:80
 
 combo_window=2000,4000
 start_count=25

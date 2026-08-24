@@ -880,6 +880,7 @@ void minigame_input(string game)
             else if (game == "blackjack") jackgame();
             else if (game == "lottery")   lotterygame();
             else if (game == "dice")      dicegame();
+            else if (game == "highlow")   highlowgame();
         }
         if (key_pressed(KEY_L))
         {
@@ -898,6 +899,7 @@ void minigame_input(string game)
             else if (game == "blackjack") jackgame();
             else if (game == "lottery")   lotterygame();
             else if (game == "dice")      dicegame();
+            else if (game == "highlow")   highlowgame();
         }
     }
 }

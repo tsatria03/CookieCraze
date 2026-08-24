@@ -25,9 +25,10 @@ coins:100*rank:100*rank:none:Congratulations! You've successfully made it to ran
 20:coins:200*rank:200*rank:flipper:Congratulations %name%! You've successfully unlocked the cookie flipper minigame! You've also earned an extra %amount% for your hard work. Keep it up!
 30:coins:200*rank:200*rank:lottery:Congratulations %name%! You've successfully unlocked the cookie lottery minigame! You can now buy scratch tickets and try your luck. You've also earned an extra %amount% for your hard work. Keep it up!
 40:coins:200*rank:200*rank:dice:Congratulations %name%! You've successfully unlocked the dice roller minigame! You've also earned an extra %amount% for your hard work. Keep it up!
-50:coins:200*rank:200*rank:slots:Congratulations %name%! You've successfully unlocked the slot machine minigame! You've also earned an extra %amount% for your hard work. Keep it up!
-60:coins:200*rank:200*rank:slotmanager:Incredible work, %name%! You've reached rank %rank% and unlocked the baking slot manager! You can now automate and configure your baking slots. You've also earned an extra %amount% for your hard work. Keep it up!
-70:coins:200*rank:200*rank:combos:Incredible work, %name%! You've reached rank %rank% and unlocked the manual baking combo system! Build up consecutive presses to multiply your cookie output. You've also earned an extra %amount% for your hard work. Keep it up!
+50:coins:200*rank:200*rank:highlow:Congratulations %name%! You've successfully unlocked the higher or lower minigame! You've also earned an extra %amount% for your hard work. Keep it up!
+60:coins:200*rank:200*rank:slots:Congratulations %name%! You've successfully unlocked the slot machine minigame! You've also earned an extra %amount% for your hard work. Keep it up!
+70:coins:200*rank:200*rank:slotmanager:Incredible work, %name%! You've reached rank %rank% and unlocked the baking slot manager! You can now automate and configure your baking slots. You've also earned an extra %amount% for your hard work. Keep it up!
+80:coins:200*rank:200*rank:combos:Incredible work, %name%! You've reached rank %rank% and unlocked the manual baking combo system! Build up consecutive presses to multiply your cookie output. You've also earned an extra %amount% for your hard work. Keep it up!
 
 ; Stat bonuses
 

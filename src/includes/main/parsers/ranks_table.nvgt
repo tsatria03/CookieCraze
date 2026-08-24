@@ -123,6 +123,8 @@ void handle_rank_unlock(string unlock)
         pool.play_stationary("sounds/misc/alert_big.ogg", false);
     else if (unlock == "dice")
         pool.play_stationary("sounds/misc/alert_big.ogg", false);
+    else if (unlock == "highlow")
+        pool.play_stationary("sounds/misc/alert_big.ogg", false);
     else if (unlock == "slotmanager")
         pool.play_stationary("sounds/misc/alert_big.ogg", false);
     else if (unlock == "combos")
