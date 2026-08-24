@@ -8,6 +8,7 @@ Every rank you reach brings a reward, and milestones along the way unlock powerf
 Can you reach the highest rank and become the ultimate baker? Let's find out!
 
 A note on currency.
+
 Throughout the game, money is always displayed in dollars and cents. For example, 50 cents or $1.50.
 You will never see the word coins in any player-facing message. However, coins is the internal name used inside the configuration files to refer to the player's money.
 If you are editing config files, you must use the word coins exactly as written when the documentation says so. This does not affect how money appears in the game itself.
@@ -15,6 +16,7 @@ If you are editing config files, you must use the word coins exactly as written 
 Game features
 
 Baking and selling cookies.
+
 Bake cookies and sell them to earn money. The more you bake, the higher your rank, and the more you earn.
 
 You can bake manually by pressing the bake button, or let auto-baking handle it passively. Every cookie baked counts toward your rank progress. Your earnings per bake scale with your rank, so the further you progress, the faster money accumulates.
@@ -31,6 +33,7 @@ If you have no baking slots yet, auto baking uses your full auto cookie value di
 Once you purchase and enable slots through the baking slots manager, production is routed through them instead, giving you finer control over how cookies are distributed.
 
 Ranking up.
+
 Reach new ranks by baking cookies. Every rank rewards you with money, and milestone ranks unlock new features.
 
 The money reward scales with your current rank, so higher ranks pay out more.
@@ -42,6 +45,7 @@ Regular rank rewards are announced non-interruptively in the background and stor
 When baking mode is off, they show as a dismissible dialog so you don't miss them. When baking mode is on, they are delivered non-interruptively so they don't interrupt automated play.
 
 The bundle shop.
+
 Buy packages of multiple stat upgrades at once, often at better value than buying the same items individually.
 
 Bundles are organized into categories by rank, spanning the full progression of the game from beginner to godlike tiers.
@@ -70,6 +74,7 @@ The fourth is buying one of every affordable bundle at the maximum quantity. Whe
 Both shops support bulk buying, but they work differently. The singles shop lets you buy as many of each individual stat as you can afford, one stat at a time. Bundles package a curated mix of stats into a single purchase, so you can upgrade multiple stats at once in one transaction. The cost works out the same either way, since both use the singles shop prices as the foundation.
 
 The singles shop.
+
 Buy individual stat upgrades using your money. Three stats are available: auto cookies, manual cookies, and baking speed.
 
 Auto cookies increases how many cookies are baked automatically per cycle.
@@ -94,6 +99,7 @@ The third is buying all affordable items at a custom quantity. At the bottom of 
 The fourth is buying all affordable items at the maximum quantity. The prompt pre-fills the maximum number you can afford across all eligible items in the category. Pressing enter buys every affordable item to the maximum your budget allows, making it the fastest way to spend across an entire category in one go.
 
 The ticket shop.
+
 Buy scratch tickets using your money. Tickets are sold in tiers, with higher tiers costing more but offering larger prizes and better odds at the top end. Each tier draws from its own prize pool defined in lottery.table, with prizes weighted so smaller wins are more common.
 By default, locked ticket tiers are shown with their required rank displayed. You can hide them entirely by disabling the show locked items option in the game settings.
 
@@ -105,6 +111,7 @@ Some are percentage-based, and others are flat amounts.
 Events fire automatically during gameplay and are fully configurable in baker.event.
 
 Blackjack. Unlocked at rank 10.
+
 Beginner. It's the first unlock and introduces a simple card game with straightforward rules. Low stakes, easy to grasp.
 A card game where you bet an item of your choice and try to reach 21 without going over.
 
@@ -117,6 +124,7 @@ All payouts, sounds, messages, and bet limits are configurable in jacks.table.
 A configurable confirmation prompt can be set to appear when your bet reaches a certain threshold, protecting you from accidentally placing a large bet.
 
 Cookie flipper. Unlocked at rank 20.
+
 Beginner. Simple yes/no mechanic with a coin flip, very little strategy involved.
 Flip a cookie or a penny to trigger a random event that can boost or reduce your stats.
 
@@ -136,10 +144,12 @@ Each entry shows the flip number, which side it landed on, the event that was se
 The history persists across sessions and resets when starting a new game.
 
 Cookie lottery. Unlocked at rank 30.
+
 Intermediate. Involves scratch tickets and prize tiers, requires understanding odds and managing ticket spending.
 Scratch your tickets and reveal prizes ranging from money and cookies to stat boosts. You can scratch tickets one at a time or all at once from the lottery screen. When scratching one at a time, you can enable automatic reveal in the settings so the result appears after a short random delay. When disabled, the result is held until you press enter or space. When scratching all at once, prizes are distributed by weight across the full batch and applied instantly, so the results are statistically equivalent to scratching each ticket individually but resolve without any delay regardless of how many tickets you have.
 
 Dice roller. Unlocked at rank 40.
+
 Intermediate. More variables than blackjack with dice types, modifiers, and payout tiers to learn.
 Roll a set of dice against a target score you set yourself and bet an item of your choice on the outcome.
 
@@ -150,6 +160,7 @@ The higher you set the target relative to what your dice can realistically roll,
 You can roll manually, or enable automatic rolling in the settings so the result appears after a short random delay. When disabled, the result is held until you press enter or space.
 
 Higher or lower. Unlocked at rank 50.
+
 Intermediate. Simple to guess but tense to play, since knowing when to stop matters as much as guessing right.
 Bet on whether the next card will be higher or lower, then build a streak and bank your winnings before a wrong guess breaks it.
 
@@ -162,6 +173,7 @@ The deck, starting multiplier, streak growth, tie rule, ace ranking, sounds, mes
 You can reveal cards manually, or enable automatic card revealing in the settings so each card appears after a short random delay. When disabled, each result is held until you press enter or space.
 
 Slot machine. Unlocked at rank 60.
+
 Intermediate. Multiple reels, payout combinations, and bet management make it more complex than early minigames.
 Spin the reels and match symbols to win multiples of your bet.
 
@@ -173,10 +185,12 @@ A configurable confirmation prompt can be set to appear when your bet reaches a 
 Rank ups and achievement unlocks are checked and can fire while you are playing any of the minigames mentioned above.
 
 Baking slots manager. Unlocked at rank 70.
+
 Advanced. Requires understanding the entire baking system deeply enough to configure and automate it effectively.
 Manage and configure your baking slots to balance automated and manual cookie production.
 
 There are two types of slots.
+
 Auto slots bake cookies passively without any input, scaling with your auto cookie stat.
 Manual slots multiply the output of each bake press, scaling with your manual cookie stat.
 
@@ -185,6 +199,7 @@ Both submenus are locked behind a rank requirement, defaulting to rank 70.
 The slot manager menu itself is always accessible so you can see what is coming, but you cannot enter either submenu until you reach the required rank.
 
 Combos. Unlocked at rank 80.
+
 Advanced. Demands consistent timing, significant progression in manual upgrades, and understanding of multiplier stacking to use effectively. Build a combo by pressing the bake button multiple times in quick succession. The combo does not activate immediately — you must reach a minimum number of consecutive presses within the time window before it kicks in. Once activated, a sound plays and a message announces that the combo has started. From that point, each press within the window increments your combo count and applies a multiplier to your manual cookie output. Reaching a combo tier plays a sound and announces the new multiplier. Missing the window at any point breaks your combo, plays a break sound, and resets everything back to zero.
 
 The combo multiplier applies to both your base manual cookies and your manual slots, so higher slot counts make each combo tier even more rewarding.
@@ -192,6 +207,7 @@ The combo multiplier applies to both your base manual cookies and your manual sl
 All combo settings are fully configurable in combos.table, including the activation threshold, time window range, tier thresholds, multipliers, sounds, and messages. The combo system can also be disabled entirely from that file.
 
 Baker info.
+
 View a live snapshot of your current baker state. Press the Baker Info button in the main game interface to open it directly.
 
 The baker info screen is divided into three sections.
@@ -226,6 +242,7 @@ Mode 3 means all quests must be complete to receive a reward, and shows the tota
 Quests completed: how many of your active quests are currently complete.
 
 Statistics menu.
+
 Access the baker statistics screen and achievement statistics screen from the Statistics button in the main game interface.
 
 Baker statistics.
@@ -233,7 +250,7 @@ View a summary of everything you have done in your current playthrough. Open it 
 
 Most stats shown here are tracked stats, meaning they are running totals that only ever go up and are saved with your game. A few are live stats, meaning they are calculated fresh from the current game state each time you open the screen and can go up or down. Live stats are noted individually where they appear.
 
-The statistics screen is divided into ten sections.
+The statistics screen is divided into thirteen sections.
 
 Baking.
 
@@ -285,6 +302,13 @@ Total rolls: counts every dice roll.
 Wins: counts rolls where the total met or exceeded the target score.
 Losses: counts rolls where the total fell short of the target score.
 
+Higher or lower.
+
+Games played: counts every round where a bet was placed and the first card was drawn.
+Wins: counts rounds where you banked your earnings after at least one correct guess.
+Losses: counts rounds that ended on a wrong guess.
+Highest streak: the longest run of correct guesses you have ever reached in a single round. This is a lifetime personal best and only ever goes up.
+
 Blackjack.
 
 Hands played: counts every round where a bet was placed and cards were dealt.
@@ -313,6 +337,7 @@ Rerolls performed: counts every time you have rerolled a quest.
 All stats are saved with your game data and persist between sessions.
 
 Achievement statistics.
+
 View your progress toward every achievement grouped by category. Open it from the Statistics menu.
 
 Each category lists complete achievements first showing your current stat value, followed by incomplete ones showing your current value against the required threshold.
@@ -327,6 +352,7 @@ The history is empty on a fresh save and grows by one entry each time you presti
 It resets only when starting a new game in the same slot.
 
 Achievements.
+
 Track your progress and earn recognition for milestones across every part of the game.
 
 There are many achievements spread across all tracked statistics, including baking, baking slots manager, economy, upgrades, bundles, events, blackjack, the cookie flipper, the cookie lottery, the dice roller, the slot machine, quests, and combos.
@@ -341,10 +367,12 @@ Pressing enter on an unlocked achievement shows a dialog with its description th
 Pressing enter on a locked achievement gives you a cryptic hint about what you need to do to earn it.
 
 When you earn an achievement during play, it is stored in the achievements buffer.
+
 If baking mode is off, it shows as a dismissible dialog.
 If baking mode is on, it is announced non-interruptively so automated play is not interrupted.
 
 Quests.
+
 Complete a set of objectives to unlock the prestige option and start a new run with a permanent bonus.
 
 Quests are automatically assigned at the start of each prestige cycle using a difficulty-based system. Each quest has a difficulty from 1 to 10, and active slots are spread evenly across the range so you always get a balanced mix.
@@ -370,6 +398,7 @@ Rerolling deducts a cost from a configurable stat, and the cost increases each t
 The reroll_warning setting in quests.table controls how the reroll button behaves when a quest is complete. See the configuration file reference for details.
 
 Prestige.
+
 Reset your progress and earn a permanent bonus that carries into every future run.
 
 The prestige option is available from the quests screen.
@@ -383,6 +412,7 @@ Certain prestige levels award a milestone reward, and all other levels fall back
 Once all prestige dialogs are dismissed, a summary screen appears showing the prestige level, the rank you achieved, quests completed, what reward you received, and how many prestige points you earned. All prestige settings and milestone rewards are fully configurable in prestige.table.
 
 Prestige store.
+
 Spend prestige points on permanent upgrades that carry into every future run.
 
 The prestige store becomes available after your first prestige. A prestige store button appears in the quests screen directly below the prestige button once you have at least one completed prestige run.
@@ -398,6 +428,7 @@ Passive Bonuses contains upgrades that permanently boost your cookie production 
 Head Start contains upgrades that give you bonus resources at the beginning of each new run, such as starting coins, auto cookies, or manual cookies.
 
 How prestige upgrades work.
+
 Unlike the bundle, single, and ticket shops, the prestige store uses a one-time purchase system. Every upgrade in the store can only ever be bought once. Once purchased, the upgrade is immediately active and stays active permanently across every future run, including after further prestiges. You will never need to buy it again, and you cannot buy it a second time even if you wanted to.
 
 Passive bonus upgrades work as multipliers layered on top of your existing stats. For example, buying a cookie multiplier upgrade does not add to your auto cookie or manual cookie counts directly. Instead, every time a bake fires, the output is multiplied by the bonus percentage. So if you normally produce 100 cookies per bake and you have a 5% cookie multiplier, you produce 105 instead. The higher your stats grow through the normal shop, the more noticeable the multiplier becomes. Similarly, a coin multiplier does not change your cookie sell price. It multiplies the total payout after the price is applied, so larger sell batches benefit more.

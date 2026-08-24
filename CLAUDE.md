@@ -29,6 +29,7 @@ No test suite or linter. The game launches via `cycrz/cycrz.py` (runs `src/cycrz
 
 ## Where the detail lives (read before working in an area)
 
+- **Adding a new minigame** (blueprint→sections→code-per-commit→docks-last, full wiring map) → **[[project_minigame_build_guide]]**.
 - **Message buffers** (categorized, mutable/exportable announcement system) → **[[project_message_buffers]]**.
 - **Audio / sounds** (sound_pool + HRTF, the `cycrz/sounds/` layout) → **[[project_audio_model]]**.
 - **Save data** (AppData `tsatria03/CookieCraze/` logs/preffs/saves; multiple slots) → **[[project_save_data_layout]]**.
