@@ -2425,6 +2425,13 @@ soundsetsmenu();
 if (rescfm == "yes")
 {
 reset_sound_settings();
+if (ingame)
+{
+ambpool.destroy_sound(ambslot);
+ambslot = ambpool.play_stationary_extended("sounds/ambience/" + ambtype + ".ogg", true, 0, 0, ambvolume, ambpitch, false);
+muspool.destroy_sound(mustrackslot);
+mustrackslot = muspool.play_stationary_extended("sounds/ambience/" + mustype + ".ogg", true, 0, 0, musvolume, muspitch, false);
+}
 dlgmessage_return("Sound settings reset.");
 if (ingame) { form.reset(); clickergame(); }
 else mainmenu();
