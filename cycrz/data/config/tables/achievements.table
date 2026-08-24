@@ -10,6 +10,7 @@ blackjack=Blackjack
 slots=Slot machine
 flipper=Cookie flipper
 dice=Dice roller
+highlow=Higher or lower
 lottery=Cookie lottery
 quests=Quests
 
@@ -266,6 +267,46 @@ dice:dice_resilient:dice_losses:250:false:true:Resilient:Lose %threshold% dice r
 dice:dice_loss_veteran:dice_losses:500:false:true:Loss Veteran:Lose %threshold% dice rolls. You have seen the bad side of probability more than most.:Veterans of loss carry a particular kind of calm. You are developing it.
 dice:dice_loss_legend:dice_losses:1000:false:true:Loss Legend:Lose %threshold% dice rolls. At this point the losses are just part of the story.:Every legend has a chapter about losing. Yours has several.
 dice:dice_loss_eternal:dice_losses:2500:false:true:Loss Eternal:Lose %threshold% dice rolls. The dice have made their feelings about your targets very clear.:Some relationships are defined by conflict. You and the dice have one of those.
+
+; Higher or lower
+
+highlow:hl_first_guess:highlow_games:1:false:true:First Guess:Play higher or lower for the first time. Higher or lower? There is only one way to find out.:The deck does not care what you guess. But you might as well guess.
+highlow:hl_card_curious:highlow_games:5:false:true:Card Curious:Play %threshold% rounds of higher or lower. The deck is starting to feel familiar.:Curiosity brings people to the table. The cards keep them there.
+highlow:hl_getting_the_feel:highlow_games:10:false:true:Getting the Feel:Play %threshold% rounds of higher or lower. You are learning the rhythm of the draw.:Ten rounds in and the guessing starts to feel less like guessing.
+highlow:hl_regular_guesser:highlow_games:25:false:true:Regular Guesser:Play %threshold% rounds of higher or lower. The deck knows your face by now.:Regulars do not announce themselves. The deck already knows.
+highlow:hl_card_reader:highlow_games:50:false:true:Card Reader:Play %threshold% rounds of higher or lower. You have started to trust your instincts.:Reading the cards is mostly reading yourself. You are getting better at both.
+highlow:hl_deck_devotee:highlow_games:100:false:true:Deck Devotee:Play %threshold% rounds of higher or lower. Other bakers bake cookies. You read cards.:Devotion is a quiet thing. The deck has noticed yours.
+highlow:hl_card_veteran:highlow_games:250:false:true:Card Veteran:Play %threshold% rounds of higher or lower. You have seen every card the deck has to offer.:Veterans are not defined by winning. They are defined by still being at the table.
+highlow:hl_card_obsessed:highlow_games:500:false:true:Card Obsessed:Play %threshold% rounds of higher or lower. The next card lives in your head at all times.:When the draw follows you out of the room, you have been at this a while.
+highlow:hl_card_legend:highlow_games:1000:false:true:Card Legend:Play %threshold% rounds of higher or lower. The deck arranges itself around your instincts.:Legends are made one draw at a time. You have made many.
+highlow:hl_card_eternal:highlow_games:2000:false:true:Card Eternal:Play %threshold% rounds of higher or lower. The cards no longer feel random. They feel inevitable.:At two thousand rounds, probability starts to feel like a formality.
+highlow:hl_card_singularity:highlow_games:5000:false:true:Card Singularity:Play %threshold% rounds of higher or lower. The deck has achieved a state beyond comprehension.:Beyond a certain count, the draw stops being a game and becomes a way of being.
+highlow:hl_first_bank:highlow_wins:1:false:true:First Bank:Bank your winnings in higher or lower for the first time. A streak turned into something real.:The first time you walk away ahead, the game finally makes sense.
+highlow:hl_small_fortune:highlow_wins:5:false:true:Small Fortune:Bank your winnings %threshold% times. The pot is starting to add up.:A fortune begins somewhere modest. This might be that somewhere.
+highlow:hl_on_a_roll:highlow_wins:10:false:true:On a Roll:Bank your winnings %threshold% times. You are learning when to stop.:Knowing when to walk away is half the game. You are getting the hang of it.
+highlow:hl_banking_in:highlow_wins:25:false:true:Banking In:Bank your winnings %threshold% times. The deck has been generous, and you have been wise.:Greed breaks streaks. Wisdom banks them. You are choosing wisdom.
+highlow:hl_bank_roller:highlow_wins:50:false:true:Bank Roller:Bank your winnings %threshold% times. You have a talent for quitting while ahead.:Some players never learn when to stop. You are not one of them.
+highlow:hl_high_banker:highlow_wins:100:false:true:High Banker:Bank your winnings %threshold% times. The pot fears you almost as much as the deck does.:At a hundred banks, walking away has become second nature.
+highlow:hl_fortune_builder:highlow_wins:250:false:true:Fortune Builder:Bank your winnings %threshold% times. Your instincts and your restraint are in perfect balance.:Fortunes are built on knowing when enough is enough. You have mastered it.
+highlow:hl_vault_keeper:highlow_wins:500:false:true:Vault Keeper:Bank your winnings %threshold% times. Whatever you win, you keep.:The best gamblers are the ones who know how to stop being gamblers.
+highlow:hl_banking_legend:highlow_wins:1000:false:true:Banking Legend:Bank your winnings %threshold% times. Other players study when you choose to walk away.:A thousand clean exits is not luck. It is discipline.
+highlow:hl_banking_god:highlow_wins:2000:false:true:Banking God:Bank your winnings %threshold% times. You have turned knowing when to stop into an art form.:At this height, walking away rich is simply what you do.
+highlow:hl_wrong_way:highlow_losses:1:false:true:Wrong Way:Guess wrong in higher or lower for the first time. The deck had other plans.:The deck does not always agree with you. First lesson learned.
+highlow:hl_bad_guess:highlow_losses:5:false:true:Bad Guess:Guess wrong %threshold% times. The cards are not cooperating today.:Some days the deck has somewhere else to be. It is not personal.
+highlow:hl_off_the_mark:highlow_losses:10:false:true:Off the Mark:Guess wrong %threshold% times. Higher was lower, and lower was higher.:The card you needed was always the other one. Frustrating, that.
+highlow:hl_pushing_luck:highlow_losses:25:false:true:Pushing Your Luck:Guess wrong %threshold% times. You keep reaching for one more card.:One more guess is how every streak ends. You know this. You guess anyway.
+highlow:hl_bust_prone:highlow_losses:50:false:true:Bust Prone:Guess wrong %threshold% times. Restraint has never been your strong suit.:The pot was right there. So was the exit. You chose the card.
+highlow:hl_chronic_guesser:highlow_losses:100:false:true:Chronic Guesser:Guess wrong %threshold% times. You have a gift, and it is for greed.:Chronic things persist regardless of intention. You have noticed.
+highlow:hl_wrong_side:highlow_losses:250:false:true:The Wrong Side:Guess wrong %threshold% times. The deck has learned exactly how to disappoint you.:There is a wrong side of every card. You keep finding it.
+highlow:hl_loss_collector:highlow_losses:500:false:true:Loss Collector:Guess wrong %threshold% times. You have donated more streaks to the deck than most players start.:Collectors gather things. You gather broken streaks.
+highlow:hl_loss_incarnate:highlow_losses:1000:false:true:Loss Incarnate:Guess wrong %threshold% times. You have transcended losing. You have become it.:One more card, you said. A thousand times. The deck remembers each one.
+highlow:hl_streak_building:highlow_highest_streak:3:false:true:Building It Up:Reach a streak of %threshold% in higher or lower. The pot is starting to grow.:Three correct guesses in a row. The deck is paying attention now.
+highlow:hl_hot_hand:highlow_highest_streak:5:false:true:Hot Hand:Reach a streak of %threshold% in higher or lower. The cards are falling your way.:Five in a row is where nerve starts to matter more than luck.
+highlow:hl_nerves_of_steel:highlow_highest_streak:7:false:true:Nerves of Steel:Reach a streak of %threshold% in higher or lower. Every card is a decision, and you keep deciding right.:Seven straight. The smart move is to bank. But the deck is whispering.
+highlow:hl_press_your_luck:highlow_highest_streak:10:false:true:Press Your Luck:Reach a streak of %threshold% in higher or lower. The pot is enormous and the temptation is worse.:Ten in a row. Almost no one gets here. Fewer still walk away with it.
+highlow:hl_fearless:highlow_highest_streak:12:false:true:Fearless:Reach a streak of %threshold% in higher or lower. You should have stopped long ago. You did not.:Twelve straight correct guesses. The odds stopped applying to you a while back.
+highlow:hl_untouchable:highlow_highest_streak:15:false:true:Untouchable:Reach a streak of %threshold% in higher or lower. The deck has thrown everything at you and missed.:Fifteen in a row is not a streak. It is a legend the deck will tell for years.
+highlow:hl_impossible_run:highlow_highest_streak:20:false:true:Impossible Run:Reach a streak of %threshold% in higher or lower. This should not be possible. And yet.:Twenty correct guesses in a row. Somewhere, a statistician just fainted.
 
 ; Lottery
 

@@ -182,6 +182,30 @@ win_lottery_75:Win 75 lottery tickets:lottery_wins:75:false:false:true:3:Win %th
 win_lottery_150:Win 150 lottery tickets:lottery_wins:150:false:false:true:4:Win %threshold% scratch tickets.
 win_lottery_300:Win 300 lottery tickets:lottery_wins:300:false:false:true:5:Win %threshold% scratch tickets.
 
+; Higher or lower games played
+
+play_highlow_10:Play 10 rounds of higher or lower:highlow_games:10:false:false:true:1:Play %threshold% rounds of higher or lower.
+play_highlow_50:Play 50 rounds of higher or lower:highlow_games:50:false:false:true:2:Play %threshold% rounds of higher or lower.
+play_highlow_150:Play 150 rounds of higher or lower:highlow_games:150:false:false:true:3:Play %threshold% rounds of higher or lower.
+play_highlow_300:Play 300 rounds of higher or lower:highlow_games:300:false:false:true:4:Play %threshold% rounds of higher or lower.
+play_highlow_500:Play 500 rounds of higher or lower:highlow_games:500:false:false:true:5:Play %threshold% rounds of higher or lower.
+
+; Higher or lower wins
+
+win_highlow_5:Bank 5 higher or lower games:highlow_wins:5:false:false:true:1:Bank your winnings %threshold% times in higher or lower.
+win_highlow_25:Bank 25 higher or lower games:highlow_wins:25:false:false:true:2:Bank your winnings %threshold% times in higher or lower.
+win_highlow_75:Bank 75 higher or lower games:highlow_wins:75:false:false:true:3:Bank your winnings %threshold% times in higher or lower.
+win_highlow_150:Bank 150 higher or lower games:highlow_wins:150:false:false:true:4:Bank your winnings %threshold% times in higher or lower.
+win_highlow_300:Bank 300 higher or lower games:highlow_wins:300:false:false:true:5:Bank your winnings %threshold% times in higher or lower.
+
+; Higher or lower highest streak
+
+streak_highlow_3:Reach a streak of 3:highlow_highest_streak:3:false:false:true:1:Reach a streak of %threshold% in higher or lower.
+streak_highlow_5:Reach a streak of 5:highlow_highest_streak:5:false:false:true:2:Reach a streak of %threshold% in higher or lower.
+streak_highlow_7:Reach a streak of 7:highlow_highest_streak:7:false:false:true:3:Reach a streak of %threshold% in higher or lower.
+streak_highlow_10:Reach a streak of 10:highlow_highest_streak:10:false:false:true:4:Reach a streak of %threshold% in higher or lower.
+streak_highlow_15:Reach a streak of 15:highlow_highest_streak:15:false:false:true:5:Reach a streak of %threshold% in higher or lower.
+
 ; Auto slots purchased
 
 buy_auto_slots_5:Purchase 5 auto slots:auto_slots_purchased:5:false:false:true:1:Purchase %threshold% auto baking slots.

@@ -122,6 +122,10 @@ double get_stat_value(string stat)
     if (stat == STAT_LOTTERY_TICKETS_SCRATCHED) return stat_lottery_tickets_scratched;
     if (stat == STAT_LOTTERY_WINS) return stat_lottery_wins;
     if (stat == STAT_LOTTERY_LOSSES) return stat_lottery_losses;
+    if (stat == STAT_HIGHLOW_GAMES) return stat_highlow_games;
+    if (stat == STAT_HIGHLOW_WINS) return stat_highlow_wins;
+    if (stat == STAT_HIGHLOW_LOSSES) return stat_highlow_losses;
+    if (stat == STAT_HIGHLOW_HIGHEST_STREAK) return stat_highlow_highest_streak;
     if (stat == STAT_QUESTS_COMPLETED) return stat_quests_completed;
     if (stat == STAT_REROLLS_PERFORMED) return stat_rerolls_performed;
     if (stat == STAT_RANK) return rank;
