@@ -1072,7 +1072,10 @@ correct_message
 The text spoken after a correct guess. Supports the following placeholders.
 
 wrong_message
-The text spoken after a wrong guess. Supports the following placeholders.
+The text spoken after a wrong guess that did not break a streak, meaning you lost on your first guess before any pot was built. Supports the following placeholders.
+
+bust_message
+The text spoken after a wrong guess that breaks a streak of one or more, when you give up the pot you had built up. Supports the following placeholders, including %pot%.
 
 tie_message
 The text spoken on a tie. Supports the following placeholders.
@@ -1083,6 +1086,7 @@ The text spoken when you bank your earnings. Supports the following placeholders
 %card% is replaced with the name of the card just drawn.
 %streak% is replaced with your current streak count.
 %payout% is replaced with your current pot, or the amount banked when you cash out.
+%pot% is replaced with the pot you gave up when a streak breaks. Used in bust_message.
 %bet% is replaced with the amount you bet.
 %item% is replaced with the name of the item bet, for example cookies or auto cookies.
 

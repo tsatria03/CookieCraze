@@ -40,6 +40,7 @@ win_sound=higher_or_lower/win.ogg
 
 start_message=You drew the %card%. Will the next card be higher or lower?
 correct_message=Correct, it was the %card%. Streak %streak%, and your pot is now %payout% %item%. Guess again or bank your earnings.
-wrong_message=Wrong, it was the %card%. Your streak of %streak% is broken and you lost your bet of %bet% %item%.
+wrong_message=Wrong, it was the %card%. You lost your bet of %bet% %item%.
+bust_message=Wrong, it was the %card%. Your streak of %streak% is broken, and you gave up the pot of %pot% %item% you could have banked. Your bet of %bet% %item% is lost.
 tie_message=A tie, another %card%. Your streak holds at %streak%.
 win_message=You banked a streak of %streak% and walked away with %payout% %item%!

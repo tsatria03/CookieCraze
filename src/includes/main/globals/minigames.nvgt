@@ -1099,6 +1099,9 @@ void highlowgame()
             currentMultiplier = 0;
             stat_highlow_games++;
             highlow_draw(curName, curVal);
+            string betDisplay = (selectedBet == 1) ? convert_to_currency(betAmount) : (format_number(betAmount) + " " + betItemName);
+            if (highlowmode) speak_buffer("You bet " + betDisplay + ", drawing your first card.");
+            else dlg_buffer("You bet " + betDisplay + ", drawing your first card. Press enter or space to reveal.");
             pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.draw_sound), false);
             if (highlowmode) mini_wait_async(random(1000, 2000), "highlow");
             string smsg = highlow_fill(highlowConfig.start_message, "%card%", curName);
@@ -1117,6 +1120,8 @@ void highlowgame()
                 dlg_buffer("Please place a bet and deal first.");
                 continue;
             }
+            if (highlowmode) speak_buffer((guessHigher ? "Higher" : "Lower") + ", drawing the next card.");
+            else dlg_buffer((guessHigher ? "Higher" : "Lower") + ", drawing the next card. Press enter or space to reveal.");
             pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.draw_sound), false);
             if (highlowmode) mini_wait_async(random(1000, 2000), "highlow");
             string nextName = "";
@@ -1187,9 +1192,13 @@ void highlowgame()
                 stat_highlow_losses++;
                 int brokenStreak = streak;
                 pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.wrong_sound), false);
-                string wmsg = highlow_fill(highlowConfig.wrong_message, "%card%", nextName);
-                wmsg = highlow_fill(wmsg, "%streak%", string(brokenStreak));
+                double lostPot = floor(safe_cap(betAmount * currentMultiplier));
+                string potStr = (selectedBet == 1) ? convert_to_currency(lostPot) : format_number(lostPot);
                 string betStr2 = (selectedBet == 1) ? convert_to_currency(betAmount) : format_number(betAmount);
+                string wmsg = (brokenStreak >= 1) ? highlowConfig.bust_message : highlowConfig.wrong_message;
+                wmsg = highlow_fill(wmsg, "%card%", nextName);
+                wmsg = highlow_fill(wmsg, "%streak%", string(brokenStreak));
+                wmsg = highlow_fill(wmsg, "%pot%", potStr);
                 wmsg = highlow_fill(wmsg, "%bet%", betStr2);
                 wmsg = highlow_fill(wmsg, "%item%", betItemName);
                 if (highlowmode) speak_buffer(wmsg);
