@@ -67,6 +67,22 @@ A press-your-luck card game, deliberately different from blackjack (hand-based):
 
 **Why it's a good fit:** reuses the entire minigame scaffold (table + parser + `minigame_input` + auto-toggle + stats/achievements/quests), but the streak/cash-out tension gives it a distinct feel from the existing five.
 
+**Minigame code template (reviewed from the existing five; use blackjack as the closest model).** File split: game loops in `minigames.nvgt`; the panel `mingamsmenu()` in `menu.nvgt` (lines ~245-340); the settings screens (`gamsetsmenu`/`soundsetsmenu`/`usersetsmenu`/`preffsmenu` + the minigame auto-mode checkboxes) in **`settings_menu.nvgt`** (moved out of menu.nvgt); persistence + `reset_game_settings()` in `savefuncts.nvgt`; shared `minigame_input()` in `extrafuncts.nvgt` (~842-897). Existing game functions: `flipgame()` 1, `slotsgame()` 202, `jackgame()` 472, `lotterygame()` 763, `dicegame()` 843 — each paired with a one-line `*_game_input()` wrapper that calls `minigame_input("<name>")`.
+
+Every loop follows the same shape (clone it):
+- `form.reset()` → `create_window(...)` → controls → `set_disallowed_chars` on the bet field → `form.focus(...)`.
+- **5-currency bet selector** `betChoice` list, identical everywhere: `0 Cookies, 1 Currency, 2 Auto Cookies, 3 Auto Cookie Speeds, 4 Manual Cookies`. Money entered as dollars → ×100 (`selectedBet == 1 ? value * 100 : value`).
+- `while(true)`: `wait(5)` + `form.monitor()`; a balance clamp block; the `*_game_input()` call — **guarded by `if focus != betInput`** when there's a text bet field (blackjack/dice/slots), unguarded otherwise (flipper/lottery); `ESC → mingamsmenu()`; then **the inline rank-up block + `check_achievements(...)` pasted verbatim** (⚠️ no shared helper — it's duplicated in all five; paste the same block, or optionally factor a helper at build time); then round resolution.
+- Round resolution: deduct bet, resolve, add winnings per `selectedBet` branch; **all payouts wrapped in `safe_cap`** (`floor(safe_cap(bet * multiplier))`) — matters most here since the streak pot compounds; the `selectedBet == 3` (speeds) branch adjusts `clicktime` inversely.
+- Auto-mode branch: read the game's bool → if on, `mini_wait_async(...)` reveals after a delay; if off, `dlg_buffer("… Press enter or space to reveal.")`.
+
+Higher-or-lower-specific wiring beyond the clone:
+- Add a dispatch case `"highlow"` in `minigame_input()` so `Ctrl+S`/`Ctrl+L` re-enter the game (it currently routes flipper/slots/blackjack/lottery/dice by name).
+- `mingamsmenu()` (`menu.nvgt`): add the panel button in its **alphabetized** slot with a hardcoded `rank < 50` gate, and **move the slot machine's gate `rank < 50` → `rank < 60`** (the "rank 50 or higher" check at ~line 326/329).
+- `highlowmode` auto-reveal bool: declare in `dec.nvgt` (default true), add a checkbox in `gamsetsmenu` (**`settings_menu.nvgt`**, next to `jackautodraw`/etc.), save/read in `writepreffs`/`readpreffs` and default it in `reset_game_settings()` (`savefuncts.nvgt`).
+- `stat_hl_*` stats: declare in `dec.nvgt`, save/load in `savefuncts.nvgt`.
+- Settings persistence for the auto toggles is the `flipmode`/`jackmode`/`lotterymode`/`dicemode`/`slotmode`/`orderedSyms` pattern (all default true, saved in the game-settings file).
+
 **Unlock rank arrangement (decided, NOT yet applied — do it as part of the build, not standalone).** Higher or lower unlocks at **rank 50**. **Rationale:** the minigames panel is **alphabetized**, so "Higher or lower" (H) sorts before "Slot machine" (S) and must unlock at an *earlier* rank than slots, otherwise unlock order wouldn't match the panel order. So slots and everything after it each shift up 10.
 - Current `ranks.table` ladder: 10 blackjack, 20 flipper, 30 lottery, 40 dice, **50 slots, 60 slot manager, 70 combos**.
 - New ladder: 10 blackjack, 20 flipper, 30 lottery, 40 dice, **50 higher or lower, 60 slots, 70 slot manager, 80 combos**.

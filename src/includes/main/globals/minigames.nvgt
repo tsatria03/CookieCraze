@@ -88,35 +88,7 @@ flipgame_input();
 pool.destroy_sound(gameslot);
             mingamsmenu();
         }
-if (cookies >= cookiesrequiered)
-{
-    rank += 1;
-    cookiesrequiered = (cookiemod * (rank * (rank * difmod)));
-    if (prestige_rank_discount > 0) cookiesrequiered *= max(0.01, 1.0 - (prestige_rank_discount / 100.0));
-    if (rankDefault.length() > 0)
-    {
-        string defaultMsg = apply_rank_reward(rankDefault[0], rank);
-        play_rank_sound(lastRewardAmount);
-        if (!buffer_muted("ranks")) pool.play_stationary("sounds/misc/rankach" + random(1, 2) + ".ogg", false);
-        handle_rank_unlock(rankDefault[0].unlock);
-        speak_buffer(defaultMsg, "ranks");
-    }
-    rank_reward_item[] matching;
-    for (uint i = 0; i < rankRewards.length(); i++)
-    {
-        if (rankRewards[i].rank == int(rank))
-            matching.insert_last(rankRewards[i]);
-    }
-    if (matching.length() > 0)
-    {
-        rank_reward_item@ milestone = matching[random(0, matching.length() - 1)];
-        string milestoneMsg = apply_rank_reward(milestone, rank);
-        play_rank_sound(lastRewardAmount);
-        if (!buffer_muted("ranks")) pool.play_stationary("sounds/misc/rankach" + random(1, 2) + ".ogg", false);
-        handle_rank_unlock(milestone.unlock);
-        speak_buffer(milestoneMsg, "critical");
-    }
-}
+check_rank();
 check_achievements(loadedAchievements, achievementsUnlocked);
 if (form.is_pressed(flip))
 {
@@ -275,35 +247,7 @@ slots_game_input();
 pool.destroy_sound(gameslot);
             mingamsmenu();
         }
-if (cookies >= cookiesrequiered)
-{
-    rank += 1;
-    cookiesrequiered = (cookiemod * (rank * (rank * difmod)));
-    if (prestige_rank_discount > 0) cookiesrequiered *= max(0.01, 1.0 - (prestige_rank_discount / 100.0));
-    if (rankDefault.length() > 0)
-    {
-        string defaultMsg = apply_rank_reward(rankDefault[0], rank);
-        play_rank_sound(lastRewardAmount);
-        if (!buffer_muted("ranks")) pool.play_stationary("sounds/misc/rankach" + random(1, 2) + ".ogg", false);
-        handle_rank_unlock(rankDefault[0].unlock);
-        speak_buffer(defaultMsg, "ranks");
-    }
-    rank_reward_item[] matching;
-    for (uint i = 0; i < rankRewards.length(); i++)
-    {
-        if (rankRewards[i].rank == int(rank))
-            matching.insert_last(rankRewards[i]);
-    }
-    if (matching.length() > 0)
-    {
-        rank_reward_item@ milestone = matching[random(0, matching.length() - 1)];
-        string milestoneMsg = apply_rank_reward(milestone, rank);
-        play_rank_sound(lastRewardAmount);
-        if (!buffer_muted("ranks")) pool.play_stationary("sounds/misc/rankach" + random(1, 2) + ".ogg", false);
-        handle_rank_unlock(milestone.unlock);
-        speak_buffer(milestoneMsg, "critical");
-    }
-}
+check_rank();
 check_achievements(loadedAchievements, achievementsUnlocked);
         if (form.is_pressed(spinButton))
         {
@@ -509,35 +453,7 @@ void jackgame()
             pool.destroy_sound(gameslot);
             mingamsmenu();
         }
-if (cookies >= cookiesrequiered)
-{
-    rank += 1;
-    cookiesrequiered = (cookiemod * (rank * (rank * difmod)));
-    if (prestige_rank_discount > 0) cookiesrequiered *= max(0.01, 1.0 - (prestige_rank_discount / 100.0));
-    if (rankDefault.length() > 0)
-    {
-        string defaultMsg = apply_rank_reward(rankDefault[0], rank);
-        play_rank_sound(lastRewardAmount);
-        if (!buffer_muted("ranks")) pool.play_stationary("sounds/misc/rankach" + random(1, 2) + ".ogg", false);
-        handle_rank_unlock(rankDefault[0].unlock);
-        speak_buffer(defaultMsg, "ranks");
-    }
-    rank_reward_item[] matching;
-    for (uint i = 0; i < rankRewards.length(); i++)
-    {
-        if (rankRewards[i].rank == int(rank))
-            matching.insert_last(rankRewards[i]);
-    }
-    if (matching.length() > 0)
-    {
-        rank_reward_item@ milestone = matching[random(0, matching.length() - 1)];
-        string milestoneMsg = apply_rank_reward(milestone, rank);
-        play_rank_sound(lastRewardAmount);
-        if (!buffer_muted("ranks")) pool.play_stationary("sounds/misc/rankach" + random(1, 2) + ".ogg", false);
-        handle_rank_unlock(milestone.unlock);
-        speak_buffer(milestoneMsg, "critical");
-    }
-}
+check_rank();
 check_achievements(loadedAchievements, achievementsUnlocked);
         if (key_pressed(KEY_B))
             speak_buffer("Your current bet is " + (selectedBet == 1 ? convert_to_currency(betAmount) : format_number(betAmount) + (betItemName != "" ? " " + betItemName : "")) + ".");
@@ -785,35 +701,7 @@ void lotterygame()
             mingamsmenu();
             return;
         }
-        if (cookies >= cookiesrequiered)
-        {
-            rank += 1;
-            cookiesrequiered = (cookiemod * (rank * (rank * difmod)));
-            if (prestige_rank_discount > 0) cookiesrequiered *= max(0.01, 1.0 - (prestige_rank_discount / 100.0));
-            if (rankDefault.length() > 0)
-            {
-                string defaultMsg = apply_rank_reward(rankDefault[0], rank);
-                play_rank_sound(lastRewardAmount);
-                if (!buffer_muted("ranks")) pool.play_stationary("sounds/misc/rankach" + random(1, 2) + ".ogg", false);
-                handle_rank_unlock(rankDefault[0].unlock);
-                speak_buffer(defaultMsg, "ranks");
-            }
-            rank_reward_item[] matching;
-            for (uint i = 0; i < rankRewards.length(); i++)
-            {
-                if (rankRewards[i].rank == int(rank))
-                    matching.insert_last(rankRewards[i]);
-            }
-            if (matching.length() > 0)
-            {
-                rank_reward_item@ milestone = matching[random(0, matching.length() - 1)];
-                string milestoneMsg = apply_rank_reward(milestone, rank);
-                play_rank_sound(lastRewardAmount);
-                if (!buffer_muted("ranks")) pool.play_stationary("sounds/misc/rankach" + random(1, 2) + ".ogg", false);
-                handle_rank_unlock(milestone.unlock);
-                speak_buffer(milestoneMsg, "critical");
-            }
-        }
+        check_rank();
         check_achievements(loadedAchievements, achievementsUnlocked);
         if (form.is_pressed(scratchBtn))
         {
@@ -901,35 +789,7 @@ void dicegame()
             pool.destroy_sound(gameslot);
             mingamsmenu();
         }
-        if (cookies >= cookiesrequiered)
-        {
-            rank += 1;
-            cookiesrequiered = (cookiemod * (rank * (rank * difmod)));
-            if (prestige_rank_discount > 0) cookiesrequiered *= max(0.01, 1.0 - (prestige_rank_discount / 100.0));
-            if (rankDefault.length() > 0)
-            {
-                string defaultMsg = apply_rank_reward(rankDefault[0], rank);
-                play_rank_sound(lastRewardAmount);
-                if (!buffer_muted("ranks")) pool.play_stationary("sounds/misc/rankach" + random(1, 2) + ".ogg", false);
-                handle_rank_unlock(rankDefault[0].unlock);
-                speak_buffer(defaultMsg, "ranks");
-            }
-            rank_reward_item[] matching;
-            for (uint i = 0; i < rankRewards.length(); i++)
-            {
-                if (rankRewards[i].rank == int(rank))
-                    matching.insert_last(rankRewards[i]);
-            }
-            if (matching.length() > 0)
-            {
-                rank_reward_item@ milestone = matching[random(0, matching.length() - 1)];
-                string milestoneMsg = apply_rank_reward(milestone, rank);
-                play_rank_sound(lastRewardAmount);
-                if (!buffer_muted("ranks")) pool.play_stationary("sounds/misc/rankach" + random(1, 2) + ".ogg", false);
-                handle_rank_unlock(milestone.unlock);
-                speak_buffer(milestoneMsg, "critical");
-            }
-        }
+        check_rank();
         check_achievements(loadedAchievements, achievementsUnlocked);
         if (form.is_pressed(rollButton))
         {
