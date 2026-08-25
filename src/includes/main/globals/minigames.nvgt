@@ -1419,7 +1419,7 @@ void roulettegame()
                 for (int i = 0; i < ticks; i++)
                 {
                     pool.play_stationary("sounds/minigames/" + resolve_sound(rouletteConfig.spin_sound), false);
-                    wait(rouletteConfig.spin_base_delay + i * rouletteConfig.spin_growth);
+                    mini_wait_async(rouletteConfig.spin_base_delay + i * rouletteConfig.spin_growth, "roulette");
                 }
             }
             else
