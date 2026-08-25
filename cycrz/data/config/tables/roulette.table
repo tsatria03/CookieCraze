@@ -1,0 +1,83 @@
+; Settings
+
+min_bet=1
+max_bet=0
+confirm_threshold=1000:false
+pocket_count=37
+spin_base_ticks=50
+spin_random_range=50
+spin_base_delay=20
+spin_growth=2
+
+; Sounds
+
+spin_sound=roulette/spin.ogg
+land_sound=roulette/land.ogg
+bet_sound=roulette/bet.ogg
+win_sound=roulette/win.ogg
+lose_sound=roulette/lose.ogg
+
+; Messages
+
+spin_message=The wheel is spinning. Press enter or space to see where it lands.
+single_win_message=The wheel landed on %number%, %color%. Your %winners% bet won %winnings% %item%.
+single_lose_message=The wheel landed on %number%, %color%. Your bet did not hit, and you lost %amount% %item%.
+multi_win_message=The wheel landed on %number%, %color%. Your winning bet types were %winners%, for a net gain of %amount% %item%.
+multi_lose_message=The wheel landed on %number%, %color%. Your winning bet types were %winners%, but with %loss_count% losing bets it was a net loss of %amount% %item%.
+multi_alllose_message=The wheel landed on %number%, %color%. None of your %loss_count% bets hit, and you lost %amount% %item%.
+
+; Outcomes
+
+[outcomes]
+
+; Required header — removing or renaming this will break the file.
+
+Red:1:set:1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36
+Black:1:set:2,4,6,8,10,11,13,15,17,20,22,24,26,28,29,31,33,35
+Even:1:even:
+Odd:1:odd:
+Low:1:range:1-18
+High:1:range:19-36
+Dozen 1:2:range:1-12
+Dozen 2:2:range:13-24
+Dozen 3:2:range:25-36
+Column 1:2:set:1,4,7,10,13,16,19,22,25,28,31,34
+Column 2:2:set:2,5,8,11,14,17,20,23,26,29,32,35
+Column 3:2:set:3,6,9,12,15,18,21,24,27,30,33,36
+Number 0:35:number:0
+Number 1:35:number:1
+Number 2:35:number:2
+Number 3:35:number:3
+Number 4:35:number:4
+Number 5:35:number:5
+Number 6:35:number:6
+Number 7:35:number:7
+Number 8:35:number:8
+Number 9:35:number:9
+Number 10:35:number:10
+Number 11:35:number:11
+Number 12:35:number:12
+Number 13:35:number:13
+Number 14:35:number:14
+Number 15:35:number:15
+Number 16:35:number:16
+Number 17:35:number:17
+Number 18:35:number:18
+Number 19:35:number:19
+Number 20:35:number:20
+Number 21:35:number:21
+Number 22:35:number:22
+Number 23:35:number:23
+Number 24:35:number:24
+Number 25:35:number:25
+Number 26:35:number:26
+Number 27:35:number:27
+Number 28:35:number:28
+Number 29:35:number:29
+Number 30:35:number:30
+Number 31:35:number:31
+Number 32:35:number:32
+Number 33:35:number:33
+Number 34:35:number:34
+Number 35:35:number:35
+Number 36:35:number:36
