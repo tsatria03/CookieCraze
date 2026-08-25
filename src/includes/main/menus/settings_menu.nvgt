@@ -54,6 +54,7 @@ int lotteryautoscratch = form.create_checkbox("Enable automatic scratch revealin
 int flipautoflip = form.create_checkbox("Enable automatic flipping for the cookie flipper mini game.", flipmode);
 int diceautoroll = form.create_checkbox("Enable automatic rolling for the dice roller mini game.", dicemode);
 int highlowautoreveal = form.create_checkbox("Enable automatic card revealing for the higher or lower mini game.", highlowmode);
+int rouletteautospin = form.create_checkbox("Enable automatic wheel spinning for the roulette mini game.", roulettemode);
 int bakeSplitToggle = form.create_checkbox("Enable evenly distributing cookie production across automated slots.", slotDistribution);
 int manualBakeSplitToggle = form.create_checkbox("Enable evenly distributing cookie production across manual slots.", manualSlotDistribution);
 int showLockedToggle = form.create_checkbox("Enable showing locked items and menus in the shop list.", show_locked_shops);
@@ -105,6 +106,7 @@ lotterymode = form.is_checked(lotteryautoscratch);
 flipmode = form.is_checked(flipautoflip);
 dicemode = form.is_checked(diceautoroll);
 highlowmode = form.is_checked(highlowautoreveal);
+roulettemode = form.is_checked(rouletteautospin);
         if (form.is_pressed(restsets))
         {
 setupmenu(false);
