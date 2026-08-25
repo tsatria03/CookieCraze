@@ -1,0 +1,96 @@
+class roulette_outcome
+{
+    string name;
+    double payout;
+    string match_type;
+    string match_value;
+}
+
+class roulette_config
+{
+    double min_bet = 1.0;
+    double max_bet = 0.0;
+    double confirm_threshold = 0.0;
+    bool confirm_use_percent = false;
+    int pocket_count = 37;
+    int spin_base_ticks = 50;
+    int spin_random_range = 50;
+    int spin_base_delay = 20;
+    int spin_growth = 2;
+    string spin_sound = "roulette/spin.ogg";
+    string land_sound = "roulette/land.ogg";
+    string bet_sound = "roulette/bet.ogg";
+    string win_sound = "roulette/win.ogg";
+    string lose_sound = "roulette/lose.ogg";
+    string single_win_message = "The wheel landed on %number%, %color%. Your %winners% bet won %winnings% %item%.";
+    string single_lose_message = "The wheel landed on %number%, %color%. Your bet did not hit, and you lost %amount% %item%.";
+    string multi_win_message = "The wheel landed on %number%, %color%. Your winning bet types were %winners%, for a net gain of %amount% %item%.";
+    string multi_lose_message = "The wheel landed on %number%, %color%. Your winning bet types were %winners%, but with %loss_count% losing bets it was a net loss of %amount% %item%.";
+    string multi_alllose_message = "The wheel landed on %number%, %color%. None of your %loss_count% bets hit, and you lost %amount% %item%.";
+    roulette_outcome[] outcomes;
+}
+
+roulette_config rouletteConfig;
+
+void parse_roulette_table(string filepath)
+{
+    rouletteConfig.outcomes.resize(0);
+    file f;
+    if (!f.open(filepath, "r"))
+        return;
+    bool in_outcomes = false;
+    while (!f.eof)
+    {
+        string line = f.read_line();
+        while (line.length() > 0 && (line.substr(line.length() - 1) == "\n" || line.substr(line.length() - 1) == "\r"))
+            line = line.substr(0, line.length() - 1);
+        if (line.length() == 0 || line.substr(0, 2) == "//" || line.substr(0, 1) == "#" || line.substr(0, 1) == ";")
+            continue;
+        if (line == "[outcomes]") { in_outcomes = true; continue; }
+        if (!in_outcomes)
+        {
+            int eq = line.find("=");
+            if (eq == -1) continue;
+            string key = line.substr(0, eq);
+            string val = line.substr(eq + 1);
+            if (key == "min_bet") rouletteConfig.min_bet = max(1.0, string_to_number(val));
+            else if (key == "max_bet") rouletteConfig.max_bet = max(0.0, string_to_number(val));
+            else if (key == "confirm_threshold")
+            {
+                int colon = val.find(":");
+                if (colon != -1)
+                {
+                    rouletteConfig.confirm_threshold = max(0.0, string_to_number(val.substr(0, colon)));
+                    rouletteConfig.confirm_use_percent = (val.substr(colon + 1) == "true");
+                }
+                else
+                    rouletteConfig.confirm_threshold = max(0.0, string_to_number(val));
+            }
+            else if (key == "pocket_count") rouletteConfig.pocket_count = max(2, string_to_int(val));
+            else if (key == "spin_base_ticks") rouletteConfig.spin_base_ticks = max(1, string_to_int(val));
+            else if (key == "spin_random_range") rouletteConfig.spin_random_range = max(0, string_to_int(val));
+            else if (key == "spin_base_delay") rouletteConfig.spin_base_delay = max(1, string_to_int(val));
+            else if (key == "spin_growth") rouletteConfig.spin_growth = max(0, string_to_int(val));
+            else if (key == "spin_sound") rouletteConfig.spin_sound = val;
+            else if (key == "land_sound") rouletteConfig.land_sound = val;
+            else if (key == "bet_sound") rouletteConfig.bet_sound = val;
+            else if (key == "win_sound") rouletteConfig.win_sound = val;
+            else if (key == "lose_sound") rouletteConfig.lose_sound = val;
+            else if (key == "single_win_message") rouletteConfig.single_win_message = val;
+            else if (key == "single_lose_message") rouletteConfig.single_lose_message = val;
+            else if (key == "multi_win_message") rouletteConfig.multi_win_message = val;
+            else if (key == "multi_lose_message") rouletteConfig.multi_lose_message = val;
+            else if (key == "multi_alllose_message") rouletteConfig.multi_alllose_message = val;
+            continue;
+        }
+        string[] parts = parse_delimited_line(line, 3);
+        if (parts.length() < 3) continue;
+        roulette_outcome o;
+        o.name = parts[0];
+        o.payout = string_to_number(parts[1]);
+        o.match_type = parts[2];
+        o.match_value = (parts.length() >= 4) ? parts[3] : "";
+        rouletteConfig.outcomes.insert_last(o);
+    }
+    f.close();
+}

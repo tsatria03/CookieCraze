@@ -51,6 +51,12 @@ if (highlowConfig.deck.length() == 0)
     alert("Error", "Could not load higher or lower data from data/config/tables/highlow.table. Please check the file and try again.");
     exit();
 }
+parse_roulette_table("data/config/tables/roulette.table");
+if (rouletteConfig.outcomes.length() == 0)
+{
+    alert("Error", "Could not load roulette data from data/config/tables/roulette.table. Please check the file and try again.");
+    exit();
+}
 parse_combos_table("data/config/tables/combos.table", combosConfig);
 parse_achievements("data/config/tables/achievements.table", loadedAchievements, loadedAchievementCategories);
 parse_prestige_table("data/config/tables/prestige.table");
