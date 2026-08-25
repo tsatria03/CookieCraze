@@ -1295,6 +1295,21 @@ string roulette_join(string[]@ arr, string sep)
     return result;
 }
 
+bool roulette_spin_wait(int milliseconds)
+{
+    timer waitTimer;
+    waitTimer.restart();
+    while (waitTimer.elapsed < milliseconds)
+    {
+        wait(5);
+        if (key_pressed(KEY_RETURN) || key_pressed(KEY_NUMPAD_ENTER) || key_pressed(KEY_SPACE))
+            return true;
+        form.monitor();
+        minigame_input("roulette");
+    }
+    return false;
+}
+
 void roulettegame()
 {
     form.reset();
@@ -1413,17 +1428,19 @@ void roulettegame()
             speak_buffer("You staked " + perDisplay + " on each of " + numBets + " bet types, for a total of " + totalDisplay + ".");
             int winning = random(0, rouletteConfig.pocket_count - 1);
             if (roulettemode)
-            {
                 speak_buffer("The wheel is spinning.");
-                int ticks = rouletteConfig.spin_base_ticks + random(0, rouletteConfig.spin_random_range);
-                for (int i = 0; i < ticks; i++)
-                {
-                    pool.play_stationary("sounds/minigames/" + resolve_sound(rouletteConfig.spin_sound), false);
-                    mini_wait_async(rouletteConfig.spin_base_delay + i * rouletteConfig.spin_growth, "roulette");
-                }
-            }
             else
-                dlg_buffer("The wheel is spinning. Press enter or space to see where it lands.");
+                speak_buffer("The wheel is spinning. Press enter or space to see where it lands.");
+            int ticks = rouletteConfig.spin_base_ticks + random(0, rouletteConfig.spin_random_range);
+            for (int i = 0; i < ticks; i++)
+            {
+                pool.play_stationary("sounds/minigames/" + resolve_sound(rouletteConfig.spin_sound), false);
+                int delay = rouletteConfig.spin_base_delay + i * rouletteConfig.spin_growth;
+                if (roulettemode)
+                    mini_wait_async(delay, "roulette");
+                else if (roulette_spin_wait(delay))
+                    break;
+            }
             pool.play_stationary("sounds/minigames/" + resolve_sound(rouletteConfig.land_sound), false);
             double totalReturn = 0;
             string[] winnerNames;
