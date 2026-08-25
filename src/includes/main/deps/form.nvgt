@@ -2812,6 +2812,11 @@ class control {
 					list[counter].checked = true;
 				speak("All items selected", true);
 			}
+			if (list_multiselect && (((key_down(KEY_LCTRL)) || (key_down(KEY_RCTRL))) && (key_repeating(KEY_U)))) {
+				for (int counter = 0; counter <= list_length; counter++)
+					list[counter].checked = false;
+				speak("All items unselected", true);
+			}
 			if (key_repeating(list_is_tab_panel ? KEY_LEFT : KEY_UP)) {
 				if (list_position <= 0) {
 					if (list_repeat_boundary_items && list_position == 0) {
