@@ -199,6 +199,10 @@ if (sd.d.exists("stat_highlow_games")) stat_highlow_games = sd.read_double("stat
 if (sd.d.exists("stat_highlow_wins")) stat_highlow_wins = sd.read_double("stat_highlow_wins");
 if (sd.d.exists("stat_highlow_losses")) stat_highlow_losses = sd.read_double("stat_highlow_losses");
 if (sd.d.exists("stat_highlow_highest_streak")) stat_highlow_highest_streak = sd.read_double("stat_highlow_highest_streak");
+if (sd.d.exists("stat_roulette_games")) stat_roulette_games = sd.read_double("stat_roulette_games");
+if (sd.d.exists("stat_roulette_wins")) stat_roulette_wins = sd.read_double("stat_roulette_wins");
+if (sd.d.exists("stat_roulette_losses")) stat_roulette_losses = sd.read_double("stat_roulette_losses");
+if (sd.d.exists("stat_roulette_straight_hits")) stat_roulette_straight_hits = sd.read_double("stat_roulette_straight_hits");
 if (sd.d.exists("stat_slot_spins")) stat_slot_spins = sd.read_double("stat_slot_spins");
 if (sd.d.exists("stat_slot_wins")) stat_slot_wins = sd.read_double("stat_slot_wins");
 if (sd.d.exists("stat_slot_losses")) stat_slot_losses = sd.read_double("stat_slot_losses");
@@ -331,6 +335,10 @@ sd.add("stat_highlow_games", stat_highlow_games);
 sd.add("stat_highlow_wins", stat_highlow_wins);
 sd.add("stat_highlow_losses", stat_highlow_losses);
 sd.add("stat_highlow_highest_streak", stat_highlow_highest_streak);
+sd.add("stat_roulette_games", stat_roulette_games);
+sd.add("stat_roulette_wins", stat_roulette_wins);
+sd.add("stat_roulette_losses", stat_roulette_losses);
+sd.add("stat_roulette_straight_hits", stat_roulette_straight_hits);
 sd.add("stat_slot_spins", stat_slot_spins);
 sd.add("stat_slot_wins", stat_slot_wins);
 sd.add("stat_slot_losses", stat_slot_losses);
@@ -451,6 +459,10 @@ if(st.d.exists("highlowmode"))
 {
 highlowmode=st.read_bool("highlowmode");
 }
+if(st.d.exists("roulettemode"))
+{
+roulettemode=st.read_bool("roulettemode");
+}
 if (st.d.exists("show_locked_shops"))
 {
 show_locked_shops = st.read_bool("show_locked_shops");
@@ -502,6 +514,7 @@ jackmode=true;
 lotterymode=true;
 dicemode=true;
 highlowmode=true;
+roulettemode=true;
 slotmode=true;
 orderedSyms=true;
 show_locked_shops=true;
@@ -552,6 +565,7 @@ st.add("lotterymode",lotterymode);
 st.add("flipmode",flipmode);
 st.add("dicemode",dicemode);
 st.add("highlowmode",highlowmode);
+st.add("roulettemode",roulettemode);
 st.add("show_locked_shops", show_locked_shops);
 st.add("automationMultiplier", automationMultiplier);
 st.add("slotMultiplier", slotMultiplier);
