@@ -169,7 +169,20 @@ The deck, starting multiplier, streak growth, tie rule, ace ranking, sounds, mes
 
 You can reveal cards manually, or enable automatic card revealing in the settings so each card appears after a short random delay. When disabled, each result is held until you press enter or space.
 
-Slot machine. Unlocked at rank 60.
+Roulette. Unlocked at rank 60.
+
+Intermediate. The odds are familiar casino odds, but choosing and stacking several bets on one spin rewards a little planning.
+Stake one item across as many bet types as you like, then spin the wheel and see which of your bets pay out.
+
+Before spinning, choose an item to bet and enter your bet amount. When betting money, you can enter the amount as a dollar value, for example type 1 to bet $1.00 or 0.50 to bet 50 cents. All other items are entered as whole numbers. Then check one or more bet types in the list, such as a color, even or odd, a dozen, a column, or a single number. Your bet amount is staked on each bet type you check, so checking three bet types with a bet of 10 stakes 30 in total.
+
+When the wheel lands, every bet type you checked is resolved against the winning pocket. Bet types that match pay out at their listed odds, while the rest lose their stake, and the round reports your combined net result. A single number pays the most at 35 to 1 but hits the least often, while broad bets like red, black, even, or odd pay 1 to 1 and hit close to half the time. If your winning and losing bets cancel out exactly, the spin is a break even and counts as neither a win nor a loss.
+
+The bet types and their odds, the pocket count, the spin timing, sounds, messages, and bet limits are all configurable in roulette.table. A configurable confirmation prompt can be set to appear when your total stake reaches a certain threshold.
+
+You can spin manually, or enable automatic wheel spinning in the settings so the wheel runs its full animation and announces where it lands. When disabled, the animation is skipped and the result is held until you press enter or space.
+
+Slot machine. Unlocked at rank 70.
 
 Intermediate. Multiple reels, payout combinations, and bet management make it more complex than early minigames.
 Spin the reels and match symbols to win multiples of your bet.
@@ -181,7 +194,7 @@ A configurable confirmation prompt can be set to appear when your bet reaches a 
 
 Rank ups and achievement unlocks are checked and can fire while you are playing any of the minigames mentioned above.
 
-Baking slots manager. Unlocked at rank 70.
+Baking slots manager. Unlocked at rank 80.
 
 Advanced. Requires understanding the entire baking system deeply enough to configure and automate it effectively.
 Manage and configure your baking slots to balance automated and manual cookie production.
@@ -192,10 +205,10 @@ Auto slots bake cookies passively without any input, scaling with your auto cook
 Manual slots multiply the output of each bake press, scaling with your manual cookie stat.
 
 You can purchase additional slots of either type, and toggle individual auto slots on or off to fine-tune how much of your production is automated versus manual.
-Both submenus are locked behind a rank requirement, defaulting to rank 70.
+Both submenus are locked behind a rank requirement, defaulting to rank 80.
 The slot manager menu itself is always accessible so you can see what is coming, but you cannot enter either submenu until you reach the required rank.
 
-Combos. Unlocked at rank 80.
+Combos. Unlocked at rank 90.
 
 Advanced. Demands consistent timing, significant progression in manual upgrades, and understanding of multiplier stacking to use effectively. Build a combo by pressing the bake button multiple times in quick succession. The combo does not activate immediately — you must reach a minimum number of consecutive presses within the time window before it kicks in. Once activated, a sound plays and a message announces that the combo has started. From that point, each press within the window increments your combo count and applies a multiplier to your manual cookie output. Reaching a combo tier plays a sound and announces the new multiplier. Missing the window at any point breaks your combo, plays a break sound, and resets everything back to zero.
 
@@ -307,6 +320,14 @@ Wins: counts rounds where you banked your earnings after at least one correct gu
 Losses: counts rounds that ended on a wrong guess.
 Highest streak: the longest run of correct guesses you have ever reached in a single round. This is a lifetime personal best and only ever goes up.
 
+Roulette.
+
+Spins: counts every spin of the wheel.
+Wins: counts spins that ended with a net gain across all your bets.
+Losses: counts spins that ended with a net loss.
+Straight hits: counts winning straight-up single number bets, the rarest and highest paying bet in the game.
+Break-evens: counts spins where your winning and losing bets canceled out to exactly zero.
+
 Blackjack.
 
 Hands played: counts every round where a bet was placed and cards were dealt.
@@ -354,7 +375,7 @@ Achievements.
 
 Track your progress and earn recognition for milestones across every part of the game.
 
-There are many achievements spread across all tracked statistics, including baking, baking slots manager, economy, upgrades, bundles, events, blackjack, the cookie flipper, the cookie lottery, the dice roller, the slot machine, quests, and combos.
+There are many achievements spread across all tracked statistics, including baking, baking slots manager, economy, upgrades, bundles, events, blackjack, the cookie flipper, the cookie lottery, the dice roller, higher or lower, roulette, the slot machine, quests, and combos.
 Each achievement has a name, a description, and a hint that tells you what you need to do to unlock it.
 
 Achievements are shown in a dedicated menu accessible from the main game interface. The menu is organised into categories covering baking, economy, events, minigames, and more.
@@ -515,7 +536,7 @@ The word coins only appears in the config files themselves as a technical label,
 All of the configuration files are located in the data/config folder, and are split into three subfolders.
 Lines starting with a semicolon, hash, or double slash are treated as comments and ignored by the parser.
 
-Seven of the files, ranks.table, slots.table, prestige.table, quests.table, lottery.table, combos.table, and highlow.table, use section headers in square brackets such as [settings], [sounds], [default], [default_reward], [rewards], [payouts], [tiers], [quests], [prize:id], and [deck]. These are not cosmetic.
+Eight of the files, ranks.table, slots.table, prestige.table, quests.table, lottery.table, combos.table, highlow.table, and roulette.table, use section headers in square brackets such as [settings], [sounds], [default], [default_reward], [rewards], [payouts], [tiers], [quests], [prize:id], [deck], and [outcomes]. These are not cosmetic.
 The parser uses them to know which format to expect. Do not remove or rename these headers, or the parser will not be able to read the file correctly.
 Each functional header has a warning comment placed directly below it inside the file as a reminder. That comment is cosmetic and can be removed, but the header itself must stay exactly as written.
 
@@ -870,6 +891,12 @@ highlow_wins = total higher or lower rounds banked after at least one correct gu
 highlow_losses = total higher or lower rounds ended by a wrong guess.
 highlow_highest_streak = the longest run of correct guesses reached in a single higher or lower round. A lifetime best that only ever goes up.
 
+roulette_games = total roulette spins.
+roulette_wins = total roulette spins that ended in a net gain.
+roulette_losses = total roulette spins that ended in a net loss.
+roulette_straight_hits = total winning straight-up single number bets.
+roulette_breaks = total roulette spins that broke even.
+
 highest_combo_reached = the highest consecutive manual press combo ever reached. A lifetime best that only ever goes up.
 combos_started = total combos that activated after reaching the required press count.
 combos_broken = total combos that expired by missing the press window.
@@ -1116,6 +1143,104 @@ The text spoken when you bank your earnings. Supports the following placeholders
 %bet% is replaced with the amount you bet.
 %item% is replaced with the name of the item bet, for example cookies or auto cookies.
 
+roulette.table
+
+Location: data/config/tables/roulette.table
+
+Defines all roulette settings including the bet types and their odds, the pocket count, the spin timing, bet limits, sounds, and messages.
+
+min_bet
+The minimum amount of any item a player must bet on each bet type. Set to 1 to allow any positive bet.
+
+max_bet
+The maximum amount of any item a player can bet on each bet type. Set to 0 to allow unlimited bets.
+
+confirm_threshold
+Format: confirm_threshold=amount:use_percent
+
+Triggers a yes or no confirmation prompt when the total stake, your bet amount times the number of bet types you checked, meets or exceeds the threshold. Works the same way as in jacks.table and slots.table.
+
+pocket_count
+The number of pockets on the wheel, which sets the range of winning numbers from 0 up to one less than this value. Standard European roulette uses 37, giving numbers 0 through 36.
+
+spin_base_ticks
+The base number of ticking sounds the wheel plays during an automatic spin. Higher values make the spin last longer.
+
+spin_random_range
+A random number of extra ticks, from 0 up to this value, is added to spin_base_ticks on each spin so the spin length varies. Set to 0 for a fixed spin length.
+
+spin_base_delay
+The starting gap in milliseconds between the first ticks of the spin. Smaller values make the wheel start faster.
+
+spin_growth
+How many milliseconds are added to the gap after each tick, so the wheel gradually slows down. Larger values make it decelerate more sharply.
+
+Outcomes section.
+Format: name:payout:match_type:match_value
+
+Defines every bet type the player can check and bet on. Each line is one bet type. This section uses the required [outcomes] header.
+
+name
+The spoken name of the bet type, for example Red, Even, Dozen 1, or Number 7. Color detection for the %color% placeholder looks for the bet types named Red and Black.
+
+payout
+The winning multiplier for this bet type, paid on top of the returned stake. For example 1 pays even money, 2 pays two to one, and 35 pays thirty-five to one.
+
+match_type
+How the winning number is tested against this bet type. Supported values are number, even, odd, range, and set.
+
+match_value
+The data the match_type uses. For number it is a single number. For range it is two numbers joined by a hyphen, such as 1-18. For set it is a comma separated list of numbers, such as 1,3,5. For even and odd it is left empty, and 0 counts as neither even nor odd, which is where the house edge comes from.
+
+spin_sound
+Sound to play for each tick of the wheel during a spin. Relative to sounds/minigames/. Supports random range syntax.
+
+land_sound
+Sound to play when the ball settles into a pocket. Relative to sounds/minigames/.
+
+bet_sound
+Sound to play when your bets are committed and the spin begins. Relative to sounds/minigames/.
+
+win_sound
+Sound to play when the spin ends in a net gain. Relative to sounds/minigames/.
+
+lose_sound
+Sound to play when the spin ends in a net loss. Relative to sounds/minigames/.
+
+break_sound
+Sound to play when the spin breaks even, meaning your winning and losing bets cancel out exactly. Relative to sounds/minigames/.
+
+single_win_message
+The text spoken when you bet a single bet type and it wins. Supports the following placeholders.
+
+single_lose_message
+The text spoken when you bet a single bet type and it loses. Supports the following placeholders.
+
+multi_win_message
+The text spoken when you bet more than one bet type and come out with a net gain. Supports the following placeholders.
+
+multi_lose_message
+The text spoken when you bet more than one bet type, where some may win, but you come out with a net loss. Supports the following placeholders.
+
+multi_alllose_message
+The text spoken when you bet more than one bet type and none of them hit. Supports the following placeholders.
+
+break_message
+The text spoken when the spin breaks even, meaning your winning and losing bets cancel out to exactly zero. Supports the following placeholders.
+
+%number% is replaced with the winning pocket number.
+%color% is replaced with the winning pocket color, red, black, or green.
+%winners% is replaced with the names of the bet types that won.
+%losers% is replaced with the names of the bet types that lost.
+%win_count% is replaced with how many of your bet types won.
+%loss_count% is replaced with how many of your bet types lost.
+%winnings% is replaced with the total winnings from your winning bet types, used in the single win message.
+%net% is replaced with the size of your net gain or loss.
+%amount% is replaced with the size of your net gain or loss.
+%item% is replaced with the name of the item bet, for example cookies or auto cookies.
+
+The message spoken as the wheel begins spinning is fixed in the game and is not set in this file. During automatic spinning it says the wheel is spinning, and in manual mode it also tells you to press enter or space to see where it lands.
+
 jacks.table
 
 Location: data/config/tables/jacks.table
@@ -1252,8 +1377,11 @@ blackjack = unlocks the blackjack minigame.
 flipper = unlocks the cookie flipper minigame.
 lottery = unlocks the cookie lottery and the ticket shop.
 dice = unlocks the dice roller minigame.
+highlow = unlocks the higher or lower minigame.
+roulette = unlocks the roulette minigame.
 slots = unlocks the slot machine minigame.
 slotmanager = unlocks the baking slots manager. Also sets the rank gate for the baking slots manager menu automatically.
+combos = unlocks the manual baking combo system.
 
 message
 The text spoken to the player when this reward fires.
@@ -1533,6 +1661,12 @@ highlow_games = total higher or lower rounds played.
 highlow_wins = total higher or lower rounds banked after at least one correct guess.
 highlow_losses = total higher or lower rounds ended by a wrong guess.
 highlow_highest_streak = the longest run of correct guesses reached in a single higher or lower round. A lifetime best that only ever goes up.
+
+roulette_games = total roulette spins.
+roulette_wins = total roulette spins that ended in a net gain.
+roulette_losses = total roulette spins that ended in a net loss.
+roulette_straight_hits = total winning straight-up single number bets.
+roulette_breaks = total roulette spins that broke even.
 
 highest_combo_reached = the highest consecutive manual press combo ever reached. A lifetime best that only ever goes up.
 combos_started = total combos that activated after reaching the required press count.

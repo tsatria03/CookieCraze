@@ -21,7 +21,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Minigame build guide](project_minigame_build_guide.md) — repeatable steps to add a new minigame: blueprint first, plan sections, code one section per turn and wait for commit, docks last; full file/function wiring map.
 
 ## Ideas / backlog
-- [Feature ideas](project_feature_ideas.md) — 6.4+ wish list (offline progress, golden-cookie bonus, daily streak, auto-buyer, boosts shop, achievement rewards, QoL) + future-minigame candidates (roulette with multi-bet, mines, video poker, keno, audio Simon). Higher or lower + number-format shipped in 6.4; rest unbuilt.
+- [Feature ideas](project_feature_ideas.md) — 6.4+ wish list (offline progress, golden-cookie bonus, daily streak, auto-buyer, boosts shop, QoL) + future-minigame candidates (mines, video poker, keno, audio Simon). Higher or lower + number-format shipped in 6.4; achievement rewards + roulette shipped in 6.5 (roulette's 6.6 changelog follow-ups reserved); rest unbuilt.
 
 ## NVGT / AngelScript gotchas — these cause compile failures (game won't launch)
 - [AngelScript braceless if](project_angelscript_braceless_if.md) — a braceless if/else governs one statement; a second orphans the else → compile error.
