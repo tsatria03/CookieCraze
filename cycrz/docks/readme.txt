@@ -860,6 +860,20 @@ blackjack_wins = total blackjack rounds won.
 blackjack_losses = total blackjack rounds lost.
 blackjack_pushes = total blackjack rounds that ended in a tie.
 
+lottery_tickets_bought = total scratch tickets purchased across all tiers.
+lottery_tickets_scratched = total scratch tickets scratched, regardless of outcome.
+lottery_wins = total scratches that awarded a prize.
+lottery_losses = total scratches that returned nothing.
+
+highlow_games = total higher or lower rounds played.
+highlow_wins = total higher or lower rounds banked after at least one correct guess.
+highlow_losses = total higher or lower rounds ended by a wrong guess.
+highlow_highest_streak = the longest run of correct guesses reached in a single higher or lower round. A lifetime best that only ever goes up.
+
+highest_combo_reached = the highest consecutive manual press combo ever reached. A lifetime best that only ever goes up.
+combos_started = total combos that activated after reaching the required press count.
+combos_broken = total combos that expired by missing the press window.
+
 quests_completed = total quests completed across all prestige cycles.
 rerolls_performed = total times a quest has been rerolled.
 
@@ -1509,6 +1523,20 @@ blackjack_hands = total blackjack rounds played.
 blackjack_wins = total blackjack rounds won.
 blackjack_losses = total blackjack rounds lost.
 blackjack_pushes = total blackjack rounds that ended in a tie.
+
+lottery_tickets_bought = total scratch tickets purchased across all tiers.
+lottery_tickets_scratched = total scratch tickets scratched, regardless of outcome.
+lottery_wins = total scratches that awarded a prize.
+lottery_losses = total scratches that returned nothing.
+
+highlow_games = total higher or lower rounds played.
+highlow_wins = total higher or lower rounds banked after at least one correct guess.
+highlow_losses = total higher or lower rounds ended by a wrong guess.
+highlow_highest_streak = the longest run of correct guesses reached in a single higher or lower round. A lifetime best that only ever goes up.
+
+highest_combo_reached = the highest consecutive manual press combo ever reached. A lifetime best that only ever goes up.
+combos_started = total combos that activated after reaching the required press count.
+combos_broken = total combos that expired by missing the press window.
 
 threshold
 The value the stat must reach to complete this quest.
