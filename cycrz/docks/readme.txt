@@ -897,7 +897,7 @@ Use this to tell the player what they need to do to unlock it.
 
 silent
 Required. Set to true to suppress the buffer message and sound when this achievement is triggered. Set to false to allow the normal notification behavior.
-This overrides the global achievement sound setting for that specific achievement. Recommended for achievements that track stats which closely mirror another, to avoid redundant notifications.
+Recommended for achievements that track stats which closely mirror another, to avoid redundant notifications. This is a per achievement setting, separate from muting the achievements buffer, which silences every achievement notification at once.
 Silent achievements are still tracked and appear in the achievements menu and achievement statistics screen as normal. Only the notification is suppressed.
 
 hidden
