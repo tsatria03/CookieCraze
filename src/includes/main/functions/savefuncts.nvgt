@@ -203,6 +203,7 @@ if (sd.d.exists("stat_roulette_games")) stat_roulette_games = sd.read_double("st
 if (sd.d.exists("stat_roulette_wins")) stat_roulette_wins = sd.read_double("stat_roulette_wins");
 if (sd.d.exists("stat_roulette_losses")) stat_roulette_losses = sd.read_double("stat_roulette_losses");
 if (sd.d.exists("stat_roulette_straight_hits")) stat_roulette_straight_hits = sd.read_double("stat_roulette_straight_hits");
+if (sd.d.exists("stat_roulette_breaks")) stat_roulette_breaks = sd.read_double("stat_roulette_breaks");
 if (sd.d.exists("stat_slot_spins")) stat_slot_spins = sd.read_double("stat_slot_spins");
 if (sd.d.exists("stat_slot_wins")) stat_slot_wins = sd.read_double("stat_slot_wins");
 if (sd.d.exists("stat_slot_losses")) stat_slot_losses = sd.read_double("stat_slot_losses");
@@ -339,6 +340,7 @@ sd.add("stat_roulette_games", stat_roulette_games);
 sd.add("stat_roulette_wins", stat_roulette_wins);
 sd.add("stat_roulette_losses", stat_roulette_losses);
 sd.add("stat_roulette_straight_hits", stat_roulette_straight_hits);
+sd.add("stat_roulette_breaks", stat_roulette_breaks);
 sd.add("stat_slot_spins", stat_slot_spins);
 sd.add("stat_slot_wins", stat_slot_wins);
 sd.add("stat_slot_losses", stat_slot_losses);

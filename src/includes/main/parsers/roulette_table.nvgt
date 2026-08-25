@@ -22,11 +22,13 @@ class roulette_config
     string bet_sound = "roulette/bet.ogg";
     string win_sound = "roulette/win.ogg";
     string lose_sound = "roulette/lose.ogg";
+    string break_sound = "roulette/break.ogg";
     string single_win_message = "The wheel landed on %number%, %color%. Your %winners% bet won %winnings% %item%.";
     string single_lose_message = "The wheel landed on %number%, %color%. Your bet did not hit, and you lost %amount% %item%.";
     string multi_win_message = "The wheel landed on %number%, %color%. Your winning bet types were %winners%, for a net gain of %amount% %item%.";
     string multi_lose_message = "The wheel landed on %number%, %color%. Your winning bet types were %winners%, but with %loss_count% losing bets it was a net loss of %amount% %item%.";
     string multi_alllose_message = "The wheel landed on %number%, %color%. None of your %loss_count% bets hit, and you lost %amount% %item%.";
+    string break_message = "The wheel landed on %number%, %color%. Your winning and losing bets canceled out, so you broke even.";
     roulette_outcome[] outcomes;
 }
 
@@ -76,11 +78,13 @@ void parse_roulette_table(string filepath)
             else if (key == "bet_sound") rouletteConfig.bet_sound = val;
             else if (key == "win_sound") rouletteConfig.win_sound = val;
             else if (key == "lose_sound") rouletteConfig.lose_sound = val;
+            else if (key == "break_sound") rouletteConfig.break_sound = val;
             else if (key == "single_win_message") rouletteConfig.single_win_message = val;
             else if (key == "single_lose_message") rouletteConfig.single_lose_message = val;
             else if (key == "multi_win_message") rouletteConfig.multi_win_message = val;
             else if (key == "multi_lose_message") rouletteConfig.multi_lose_message = val;
             else if (key == "multi_alllose_message") rouletteConfig.multi_alllose_message = val;
+            else if (key == "break_message") rouletteConfig.break_message = val;
             continue;
         }
         string[] parts = parse_delimited_line(line, 3);

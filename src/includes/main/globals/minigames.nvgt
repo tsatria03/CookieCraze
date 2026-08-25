@@ -1246,3 +1246,257 @@ void highlowgame()
 }
 
 void highlow_game_input() { minigame_input("highlow"); }
+
+bool roulette_matches(roulette_outcome@ o, int number)
+{
+    if (o.match_type == "number")
+        return string_to_int(o.match_value) == number;
+    else if (o.match_type == "even")
+        return number != 0 && (number % 2 == 0);
+    else if (o.match_type == "odd")
+        return number != 0 && (number % 2 == 1);
+    else if (o.match_type == "range")
+    {
+        int dash = o.match_value.find("-");
+        if (dash == -1) return false;
+        int lo = string_to_int(o.match_value.substr(0, dash));
+        int hi = string_to_int(o.match_value.substr(dash + 1));
+        return number >= lo && number <= hi;
+    }
+    else if (o.match_type == "set")
+    {
+        string[] vals = o.match_value.split(",");
+        for (uint i = 0; i < vals.length(); i++)
+            if (string_to_int(vals[i]) == number) return true;
+    }
+    return false;
+}
+
+string roulette_color(int number)
+{
+    for (uint i = 0; i < rouletteConfig.outcomes.length(); i++)
+    {
+        roulette_outcome@ o = rouletteConfig.outcomes[i];
+        if ((o.name == "Red" || o.name == "Black") && o.match_type == "set")
+        {
+            string[] vals = o.match_value.split(",");
+            for (uint j = 0; j < vals.length(); j++)
+                if (string_to_int(vals[j]) == number) return (o.name == "Red") ? "red" : "black";
+        }
+    }
+    return "green";
+}
+
+string roulette_join(string[]@ arr, string sep)
+{
+    string result = "";
+    for (uint i = 0; i < arr.length(); i++)
+        result += arr[i] + (i < arr.length() - 1 ? sep : "");
+    return result;
+}
+
+void roulettegame()
+{
+    form.reset();
+    form.create_window("Roulette", false);
+    int betChoice = form.create_list("Choose an &item to bet:", 5);
+    form.add_list_item(betChoice, "Cookies");
+    form.add_list_item(betChoice, "Currency");
+    form.add_list_item(betChoice, "Auto Cookies");
+    form.add_list_item(betChoice, "Auto Cookie Speeds");
+    form.add_list_item(betChoice, "Manual Cookies");
+    int outcomeChoices = form.create_list("Choose your bet &types:", rouletteConfig.outcomes.length(), true, false);
+    for (uint i = 0; i < rouletteConfig.outcomes.length(); i++)
+        form.add_list_item(outcomeChoices, rouletteConfig.outcomes[i].name, rouletteConfig.outcomes[i].name, -1, false);
+    int betInput = form.create_input_box("Enter your &bet amount:", "", "", 0, false, false, false);
+    int spinButton = form.create_button("&Spin the wheel", true);
+    form.set_disallowed_chars(betInput, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()[]{};:'\"\\|,<>?/+-=`~_", false, "This character is not allowed.");
+    form.focus(betChoice);
+    int selectedBet = 0;
+    double betAmount = 0;
+    string betItemName = "";
+    while (true)
+    {
+        wait(5);
+        form.monitor();
+        if (autocookie <= 0) { bakemode = 0; autocookie = 0; }
+        if (coins <= 0) coins = 0;
+        if (cookies <= 0) cookies = 0;
+        if (cookiespeed <= 0) cookiespeed = 0;
+        if (manulcookie <= 0) manulcookie = 0;
+        if (clicktime <= 50) clicktime = 50;
+        if (clicktime >= 1000) clicktime = 1000;
+        if (form.get_current_focus() != betInput)
+            roulette_game_input();
+        if (key_pressed(KEY_ESCAPE))
+        {
+            pool.destroy_sound(gameslot);
+            mingamsmenu();
+        }
+        check_rank();
+        check_achievements(loadedAchievements, achievementsUnlocked);
+        if (form.is_pressed(spinButton))
+        {
+            selectedBet = form.get_list_position(betChoice);
+            string betStr = form.get_text(betInput);
+            double betNum = floor(selectedBet == 1 ? string_to_number(betStr) * 100.0 : string_to_number(betStr));
+            if (betNum <= 0)
+            {
+                pool.play_stationary("sounds/misc/gamefail.ogg", false);
+                dlg_buffer("Error! Please enter a valid bet amount.");
+                form.focus(spinButton);
+                continue;
+            }
+            if (betNum < rouletteConfig.min_bet)
+            {
+                pool.play_stationary("sounds/misc/gamefail.ogg", false);
+                dlg_buffer("Error! The minimum bet is " + (selectedBet == 1 ? convert_to_currency(rouletteConfig.min_bet) : format_number(rouletteConfig.min_bet)) + ".");
+                form.focus(spinButton);
+                continue;
+            }
+            if (rouletteConfig.max_bet > 0 && betNum > rouletteConfig.max_bet)
+            {
+                pool.play_stationary("sounds/misc/gamefail.ogg", false);
+                dlg_buffer("Your bet has been capped at the maximum of " + (selectedBet == 1 ? convert_to_currency(rouletteConfig.max_bet) : format_number(rouletteConfig.max_bet)) + ".");
+                betNum = rouletteConfig.max_bet;
+            }
+            uint[] activeOutcomes;
+            for (uint i = 0; i < rouletteConfig.outcomes.length(); i++)
+                if (form.is_list_item_checked(outcomeChoices, i)) activeOutcomes.insert_last(i);
+            if (activeOutcomes.length() == 0)
+            {
+                pool.play_stationary("sounds/misc/gamefail.ogg", false);
+                dlg_buffer("You must select at least one bet type before spinning!");
+                form.focus(spinButton);
+                continue;
+            }
+            int numBets = int(activeOutcomes.length());
+            double totalStake = betNum * numBets;
+            double balanceNow = (selectedBet == 0 ? floor(cookies) : (selectedBet == 1 ? floor(coins) : (selectedBet == 2 ? floor(autocookie) : (selectedBet == 3 ? floor(cookiespeed) : floor(manulcookie)))));
+            if (totalStake > balanceNow)
+            {
+                pool.play_stationary("sounds/misc/gamefail.ogg", false);
+                dlg_buffer("Error! Staking that on all " + numBets + " bet types would cost " + (selectedBet == 1 ? convert_to_currency(totalStake) : format_number(totalStake)) + ", which is more than you have.");
+                form.focus(spinButton);
+                continue;
+            }
+            if (rouletteConfig.confirm_threshold > 0)
+            {
+                double effectiveThreshold = rouletteConfig.confirm_use_percent ? (balanceNow * (rouletteConfig.confirm_threshold / 100.0)) : rouletteConfig.confirm_threshold;
+                if (totalStake >= effectiveThreshold)
+                {
+                    string betItemName2 = (selectedBet == 0 ? "cookies" : (selectedBet == 1 ? "currency" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies"))));
+                    setupmenu(false);
+                    m.add_item("Yes", "yes");
+                    m.add_item("No", "no");
+                    m.intro_text = "Are you sure you want to stake a total of " + (selectedBet == 1 ? convert_to_currency(totalStake) : format_number(totalStake) + " " + betItemName2) + " across " + numBets + " bet types?";
+                    int cres = m.run(0, true);
+                    string csel = m.get_item_id(cres);
+                    if (cres == -1 || csel == "no")
+                    {
+                        form.focus(spinButton);
+                        continue;
+                    }
+                }
+            }
+            betAmount = betNum;
+            betItemName = (selectedBet == 0 ? "cookies" : (selectedBet == 1 ? "" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies"))));
+            if (selectedBet == 0) { cookies -= totalStake; cookies = floor(safe_cap(cookies)); }
+            else if (selectedBet == 1) { coins -= totalStake; coins = floor(safe_cap(coins)); }
+            else if (selectedBet == 2) { autocookie -= totalStake; autocookie = floor(safe_cap(autocookie)); }
+            else if (selectedBet == 3) { cookiespeed -= totalStake; clicktime += totalStake; cookiespeed = floor(safe_cap(cookiespeed)); }
+            else if (selectedBet == 4) { manulcookie -= totalStake; manulcookie = floor(safe_cap(manulcookie)); }
+            stat_roulette_games++;
+            pool.play_stationary("sounds/minigames/" + resolve_sound(rouletteConfig.bet_sound), false);
+            string totalDisplay = (selectedBet == 1) ? convert_to_currency(totalStake) : (format_number(totalStake) + (betItemName != "" ? " " + betItemName : ""));
+            string perDisplay = (selectedBet == 1) ? convert_to_currency(betAmount) : format_number(betAmount);
+            speak_buffer("You staked " + perDisplay + " on each of " + numBets + " bet types, for a total of " + totalDisplay + ".");
+            int winning = random(0, rouletteConfig.pocket_count - 1);
+            if (roulettemode)
+            {
+                speak_buffer("The wheel is spinning.");
+                int ticks = rouletteConfig.spin_base_ticks + random(0, rouletteConfig.spin_random_range);
+                for (int i = 0; i < ticks; i++)
+                {
+                    pool.play_stationary("sounds/minigames/" + resolve_sound(rouletteConfig.spin_sound), false);
+                    wait(rouletteConfig.spin_base_delay + i * rouletteConfig.spin_growth);
+                }
+            }
+            else
+                dlg_buffer("The wheel is spinning. Press enter or space to see where it lands.");
+            pool.play_stationary("sounds/minigames/" + resolve_sound(rouletteConfig.land_sound), false);
+            double totalReturn = 0;
+            string[] winnerNames;
+            string[] loserNames;
+            int straightHits = 0;
+            for (uint i = 0; i < activeOutcomes.length(); i++)
+            {
+                roulette_outcome@ o = rouletteConfig.outcomes[activeOutcomes[i]];
+                if (roulette_matches(o, winning))
+                {
+                    winnerNames.insert_last(o.name);
+                    totalReturn += safe_cap(betAmount * (1.0 + o.payout));
+                    if (o.match_type == "number") straightHits++;
+                }
+                else
+                    loserNames.insert_last(o.name);
+            }
+            totalReturn = safe_cap(totalReturn);
+            if (selectedBet == 0) { cookies += totalReturn; cookies = floor(safe_cap(cookies)); }
+            else if (selectedBet == 1) { coins += totalReturn; coins = floor(safe_cap(coins)); }
+            else if (selectedBet == 2) { autocookie += totalReturn; autocookie = floor(safe_cap(autocookie)); }
+            else if (selectedBet == 3) { cookiespeed += totalReturn; clicktime -= totalReturn; if (cookiespeed < 0) cookiespeed = 0; if (clicktime < 50) clicktime = 50; cookiespeed = floor(safe_cap(cookiespeed)); }
+            else if (selectedBet == 4) { manulcookie += totalReturn; manulcookie = floor(safe_cap(manulcookie)); }
+            double net = totalReturn - totalStake;
+            stat_roulette_straight_hits += straightHits;
+            if (net > 0)
+            {
+                stat_roulette_wins++;
+                if (selectedBet == 1) stat_coins_earned += net;
+            }
+            else if (net < 0)
+                stat_roulette_losses++;
+            else
+                stat_roulette_breaks++;
+            string color = roulette_color(winning);
+            double winningsTotal = totalReturn - (betAmount * double(winnerNames.length()));
+            if (winningsTotal < 0) winningsTotal = 0;
+            double netMag = (net < 0) ? -net : net;
+            string netStr = (selectedBet == 1) ? convert_to_currency(netMag) : format_number(netMag);
+            string winningsStr = (selectedBet == 1) ? convert_to_currency(winningsTotal) : format_number(winningsTotal);
+            string winnersList = roulette_join(winnerNames, ", ");
+            string losersList = roulette_join(loserNames, ", ");
+            string msg;
+            if (net == 0)
+                msg = rouletteConfig.break_message;
+            else if (numBets == 1)
+                msg = (net > 0) ? rouletteConfig.single_win_message : rouletteConfig.single_lose_message;
+            else
+            {
+                if (winnerNames.length() == 0) msg = rouletteConfig.multi_alllose_message;
+                else if (net > 0) msg = rouletteConfig.multi_win_message;
+                else msg = rouletteConfig.multi_lose_message;
+            }
+            msg = highlow_fill(msg, "%number%", string(winning));
+            msg = highlow_fill(msg, "%color%", color);
+            msg = highlow_fill(msg, "%winners%", winnersList);
+            msg = highlow_fill(msg, "%losers%", losersList);
+            msg = highlow_fill(msg, "%win_count%", string(winnerNames.length()));
+            msg = highlow_fill(msg, "%loss_count%", string(loserNames.length()));
+            msg = highlow_fill(msg, "%winnings%", winningsStr);
+            msg = highlow_fill(msg, "%net%", netStr);
+            msg = highlow_fill(msg, "%amount%", netStr);
+            msg = highlow_fill(msg, "%item%", betItemName);
+            if (net > 0)
+                pool.play_stationary("sounds/minigames/" + resolve_sound(rouletteConfig.win_sound), false);
+            else if (net < 0)
+                pool.play_stationary("sounds/minigames/" + resolve_sound(rouletteConfig.lose_sound), false);
+            else
+                pool.play_stationary("sounds/minigames/" + resolve_sound(rouletteConfig.break_sound), false);
+            dlg_buffer(msg);
+            form.focus(spinButton);
+        }
+    }
+}
+
+void roulette_game_input() { minigame_input("roulette"); }

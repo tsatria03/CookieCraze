@@ -265,6 +265,7 @@ stat_roulette_games=0;
 stat_roulette_wins=0;
 stat_roulette_losses=0;
 stat_roulette_straight_hits=0;
+stat_roulette_breaks=0;
 comboCount=0;
 preComboCount=0;
 preComboTarget=2;

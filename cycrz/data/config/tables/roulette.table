@@ -16,6 +16,7 @@ land_sound=roulette/land.ogg
 bet_sound=roulette/bet.ogg
 win_sound=roulette/win.ogg
 lose_sound=roulette/lose.ogg
+break_sound=roulette/break.ogg
 
 ; Messages
 
@@ -24,6 +25,7 @@ single_lose_message=The wheel landed on %number%, %color%. Your bet did not hit,
 multi_win_message=The wheel landed on %number%, %color%. Your winning bet types were %winners%, for a net gain of %amount% %item%.
 multi_lose_message=The wheel landed on %number%, %color%. Your winning bet types were %winners%, but with %loss_count% losing bets it was a net loss of %amount% %item%.
 multi_alllose_message=The wheel landed on %number%, %color%. None of your %loss_count% bets hit, and you lost %amount% %item%.
+break_message=The wheel landed on %number%, %color%. Your winning and losing bets canceled out, so you broke even.
 
 [outcomes]
 
