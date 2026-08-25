@@ -569,6 +569,13 @@ void show_baker_statistics()
     txt += "Losses: " + format_number(stat_highlow_losses) + "\r\n";
     txt += "Highest streak: " + format_number(stat_highlow_highest_streak) + "\r\n";
     txt += "\r\n";
+    txt += "Roulette\r\n";
+    txt += "Spins: " + format_number(stat_roulette_games) + "\r\n";
+    txt += "Wins: " + format_number(stat_roulette_wins) + "\r\n";
+    txt += "Losses: " + format_number(stat_roulette_losses) + "\r\n";
+    txt += "Straight hits: " + format_number(stat_roulette_straight_hits) + "\r\n";
+    txt += "Break-evens: " + format_number(stat_roulette_breaks) + "\r\n";
+    txt += "\r\n";
     txt += "Blackjack\r\n";
     txt += "Hands played: " + format_number(stat_jack_hands) + "\r\n";
     txt += "Wins: " + format_number(stat_jack_wins) + "\r\n";

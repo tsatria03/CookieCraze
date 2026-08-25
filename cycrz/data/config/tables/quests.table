@@ -206,6 +206,38 @@ streak_highlow_7:Reach a streak of 7:highlow_highest_streak:7:false:false:true:3
 streak_highlow_10:Reach a streak of 10:highlow_highest_streak:10:false:false:true:4:Reach a streak of %threshold% in higher or lower.
 streak_highlow_15:Reach a streak of 15:highlow_highest_streak:15:false:false:true:5:Reach a streak of %threshold% in higher or lower.
 
+; Roulette spins
+
+play_roulette_10:Play 10 rounds of roulette:roulette_games:10:false:false:true:1:Play %threshold% rounds of roulette.
+play_roulette_50:Play 50 rounds of roulette:roulette_games:50:false:false:true:2:Play %threshold% rounds of roulette.
+play_roulette_150:Play 150 rounds of roulette:roulette_games:150:false:false:true:3:Play %threshold% rounds of roulette.
+play_roulette_300:Play 300 rounds of roulette:roulette_games:300:false:false:true:4:Play %threshold% rounds of roulette.
+play_roulette_500:Play 500 rounds of roulette:roulette_games:500:false:false:true:5:Play %threshold% rounds of roulette.
+
+; Roulette wins
+
+win_roulette_5:Win 5 roulette spins:roulette_wins:5:false:false:true:1:Win %threshold% spins of roulette.
+win_roulette_25:Win 25 roulette spins:roulette_wins:25:false:false:true:2:Win %threshold% spins of roulette.
+win_roulette_75:Win 75 roulette spins:roulette_wins:75:false:false:true:3:Win %threshold% spins of roulette.
+win_roulette_150:Win 150 roulette spins:roulette_wins:150:false:false:true:4:Win %threshold% spins of roulette.
+win_roulette_300:Win 300 roulette spins:roulette_wins:300:false:false:true:5:Win %threshold% spins of roulette.
+
+; Roulette straight hits
+
+straight_roulette_1:Land 1 straight-up number bet:roulette_straight_hits:1:false:false:true:1:Land %threshold% straight-up single number bets in roulette.
+straight_roulette_5:Land 5 straight-up number bets:roulette_straight_hits:5:false:false:true:2:Land %threshold% straight-up single number bets in roulette.
+straight_roulette_10:Land 10 straight-up number bets:roulette_straight_hits:10:false:false:true:3:Land %threshold% straight-up single number bets in roulette.
+straight_roulette_25:Land 25 straight-up number bets:roulette_straight_hits:25:false:false:true:4:Land %threshold% straight-up single number bets in roulette.
+straight_roulette_50:Land 50 straight-up number bets:roulette_straight_hits:50:false:false:true:5:Land %threshold% straight-up single number bets in roulette.
+
+; Roulette break-evens
+
+break_roulette_1:Break even 1 time in roulette:roulette_breaks:1:false:false:true:1:Break even on %threshold% spins of roulette.
+break_roulette_5:Break even 5 times in roulette:roulette_breaks:5:false:false:true:2:Break even on %threshold% spins of roulette.
+break_roulette_10:Break even 10 times in roulette:roulette_breaks:10:false:false:true:3:Break even on %threshold% spins of roulette.
+break_roulette_25:Break even 25 times in roulette:roulette_breaks:25:false:false:true:4:Break even on %threshold% spins of roulette.
+break_roulette_50:Break even 50 times in roulette:roulette_breaks:50:false:false:true:5:Break even on %threshold% spins of roulette.
+
 ; Auto slots purchased
 
 buy_auto_slots_5:Purchase 5 auto slots:auto_slots_purchased:5:false:false:true:1:Purchase %threshold% auto baking slots.

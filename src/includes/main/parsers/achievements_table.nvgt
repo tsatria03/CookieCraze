@@ -135,6 +135,11 @@ double get_stat_value(string stat)
     if (stat == STAT_HIGHLOW_WINS) return stat_highlow_wins;
     if (stat == STAT_HIGHLOW_LOSSES) return stat_highlow_losses;
     if (stat == STAT_HIGHLOW_HIGHEST_STREAK) return stat_highlow_highest_streak;
+    if (stat == STAT_ROULETTE_GAMES) return stat_roulette_games;
+    if (stat == STAT_ROULETTE_WINS) return stat_roulette_wins;
+    if (stat == STAT_ROULETTE_LOSSES) return stat_roulette_losses;
+    if (stat == STAT_ROULETTE_STRAIGHT_HITS) return stat_roulette_straight_hits;
+    if (stat == STAT_ROULETTE_BREAKS) return stat_roulette_breaks;
     if (stat == STAT_QUESTS_COMPLETED) return stat_quests_completed;
     if (stat == STAT_REROLLS_PERFORMED) return stat_rerolls_performed;
     if (stat == STAT_RANK) return rank;

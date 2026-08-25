@@ -11,6 +11,7 @@ slots=Slot machine
 flipper=Cookie flipper
 dice=Dice roller
 highlow=Higher or lower
+roulette=Roulette
 lottery=Cookie lottery
 quests=Quests
 
@@ -290,7 +291,7 @@ highlow:hl_high_banker:highlow_wins:100:false:true:High Banker:Bank your winning
 highlow:hl_fortune_builder:highlow_wins:250:false:true:Fortune Builder:Bank your winnings %threshold% times. Your instincts and your restraint are in perfect balance.:Fortunes are built on knowing when enough is enough. You have mastered it.
 highlow:hl_vault_keeper:highlow_wins:500:false:true:Vault Keeper:Bank your winnings %threshold% times. Whatever you win, you keep.:The best gamblers are the ones who know how to stop being gamblers.
 highlow:hl_banking_legend:highlow_wins:1000:false:true:Banking Legend:Bank your winnings %threshold% times. Other players study when you choose to walk away.:A thousand clean exits is not luck. It is discipline.
-highlow:hl_banking_god:highlow_wins:2000:false:true:Banking God:Bank your winnings %threshold% times. You have turned knowing when to stop into an art form.:At this height, walking away rich is simply what you do.
+highlow:hl_banking_god:highlow_wins:5000:false:true:Banking God:Bank your winnings %threshold% times. You have turned knowing when to stop into an art form.:At this height, walking away rich is simply what you do.:coins:2000*rank:The house has never seen a banker walk away ahead this many times, and quietly slips you %amount% out of sheer respect.
 highlow:hl_wrong_way:highlow_losses:1:false:true:Wrong Way:Guess wrong in higher or lower for the first time. The deck had other plans.:The deck does not always agree with you. First lesson learned.
 highlow:hl_bad_guess:highlow_losses:5:false:true:Bad Guess:Guess wrong %threshold% times. The cards are not cooperating today.:Some days the deck has somewhere else to be. It is not personal.
 highlow:hl_off_the_mark:highlow_losses:10:false:true:Off the Mark:Guess wrong %threshold% times. Higher was lower, and lower was higher.:The card you needed was always the other one. Frustrating, that.
@@ -307,6 +308,53 @@ highlow:hl_press_your_luck:highlow_highest_streak:10:false:true:Press Your Luck:
 highlow:hl_fearless:highlow_highest_streak:12:false:true:Fearless:Reach a streak of %threshold% in higher or lower. You should have stopped long ago. You did not.:Twelve straight correct guesses. The odds stopped applying to you a while back.
 highlow:hl_untouchable:highlow_highest_streak:15:false:true:Untouchable:Reach a streak of %threshold% in higher or lower. The deck has thrown everything at you and missed.:Fifteen in a row is not a streak. It is a legend the deck will tell for years.
 highlow:hl_impossible_run:highlow_highest_streak:20:false:true:Impossible Run:Reach a streak of %threshold% in higher or lower. This should not be possible. And yet.:Twenty correct guesses in a row. Somewhere, a statistician just fainted.
+
+; Roulette
+
+roulette:r_first_spin:roulette_games:1:false:true:First Spin:Play roulette for the first time. The wheel turns, and so does your luck.:Every gambler remembers their first spin. Few remember why they came back.
+roulette:r_getting_dizzy:roulette_games:5:false:true:Getting Dizzy:Play %threshold% rounds of roulette. The wheel is starting to feel familiar.:Five spins in and the ball already sounds like an old friend.
+roulette:r_wheel_watcher:roulette_games:10:false:true:Wheel Watcher:Play %threshold% rounds of roulette. You have started to trust the spin.:Watching the wheel long enough, you begin to believe it has moods.
+roulette:r_regular_at_the_wheel:roulette_games:25:false:true:Regular at the Wheel:Play %threshold% rounds of roulette. The croupier nods when you sit down.:Regulars do not announce themselves. The wheel already knows their weight.
+roulette:r_seasoned_spinner:roulette_games:50:false:true:Seasoned Spinner:Play %threshold% rounds of roulette. The rhythm of the ball is second nature now.:Fifty spins teaches you the sound of a wheel winding down.
+roulette:r_wheel_devotee:roulette_games:100:false:true:Wheel Devotee:Play %threshold% rounds of roulette. Other bakers chase cookies. You chase the ball.:Devotion is a quiet thing. The wheel has noticed yours.
+roulette:r_table_fixture:roulette_games:250:false:true:Table Fixture:Play %threshold% rounds of roulette. The table feels wrong without you at it.:After a while, the felt remembers where your chips usually land.
+roulette:r_spin_obsessed:roulette_games:500:false:true:Spin Obsessed:Play %threshold% rounds of roulette. The wheel spins behind your eyes when you close them.:When the ball follows you out of the room, you have been here too long.
+roulette:r_wheel_legend:roulette_games:1000:false:true:Wheel Legend:Play %threshold% rounds of roulette. The wheel arranges itself around your habits.:A thousand spins is not luck. It is a lifestyle.
+roulette:r_wheel_eternal:roulette_games:2000:false:true:Wheel Eternal:Play %threshold% rounds of roulette. The ball no longer feels random. It feels inevitable.:At two thousand spins, probability starts to feel like a formality.
+roulette:r_wheel_singularity:roulette_games:5000:false:true:Wheel Singularity:Play %threshold% rounds of roulette. The wheel has reached a state beyond comprehension.:Beyond a certain count, the spin stops being a game and becomes a way of being.:coins:2000*rank:The wheel has run out of ways to surprise you, and pays out %amount% in tribute.
+roulette:r_first_win:roulette_wins:1:false:true:First Win:Win a spin of roulette for the first time. The wheel finally landed your way.:The first win is the one that convinces you the wheel can be beaten.
+roulette:r_beginners_luck:roulette_wins:5:false:true:Beginner's Luck:Win %threshold% spins of roulette. The ball keeps finding your number.:They call it beginner's luck right up until it keeps happening.
+roulette:r_paying_off:roulette_wins:10:false:true:Paying Off:Win %threshold% spins of roulette. Your reads on the wheel are starting to pay.:Ten wins in and the wheel is starting to feel less like a wall.
+roulette:r_winning_ways:roulette_wins:25:false:true:Winning Ways:Win %threshold% spins of roulette. The house is beginning to notice you.:Twenty-five wins is enough to make a croupier watch your hands.
+roulette:r_the_house_pays:roulette_wins:50:false:true:The House Pays:Win %threshold% spins of roulette. The wheel owes you, and it knows it.:Fifty times the house has slid chips your way. It does not enjoy it.
+roulette:r_high_roller_win:roulette_wins:100:false:true:High Roller:Win %threshold% spins of roulette. You have turned the wheel into an income.:A hundred wins is where luck stops being the explanation.
+roulette:r_fortune_favors:roulette_wins:250:false:true:Fortune Favors:Win %threshold% spins of roulette. The ball seems to seek out your bets.:Fortune favors the bold, and apparently it has your seat number.
+roulette:r_wheel_master:roulette_wins:500:false:true:Wheel Master:Win %threshold% spins of roulette. The spin holds no more secrets from you.:Five hundred wins. The wheel spins, and you already know how it feels about it.
+roulette:r_winning_legend:roulette_wins:1000:false:true:Winning Legend:Win %threshold% spins of roulette. Croupiers tell stories about your table.:A thousand wins is a career. The house calls it a problem.
+roulette:r_house_breaker:roulette_wins:5000:false:true:House Breaker:Win %threshold% spins of roulette. You have beaten the wheel so often the house fears the sound of your chips.:Break the house enough times and they name the wheel after you, quietly, in the back office.:coins:2000*rank:The house has stopped pretending it can beat you, and hands over %amount% to keep you smiling.
+roulette:r_first_loss:roulette_losses:1:false:true:First Loss:Lose a spin of roulette for the first time. The wheel had other plans.:The wheel does not owe you anything. First lesson delivered.
+roulette:r_house_edge:roulette_losses:5:false:true:House Edge:Lose %threshold% spins of roulette. The green pocket is not on your side.:There is a reason the house builds such nice buildings. You are looking at it.
+roulette:r_wheel_bites:roulette_losses:10:false:true:The Wheel Bites:Lose %threshold% spins of roulette. The ball keeps missing your pockets.:Ten losses in and the wheel is starting to feel personal. It is not. Probably.
+roulette:r_chasing_losses:roulette_losses:25:false:true:Chasing Losses:Lose %threshold% spins of roulette. One more spin will fix it, surely.:Chasing losses is how the wheel keeps its best customers.
+roulette:r_the_wheel_wins:roulette_losses:50:false:true:The Wheel Wins:Lose %threshold% spins of roulette. The house always wins, and lately it has been showing off.:Fifty losses is the wheel reminding you who built the casino.
+roulette:r_bleeding_chips:roulette_losses:100:false:true:Bleeding Chips:Lose %threshold% spins of roulette. Your stack has a slow, steady leak.:A hundred losses does not feel like much, one spin at a time. That is the trick of it.
+roulette:r_donation_to_house:roulette_losses:250:false:true:Charitable Donation:Lose %threshold% spins of roulette. The house would like to thank you for your generosity.:At this point the croupier should be sending you a holiday card.
+roulette:r_loss_regular:roulette_losses:500:false:true:Loss Regular:Lose %threshold% spins of roulette. You have funded a wing of the casino by now.:Five hundred losses. The wheel does not gloat. It does not have to.
+roulette:r_house_favorite:roulette_losses:1000:false:true:The House's Favorite:Lose %threshold% spins of roulette. Somewhere, an accountant has your name framed on a wall.:A thousand losses to the wheel. It has learned exactly how to keep you coming back.
+roulette:r_first_straight:roulette_straight_hits:1:false:true:Called It:Win a straight-up single number bet for the first time. Thirty-five to one, and you nailed it.:Calling the exact pocket once feels like magic. That is the hook.
+roulette:r_number_caller:roulette_straight_hits:5:false:true:Number Caller:Land %threshold% straight-up single number bets. The pockets are learning your name.:Five straight hits. The odds say that should have hurt more.
+roulette:r_pocket_picker:roulette_straight_hits:10:false:true:Pocket Picker:Land %threshold% straight-up single number bets. You pick pockets the wheel forgot it had.:Ten exact numbers. The ball is starting to seem cooperative.
+roulette:r_straight_shooter:roulette_straight_hits:25:false:true:Straight Shooter:Land %threshold% straight-up single number bets. Your number keeps coming home.:Twenty-five straight-up hits. Statisticians are quietly concerned.
+roulette:r_number_whisperer:roulette_straight_hits:50:false:true:Number Whisperer:Land %threshold% straight-up single number bets. You seem to know where the ball wants to rest.:Fifty exact calls. The wheel has stopped being random around you.
+roulette:r_pocket_prophet:roulette_straight_hits:100:false:true:Pocket Prophet:Land %threshold% straight-up single number bets. You do not guess numbers. You announce them.:A hundred straight hits. This is no longer luck. It might be prophecy.
+roulette:r_straight_legend:roulette_straight_hits:250:false:true:Straight-Up Legend:Land %threshold% straight-up single number bets. The wheel gave up hiding numbers from you long ago.:Two hundred fifty exact pockets. Somewhere a probability textbook is on fire.
+roulette:r_first_break:roulette_breaks:1:false:true:Dead Even:Break even on a spin of roulette for the first time. Your winners and losers canceled out perfectly.:Sometimes the wheel gives with one hand and takes with the other.
+roulette:r_even_steven:roulette_breaks:5:false:true:Even Steven:Break even on %threshold% spins of roulette. You have a gift for going nowhere.:Five spins that ended right where they started. Perfectly balanced.
+roulette:r_break_even_bandit:roulette_breaks:10:false:true:Break-Even Bandit:Break even on %threshold% spins of roulette. You keep robbing the wheel of a result.:Ten washes. The house is not sure whether to be relieved or annoyed.
+roulette:r_wash_regular:roulette_breaks:25:false:true:Rinse and Repeat:Break even on %threshold% spins of roulette. Your bets keep coming out in the wash.:Twenty-five even spins. You spend chips just to get them back.
+roulette:r_even_keel:roulette_breaks:50:false:true:Even Keel:Break even on %threshold% spins of roulette. Nothing gained, nothing lost, endlessly.:Fifty perfect washes. The wheel spins, and the universe shrugs.
+roulette:r_break_master:roulette_breaks:100:false:true:Master of the Wash:Break even on %threshold% spins of roulette. You have turned breaking even into a craft.:A hundred spins to nowhere. It takes real dedication to stand this still.
+roulette:r_equilibrium:roulette_breaks:250:false:true:Perfect Equilibrium:Break even on %threshold% spins of roulette. You have achieved a balance monks would envy.:Two hundred fifty even spins. You have discovered how to gamble without consequence.
 
 ; Lottery
 
