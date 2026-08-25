@@ -13,6 +13,7 @@ void flipgame()
     {
         form.add_list_item(cookEventList, loadedFlipperEvents[i].event_name, loadedFlipperEvents[i].event_name, -1, true);
     }
+    int flipAuto = form.create_checkbox("automatic flipping", flipmode);
     int flip = form.create_button("&Flip a " + flipperTypeNames[0], true);
     int historyBox = form.create_input_box("Flipper &History", "", read_only:true, multiline:true);
     int lastTypeIdx = 0;
@@ -75,10 +76,12 @@ flipgame_input();
             string eventLabel = "Choose the &" + flipperTypeNames[curTypeIdx] + " events to use:";
             form.delete_control(historyBox);
             form.delete_control(flip);
+            form.delete_control(flipAuto);
             form.delete_control(cookEventList);
             cookEventList = form.create_list(eventLabel, loadedFlipperEvents.length(), true, false);
             for (uint i = 0; i < loadedFlipperEvents.length(); i++)
                 form.add_list_item(cookEventList, loadedFlipperEvents[i].event_name, loadedFlipperEvents[i].event_name, -1, savedChecks[i]);
+            flipAuto = form.create_checkbox("automatic flipping", flipmode);
             flip = form.create_button("&Flip a " + flipperTypeNames[curTypeIdx], true);
             historyBox = form.create_input_box("Flipper &History", savedHistText, read_only:true, multiline:true);
             form.focus_silently(typeList);
@@ -90,6 +93,8 @@ pool.destroy_sound(gameslot);
         }
 check_rank();
 check_achievements(loadedAchievements, achievementsUnlocked);
+bool flipModeNew = form.is_checked(flipAuto);
+if (flipModeNew != flipmode) { flipmode = flipModeNew; writepreffs(); }
 if (form.is_pressed(flip))
 {
         int selectedTypeIdx = form.get_list_position(typeList);
@@ -199,6 +204,7 @@ if (orderedSyms == false)
         form.add_list_item(symbolChoices, symbols[i], symbols[i], -1, symbolToggles[i]);
     }
 int betInput = form.create_input_box("Enter your b&et amount:", "", "", 0, false, false, false);
+    int slotAuto = form.create_checkbox("automatic reel stopping", slotmode);
     int spinButton = form.create_button("Spin the &reels", true);
 form.focus(betChoice);
 form.set_disallowed_chars(betInput, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()[]{};:'\"\\|,<>?/+-=`~_", false, "This character is not allowed.");
@@ -249,6 +255,8 @@ pool.destroy_sound(gameslot);
         }
 check_rank();
 check_achievements(loadedAchievements, achievementsUnlocked);
+        bool slotModeNew = form.is_checked(slotAuto);
+        if (slotModeNew != slotmode) { slotmode = slotModeNew; writepreffs(); }
         if (form.is_pressed(spinButton))
         {
             selectedBet = form.get_list_position(betChoice);
@@ -424,6 +432,7 @@ void jackgame()
     form.add_list_item(betChoice, "Auto Cookie Speeds");
     form.add_list_item(betChoice, "Manual Cookies");
     int betInput = form.create_input_box("Enter your &bet amount:", "", "", 0, false, false, false);
+    int jackAuto = form.create_checkbox("automatic card drawing", jackmode);
     int dealButton = form.create_button("&Deal", true);
     int hitButton = form.create_button("&Hit");
     int standButton = form.create_button("&Stand");
@@ -455,6 +464,8 @@ void jackgame()
         }
 check_rank();
 check_achievements(loadedAchievements, achievementsUnlocked);
+        bool jackModeNew = form.is_checked(jackAuto);
+        if (jackModeNew != jackmode) { jackmode = jackModeNew; writepreffs(); }
         if (key_pressed(KEY_B))
             speak_buffer("Your current bet is " + (selectedBet == 1 ? convert_to_currency(betAmount) : format_number(betAmount) + (betItemName != "" ? " " + betItemName : "")) + ".");
         if (form.is_pressed(dealButton))
@@ -680,9 +691,10 @@ void lotterygame()
 {
     form.reset();
     form.create_window("Cookie Lottery", false);
+    int lotteryAuto = form.create_checkbox("automatic scratch revealing", lotterymode);
     int inventoryBtn = form.create_button("&Check tickets");
     int scratchBtn = form.create_button("&Scratch Tickets");
-    form.focus(inventoryBtn);
+    form.focus(lotteryAuto);
     while (true)
     {
         wait(5);
@@ -703,6 +715,8 @@ void lotterygame()
         }
         check_rank();
         check_achievements(loadedAchievements, achievementsUnlocked);
+        bool lotteryModeNew = form.is_checked(lotteryAuto);
+        if (lotteryModeNew != lotterymode) { lotterymode = lotteryModeNew; writepreffs(); }
         if (form.is_pressed(scratchBtn))
         {
             lottery_scratch_menu();
@@ -764,6 +778,7 @@ void dicegame()
     form.set_list_position(modifierList, defaultModIdx);
     int betInput = form.create_input_box("Enter your b&et amount:", "", "", 0, false, false, false);
     int targetInput = form.create_input_box("Enter your &target score:", "", "", 0, false, false, false);
+    int diceAuto = form.create_checkbox("automatic rolling", dicemode);
     int rollButton = form.create_button("&Roll", true);
     form.set_disallowed_chars(betInput, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()[]{};:'\"\\|,<>?/+-=`~_", false, "This character is not allowed.");
     form.set_disallowed_chars(targetInput, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()[]{};:'\"\\|,<>?/+-=`~_.", false, "This character is not allowed.");
@@ -791,6 +806,8 @@ void dicegame()
         }
         check_rank();
         check_achievements(loadedAchievements, achievementsUnlocked);
+        bool diceModeNew = form.is_checked(diceAuto);
+        if (diceModeNew != dicemode) { dicemode = diceModeNew; writepreffs(); }
         if (form.is_pressed(rollButton))
         {
             selectedBet = form.get_list_position(betChoice);
@@ -986,6 +1003,7 @@ void highlowgame()
     form.add_list_item(betChoice, "Auto Cookie Speeds");
     form.add_list_item(betChoice, "Manual Cookies");
     int betInput = form.create_input_box("Enter your &bet amount:", "", "", 0, false, false, false);
+    int highlowAuto = form.create_checkbox("automatic card revealing", highlowmode);
     int dealButton = form.create_button("&Deal", true);
     int higherButton = form.create_button("&Higher");
     int lowerButton = form.create_button("&Lower");
@@ -1020,6 +1038,8 @@ void highlowgame()
         }
         check_rank();
         check_achievements(loadedAchievements, achievementsUnlocked);
+        bool highlowModeNew = form.is_checked(highlowAuto);
+        if (highlowModeNew != highlowmode) { highlowmode = highlowModeNew; writepreffs(); }
         if (key_pressed(KEY_B))
         {
             if (!in_round)
@@ -1324,6 +1344,7 @@ void roulettegame()
     for (uint i = 0; i < rouletteConfig.outcomes.length(); i++)
         form.add_list_item(outcomeChoices, rouletteConfig.outcomes[i].name, rouletteConfig.outcomes[i].name, -1, false);
     int betInput = form.create_input_box("Enter your &bet amount:", "", "", 0, false, false, false);
+    int rouletteAuto = form.create_checkbox("automatic wheel spinning", roulettemode);
     int spinButton = form.create_button("&Spin the wheel", true);
     form.set_disallowed_chars(betInput, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()[]{};:'\"\\|,<>?/+-=`~_", false, "This character is not allowed.");
     form.focus(betChoice);
@@ -1350,6 +1371,8 @@ void roulettegame()
         }
         check_rank();
         check_achievements(loadedAchievements, achievementsUnlocked);
+        bool rouletteModeNew = form.is_checked(rouletteAuto);
+        if (rouletteModeNew != roulettemode) { roulettemode = rouletteModeNew; writepreffs(); }
         if (form.is_pressed(spinButton))
         {
             selectedBet = form.get_list_position(betChoice);
