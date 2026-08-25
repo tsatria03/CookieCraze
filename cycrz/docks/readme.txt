@@ -1,4 +1,5 @@
 Welcome to Cookie Craze!
+
 In this game, you bake and sell cookies to earn money, climb the ranks, and build the ultimate automated bakery.
 
 Start out clicking manually, then invest your money into upgrades and unlock minigames like blackjack, the cookie flipper, the slot machine, and the cookie lottery.
@@ -64,11 +65,9 @@ The advantage of bundles is that they package multiple items into one convenient
 There are four ways to purchase in the bundle shop.
 
 The first is buying a bundle at a custom quantity. Select any bundle and you will be prompted for how many you want to buy. Type the exact number you want and confirm to buy precisely that many at the current price.
-
 The second is buying a bundle at the maximum quantity. When the purchase prompt appears, the maximum number you can currently afford is already filled in. Simply press enter without typing anything and the game buys as many as your budget allows in one transaction.
 
 The third is buying one of every affordable bundle at a custom quantity. At the bottom of each category is a buy one of every affordable bundle option, which appears whenever at least one bundle in the category is within your budget. Selecting it prompts you for how many of each you want to buy, and the game purchases that many of every affordable bundle in the category at once, skipping any you cannot afford.
-
 The fourth is buying one of every affordable bundle at the maximum quantity. When the prompt appears, the maximum number of times you can afford to buy the full set is already filled in. Simply press enter and the game buys as many of each affordable bundle as your budget allows.
 
 Both shops support bulk buying, but they work differently. The singles shop lets you buy as many of each individual stat as you can afford, one stat at a time. Bundles package a curated mix of stats into a single purchase, so you can upgrade multiple stats at once in one transaction. The cost works out the same either way, since both use the singles shop prices as the foundation.
@@ -91,11 +90,9 @@ The automatic baking and manual baking categories use coins. The user created it
 There are four ways to purchase in the singles shop.
 
 The first is buying a single item at a custom quantity. Select any item in a category and you will be prompted to enter how many you want. Type the exact number you want and confirm to buy precisely that amount at the current price.
-
 The second is buying a single item at the maximum quantity. When the purchase prompt appears, the maximum number you can currently afford is already filled in. Simply press enter without typing anything and the game buys as many of that item as your budget allows in one transaction.
 
 The third is buying all affordable items at a custom quantity. At the bottom of each category is a buy all affordable items option, which appears whenever at least one item in the category is within your budget. Selecting it prompts you for a quantity, and the game buys that many of every affordable item in the category at once, skipping any you cannot afford.
-
 The fourth is buying all affordable items at the maximum quantity. The prompt pre-fills the maximum number you can afford across all eligible items in the category. Pressing enter buys every affordable item to the maximum your budget allows, making it the fastest way to spend across an entire category in one go.
 
 The ticket shop.
@@ -246,6 +243,7 @@ Statistics menu.
 Access the baker statistics screen and achievement statistics screen from the Statistics button in the main game interface.
 
 Baker statistics.
+
 View a summary of everything you have done in your current playthrough. Open it from the Statistics menu.
 
 Most stats shown here are tracked stats, meaning they are running totals that only ever go up and are saved with your game. A few are live stats, meaning they are calculated fresh from the current game state each time you open the screen and can go up or down. Live stats are noted individually where they appear.
@@ -345,6 +343,7 @@ Keep in mind that achievement thresholds compare against lifetime tracked stats,
 This screen is read only and does not require any input to navigate.
 
 Prestige history.
+
 View a log of every prestige run you have completed in your current save. It appears as a read-only input box in the quests screen, after the prestige button.
 
 Each entry shows the run number, the rank you reached before prestiging, and what reward you received.
@@ -516,7 +515,7 @@ The word coins only appears in the config files themselves as a technical label,
 All of the configuration files are located in the data/config folder, and are split into three subfolders.
 Lines starting with a semicolon, hash, or double slash are treated as comments and ignored by the parser.
 
-Six of the files, ranks.table, slots.table, prestige.table, quests.table, lottery.table, and combos.table, use section headers in square brackets such as [sounds], [default], [rewards], [settings], [quests], and [prize:id]. These are not cosmetic.
+Seven of the files, ranks.table, slots.table, prestige.table, quests.table, lottery.table, combos.table, and highlow.table, use section headers in square brackets such as [settings], [sounds], [default], [default_reward], [rewards], [payouts], [tiers], [quests], [prize:id], and [deck]. These are not cosmetic.
 The parser uses them to know which format to expect. Do not remove or rename these headers, or the parser will not be able to read the file correctly.
 Each functional header has a warning comment placed directly below it inside the file as a reminder. That comment is cosmetic and can be removed, but the header itself must stay exactly as written.
 
@@ -1050,7 +1049,6 @@ streak_sound_threshold
 How many correct guesses in a row you must reach before the streak_sound begins playing on top of the correct sound. For example 3 starts the streak sound at a streak of three. Minimum 1, which plays it from the very first correct guess.
 
 Deck section.
-Header: [deck]
 Format: name:value
 
 Defines the cards in the deck and their values. Each line is one card, listed from lowest to highest.
