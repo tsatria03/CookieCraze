@@ -116,7 +116,7 @@ You can bet money, cookies, auto cookies, manual cookies, or baking speed. When 
 A natural 21 on your opening two cards pays out at 1.5 times your bet. A standard win pays double, and a tie returns your original bet. The dealer stands at 17 by default.
 
 The deal button appears first in the tab order, followed by hit and stand.
-You can draw cards manually, or enable automatic drawing in the settings.
+You can draw cards manually, or enable automatic drawing with the checkbox in the game.
 All payouts, sounds, messages, and bet limits are configurable in jacks.table.
 A configurable confirmation prompt can be set to appear when your bet reaches a certain threshold, protecting you from accidentally placing a large bet.
 
@@ -134,7 +134,7 @@ Alongside the type selector is a checkbox list of all available events.
 You must have at least one positive and one negative event checked before you can flip.
 This lets you curate your own risk pool, opting into only the events you are comfortable with, or leaving everything checked to get the full range of outcomes.
 
-You can flip manually, or enable automatic flipping in the settings so the result appears after a short random delay. When disabled, the result is held until you press enter or space.
+You can flip manually, or enable automatic flipping with the checkbox in the game so the result appears after a short random delay. When disabled, the result is held until you press enter or space.
 
 A Flipper History box appears below the flip button and keeps a running log of your last 50 flips.
 Each entry shows the flip number, which side it landed on, the event that was selected, and whether the outcome was positive or negative.
@@ -143,7 +143,7 @@ The history persists across sessions and resets when starting a new game.
 Cookie lottery. Unlocked at rank 30.
 
 Intermediate. Involves scratch tickets and prize tiers, requires understanding odds and managing ticket spending.
-Scratch your tickets and reveal prizes ranging from money and cookies to stat boosts. You can scratch tickets one at a time or all at once from the lottery screen. When scratching one at a time, you can enable automatic reveal in the settings so the result appears after a short random delay. When disabled, the result is held until you press enter or space. When scratching all at once, prizes are distributed by weight across the full batch and applied instantly, so the results are statistically equivalent to scratching each ticket individually but resolve without any delay regardless of how many tickets you have.
+Scratch your tickets and reveal prizes ranging from money and cookies to stat boosts. You can scratch tickets one at a time or all at once from the lottery screen. When scratching one at a time, you can enable automatic reveal with the checkbox in the game so the result appears after a short random delay. When disabled, the result is held until you press enter or space. When scratching all at once, prizes are distributed by weight across the full batch and applied instantly, so the results are statistically equivalent to scratching each ticket individually but resolve without any delay regardless of how many tickets you have.
 
 Dice roller. Unlocked at rank 40.
 
@@ -154,7 +154,7 @@ Before rolling, choose an item to bet, then select your dice type, how many dice
 
 The higher you set the target relative to what your dice can realistically roll, the greater the potential payout. If the target you enter is mathematically impossible to reach with your current dice type, count, and modifier, the game will block the roll and tell you the maximum possible score so you can adjust your settings. Keep in mind that negative modifiers can push the maximum possible roll below zero, making most targets unreachable, so use large negative modifiers with care. A configurable confirmation prompt can be set to appear when your bet reaches a certain threshold. The dice types, modifier options, payout tiers, sounds, and bet limits are all configurable in dice.table.
 
-You can roll manually, or enable automatic rolling in the settings so the result appears after a short random delay. When disabled, the result is held until you press enter or space.
+You can roll manually, or enable automatic rolling with the checkbox in the game so the result appears after a short random delay. When disabled, the result is held until you press enter or space.
 
 Higher or lower. Unlocked at rank 50.
 
@@ -167,7 +167,7 @@ Each correct guess extends your streak and grows your pot by a rising multiplier
 
 The deck, starting multiplier, streak growth, tie rule, ace ranking, sounds, messages, and bet limits are all configurable in highlow.table. A configurable confirmation prompt can be set to appear when your bet reaches a certain threshold.
 
-You can reveal cards manually, or enable automatic card revealing in the settings so each card appears after a short random delay. When disabled, each result is held until you press enter or space.
+You can reveal cards manually, or enable automatic card revealing with the checkbox in the game so each card appears after a short random delay. When disabled, each result is held until you press enter or space.
 
 Roulette. Unlocked at rank 60.
 
@@ -180,7 +180,7 @@ When the wheel lands, every bet type you checked is resolved against the winning
 
 The bet types and their odds, the pocket count, the spin timing, sounds, messages, and bet limits are all configurable in roulette.table. A configurable confirmation prompt can be set to appear when your total stake reaches a certain threshold.
 
-You can spin manually, or enable automatic wheel spinning in the settings so the wheel runs its full animation and announces where it lands. When disabled, the animation is skipped and the result is held until you press enter or space.
+You can spin manually, or enable automatic wheel spinning with the checkbox in the game so the wheel runs its full animation and announces where it lands. When disabled, the animation is skipped and the result is held until you press enter or space.
 
 Slot machine. Unlocked at rank 70.
 
@@ -1397,9 +1397,11 @@ Location: data/config/tables/slots.table
 Defines the slot machine symbols, reel count, bet limits, action sounds, and payout tiers.
 
 symbols
-Format: symbols=name, name, name, ...
+Format: symbols=order:name, name, name, ...
 
 A comma separated list of symbol names for the slot machine reels. You must have at least 10 symbols defined.
+
+The list can begin with an optional ordering prefix followed by a colon, which controls how the symbols are sorted when the game loads. Use asc for alphabetical order, dsc for reverse alphabetical order, or none to keep the exact order you wrote them in. For example, symbols=asc:cherry, apple, bell is listed in game as apple, bell, cherry. If you omit the prefix entirely, the list is kept as written, the same as none.
 
 reels
 Format: reels=number
