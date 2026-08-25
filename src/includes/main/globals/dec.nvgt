@@ -146,7 +146,6 @@ int evchanse2 = 50;
 event_item[] loadedEvents;
 event_item[] loadedFlipperEvents;
 
-bool orderedSyms = true;
 bool slotConfirmUsePercent = false;
 double slotConfirmThreshold = 0.0;
 double slotMaxBet = 0.0;

@@ -187,16 +187,6 @@ void slotsgame()
     form.add_list_item(betChoice, "Auto Cookie Speeds");
     form.add_list_item(betChoice, "Manual Cookies");
 string[] symbols = slotSymbols;
-if (orderedSyms == false)
-{
-    for (uint i = symbols.length() - 1; i > 0; i--)
-    {
-        uint j = random(0, i);
-        string tmp = symbols[i];
-        symbols[i] = symbols[j];
-        symbols[j] = tmp;
-    }
-}
     int symbolChoices = form.create_list("Choose the s&ymbols to use:", symbols.length(), true, false);
     bool[] symbolToggles(symbols.length(), true);
     for (uint i = 0; i < symbols.length(); i++)

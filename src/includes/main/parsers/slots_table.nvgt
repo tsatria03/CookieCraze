@@ -67,7 +67,23 @@ void parse_slots_table(string filepath, string[]@ symbols_out, payout_item[]@ pa
             }
             else if (key == "symbols")
             {
-                string[] parts = val.split(",");
+                string sortMode = "none";
+                string listPart = val;
+                int colon = val.find(":");
+                if (colon != -1)
+                {
+                    string prefix = val.substr(0, colon);
+                    while (prefix.length() > 0 && prefix.substr(0, 1) == " ")
+                        prefix = prefix.substr(1);
+                    while (prefix.length() > 0 && prefix.substr(prefix.length() - 1) == " ")
+                        prefix = prefix.substr(0, prefix.length() - 1);
+                    if (prefix == "asc" || prefix == "dsc" || prefix == "none")
+                    {
+                        sortMode = prefix;
+                        listPart = val.substr(colon + 1);
+                    }
+                }
+                string[] parts = listPart.split(",");
                 for (uint i = 0; i < parts.length(); i++)
                 {
                     string s = parts[i];
@@ -78,6 +94,8 @@ void parse_slots_table(string filepath, string[]@ symbols_out, payout_item[]@ pa
                     if (s.length() > 0)
                         symbols_out.insert_last(s);
                 }
+                if (sortMode == "asc") symbols_out.sort_ascending();
+                else if (sortMode == "dsc") symbols_out.sort_descending();
             }
             else if (key == "bet_sound1") slotBetSound1 = val;
             else if (key == "bet_sound2") slotBetSound2 = val;

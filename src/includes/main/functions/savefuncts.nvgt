@@ -433,10 +433,6 @@ if(st.d.exists("playervents2"))
 {
 playervents2=st.read_bool("playervents2");
 }
-if(st.d.exists("orderedSyms"))
-{
-orderedSyms=st.read_bool("orderedSyms");
-}
 if(st.d.exists("slotmode"))
 {
 slotmode=st.read_bool("slotmode");
@@ -518,7 +514,6 @@ dicemode=true;
 highlowmode=true;
 roulettemode=true;
 slotmode=true;
-orderedSyms=true;
 show_locked_shops=true;
 numberFormatMode=0;
 slotDistribution=false;
@@ -560,7 +555,6 @@ st.add("slotDistribution",slotDistribution);
 st.add("manualSlotDistribution",manualSlotDistribution);
 st.add("playervents",playervents);
 st.add("playervents2",playervents2);
-st.add("orderedSyms",orderedSyms);
 st.add("slotmode",slotmode);
 st.add("jackmode",jackmode);
 st.add("lotterymode",lotterymode);
