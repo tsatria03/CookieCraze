@@ -317,31 +317,31 @@ if (slotConfirmThreshold > 0)
     }
 }
 pool.destroy_sound(machineslot);
-pool.play_stationary("sounds/minigames/slot_machine/bet1.ogg", false);
+pool.play_stationary("sounds/minigames/" + resolve_sound(slotBetSound1), false);
 if(selectedBet==0) speak_buffer("You placed a bet of " + format_number(betAmount) + " cookies.");
 if(selectedBet==1) speak_buffer("You placed a bet of " + convert_to_currency(betAmount) + ".");
 if(selectedBet==2) speak_buffer("You placed a bet of " + format_number(betAmount) + " auto cookies.");
 if(selectedBet==3) speak_buffer("You placed a bet of " + format_number(betAmount) + " auto cookie speeds.");
 if(selectedBet==4) speak_buffer("You placed a bet of " + format_number(betAmount) + " manual cookies.");
 mini_wait_async(1000, "slots");
-pool.play_stationary("sounds/minigames/slot_machine/bet2.ogg", false);
+pool.play_stationary("sounds/minigames/" + resolve_sound(slotBetSound2), false);
 mini_wait_async(random(600, 800), "slots");
-pool.play_stationary("sounds/minigames/slot_machine/bet3.ogg", false);
+pool.play_stationary("sounds/minigames/" + resolve_sound(slotBetSound3), false);
 mini_wait_async(1000, "slots");
 stat_slot_spins++;
-pool.play_stationary("sounds/minigames/slot_machine/lever.ogg", false);
-machineslot=pool.play_stationary("sounds/minigames/slot_machine/spin.ogg", true);
+pool.play_stationary("sounds/minigames/" + resolve_sound(slotLeverSound), false);
+machineslot=pool.play_stationary("sounds/minigames/" + resolve_sound(slotSpinSound), true);
 if(slotmode==true) speak_buffer("spinning...");
 if(slotmode==false) dlg_buffer("spinning. Press enter or space to stop each reel.");
 if(slotmode==true) wait(random(1000,2000));
-            string[] stopSounds = {"slot_machine/stop1.ogg", "slot_machine/stop2.ogg", "slot_machine/stop3.ogg"};
+            string[] stopSounds = {slotStopSound1, slotStopSound2, slotStopSound3};
             string[] reelNames = {"first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"};
             for (int i = 0; i < slotReels; i++)
             {
                 reelResults[i] = activeSymbols[random(0, activeSymbols.length() - 1)];
                 if (slotmode == true) mini_wait_async(random(1000, 2000), "slots");
                 if (i == 0) pool.destroy_sound(machineslot);
-                pool.play_stationary("sounds/minigames/" + stopSounds[i % stopSounds.length()], false);
+                pool.play_stationary("sounds/minigames/" + resolve_sound(stopSounds[i % stopSounds.length()]), false);
                 if (slotmode == true) speak_buffer(reelResults[i]);
                 else dlg_buffer("The " + (i < int(reelNames.length()) ? reelNames[i] : string(i + 1)) + " reel shows " + reelResults[i]);
             }

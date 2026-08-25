@@ -1394,7 +1394,7 @@ slots.table
 
 Location: data/config/tables/slots.table
 
-Defines the slot machine symbols, reel count, bet limits, and payout tiers.
+Defines the slot machine symbols, reel count, bet limits, action sounds, and payout tiers.
 
 symbols
 Format: symbols=name, name, name, ...
@@ -1424,6 +1424,22 @@ Set use_percent to true to treat the amount as a percentage of what the player c
 For example, 25:true prompts when the bet is 25 percent or more of their current stat.
 
 Set the amount to 0 to disable the prompt entirely.
+
+bet_sound1
+bet_sound2
+bet_sound3
+The three sounds played in sequence as your bet is placed, building up before the reels spin. bet_sound1 plays first, then bet_sound2, then bet_sound3. Relative to sounds/minigames/. Supports random range syntax.
+
+lever_sound
+Sound to play when the lever is pulled, just before the reels start spinning. Relative to sounds/minigames/. Supports random range syntax.
+
+spin_sound
+The looping sound that plays while the reels are spinning. Relative to sounds/minigames/. Supports random range syntax.
+
+stop_sound1
+stop_sound2
+stop_sound3
+The sounds played as each reel comes to a stop, cycled across the reels in order. Reel one uses stop_sound1, reel two uses stop_sound2, reel three uses stop_sound3, and the cycle repeats for any further reels. Relative to sounds/minigames/. Supports random range syntax.
 
 Payouts section.
 Format: matches:multiplier:sound:message

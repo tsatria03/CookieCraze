@@ -8,6 +8,17 @@ min_bet=1
 max_bet=0
 confirm_threshold=1000:false
 
+; Sounds
+
+bet_sound1=slot_machine/bet1.ogg
+bet_sound2=slot_machine/bet2.ogg
+bet_sound3=slot_machine/bet3.ogg
+lever_sound=slot_machine/lever.ogg
+spin_sound=slot_machine/spin.ogg
+stop_sound1=slot_machine/stop1.ogg
+stop_sound2=slot_machine/stop2.ogg
+stop_sound3=slot_machine/stop3.ogg
+
 [payouts]
 
 ; Required header — removing or renaming this will break the file.

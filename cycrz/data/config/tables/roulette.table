@@ -13,7 +13,7 @@ spin_growth=2
 
 spin_sound=roulette/spin.ogg
 land_sound=roulette/land.ogg
-bet_sound=roulette/bet.ogg
+bet_sound=roulette/bet(1,3).ogg
 win_sound=roulette/win.ogg
 lose_sound=roulette/lose.ogg
 break_sound=roulette/break.ogg

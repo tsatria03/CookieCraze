@@ -12,6 +12,14 @@ void parse_slots_table(string filepath, string[]@ symbols_out, payout_item[]@ pa
     max_bet_out = 0.0;
     confirm_threshold_out = 0.0;
     confirm_use_percent_out = false;
+    slotBetSound1 = "slot_machine/bet1.ogg";
+    slotBetSound2 = "slot_machine/bet2.ogg";
+    slotBetSound3 = "slot_machine/bet3.ogg";
+    slotLeverSound = "slot_machine/lever.ogg";
+    slotSpinSound = "slot_machine/spin.ogg";
+    slotStopSound1 = "slot_machine/stop1.ogg";
+    slotStopSound2 = "slot_machine/stop2.ogg";
+    slotStopSound3 = "slot_machine/stop3.ogg";
     file f;
     if (!f.open(filepath, "r"))
         return;
@@ -71,6 +79,14 @@ void parse_slots_table(string filepath, string[]@ symbols_out, payout_item[]@ pa
                         symbols_out.insert_last(s);
                 }
             }
+            else if (key == "bet_sound1") slotBetSound1 = val;
+            else if (key == "bet_sound2") slotBetSound2 = val;
+            else if (key == "bet_sound3") slotBetSound3 = val;
+            else if (key == "lever_sound") slotLeverSound = val;
+            else if (key == "spin_sound") slotSpinSound = val;
+            else if (key == "stop_sound1") slotStopSound1 = val;
+            else if (key == "stop_sound2") slotStopSound2 = val;
+            else if (key == "stop_sound3") slotStopSound3 = val;
         }
         else
         {
