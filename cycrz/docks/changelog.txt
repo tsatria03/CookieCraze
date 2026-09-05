@@ -1,3 +1,7 @@
+New in 6.7.
+Made it so the bundle upgrades purchased statistic now counts every bundle copy you buy, rather than counting a whole bulk purchase as a single bundle. Your total now climbs by the actual number of bundles bought, whether you buy them one at a time or in bulk.
+Made it so bulk bundle purchases now charge the same rising, scaling cost as the rest of the shop, so buying several at once costs what it would to buy them one at a time rather than a flat multiple.
+Fixed a bug where the bundle shop could freeze the game when buying a large quantity of bundles at once. Both buying many copies of a single bundle and the buy one of every affordable bundle option are now instant no matter how large the number.
 New in 6.6.
 Added a deselect all shortcut to multiple choice checkbox lists. Pressing control U in any list where you can check more than one item now unchecks every item at once and announces that all items were unselected, mirroring the existing control A that checks them all. This makes rebuilding your picks much faster in the places that use it, such as choosing your roulette bet types, the slot machine symbols, or the cookie flipper events.
 Brought back the slot machine's original symbol order. The symbols in slots.table are once again listed in their original non-alphabetical order rather than sorted alphabetically. This only affects the order symbols appear in the selection list, and you can still reorder them yourself with the asc, dsc, or none prefix.

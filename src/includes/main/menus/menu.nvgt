@@ -1254,7 +1254,7 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
     }
     }
 }
-double calc_bundle_total(bundle_item@ bundle, store_item[]@ storeItems)
+double calc_bundle_total_qty(bundle_item@ bundle, store_item[]@ storeItems, double copies)
 {
     double total = 0;
     for (uint j = 0; j < bundle.entries.length(); j++)
@@ -1264,12 +1264,69 @@ double calc_bundle_total(bundle_item@ bundle, store_item[]@ storeItems)
             if (storeItems[k].item_type == bundle.entries[j].item_type)
             {
                 double level = (storeItems[k].target == 2) ? manulcookie_purchases : (storeItems[k].target == 3) ? cookiespeed_purchases : autocookie_purchases;
-                total = safe_cap(total + calc_total_upgrade_cost(level, bundle.entries[j].quantity, storeItems[k].base_cost, storeItems[k].cost_multiplier));
+                total = safe_cap(total + calc_total_upgrade_cost(level, bundle.entries[j].quantity * copies, storeItems[k].base_cost, storeItems[k].cost_multiplier));
                 break;
             }
         }
     }
     return total;
+}
+double calc_bundle_total(bundle_item@ bundle, store_item[]@ storeItems)
+{
+    return calc_bundle_total_qty(bundle, storeItems, 1);
+}
+// Largest number of copies of a single bundle affordable for the given balance, accounting for the
+// rising cost of its contents. Uses a bounded doubling then binary search over calc_bundle_total_qty
+// (no per-copy loop), so it stays instant even when the true answer is astronomically large.
+double max_affordable_bundle_copies(bundle_item@ bundle, store_item[]@ storeItems, double balance)
+{
+    if (calc_bundle_total_qty(bundle, storeItems, 1) > balance) return 0;
+    double hi = 1;
+    while (hi < 1e307 && calc_bundle_total_qty(bundle, storeItems, hi * 2) <= balance)
+        hi *= 2;
+    if (hi >= 1e307) return 1e308;
+    double low = hi, high = hi * 2;
+    while (low < high)
+    {
+        double mid = floor((low + high + 1) / 2);
+        if (calc_bundle_total_qty(bundle, storeItems, mid) <= balance)
+            low = mid;
+        else
+            high = mid - 1;
+    }
+    return low;
+}
+// Cost of buying "copies" of every affordable bundle in a category, at current levels.
+double calc_bundles_pass_cost(bundle_item[]@ bundles, string chosenMenu, store_item[]@ storeItems, double copies)
+{
+    double total = 0;
+    for (uint i = 0; i < bundles.length(); i++)
+    {
+        if (bundles[i].menu != chosenMenu) continue;
+        if (bundles[i].min_rank > 0 && rank < bundles[i].min_rank) continue;
+        total = safe_cap(total + calc_bundle_total_qty(bundles[i], storeItems, copies));
+    }
+    return total;
+}
+// Scaling-aware default for "buy one of every affordable bundle": the largest N such that buying N of
+// every affordable bundle fits the balance. Same bounded search approach as max_affordable_bundle_copies.
+double max_affordable_bundle_passes(bundle_item[]@ bundles, string chosenMenu, store_item[]@ storeItems, double balance)
+{
+    if (calc_bundles_pass_cost(bundles, chosenMenu, storeItems, 1) > balance) return 0;
+    double hi = 1;
+    while (hi < 1e307 && calc_bundles_pass_cost(bundles, chosenMenu, storeItems, hi * 2) <= balance)
+        hi *= 2;
+    if (hi >= 1e307) return 1e308;
+    double low = hi, high = hi * 2;
+    while (low < high)
+    {
+        double mid = floor((low + high + 1) / 2);
+        if (calc_bundles_pass_cost(bundles, chosenMenu, storeItems, mid) <= balance)
+            low = mid;
+        else
+            high = mid - 1;
+    }
+    return low;
 }
 void bundlemenu()
 {
@@ -1357,7 +1414,7 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
             continue;
         }
         double totalCost = calc_bundle_total(bundles[i], storeItems);
-        double canAfford = (totalCost > 0) ? floor(balance / totalCost) : 0;
+        double canAfford = max_affordable_bundle_copies(bundles[i], storeItems, balance);
         string costStr = (chosenCurrency == "cookies") ? format_number(totalCost) + " baked cookies" : convert_to_currency(totalCost);
         m.add_item(bundles[i].name + ". Costs " + costStr + ". You can buy " + format_number(canAfford) + ". Description: " + bundles[i].description, "bundle" + string(i));
     }
@@ -1392,52 +1449,42 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
     }
     if (sel == "buyallbundles")
     {
-        double onePassCost = 0;
-        for (uint i = 0; i < bundles.length(); i++)
-        {
-            if (bundles[i].menu != chosenMenu) continue;
-            if (bundles[i].min_rank > 0 && rank < bundles[i].min_rank) continue;
-            double totalCost = calc_bundle_total(bundles[i], storeItems);
-            if (balance >= totalCost)
-                onePassCost += totalCost;
-        }
-        int maxPasses = (onePassCost > 0) ? int(floor(balance / onePassCost)) : 1;
-        if (maxPasses < 1) maxPasses = 1;
-        string qInput = vd.input_box("", "How many of each affordable bundle would you like to buy? Press enter to buy the maximum amount.", string(maxPasses));
+        double passDefault = max_affordable_bundle_passes(bundles, chosenMenu, storeItems, balance);
+        if (passDefault < 1) passDefault = 1;
+        string qInput = vd.input_box("", "How many of each affordable bundle would you like to buy? Press enter to buy the maximum amount.", string(round(passDefault, 0)));
         if (qInput == "") { continue; }
-        int passes = string_to_int(qInput);
+        double passes = string_to_number(qInput);
         if (passes < 1) { pool.play_stationary("sounds/store/error.ogg", false); dlgmessage_return("Please enter a number greater than zero. Press enter or space to continue."); continue; }
         double totalSpent = 0;
         double autoGained = 0, manulGained = 0, speedGained = 0;
         string[] boughtNames;
-        for (int pass = 0; pass < passes; pass++)
+        for (uint i = 0; i < bundles.length(); i++)
         {
-            for (uint i = 0; i < bundles.length(); i++)
+            if (bundles[i].menu != chosenMenu) continue;
+            if (bundles[i].min_rank > 0 && rank < bundles[i].min_rank) continue;
+            double passBalance = (chosenCurrency == "cookies") ? cookies : coins;
+            double copies = max_affordable_bundle_copies(bundles[i], storeItems, passBalance);
+            if (copies > passes) copies = passes;
+            if (copies < 1) continue;
+            double cost = calc_bundle_total_qty(bundles[i], storeItems, copies);
+            if (chosenCurrency == "cookies") { cookies -= cost; } else { coins -= cost; stat_coins_spent += cost; }
+            totalSpent = safe_cap(totalSpent + cost);
+            boughtNames.insert_last(bundles[i].name);
+            for (uint j = 0; j < bundles[i].entries.length(); j++)
             {
-                if (bundles[i].menu != chosenMenu) continue;
-                if (bundles[i].min_rank > 0 && rank < bundles[i].min_rank) continue;
-                double totalCost = calc_bundle_total(bundles[i], storeItems);
-                double passBalance = (chosenCurrency == "cookies") ? cookies : coins;
-                if (passBalance < totalCost) continue;
-                if (chosenCurrency == "cookies") { cookies -= totalCost; } else { coins -= totalCost; stat_coins_spent += totalCost; }
-                totalSpent = safe_cap(totalSpent + totalCost);
-                if (pass == 0) boughtNames.insert_last(bundles[i].name);
-                for (uint j = 0; j < bundles[i].entries.length(); j++)
+                for (uint k = 0; k < storeItems.length(); k++)
                 {
-                    for (uint k = 0; k < storeItems.length(); k++)
+                    if (storeItems[k].item_type == bundles[i].entries[j].item_type)
                     {
-                        if (storeItems[k].item_type == bundles[i].entries[j].item_type)
-                        {
-                            double amount = bundles[i].entries[j].quantity;
-                            if (storeItems[k].target == 1) { autocookie += amount * storeItems[k].amount; autocookie_purchases += amount; autoGained = safe_cap(autoGained + amount * storeItems[k].amount); }
-                            else if (storeItems[k].target == 2) { manulcookie += amount * storeItems[k].amount; manulcookie_purchases += amount; manulGained = safe_cap(manulGained + amount * storeItems[k].amount); }
-                            else if (storeItems[k].target == 3) { cookiespeed += amount * storeItems[k].amount; clicktime -= amount * storeItems[k].amount; cookiespeed_purchases += amount; speedGained = safe_cap(speedGained + amount * storeItems[k].amount); }
-                            break;
-                        }
+                        double amount = bundles[i].entries[j].quantity * copies;
+                        if (storeItems[k].target == 1) { autocookie += amount * storeItems[k].amount; autocookie_purchases += amount; autoGained = safe_cap(autoGained + amount * storeItems[k].amount); }
+                        else if (storeItems[k].target == 2) { manulcookie += amount * storeItems[k].amount; manulcookie_purchases += amount; manulGained = safe_cap(manulGained + amount * storeItems[k].amount); }
+                        else if (storeItems[k].target == 3) { cookiespeed += amount * storeItems[k].amount; clicktime -= amount * storeItems[k].amount; cookiespeed_purchases += amount; speedGained = safe_cap(speedGained + amount * storeItems[k].amount); }
+                        break;
                     }
                 }
-                stat_bundles_purchased++;
             }
+            stat_bundles_purchased += copies;
         }
         if (totalSpent > 0)
         {
@@ -1456,7 +1503,7 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
             pool.play_stationary("sounds/store/buy" + random(1, 4) + ".ogg", false);
             pool.play_stationary("sounds/store/order.ogg", false);
             string spentStr = (chosenCurrency == "cookies") ? format_number(totalSpent) + " baked cookies" : convert_to_currency(totalSpent);
-            dlgmessage_return("Bulk purchase complete! You bought " + string(passes) + " of each: " + boughtLog + ". You gained " + gainLog + " for a total of " + spentStr + ".");
+            dlgmessage_return("Bulk purchase complete! You bought up to " + format_number(passes) + " of each: " + boughtLog + ". You gained " + gainLog + " for a total of " + spentStr + ".");
         }
         else
             speak("Nothing affordable to buy.");
@@ -1472,9 +1519,8 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
     if (sel.substr(0, 6) == "bundle")
     {
         int idx = string_to_int(sel.substr(6));
-        double totalCost = calc_bundle_total(bundles[idx], storeItems);
         vd.set_disallowed_chars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()[]{};:'\"\\|,.<>?/+-=`~_", false, "This character is not allowed.");
-        double maxBundles = (totalCost > 0) ? floor(balance / totalCost) : 0;
+        double maxBundles = max_affordable_bundle_copies(bundles[idx], storeItems, balance);
         string input = vd.input_box("", "How many " + bundles[idx].name + " would you like to buy? Press enter to buy the maximum amount.", string(maxBundles));
         double qty = string_to_number(input);
         if (qty <= 0)
@@ -1484,7 +1530,7 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
             dlgmessage_return("Error! Please enter a valid number to buy!");
             continue;
         }
-        double grandTotal = totalCost * qty;
+        double grandTotal = calc_bundle_total_qty(bundles[idx], storeItems, qty);
         if (balance < grandTotal)
         {
             pool.play_stationary("sounds/store/error.ogg", false);
@@ -1544,7 +1590,7 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
                 }
             }
         }
-        stat_bundles_purchased++;
+        stat_bundles_purchased += qty;
         pool.play_stationary("sounds/store/buy" + random(1, 4) + ".ogg", false);
         pool.play_stationary("sounds/store/order.ogg", false);
         string grandStr = (chosenCurrency == "cookies") ? format_number(grandTotal) + " baked cookies" : convert_to_currency(grandTotal);
