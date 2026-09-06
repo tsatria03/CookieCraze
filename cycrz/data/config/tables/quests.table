@@ -269,11 +269,3 @@ start_combos_50:Start 50 combos:combos_started:50:false:false:true:2:Start %thre
 start_combos_150:Start 150 combos:combos_started:150:false:false:true:3:Start %threshold% combos.
 start_combos_300:Start 300 combos:combos_started:300:false:false:true:4:Start %threshold% combos.
 start_combos_500:Start 500 combos:combos_started:500:false:false:true:5:Start %threshold% combos.
-
-; Combos broken
-
-break_combos_10:Break 10 combos:combos_broken:10:false:false:true:1:Break %threshold% combos.
-break_combos_50:Break 50 combos:combos_broken:50:false:false:true:2:Break %threshold% combos.
-break_combos_150:Break 150 combos:combos_broken:150:false:false:true:3:Break %threshold% combos.
-break_combos_300:Break 300 combos:combos_broken:300:false:false:true:4:Break %threshold% combos.
-break_combos_500:Break 500 combos:combos_broken:500:false:false:true:5:Break %threshold% combos.
