@@ -51,6 +51,10 @@ if(cookiespeed<=0)
 {
 cookiespeed=0;
 }
+if(cookiespeed>COOKIESPEED_MAX)
+{
+cookiespeed=COOKIESPEED_MAX;
+}
 if(manulcookie<=0)
 {
 manulcookie=0;
@@ -221,6 +225,10 @@ cookies=0;
 if(cookiespeed<=0)
 {
 cookiespeed=0;
+}
+if(cookiespeed>COOKIESPEED_MAX)
+{
+cookiespeed=COOKIESPEED_MAX;
 }
 if(manulcookie<=0)
 {
@@ -396,7 +404,7 @@ if (payout !is null)
         if (selectedBet == 0) cookies += change;
         else if (selectedBet == 1) coins += change;
         else if (selectedBet == 2) autocookie += change;
-        else if (selectedBet == 3) { cookiespeed += change; clicktime -= change; }
+        else if (selectedBet == 3) gain_cookiespeed(change);
         else if (selectedBet == 4) manulcookie += change;
     }
     cookies = floor(safe_cap(cookies));
@@ -442,6 +450,7 @@ void jackgame()
         if(coins<=0) coins=0;
         if(cookies<=0) cookies=0;
         if(cookiespeed<=0) cookiespeed=0;
+        if(cookiespeed>COOKIESPEED_MAX) cookiespeed=COOKIESPEED_MAX;
         if(manulcookie<=0) manulcookie=0;
         if(clicktime<=50) clicktime=50;
         if(clicktime>=1000) clicktime=1000;
@@ -540,7 +549,7 @@ check_achievements(loadedAchievements, achievementsUnlocked);
                 if (selectedBet == 0) { cookies += betAmount + winnings; cookies = floor(safe_cap(cookies)); }
                 else if (selectedBet == 1) { coins += betAmount + winnings; coins = floor(safe_cap(coins)); }
                 else if (selectedBet == 2) { autocookie += betAmount + winnings; autocookie = floor(safe_cap(autocookie)); }
-                else if (selectedBet == 3) { cookiespeed += betAmount + winnings; clicktime -= betAmount + winnings; cookiespeed = floor(safe_cap(cookiespeed)); }
+                else if (selectedBet == 3) gain_cookiespeed(betAmount + winnings);
                 else if (selectedBet == 4) { manulcookie += betAmount + winnings; manulcookie = floor(safe_cap(manulcookie)); }
                 stat_jack_wins++;
                 pool.play_stationary("sounds/minigames/" + resolve_sound(jacksConfig.win_sound), false);
@@ -588,7 +597,7 @@ check_achievements(loadedAchievements, achievementsUnlocked);
                 if (selectedBet == 0) { cookies += betAmount + winnings; cookies = floor(safe_cap(cookies)); }
                 else if (selectedBet == 1) { coins += betAmount + winnings; coins = floor(safe_cap(coins)); }
                 else if (selectedBet == 2) { autocookie += betAmount + winnings; autocookie = floor(safe_cap(autocookie)); }
-                else if (selectedBet == 3) { cookiespeed += betAmount + winnings; clicktime -= betAmount + winnings; cookiespeed = floor(safe_cap(cookiespeed)); }
+                else if (selectedBet == 3) gain_cookiespeed(betAmount + winnings);
                 else if (selectedBet == 4) { manulcookie += betAmount + winnings; manulcookie = floor(safe_cap(manulcookie)); }
                 stat_jack_wins++;
                 pool.play_stationary("sounds/minigames/" + resolve_sound(jacksConfig.win_sound), false);
@@ -626,7 +635,7 @@ check_achievements(loadedAchievements, achievementsUnlocked);
                 if (selectedBet == 0) { cookies += betAmount + winnings; cookies = floor(safe_cap(cookies)); }
                 else if (selectedBet == 1) { coins += betAmount + winnings; coins = floor(safe_cap(coins)); }
                 else if (selectedBet == 2) { autocookie += betAmount + winnings; autocookie = floor(safe_cap(autocookie)); }
-                else if (selectedBet == 3) { cookiespeed += betAmount + winnings; clicktime -= betAmount + winnings; cookiespeed = floor(safe_cap(cookiespeed)); }
+                else if (selectedBet == 3) gain_cookiespeed(betAmount + winnings);
                 else if (selectedBet == 4) { manulcookie += betAmount + winnings; manulcookie = floor(safe_cap(manulcookie)); }
                 pool.play_stationary("sounds/minigames/" + resolve_sound(jacksConfig.win_sound), false);
                 string msg = (d_points > 21 ? jacksConfig.dealer_bust_message : jacksConfig.win_message);
@@ -660,7 +669,7 @@ check_achievements(loadedAchievements, achievementsUnlocked);
                 if (selectedBet == 0) { cookies += returned; cookies = floor(safe_cap(cookies)); }
                 else if (selectedBet == 1) { coins += returned; coins = floor(safe_cap(coins)); }
                 else if (selectedBet == 2) { autocookie += returned; autocookie = floor(safe_cap(autocookie)); }
-                else if (selectedBet == 3) { cookiespeed += returned; clicktime -= returned; cookiespeed = floor(safe_cap(cookiespeed)); }
+                else if (selectedBet == 3) gain_cookiespeed(returned);
                 else if (selectedBet == 4) { manulcookie += returned; manulcookie = floor(safe_cap(manulcookie)); }
                 pool.play_stationary("sounds/minigames/" + resolve_sound(jacksConfig.push_sound), false);
                 string msg = jacksConfig.push_message;
@@ -693,6 +702,7 @@ void lotterygame()
         if (coins <= 0) coins = 0;
         if (cookies <= 0) cookies = 0;
         if (cookiespeed <= 0) cookiespeed = 0;
+        if (cookiespeed > COOKIESPEED_MAX) cookiespeed = COOKIESPEED_MAX;
         if (manulcookie <= 0) manulcookie = 0;
         if (clicktime <= 50) clicktime = 50;
         if (clicktime >= 1000) clicktime = 1000;
@@ -784,6 +794,7 @@ void dicegame()
         if (coins <= 0) coins = 0;
         if (cookies <= 0) cookies = 0;
         if (cookiespeed <= 0) cookiespeed = 0;
+        if (cookiespeed > COOKIESPEED_MAX) cookiespeed = COOKIESPEED_MAX;
         if (manulcookie <= 0) manulcookie = 0;
         if (clicktime <= 50) clicktime = 50;
         if (clicktime >= 1000) clicktime = 1000;
@@ -935,7 +946,7 @@ void dicegame()
                 if (selectedBet == 0) { cookies += winAmount; cookies = floor(safe_cap(cookies)); }
                 else if (selectedBet == 1) { coins += winAmount; coins = floor(safe_cap(coins)); stat_coins_earned += winAmount; }
                 else if (selectedBet == 2) { autocookie += winAmount; autocookie = floor(safe_cap(autocookie)); }
-                else if (selectedBet == 3) { cookiespeed += winAmount; clicktime -= winAmount; if (cookiespeed < 0) cookiespeed = 0; if (clicktime < 50) clicktime = 50; cookiespeed = floor(safe_cap(cookiespeed)); }
+                else if (selectedBet == 3) gain_cookiespeed(winAmount);
                 else if (selectedBet == 4) { manulcookie += winAmount; manulcookie = floor(safe_cap(manulcookie)); }
                 string msg = payout.message;
                 int ph = msg.find("%roll%");
@@ -1016,6 +1027,7 @@ void highlowgame()
         if (coins <= 0) coins = 0;
         if (cookies <= 0) cookies = 0;
         if (cookiespeed <= 0) cookiespeed = 0;
+        if (cookiespeed > COOKIESPEED_MAX) cookiespeed = COOKIESPEED_MAX;
         if (manulcookie <= 0) manulcookie = 0;
         if (clicktime <= 50) clicktime = 50;
         if (clicktime >= 1000) clicktime = 1000;
@@ -1173,7 +1185,7 @@ void highlowgame()
                     if (selectedBet == 0) { cookies += pot; cookies = floor(safe_cap(cookies)); }
                     else if (selectedBet == 1) { coins += pot; coins = floor(safe_cap(coins)); stat_coins_earned += pot; }
                     else if (selectedBet == 2) { autocookie += pot; autocookie = floor(safe_cap(autocookie)); }
-                    else if (selectedBet == 3) { cookiespeed += pot; clicktime -= pot; if (cookiespeed < 0) cookiespeed = 0; if (clicktime < 50) clicktime = 50; cookiespeed = floor(safe_cap(cookiespeed)); }
+                    else if (selectedBet == 3) gain_cookiespeed(pot);
                     else if (selectedBet == 4) { manulcookie += pot; manulcookie = floor(safe_cap(manulcookie)); }
                     stat_highlow_wins++;
                     pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.win_sound), false);
@@ -1237,7 +1249,7 @@ void highlowgame()
             if (selectedBet == 0) { cookies += pot; cookies = floor(safe_cap(cookies)); }
             else if (selectedBet == 1) { coins += pot; coins = floor(safe_cap(coins)); stat_coins_earned += pot; }
             else if (selectedBet == 2) { autocookie += pot; autocookie = floor(safe_cap(autocookie)); }
-            else if (selectedBet == 3) { cookiespeed += pot; clicktime -= pot; if (cookiespeed < 0) cookiespeed = 0; if (clicktime < 50) clicktime = 50; cookiespeed = floor(safe_cap(cookiespeed)); }
+            else if (selectedBet == 3) gain_cookiespeed(pot);
             else if (selectedBet == 4) { manulcookie += pot; manulcookie = floor(safe_cap(manulcookie)); }
             stat_highlow_wins++;
             pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.win_sound), false);
@@ -1349,6 +1361,7 @@ void roulettegame()
         if (coins <= 0) coins = 0;
         if (cookies <= 0) cookies = 0;
         if (cookiespeed <= 0) cookiespeed = 0;
+        if (cookiespeed > COOKIESPEED_MAX) cookiespeed = COOKIESPEED_MAX;
         if (manulcookie <= 0) manulcookie = 0;
         if (clicktime <= 50) clicktime = 50;
         if (clicktime >= 1000) clicktime = 1000;
@@ -1475,7 +1488,7 @@ void roulettegame()
             if (selectedBet == 0) { cookies += totalReturn; cookies = floor(safe_cap(cookies)); }
             else if (selectedBet == 1) { coins += totalReturn; coins = floor(safe_cap(coins)); }
             else if (selectedBet == 2) { autocookie += totalReturn; autocookie = floor(safe_cap(autocookie)); }
-            else if (selectedBet == 3) { cookiespeed += totalReturn; clicktime -= totalReturn; if (cookiespeed < 0) cookiespeed = 0; if (clicktime < 50) clicktime = 50; cookiespeed = floor(safe_cap(cookiespeed)); }
+            else if (selectedBet == 3) gain_cookiespeed(totalReturn);
             else if (selectedBet == 4) { manulcookie += totalReturn; manulcookie = floor(safe_cap(manulcookie)); }
             double net = totalReturn - totalStake;
             stat_roulette_straight_hits += straightHits;
