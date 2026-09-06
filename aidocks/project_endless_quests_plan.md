@@ -57,5 +57,12 @@ Per endless quest: `growth` (threshold multiplier per completion) · `difficulty
 - **Ships in 6.8** — stay in the 6.8 block until it reaches its 10-entry cap; no version bump for this feature (version.txt stays 6.8).
 - **Rank quests only** — convert only the rank ladder now; other quest categories are deferred to a later evaluation.
 
+## Nearest-slot fallback (added during Section 5 discussion)
+Required quests only claimed a slot on an EXACT difficulty-tag match, so they were silently dropped when no slot targeted their tag. After the rank-ladder conversion, non-rank quests only span difficulty 1-5, so an endless rank quest with `difficulty_step > 0` climbs its tag past every slot after ~5 clears and would vanish. Fix (in `assign_quests`, the required `!completed` branch): prefer an exact match, else take the NEAREST open slot (mirrors the `completed && advance` branch, which already did nearest-slot). This also quietly fixes the latent drop bug for all required quests.
+
+## Rank quest final parameters (LOCKED)
+Single endless rank quest: base threshold **5**, growth **1.25** (>= 1.2 so floored thresholds never repeat; the +1 rule), difficulty **1**, `difficulty_step` **1** (tag climbs +1 per completed cycle, capped at 10 after 9 clears — needs the nearest-slot fallback above), required **true**, advance **false**, infinite **true**. Line:
+`reach_rank_endless:Reach rank %threshold%:rank:5:false:true:false:1:1.25:true:1:Reach rank %threshold% to complete this quest. Each time you finish it and prestige, it returns at a higher rank.`
+
 ## Open/next-step decisions (resolve during the relevant section)
-- Rank endless quest base threshold + growth value (Section 5).
+- (none remaining — rank quest params locked above.)

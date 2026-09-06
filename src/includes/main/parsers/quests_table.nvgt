@@ -217,15 +217,28 @@ void assign_quests()
         }
         else if (!completed)
         {
+            int eff = endless_difficulty(loadedQuests[i]);
+            int chosenSlot = -1;
             for (int s = 0; s < slots; s++)
             {
-                if (!slotFilled[s] && slotDifficulties[s] == endless_difficulty(loadedQuests[i]))
+                if (!slotFilled[s] && slotDifficulties[s] == eff) { chosenSlot = s; break; }
+            }
+            /* Fallback so a required quest is never dropped: if no open slot matches its difficulty tag
+            exactly (e.g. an endless quest whose tag has climbed past every slot), take the nearest open slot. */
+            if (chosenSlot == -1)
+            {
+                for (int s = 0; s < slots; s++)
                 {
-                    activeQuests.insert_last(loadedQuests[i]);
-                    slotFilled[s] = true;
-                    assignedRequiredStats.insert_last(loadedQuests[i].stat);
-                    break;
+                    if (slotFilled[s]) continue;
+                    if (chosenSlot == -1 || abs(slotDifficulties[s] - eff) < abs(slotDifficulties[chosenSlot] - eff))
+                        chosenSlot = s;
                 }
+            }
+            if (chosenSlot != -1)
+            {
+                activeQuests.insert_last(loadedQuests[i]);
+                slotFilled[chosenSlot] = true;
+                assignedRequiredStats.insert_last(loadedQuests[i].stat);
             }
         }
     }
