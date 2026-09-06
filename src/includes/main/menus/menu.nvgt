@@ -1173,7 +1173,7 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
         }
         double totalSpent = 0;
         double autoGained = 0, manulGained = 0, speedGained = 0;
-        double autoPercentGained = 0, manulPercentGained = 0, speedPercentGained = 0;
+        double autoPercentGained = 0, manulPercentGained = 0;
         for (uint i = 0; i < items.length(); i++)
         {
             if (items[i].menu != chosenMenu) continue;
@@ -1219,16 +1219,13 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
             {
                 if (items[i].use_percent)
                 {
-                    double gained = safe_cap((cookiespeed * (items[i].amount / 100.0)) * quantity);
-                    cookiespeed += gained;
-                    clicktime -= gained;
-                    speedPercentGained = safe_cap(speedPercentGained + items[i].amount * quantity);
+                    double applied = gain_cookiespeed(safe_cap((cookiespeed * (items[i].amount / 100.0)) * quantity));
+                    speedGained = safe_cap(speedGained + applied);
                 }
                 else
                 {
-                    cookiespeed += quantity * items[i].amount;
-                    clicktime -= cookiespeed;
-                    speedGained = safe_cap(speedGained + quantity * items[i].amount);
+                    double applied = gain_cookiespeed(quantity * items[i].amount);
+                    speedGained = safe_cap(speedGained + applied);
                 }
                 cookiespeed_purchases += quantity;
             }
@@ -1242,7 +1239,6 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
             if (manulGained > 0) logParts.insert_last(format_number(manulGained) + " manual " + (manulGained == 1 ? "cookie" : "cookies"));
             if (manulPercentGained > 0) logParts.insert_last(format_number(manulPercentGained) + "% manual cookies");
             if (speedGained > 0) logParts.insert_last(format_number(speedGained) + " ms of baking speed");
-            if (speedPercentGained > 0) logParts.insert_last(format_number(speedPercentGained) + "% baking speed");
             if (logParts.length() == 1) log = logParts[0];
             else if (logParts.length() == 2) log = logParts[0] + ", and " + logParts[1];
             else { for (uint li = 0; li < logParts.length() - 1; li++) { if (log != "") log += ", "; log += logParts[li]; } log += ", and " + logParts[logParts.length() - 1]; }
@@ -1580,7 +1576,7 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
                         double amount = bundles[i].entries[j].quantity * copies;
                         if (storeItems[k].target == 1) { autocookie += amount * storeItems[k].amount; autocookie_purchases += amount; autoGained = safe_cap(autoGained + amount * storeItems[k].amount); }
                         else if (storeItems[k].target == 2) { manulcookie += amount * storeItems[k].amount; manulcookie_purchases += amount; manulGained = safe_cap(manulGained + amount * storeItems[k].amount); }
-                        else if (storeItems[k].target == 3) { cookiespeed += amount * storeItems[k].amount; clicktime -= amount * storeItems[k].amount; cookiespeed_purchases += amount; speedGained = safe_cap(speedGained + amount * storeItems[k].amount); }
+                        else if (storeItems[k].target == 3) { double applied = gain_cookiespeed(amount * storeItems[k].amount); cookiespeed_purchases += amount; speedGained = safe_cap(speedGained + applied); }
                         break;
                     }
                 }
@@ -1662,10 +1658,9 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
                     }
                     else if (storeItems[k].target == 3)
                     {
-                        cookiespeed += amount * storeItems[k].amount;
-                        clicktime -= amount * storeItems[k].amount;
+                        double applied = gain_cookiespeed(amount * storeItems[k].amount);
                         cookiespeed_purchases += amount;
-                        speedGained = safe_cap(speedGained + amount * storeItems[k].amount);
+                        speedGained = safe_cap(speedGained + applied);
                     }
                     break;
                 }
