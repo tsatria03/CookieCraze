@@ -63,13 +63,19 @@ string apply_event(event_item@ item)
         actualAmount = item.use_percent ? cookiespeed * (amount / 100.0) : amount;
         if (item.polarity == 1)
         {
-            cookiespeed = max(50, cookiespeed - actualAmount);
-            clicktime -= actualAmount;
+            actualAmount = gain_cookiespeed(actualAmount);
+            if (actualAmount <= 0) return "";
         }
         else
         {
-            cookiespeed = min(1000, cookiespeed + actualAmount);
-            clicktime += actualAmount;
+            double before = cookiespeed;
+            cookiespeed -= actualAmount;
+            if (cookiespeed < 0) cookiespeed = 0;
+            cookiespeed = floor(cookiespeed);
+            actualAmount = before - cookiespeed;
+            clicktime += int(actualAmount);
+            if (clicktime > 1000) clicktime = 1000;
+            if (actualAmount <= 0) return "";
         }
     }
     else

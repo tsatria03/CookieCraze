@@ -162,7 +162,19 @@ string apply_prestige_reward(prestige_reward_item@ item, double snapshot_autocoo
         else if (target == "coins")        { coins += amount; stat_coins_earned += amount; }
         else if (target == "autocookie")    autocookie += amount;
         else if (target == "manulcookie")   manulcookie += amount;
-        else if (target == "cookiespeed")   { cookiespeed += amount; clicktime -= amount; }
+        else if (target == "cookiespeed")
+        {
+            if (amount >= 0)
+                amount = gain_cookiespeed(amount);
+            else
+            {
+                cookiespeed += amount;
+                clicktime -= int(amount);
+                if (cookiespeed < 0) cookiespeed = 0;
+                if (clicktime > 1000) clicktime = 1000;
+                cookiespeed = floor(cookiespeed);
+            }
+        }
         item.entries[e].amount = amount;
         item.entries[e].target = target;
     }
@@ -199,7 +211,7 @@ string apply_prestige_default_reward(int level)
     else if (target == "coins")       { coins += amount; stat_coins_earned += amount; }
     else if (target == "autocookie")   autocookie += amount;
     else if (target == "manulcookie")  manulcookie += amount;
-    else if (target == "cookiespeed")  { cookiespeed += amount; clicktime -= amount; }
+    else if (target == "cookiespeed")  amount = gain_cookiespeed(amount);
     string msg = prestigeDefaultReward.message;
     string lvlStr = string(level);
     string amtStr = (target == "coins") ? convert_to_currency(amount) : format_number(amount);

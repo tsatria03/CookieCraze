@@ -179,10 +179,8 @@ string grant_achievement_reward(achievement_item@ item)
     if (amount <= 0) return "";
     if (item.reward_target == "cookiespeed")
     {
-        cookiespeed += amount;
-        clicktime -= amount;
-        if (clicktime < 50) clicktime = 50;
-        cookiespeed = floor(safe_cap(cookiespeed));
+        amount = gain_cookiespeed(amount);
+        if (amount <= 0) return "";
     }
     else
         apply_amount_effect(item.reward_target, amount, 1, false);

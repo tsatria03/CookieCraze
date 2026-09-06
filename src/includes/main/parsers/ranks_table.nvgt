@@ -82,8 +82,16 @@ string apply_rank_reward(rank_reward_item@ item, double current_rank)
     lastRewardAmount = amount;
     if (item.target == "cookiespeed")
     {
-        cookiespeed += amount;
-        clicktime -= amount;
+        if (amount >= 0)
+            amount = gain_cookiespeed(amount);
+        else
+        {
+            cookiespeed += amount;
+            clicktime -= int(amount);
+            if (cookiespeed < 0) cookiespeed = 0;
+            if (clicktime > 1000) clicktime = 1000;
+            cookiespeed = floor(cookiespeed);
+        }
     }
     else
         apply_amount_effect(item.target, amount, 1, false);
