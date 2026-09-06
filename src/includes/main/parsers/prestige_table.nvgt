@@ -29,7 +29,7 @@ double prestige_starting_manualcookie = 0;
 int prestige_points = 0;
 int prestigeLevel = 0;
 string[] prestigePurchased;
-// Purchase count per repeatable (endless) prestige upgrade, keyed by item_id. One-time upgrades stay in prestigePurchased above.
+// Purchase count per infinite (endless) prestige upgrade, keyed by item_id. One-time upgrades stay in prestigePurchased above.
 dictionary prestigeEndlessCounts;
 prestige_run[] prestigeHistory;
 

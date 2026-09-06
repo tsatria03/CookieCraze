@@ -1552,9 +1552,9 @@ Format: alias=Full Menu Name|min_level|hidden|Description
 
 Works the same as singles.store menu aliases, except min_level refers to the player's prestige level rather than their rank. Set min_level to 0 for a category available from the first prestige. Set hidden to true to hide the category entirely until the prestige level is reached, or false to show it as locked with the required level displayed.
 
-Item format: menu:item_id:cost:cost_multiplier:min_level:hidden:repeatable:amount:description
+Item format: menu:item_id:cost:cost_multiplier:min_level:hidden:infinite:amount:description
 
-For backward compatibility, older seven field lines without the cost_multiplier and repeatable fields, in the form menu:item_id:cost:min_level:hidden:amount:description, are still read and treated as one-time upgrades with a cost multiplier of 1.
+For backward compatibility, older seven field lines without the cost_multiplier and infinite fields, in the form menu:item_id:cost:min_level:hidden:amount:description, are still read and treated as one-time upgrades with a cost multiplier of 1.
 
 menu
 The alias of the category this item belongs to.
@@ -1585,7 +1585,7 @@ The minimum prestige level required to see and purchase this item. Set to 0 for 
 hidden
 Set to true to hide this item until the prestige level is reached. Set to false to show it as locked with the required level displayed.
 
-repeatable
+infinite
 Set to true to make this an endless upgrade that can be bought any number of times, with its point cost compounding by cost_multiplier each purchase and its effect stacking. Set to false for a normal one-time upgrade.
 
 amount

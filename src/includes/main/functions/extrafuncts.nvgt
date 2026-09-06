@@ -724,7 +724,7 @@ bool all_standard_prestige_purchased()
     parse_prestige_store("data/config/stores/prestige.store", items, menus);
     for (uint i = 0; i < items.length(); i++)
     {
-        if (items[i].repeatable) continue;
+        if (items[i].infinite) continue;
         bool bought = false;
         for (uint k = 0; k < prestigePurchased.length(); k++)
         {

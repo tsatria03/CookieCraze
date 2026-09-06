@@ -14,7 +14,7 @@ class prestige_store_item
     double cost_multiplier;
     int min_level;
     bool hidden;
-    bool repeatable;
+    bool infinite;
     bool purchased;
     double amount;
     string menu;
@@ -111,15 +111,15 @@ void parse_prestige_store(string filepath, prestige_store_item[]@ items_out, pre
         item.cost = string_to_int(parts[2]);
         item.purchased = false;
         /* Two formats are supported, distinguished by field count so pre-endless prestige.store files
-        still parse. New (9 fields, repeatable-aware):
-        menu:id:base_cost:cost_multiplier:min_level:hidden:repeatable:amount:description
+        still parse. New (9 fields, infinite-aware):
+        menu:id:base_cost:cost_multiplier:min_level:hidden:infinite:amount:description
         Old (7 fields, one-time only): menu:id:cost:min_level:hidden:amount:description */
         if (parts.length() >= 9)
         {
             item.cost_multiplier = string_to_number(parts[3]);
             item.min_level = string_to_int(parts[4]);
             item.hidden = (parts[5] == "true");
-            item.repeatable = (parts[6] == "true");
+            item.infinite = (parts[6] == "true");
             item.amount = string_to_number(parts[7]);
             item.description = parts[8];
         }
@@ -128,7 +128,7 @@ void parse_prestige_store(string filepath, prestige_store_item[]@ items_out, pre
             item.cost_multiplier = 1.0;
             item.min_level = string_to_int(parts[3]);
             item.hidden = (parts[4] == "true");
-            item.repeatable = false;
+            item.infinite = false;
             item.amount = string_to_number(parts[5]);
             item.description = parts[6];
         }

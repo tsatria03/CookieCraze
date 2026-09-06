@@ -5,8 +5,8 @@ headstartmenu=Standard Head Start|0|false|Permanent one-time upgrades that give 
 endlesspassivemenu=Endless Passive|10|false|Infinite production boosts with no limit, unlocked once you have cleared every standard prestige upgrade at prestige level 10.
 endlessheadstartmenu=Endless Head Start|10|false|Infinite head start boosts with no limit, unlocked once you have cleared every standard prestige upgrade at prestige level 10.
 
-; Item format: menu:id:base_cost:cost_multiplier:min_level:hidden:repeatable:amount:description
-; Standard items use cost_multiplier 1 and repeatable false, so they stay one-time flat-cost buys.
+; Item format: menu:id:base_cost:cost_multiplier:min_level:hidden:infinite:amount:description
+; Standard items use cost_multiplier 1 and infinite false, so they stay one-time flat-cost buys.
 
 ; Standard items
 

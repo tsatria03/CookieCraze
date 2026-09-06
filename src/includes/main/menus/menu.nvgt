@@ -737,10 +737,10 @@ double prestige_endless_count(string item_id)
         prestigeEndlessCounts.get(item_id, c);
     return c;
 }
-// Endless (repeatable) items are never owned-out; one-time items are owned once bought.
+// Endless (infinite) items are never owned-out; one-time items are owned once bought.
 bool prestige_item_owned(prestige_store_item@ item)
 {
-    if (item.repeatable) return false;
+    if (item.infinite) return false;
     for (uint k = 0; k < prestigePurchased.length(); k++)
         if (prestigePurchased[k] == item.item_id) return true;
     return false;
@@ -749,13 +749,13 @@ bool prestige_item_owned(prestige_store_item@ item)
 bool prestige_item_unlocked(prestige_store_item@ item, bool standardCleared)
 {
     if (prestigeLevel < item.min_level) return false;
-    if (item.repeatable && !standardCleared) return false;
+    if (item.infinite && !standardCleared) return false;
     return true;
 }
 bool prestige_menu_is_endless(prestige_store_item[]@ items, string menuName)
 {
     for (uint i = 0; i < items.length(); i++)
-        if (items[i].menu == menuName && items[i].repeatable) return true;
+        if (items[i].menu == menuName && items[i].infinite) return true;
     return false;
 }
 // Point cost (rounded up to a whole point) to buy `qty` copies of an endless item starting at `fromCount`.
@@ -819,7 +819,7 @@ void prestige_store_menu()
                 if (prestige_item_owned(items[j])) continue;
                 totalItems++;
                 if (!prestige_item_unlocked(items[j], standardCleared)) continue;
-                double nextCost = items[j].repeatable ? prestige_endless_cost(items[j], prestige_endless_count(items[j].item_id), 1) : double(items[j].cost);
+                double nextCost = items[j].infinite ? prestige_endless_cost(items[j], prestige_endless_count(items[j].item_id), 1) : double(items[j].cost);
                 if (double(prestige_points) >= nextCost)
                     affordableItems++;
             }
@@ -889,7 +889,7 @@ void prestige_store_category_menu(prestige_store_item[]@ items, string chosenMen
             m.add_item(string_replace(items[i].item_id, "_", " ", true) + ". " + reason + " Description: " + items[i].description, "locked" + string(i));
             continue;
         }
-        if (items[i].repeatable)
+        if (items[i].infinite)
         {
             double owned = prestige_endless_count(items[i].item_id);
             double nextCost = prestige_endless_cost(items[i], owned, 1);
@@ -927,7 +927,7 @@ void prestige_store_category_menu(prestige_store_item[]@ items, string chosenMen
             return;
         }
         if (sel != "item" + string(i)) continue;
-        if (items[i].repeatable)
+        if (items[i].infinite)
         {
             double owned = prestige_endless_count(items[i].item_id);
             double maxAffordable = calc_max_buyable(double(prestige_points), owned, items[i].cost, items[i].cost_multiplier);
