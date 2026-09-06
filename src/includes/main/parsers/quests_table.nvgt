@@ -309,10 +309,38 @@ void mark_completed_quests()
 {
     for (uint i = 0; i < activeQuests.length(); i++)
     {
+        if (activeQuests[i].infinite) continue;
         if (!activeQuests[i].advance) continue;
         if (get_stat_value(activeQuests[i].stat) < activeQuests[i].threshold) continue;
         if (!completedQuestIds.exists(activeQuests[i].id)) { completedQuestIds.set(activeQuests[i].id, true); stat_quests_completed++; }
     }
+}
+void advance_endless_quests()
+{
+    /* Bumps each completed infinite quest's completion count so it returns harder next cycle. Call on
+    prestige, before the prestige-points calc, so this run's completion counts toward this payout. */
+    for (uint i = 0; i < activeQuests.length(); i++)
+    {
+        if (!activeQuests[i].infinite) continue;
+        if (get_stat_value(activeQuests[i].stat) < activeQuests[i].threshold) continue;
+        double c = 0;
+        if (questEndlessCounts.exists(activeQuests[i].id)) questEndlessCounts.get(activeQuests[i].id, c);
+        questEndlessCounts.set(activeQuests[i].id, c + 1);
+        stat_quests_completed++;
+    }
+}
+double total_endless_completions()
+{
+    /* Sum of every infinite quest's completion count. Each completion adds +1 to the prestige-points multiplier. */
+    double total = 0;
+    string[] keys = questEndlessCounts.get_keys();
+    for (uint i = 0; i < keys.length(); i++)
+    {
+        double c = 0;
+        questEndlessCounts.get(keys[i], c);
+        total += c;
+    }
+    return total;
 }
 
 void reroll_quest(int questIndex)

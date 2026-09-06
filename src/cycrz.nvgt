@@ -177,9 +177,10 @@ if (prestige)
             questsDoneThisRun++;
     }
     mark_completed_quests();
+    advance_endless_quests();
     double perQuestPoints = eval_event_amount(prestigeConfig.points_per_prestige, double(prestigeLevel));
     if (perQuestPoints < 0) perQuestPoints = 0;
-    int pointsEarned = int(floor(perQuestPoints * double(completedQuestIds.get_size())));
+    int pointsEarned = int(floor(perQuestPoints * (double(completedQuestIds.get_size()) + total_endless_completions())));
     prestige_points += pointsEarned;
     reset_game_state();
     string rewardSummary = "";
