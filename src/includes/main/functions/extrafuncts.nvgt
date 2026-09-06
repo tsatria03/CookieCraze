@@ -478,8 +478,8 @@ void show_baker_info()
     txt += "Production\r\n";
     txt += "Auto cookies: " + format_number(autocookie) + "\r\n";
     txt += "Manual cookies: " + format_number(manulcookie) + "\r\n";
-    txt += "Baking speed reduction: " + format_number(cookiespeed) + "ms\r\n";
-    txt += "Bake interval: " + format_number(max(0.0, 1000.0 - cookiespeed)) + "ms\r\n";
+    txt += "Baking speed reduction: " + format_number(cookiespeed) + " ms\r\n";
+    txt += "Bake interval: " + format_number(max(0.0, 1000.0 - cookiespeed)) + " ms\r\n";
     txt += "\r\n";
     txt += "Slots\r\n";
     txt += "Auto slots: " + string(autobakeSlots) + "\r\n";

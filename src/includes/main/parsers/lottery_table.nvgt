@@ -264,7 +264,7 @@ void lottery_scratch_all(lottery_ticket_item@ ticket, int ticketIdx)
     if (totalCookies > 0) { summary += "Cookies: +" + format_number(totalCookies) + ". "; anygain = true; }
     if (totalAutocookie > 0) { summary += "Auto cookies: +" + format_number(totalAutocookie) + ". "; anygain = true; }
     if (totalManulcookie > 0) { summary += "Manual cookies: +" + format_number(totalManulcookie) + ". "; anygain = true; }
-    if (totalCookiespeed > 0) { summary += "Baking speed: +" + format_number(totalCookiespeed) + "ms. "; anygain = true; }
+    if (totalCookiespeed > 0) { summary += "Baking speed: +" + format_number(totalCookiespeed) + " ms. "; anygain = true; }
     if (!anygain) summary += "Nothing won this time.";
     dlg_buffer(summary);
 }
