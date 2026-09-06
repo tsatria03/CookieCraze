@@ -7,7 +7,7 @@ metadata:
   originSessionId: 6e820f7e-c923-43e9-bd1c-7c123f031f23
 ---
 
-## Status: approved, ready to build (targeting the 6.8 block). Not yet started.
+## Status: SHIPPED in 6.8. All sections (1, 2, 2b, 3, 4, 5, 6) built and committed. Kept as the design record. (Notable: the baker-event cookiespeed/clicktime desync was a real pre-existing bug fixed here and given its own changelog entry; the single-item shop purchase was a Section 2 gain site initially missed; rank rewards + prestige rewards keep a negative-amount branch so penalty modding still works.)
 
 Refinement (not a bug): `cookiespeed` can grow without bound (200k, a million from the lottery) even though it stops doing anything once the bake interval hits its floor. Cap it at its useful maximum. Planned per [[feedback_plan_features_in_memory]]; the dev commits each section; docks last ([[feedback_docks_last]]).
 

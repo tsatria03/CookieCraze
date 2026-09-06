@@ -80,7 +80,7 @@ Buy individual stat upgrades using your money. Three stats are available: auto c
 
 Auto cookies increases how many cookies are baked automatically per cycle.
 Manual cookies increases how many cookies you produce per bake press.
-Baking speed reduces the time between each bake.
+Baking speed reduces the time between each bake. The interval starts at 1000 milliseconds and cannot drop below 50, so your total baking speed is capped at 950 milliseconds of reduction. Once you reach that cap, speed upgrades stop being offered, since there is nothing left to speed up.
 
 Upgrades are organized into categories, with higher categories requiring a minimum rank to access.
 Costs scale up the more you buy, so plan your purchases carefully.
@@ -228,7 +228,7 @@ Production.
 
 Auto cookies: how many cookies your bakery produces automatically per bake cycle.
 Manual cookies: how many cookies you produce per bake button press.
-Baking speed reduction: the total number of milliseconds shaved off your bake interval through upgrades.
+Baking speed reduction: the total number of milliseconds shaved off your bake interval through upgrades, capped at 950 since the interval cannot drop below 50 milliseconds.
 Bake interval: the actual time in milliseconds between each automatic bake cycle after your speed reduction is applied.
 
 Slots.
@@ -752,7 +752,7 @@ Values above 1.05 should only be used for items with a very low purchase cap or 
 amount
 How much of the target stat is gained per purchase. For flat items this is a fixed number. For percentage items this is the percentage value.
 
-For cookie_speed flat items, this is the number of milliseconds the bake interval is reduced by.
+For cookie_speed flat items, this is the number of milliseconds the bake interval is reduced by. A player's total baking speed is capped at 950 milliseconds of reduction, the 1000 millisecond base interval down to a 50 millisecond floor, so purchases and rewards beyond that cap are prevented or simply have no effect.
 Use %item_count in the description as a placeholder and it will be replaced with this value.
 
 min_rank
