@@ -650,6 +650,24 @@ void show_prestige_history()
     }
 }
 
+void add_prestige_effect(string id, double amt)
+{
+    /* Match by substring so both the numbered one-time ids (cookie_multiplier_5) and the endless ids
+    (endless_cookie_multiplier) route to the same accumulator. The tokens are mutually exclusive, so the
+    check order is safe. */
+    if (id.find("cookie_multiplier") != -1)
+        prestige_cookie_multiplier += amt;
+    else if (id.find("coin_multiplier") != -1)
+        prestige_coin_multiplier += amt;
+    else if (id.find("rank_discount") != -1)
+        prestige_rank_discount += amt;
+    else if (id.find("starting_coins") != -1)
+        prestige_starting_coins += amt;
+    else if (id.find("starting_autocookie") != -1)
+        prestige_starting_autocookie += amt;
+    else if (id.find("starting_manualcookie") != -1)
+        prestige_starting_manualcookie += amt;
+}
 void apply_prestige_store_upgrade(string item_id)
 {
     prestige_store_item[] items;
@@ -658,20 +676,7 @@ void apply_prestige_store_upgrade(string item_id)
     for (uint i = 0; i < items.length(); i++)
     {
         if (items[i].item_id != item_id) continue;
-        string id = items[i].item_id;
-        double amt = items[i].amount;
-        if (id.substr(0, 17) == "cookie_multiplier")
-            prestige_cookie_multiplier += amt;
-        else if (id.substr(0, 15) == "coin_multiplier")
-            prestige_coin_multiplier += amt;
-        else if (id.substr(0, 13) == "rank_discount")
-            prestige_rank_discount += amt;
-        else if (id.substr(0, 14) == "starting_coins")
-            prestige_starting_coins += amt;
-        else if (id.substr(0, 19) == "starting_autocookie")
-            prestige_starting_autocookie += amt;
-        else if (id.substr(0, 21) == "starting_manualcookie")
-            prestige_starting_manualcookie += amt;
+        add_prestige_effect(items[i].item_id, items[i].amount);
         break;
     }
 }
@@ -686,28 +691,47 @@ void apply_all_prestige_store_upgrades()
     prestige_store_item[] items;
     prestige_menu_def[] menus;
     parse_prestige_store("data/config/stores/prestige.store", items, menus);
+    // One-time upgrades: each purchased id contributes its amount once.
     for (uint i = 0; i < prestigePurchased.length(); i++)
     {
         for (uint j = 0; j < items.length(); j++)
         {
             if (items[j].item_id != prestigePurchased[i]) continue;
-            string id = items[j].item_id;
-            double amt = items[j].amount;
-            if (id.substr(0, 17) == "cookie_multiplier")
-                prestige_cookie_multiplier += amt;
-            else if (id.substr(0, 15) == "coin_multiplier")
-                prestige_coin_multiplier += amt;
-            else if (id.substr(0, 13) == "rank_discount")
-                prestige_rank_discount += amt;
-            else if (id.substr(0, 14) == "starting_coins")
-                prestige_starting_coins += amt;
-            else if (id.substr(0, 19) == "starting_autocookie")
-                prestige_starting_autocookie += amt;
-            else if (id.substr(0, 21) == "starting_manualcookie")
-                prestige_starting_manualcookie += amt;
+            add_prestige_effect(items[j].item_id, items[j].amount);
             break;
         }
     }
+    // Endless upgrades: each contributes its amount times how many times it has been bought.
+    string[] endlessKeys = prestigeEndlessCounts.get_keys();
+    for (uint i = 0; i < endlessKeys.length(); i++)
+    {
+        double count = 0;
+        prestigeEndlessCounts.get(endlessKeys[i], count);
+        if (count <= 0) continue;
+        for (uint j = 0; j < items.length(); j++)
+        {
+            if (items[j].item_id != endlessKeys[i]) continue;
+            add_prestige_effect(items[j].item_id, items[j].amount * count);
+            break;
+        }
+    }
+}
+bool all_standard_prestige_purchased()
+{
+    prestige_store_item[] items;
+    prestige_menu_def[] menus;
+    parse_prestige_store("data/config/stores/prestige.store", items, menus);
+    for (uint i = 0; i < items.length(); i++)
+    {
+        if (items[i].repeatable) continue;
+        bool bought = false;
+        for (uint k = 0; k < prestigePurchased.length(); k++)
+        {
+            if (prestigePurchased[k] == items[i].item_id) { bought = true; break; }
+        }
+        if (!bought) return false;
+    }
+    return true;
 }
 void show_prestige_summary(int level, int rankReached, int questsDone, int questsTotal, string reward, int pointsEarned = 0)
 {

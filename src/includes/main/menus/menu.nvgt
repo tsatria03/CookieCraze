@@ -730,6 +730,42 @@ void lottery_buy_menu()
     }
 }
 
+double prestige_endless_count(string item_id)
+{
+    double c = 0;
+    if (prestigeEndlessCounts.exists(item_id))
+        prestigeEndlessCounts.get(item_id, c);
+    return c;
+}
+// Endless (repeatable) items are never owned-out; one-time items are owned once bought.
+bool prestige_item_owned(prestige_store_item@ item)
+{
+    if (item.repeatable) return false;
+    for (uint k = 0; k < prestigePurchased.length(); k++)
+        if (prestigePurchased[k] == item.item_id) return true;
+    return false;
+}
+// Unlocked by prestige level, and (for endless) only after every standard upgrade is bought.
+bool prestige_item_unlocked(prestige_store_item@ item, bool standardCleared)
+{
+    if (prestigeLevel < item.min_level) return false;
+    if (item.repeatable && !standardCleared) return false;
+    return true;
+}
+bool prestige_menu_is_endless(prestige_store_item[]@ items, string menuName)
+{
+    for (uint i = 0; i < items.length(); i++)
+        if (items[i].menu == menuName && items[i].repeatable) return true;
+    return false;
+}
+// Point cost (rounded up to a whole point) to buy `qty` copies of an endless item starting at `fromCount`.
+double prestige_endless_cost(prestige_store_item@ item, double fromCount, double qty)
+{
+    double raw = calc_total_upgrade_cost(fromCount, qty, item.cost, item.cost_multiplier);
+    double whole = floor(raw);
+    if (raw > whole) whole += 1;
+    return whole;
+}
 void prestige_store_menu()
 {
     prestige_store_item[] items;
@@ -741,16 +777,12 @@ void prestige_store_menu()
         questsmenu();
         return;
     }
+    bool standardCleared = all_standard_prestige_purchased();
     bool anyLeft = false;
     for (uint i = 0; i < items.length(); i++)
     {
-        if (prestigeLevel < items[i].min_level) continue;
-        bool alreadyBought = false;
-        for (uint k = 0; k < prestigePurchased.length(); k++)
-        {
-            if (prestigePurchased[k] == items[i].item_id) { alreadyBought = true; break; }
-        }
-        if (!alreadyBought) { anyLeft = true; break; }
+        if (!prestige_item_unlocked(items[i], standardCleared)) continue;
+        if (!prestige_item_owned(items[i])) { anyLeft = true; break; }
     }
     if (!anyLeft)
     {
@@ -761,10 +793,17 @@ void prestige_store_menu()
     setupmenu2();
     for (uint i = 0; i < menus.length(); i++)
     {
-        if (menus[i].min_level > 0 && prestigeLevel < menus[i].min_level)
+        bool menuEndless = prestige_menu_is_endless(items, menus[i].name);
+        bool menuLocked = (menus[i].min_level > 0 && prestigeLevel < menus[i].min_level) || (menuEndless && !standardCleared);
+        if (menuLocked)
         {
             if (menus[i].hidden || !show_locked_shops) continue;
-            string label = menus[i].name + ". Unlocked at prestige level " + string(menus[i].min_level) + ".";
+            string reason;
+            if (prestigeLevel < menus[i].min_level)
+                reason = "Unlocked at prestige level " + string(menus[i].min_level) + ".";
+            else
+                reason = "Unlocked once you have purchased every standard prestige upgrade.";
+            string label = menus[i].name + ". " + reason;
             if (menus[i].description != "")
                 label += " Description: " + menus[i].description;
             m.add_item(label, "locked" + string(i));
@@ -776,16 +815,12 @@ void prestige_store_menu()
             for (uint j = 0; j < items.length(); j++)
             {
                 if (items[j].menu != menus[i].name) continue;
-                if (items[j].hidden && prestigeLevel < items[j].min_level) continue;
-                bool alreadyBought = false;
-                for (uint k = 0; k < prestigePurchased.length(); k++)
-                {
-                    if (prestigePurchased[k] == items[j].item_id) { alreadyBought = true; break; }
-                }
-                if (alreadyBought) continue;
+                if (items[j].hidden && !prestige_item_unlocked(items[j], standardCleared)) continue;
+                if (prestige_item_owned(items[j])) continue;
                 totalItems++;
-                if (prestigeLevel < items[j].min_level) continue;
-                if (prestige_points >= items[j].cost)
+                if (!prestige_item_unlocked(items[j], standardCleared)) continue;
+                double nextCost = items[j].repeatable ? prestige_endless_cost(items[j], prestige_endless_count(items[j].item_id), 1) : double(items[j].cost);
+                if (double(prestige_points) >= nextCost)
                     affordableItems++;
             }
             string itemWord = (totalItems == 1) ? "item" : "items";
@@ -819,16 +854,12 @@ void prestige_store_menu()
 }
 void prestige_store_category_menu(prestige_store_item[]@ items, string chosenMenu)
 {
+    bool standardCleared = all_standard_prestige_purchased();
     bool anyAvailable = false;
     for (uint i = 0; i < items.length(); i++)
     {
         if (items[i].menu != chosenMenu) continue;
-        bool alreadyBought = false;
-        for (uint k = 0; k < prestigePurchased.length(); k++)
-        {
-            if (prestigePurchased[k] == items[i].item_id) { alreadyBought = true; break; }
-        }
-        if (!alreadyBought) { anyAvailable = true; break; }
+        if (!prestige_item_owned(items[i])) { anyAvailable = true; break; }
     }
     if (!anyAvailable)
     {
@@ -841,20 +872,30 @@ void prestige_store_category_menu(prestige_store_item[]@ items, string chosenMen
     for (uint i = 0; i < items.length(); i++)
     {
         if (items[i].menu != chosenMenu) continue;
-        bool alreadyBought = false;
-        for (uint k = 0; k < prestigePurchased.length(); k++)
-        {
-            if (prestigePurchased[k] == items[i].item_id) { alreadyBought = true; break; }
-        }
-        if (alreadyBought) continue;
-        if (prestigeLevel < items[i].min_level)
+        if (prestige_item_owned(items[i])) continue;
+        if (!prestige_item_unlocked(items[i], standardCleared))
         {
             if (items[i].hidden || !show_locked_shops) continue;
-            m.add_item(items[i].item_id + ". Unlocked at prestige level " + string(items[i].min_level) + ". Description: " + items[i].description, "locked" + string(i));
+            string reason;
+            if (prestigeLevel < items[i].min_level)
+                reason = "Unlocked at prestige level " + string(items[i].min_level) + ".";
+            else
+                reason = "Unlocked once you have purchased every standard prestige upgrade.";
+            m.add_item(string_replace(items[i].item_id, "_", " ", true) + ". " + reason + " Description: " + items[i].description, "locked" + string(i));
             continue;
         }
-        string pointWord = (items[i].cost == 1) ? "point" : "points";
-        m.add_item(string_replace(items[i].item_id, "_", " ", true) + ", costs " + string(items[i].cost) + " prestige " + pointWord + ". Description: " + items[i].description, "item" + string(i));
+        if (items[i].repeatable)
+        {
+            double owned = prestige_endless_count(items[i].item_id);
+            double nextCost = prestige_endless_cost(items[i], owned, 1);
+            string pointWord = (nextCost == 1) ? "point" : "points";
+            m.add_item(string_replace(items[i].item_id, "_", " ", true) + ", owned " + format_number(owned) + ", next costs " + format_number(nextCost) + " prestige " + pointWord + ". Description: " + items[i].description, "item" + string(i));
+        }
+        else
+        {
+            string pointWord = (items[i].cost == 1) ? "point" : "points";
+            m.add_item(string_replace(items[i].item_id, "_", " ", true) + ", costs " + string(items[i].cost) + " prestige " + pointWord + ". Description: " + items[i].description, "item" + string(i));
+        }
     }
     m.add_item("back", "back");
     m.intro_text = chosenMenu + ".";
@@ -870,11 +911,62 @@ void prestige_store_category_menu(prestige_store_item[]@ items, string chosenMen
         if (sel == "locked" + string(i))
         {
             pool.play_stationary("sounds/store/error.ogg", false);
-            dlgmessage_return("This item is locked. You need to reach prestige level " + string(items[i].min_level) + " to purchase it.");
+            string reason;
+            if (prestigeLevel < items[i].min_level)
+                reason = "You need to reach prestige level " + string(items[i].min_level) + " to purchase it.";
+            else
+                reason = "You need to purchase every standard prestige upgrade first.";
+            dlgmessage_return("This item is locked. " + reason);
             prestige_store_category_menu(items, chosenMenu);
             return;
         }
         if (sel != "item" + string(i)) continue;
+        if (items[i].repeatable)
+        {
+            double owned = prestige_endless_count(items[i].item_id);
+            double maxAffordable = calc_max_buyable(double(prestige_points), owned, items[i].cost, items[i].cost_multiplier);
+            if (maxAffordable >= 1 && prestige_endless_cost(items[i], owned, maxAffordable) > double(prestige_points))
+                maxAffordable -= 1;
+            if (maxAffordable < 1)
+            {
+                pool.play_stationary("sounds/store/error.ogg", false);
+                double one = prestige_endless_cost(items[i], owned, 1);
+                dlgmessage_return("Error! You can't afford another one. The next one costs " + format_number(one) + " prestige points.");
+                prestige_store_category_menu(items, chosenMenu);
+                return;
+            }
+            vd.set_disallowed_chars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()[]{};:'\"\\|,.<>?/+-=`~_", false, "This character is not allowed.");
+            string qInput = vd.input_box("", "How many would you like to buy? Press enter to buy the maximum amount.", string(round(maxAffordable, 0)));
+            if (qInput == "")
+            {
+                prestige_store_category_menu(items, chosenMenu);
+                return;
+            }
+            double qty = floor(string_to_number(qInput));
+            if (qty < 1)
+            {
+                pool.play_stationary("sounds/store/error.ogg", false);
+                dlgmessage_return("Error! Please enter a valid number to buy!");
+                prestige_store_category_menu(items, chosenMenu);
+                return;
+            }
+            if (qty > maxAffordable) qty = maxAffordable;
+            double totalCost = prestige_endless_cost(items[i], owned, qty);
+            while (qty > 1 && totalCost > double(prestige_points))
+            {
+                qty -= 1;
+                totalCost = prestige_endless_cost(items[i], owned, qty);
+            }
+            prestige_points -= int(totalCost);
+            prestigeEndlessCounts.set(items[i].item_id, owned + qty);
+            apply_all_prestige_store_upgrades();
+            pool.play_stationary("sounds/store/buy" + random(1, 4) + ".ogg", false);
+            pool.play_stationary("sounds/store/order.ogg", false);
+            double newNext = prestige_endless_cost(items[i], owned + qty, 1);
+            dlgmessage_return("Purchase successful! You bought " + format_number(qty) + " " + string_replace(items[i].item_id, "_", " ", true) + " for " + format_number(totalCost) + " prestige points. You now own " + format_number(owned + qty) + ", and the next one costs " + format_number(newNext) + " prestige points.");
+            prestige_store_category_menu(items, chosenMenu);
+            return;
+        }
         if (prestige_points < items[i].cost)
         {
             pool.play_stationary("sounds/store/error.ogg", false);
