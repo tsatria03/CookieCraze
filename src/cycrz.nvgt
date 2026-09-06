@@ -301,7 +301,7 @@ rerollHistory.resize(0);
 if (prestige_starting_coins > 0) { coins += prestige_starting_coins; stat_coins_earned += prestige_starting_coins; }
 if (prestige_starting_autocookie > 0) autocookie += prestige_starting_autocookie;
 if (prestige_starting_manualcookie > 0) manulcookie += prestige_starting_manualcookie;
-cookiesrequiered = (cookiemod * (rank * (rank * 10)));
+cookiesrequiered = (cookiemod * (rank * (rank * 4)));
 if (prestige_rank_discount > 0) cookiesrequiered *= max(0.01, 1.0 - (prestige_rank_discount / 100.0));
 }
 

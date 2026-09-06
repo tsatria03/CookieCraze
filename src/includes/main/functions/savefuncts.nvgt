@@ -292,12 +292,12 @@ if (sd.d.exists("rerollHistoryCount"))
     }
 }
 readpreffs();
-cookiesrequiered = (cookiemod * (rank * (rank * 10)));
+cookiesrequiered = (cookiemod * (rank * (rank * 4)));
 // cookieXP is the cumulative rank progress. Migrate older saves that predate it (Option B): seed it to the threshold that got the player to their current rank, keeping their exact rank with a fresh bar toward the next.
 if (sd.d.exists("cookieXP"))
 cookieXP = sd.read_double("cookieXP");
 else
-cookieXP = cookiemod * ((rank - 1) * ((rank - 1) * 10));
+cookieXP = cookiemod * ((rank - 1) * ((rank - 1) * 4));
 // Recompute prestige upgrade effects from the just-loaded purchases and endless counts, so every load path applies them (not just startup).
 apply_all_prestige_store_upgrades();
 }
@@ -553,8 +553,8 @@ manualSlotDistribution=false;
 automationMultiplier=1.01;
 slotMultiplier=1.01;
 manualSlotMultiplier=1.01;
-cookiemod=5;
-cookieExpMod=5;
+cookiemod=1;
+cookieExpMod=1;
 cookieSellPrice=50;
 evchanse=50;
 evchanse2=50;

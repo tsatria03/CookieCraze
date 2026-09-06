@@ -46,4 +46,4 @@ NOTE (compile-safety): `difmod` is referenced by the rank formula (game.nvgt, ra
 4. **Docks** — readme (rank/XP model + the two modifiers), changelog entry, `build/version.txt` bump.
 
 ## Tuning knobs (all live-adjustable)
-Cookie Rank Modifier (threshold scalar, default 5) · Cookie Experience Modifier (XP per bake, default 5 — set during the build; was 1) · threshold constant 10 (in-formula).
+Cookie Rank Modifier (threshold scalar) · Cookie Experience Modifier (XP per bake) · threshold constant (in-formula). RETUNED in 6.8: both mods now default **1** (were 5), and the in-formula constant is **4** (was 10). So the default threshold is `1 * rank² * 4 = 4·rank²` (was `5 * rank² * 10 = 50·rank²`) — ranking is much faster by default now.
