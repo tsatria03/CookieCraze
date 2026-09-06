@@ -41,7 +41,7 @@ shared int string_contains(const string& in str, const string& in search, int oc
 	return c == occurance ? pos : -1;
 }
 shared double string_to_number(const string& in num) {
-	return parse_float(num.trim_whitespace_left());
+	return parse_double(num.trim_whitespace_left());
 }
 
 double absolute(double x) {
