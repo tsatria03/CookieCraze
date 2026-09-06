@@ -53,6 +53,7 @@ Refinement (not a bug): `cookiespeed` can grow without bound (200k, a million fr
 - **Purchases** `menu.nvgt`: single (percent `:1222-1223`, flat `:1229-1230`), bulk (percent `:1312-1313`, flat `:1318-1319`), buy-all (`:1583`, `:1665-1667`). Report `speedGained` = sum of applied deltas.
 - **Lottery** `lottery_table.nvgt`: single (`:125-132`), bulk (`:254`). Report only applied.
 - **Achievements** `achievements_table.nvgt:180-185`.
+- **Rank rewards** `ranks_table.nvgt:83-85` (`apply_rank_reward`, target `cookiespeed` → `cookiespeed += amount`) — found during the 6.8 readme pass; route through the helper in Section 4.
 - **Prestige rewards** `prestige_table.nvgt:165, 202` (percent base snapshot `:158` is ≤950 after the cap).
 - **Minigame wins/returns** `minigames.nvgt` (selectedBet == 3 gain paths): `:399, 543, 591, 629, 663, 938, 1176, 1240, 1478`. Bet-loss paths (`:390, 521, 887, 1105, 1435`) stay as-is.
 
@@ -62,7 +63,7 @@ Refinement (not a bug): `cookiespeed` can grow without bound (200k, a million fr
 2. **Speed upgrade purchases** — `menu.nvgt` single/bulk/buy-all speed branches → helper; report applied for `speedGained`. (NOTE during build: there are TWO single-shop gain blocks — the aggregated buy-all-affordable block AND the single-item purchase block ~1304-1317; the latter has no `speedGained` var so it's easy to miss. Both must route through the helper.)
 2b. **Quantity cap on speed purchases** (dev chose this over letting overspend past the cap) — you shouldn't be able to *pay* for speed past 950. Add `max_useful_speed_copies(store_item@)` (= `ceil((950 - cookiespeed) / per)`, where `per` = flat amount or `cookiespeed*amount/100` for percent; 0 when maxed) and `cap_speed_maxbuy(it, maxbuy)` in `menu.nvgt`. Apply `cap_speed_maxbuy` to every `calc_max_buyable` result for target==3 (display "You can buy N", anyAffordable, buy-all overallMax + per-item quantity). In the single-item flow: if maxed, show "Your baking speed is already at its maximum." and break; otherwise clamp the entered quantity to the useful cap before charging. Bundles stay effect-capped only (buying a whole bundle shouldn't be blocked by its speed sub-item).
 3. **Lottery** — `lottery_table.nvgt` single + bulk → helper; report applied.
-4. **Achievements, prestige, baker events** — route through helper; reconcile the baker-event clamp + clicktime sync.
+4. **Achievements, rank rewards, prestige, baker events** — route through helper; reconcile the baker-event clamp + clicktime sync.
 5. **Minigames** — all selectedBet==3 win/return paths → helper; add the upper-cap backstop to each `minigames.nvgt` normalizer block.
 6. **Docks** — readme (note the 950 cap on cookie speed), changelog entry (6.8), `build/version.txt` already at 6.8.
 
