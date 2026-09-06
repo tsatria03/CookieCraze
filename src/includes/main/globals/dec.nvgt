@@ -21,7 +21,7 @@ bool slotmode = true;
 
 double autocookie = 0;
 double cookies = 0;
-double cookiesrequiered = 10;
+double xprequired = 10;
 double cookieSellPrice = 50;
 double cookiemod = 1;
 double cookiespeed = 0;

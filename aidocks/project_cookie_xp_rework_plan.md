@@ -7,6 +7,8 @@ metadata:
   originSessionId: 6e820f7e-c923-43e9-bd1c-7c123f031f23
 ---
 
+**NOTE:** the XP threshold variable this doc calls `cookiesrequiered` was renamed to `xprequired` in 6.8 (its save key too; value is recomputed on load, so no save impact). Read every `cookiesrequiered` below as `xprequired`.
+
 **STATUS: SHIPPED in 6.7.** All four build sections completed, documented, and committed. Kept as the design record. (Notable in-build change: `cookieExpMod` default set to 5, not 1; `difmod` removal deferred to Section 3 for compile-safety.)
 
 Rework ranking to mirror SimpleFighter's level/XP model, so the two rank sliders stop being redundant and selling no longer fights rank progress. Modeled on SimpleFighter (`SimpleFighter/src/includes/main/globals/game.nvgt` + `menus/menu.nvgt:739`). Planned per [[feedback_plan_features_in_memory]]; build after the endless-prestige feature ([[project_endless_prestige_plan]]) is finished. The dev commits each section; docks last ([[feedback_docks_last]]).

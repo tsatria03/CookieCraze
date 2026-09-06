@@ -14,7 +14,7 @@ endlessheadstartmenu=Endless Head Start|10|false|Infinite head start boosts with
 
 passivemenu:cookie_multiplier_1:5:1:0:false:false:1:A permanent 1% boost to all cookie production. Stacks with every purchase.
 passivemenu:coin_multiplier_1:5:1:0:false:false:1:A permanent 1% boost to all money earned from selling cookies. Stacks with every purchase.
-passivemenu:rank_discount_1:10:1:0:false:false:1:Reduces the cookies needed to rank up by 1%. Stacks with every purchase.
+passivemenu:rank_discount_1:10:1:0:false:false:1:Reduces the experience needed to rank up by 1%. Stacks with every purchase.
 headstartmenu:starting_coins_1:5:1:0:false:false:50:Begin each run with 50 cents already in your pocket.
 headstartmenu:starting_autocookie_1:5:1:0:false:false:1:Begin each run with 1 auto cookie already baked in.
 headstartmenu:starting_manualcookie_1:10:1:0:false:false:1:Begin each run with 1 manual cookie ready to go.
@@ -23,7 +23,7 @@ headstartmenu:starting_manualcookie_1:10:1:0:false:false:1:Begin each run with 1
 
 passivemenu:cookie_multiplier_2:10:1:1:false:false:2:A permanent 2% boost to all cookie production. Stacks with every purchase.
 passivemenu:coin_multiplier_2:10:1:1:false:false:2:A permanent 2% boost to all money earned from selling cookies. Stacks with every purchase.
-passivemenu:rank_discount_2:25:1:1:false:false:2:Reduces the cookies needed to rank up by 2%. Stacks with every purchase.
+passivemenu:rank_discount_2:25:1:1:false:false:2:Reduces the experience needed to rank up by 2%. Stacks with every purchase.
 headstartmenu:starting_coins_2:10:1:1:false:false:100:Begin each run with $1.00 already in your pocket.
 headstartmenu:starting_autocookie_2:10:1:1:false:false:5:Begin each run with 5 auto cookies already baked in.
 headstartmenu:starting_manualcookie_2:15:1:1:false:false:5:Begin each run with 5 manual cookies ready to go.
@@ -32,7 +32,7 @@ headstartmenu:starting_manualcookie_2:15:1:1:false:false:5:Begin each run with 5
 
 passivemenu:cookie_multiplier_3:15:1:2:false:false:3:A permanent 3% boost to all cookie production. Stacks with every purchase.
 passivemenu:coin_multiplier_3:15:1:2:false:false:3:A permanent 3% boost to all money earned from selling cookies. Stacks with every purchase.
-passivemenu:rank_discount_3:20:1:2:false:false:2:Reduces the cookies needed to rank up by 2%. Stacks with every purchase.
+passivemenu:rank_discount_3:20:1:2:false:false:2:Reduces the experience needed to rank up by 2%. Stacks with every purchase.
 headstartmenu:starting_coins_3:15:1:2:false:false:200:Begin each run with $2.00 already in your pocket.
 headstartmenu:starting_autocookie_3:15:1:2:false:false:8:Begin each run with 8 auto cookies already baked in.
 headstartmenu:starting_manualcookie_3:15:1:2:false:false:8:Begin each run with 8 manual cookies ready to go.
@@ -41,7 +41,7 @@ headstartmenu:starting_manualcookie_3:15:1:2:false:false:8:Begin each run with 8
 
 passivemenu:cookie_multiplier_4:25:1:3:false:false:5:A permanent 5% boost to all cookie production. Stacks with every purchase.
 passivemenu:coin_multiplier_4:25:1:3:false:false:5:A permanent 5% boost to all money earned from selling cookies. Stacks with every purchase.
-passivemenu:rank_discount_4:50:1:3:false:false:3:Reduces the cookies needed to rank up by 3%. Stacks with every purchase.
+passivemenu:rank_discount_4:50:1:3:false:false:3:Reduces the experience needed to rank up by 3%. Stacks with every purchase.
 headstartmenu:starting_coins_4:25:1:3:false:false:500:Begin each run with $5.00 already in your pocket.
 headstartmenu:starting_autocookie_4:25:1:3:false:false:15:Begin each run with 15 auto cookies already baked in.
 headstartmenu:starting_manualcookie_4:25:1:3:false:false:15:Begin each run with 15 manual cookies ready to go.
@@ -50,7 +50,7 @@ headstartmenu:starting_manualcookie_4:25:1:3:false:false:15:Begin each run with 
 
 passivemenu:cookie_multiplier_5:35:1:4:false:false:6:A permanent 6% boost to all cookie production. Stacks with every purchase.
 passivemenu:coin_multiplier_5:35:1:4:false:false:6:A permanent 6% boost to all money earned from selling cookies. Stacks with every purchase.
-passivemenu:rank_discount_5:40:1:4:false:false:4:Reduces the cookies needed to rank up by 4%. Stacks with every purchase.
+passivemenu:rank_discount_5:40:1:4:false:false:4:Reduces the experience needed to rank up by 4%. Stacks with every purchase.
 headstartmenu:starting_coins_5:35:1:4:false:false:1000:Begin each run with $10.00 already in your pocket.
 headstartmenu:starting_autocookie_5:35:1:4:false:false:25:Begin each run with 25 auto cookies already baked in.
 headstartmenu:starting_manualcookie_5:35:1:4:false:false:25:Begin each run with 25 manual cookies ready to go.
@@ -59,7 +59,7 @@ headstartmenu:starting_manualcookie_5:35:1:4:false:false:25:Begin each run with 
 
 passivemenu:cookie_multiplier_6:50:1:5:false:false:10:A permanent 10% boost to all cookie production. Stacks with every purchase.
 passivemenu:coin_multiplier_6:50:1:5:false:false:10:A permanent 10% boost to all money earned from selling cookies. Stacks with every purchase.
-passivemenu:rank_discount_6:100:1:5:false:false:5:Reduces the cookies needed to rank up by 5%. Stacks with every purchase.
+passivemenu:rank_discount_6:100:1:5:false:false:5:Reduces the experience needed to rank up by 5%. Stacks with every purchase.
 headstartmenu:starting_coins_6:50:1:5:false:false:2000:Begin each run with $20.00 already in your pocket.
 headstartmenu:starting_autocookie_6:50:1:5:false:false:50:Begin each run with 50 auto cookies already baked in.
 headstartmenu:starting_manualcookie_6:50:1:5:false:false:50:Begin each run with 50 manual cookies ready to go.
@@ -68,7 +68,7 @@ headstartmenu:starting_manualcookie_6:50:1:5:false:false:50:Begin each run with 
 
 passivemenu:cookie_multiplier_7:60:1:6:false:false:12:A permanent 12% boost to all cookie production. Stacks with every purchase.
 passivemenu:coin_multiplier_7:60:1:6:false:false:12:A permanent 12% boost to all money earned from selling cookies. Stacks with every purchase.
-passivemenu:rank_discount_7:75:1:6:false:false:6:Reduces the cookies needed to rank up by 6%. Stacks with every purchase.
+passivemenu:rank_discount_7:75:1:6:false:false:6:Reduces the experience needed to rank up by 6%. Stacks with every purchase.
 headstartmenu:starting_coins_7:60:1:6:false:false:3000:Begin each run with $30.00 already in your pocket.
 headstartmenu:starting_autocookie_7:60:1:6:false:false:75:Begin each run with 75 auto cookies already baked in.
 headstartmenu:starting_manualcookie_7:60:1:6:false:false:75:Begin each run with 75 manual cookies ready to go.
@@ -77,7 +77,7 @@ headstartmenu:starting_manualcookie_7:60:1:6:false:false:75:Begin each run with 
 
 passivemenu:cookie_multiplier_8:70:1:7:false:false:15:A permanent 15% boost to all cookie production. Stacks with every purchase.
 passivemenu:coin_multiplier_8:70:1:7:false:false:15:A permanent 15% boost to all money earned from selling cookies. Stacks with every purchase.
-passivemenu:rank_discount_8:80:1:7:false:false:7:Reduces the cookies needed to rank up by 7%. Stacks with every purchase.
+passivemenu:rank_discount_8:80:1:7:false:false:7:Reduces the experience needed to rank up by 7%. Stacks with every purchase.
 headstartmenu:starting_coins_8:70:1:7:false:false:5000:Begin each run with $50.00 already in your pocket.
 headstartmenu:starting_autocookie_8:70:1:7:false:false:100:Begin each run with 100 auto cookies already baked in.
 headstartmenu:starting_manualcookie_8:70:1:7:false:false:100:Begin each run with 100 manual cookies ready to go.
@@ -86,7 +86,7 @@ headstartmenu:starting_manualcookie_8:70:1:7:false:false:100:Begin each run with
 
 passivemenu:cookie_multiplier_9:80:1:8:false:false:18:A permanent 18% boost to all cookie production. Stacks with every purchase.
 passivemenu:coin_multiplier_9:80:1:8:false:false:18:A permanent 18% boost to all money earned from selling cookies. Stacks with every purchase.
-passivemenu:rank_discount_9:90:1:8:false:false:8:Reduces the cookies needed to rank up by 8%. Stacks with every purchase.
+passivemenu:rank_discount_9:90:1:8:false:false:8:Reduces the experience needed to rank up by 8%. Stacks with every purchase.
 headstartmenu:starting_coins_9:80:1:8:false:false:7500:Begin each run with $75.00 already in your pocket.
 headstartmenu:starting_autocookie_9:80:1:8:false:false:125:Begin each run with 125 auto cookies already baked in.
 headstartmenu:starting_manualcookie_9:80:1:8:false:false:125:Begin each run with 125 manual cookies ready to go.
@@ -95,7 +95,7 @@ headstartmenu:starting_manualcookie_9:80:1:8:false:false:125:Begin each run with
 
 passivemenu:cookie_multiplier_10:90:1:9:false:false:20:A permanent 20% boost to all cookie production. Stacks with every purchase.
 passivemenu:coin_multiplier_10:90:1:9:false:false:20:A permanent 20% boost to all money earned from selling cookies. Stacks with every purchase.
-passivemenu:rank_discount_10:95:1:9:false:false:9:Reduces the cookies needed to rank up by 9%. Stacks with every purchase.
+passivemenu:rank_discount_10:95:1:9:false:false:9:Reduces the experience needed to rank up by 9%. Stacks with every purchase.
 headstartmenu:starting_coins_10:90:1:9:false:false:9000:Begin each run with $90.00 already in your pocket.
 headstartmenu:starting_autocookie_10:90:1:9:false:false:135:Begin each run with 135 auto cookies already baked in.
 headstartmenu:starting_manualcookie_10:90:1:9:false:false:135:Begin each run with 135 manual cookies ready to go.
@@ -104,7 +104,7 @@ headstartmenu:starting_manualcookie_10:90:1:9:false:false:135:Begin each run wit
 
 passivemenu:cookie_multiplier_11:100:1:10:false:false:25:A permanent 25% boost to all cookie production. Stacks with every purchase.
 passivemenu:coin_multiplier_11:100:1:10:false:false:25:A permanent 25% boost to all money earned from selling cookies. Stacks with every purchase.
-passivemenu:rank_discount_11:100:1:10:false:false:10:Reduces the cookies needed to rank up by 10%. Stacks with every purchase.
+passivemenu:rank_discount_11:100:1:10:false:false:10:Reduces the experience needed to rank up by 10%. Stacks with every purchase.
 headstartmenu:starting_coins_11:100:1:10:false:false:10000:Begin each run with $100.00 already in your pocket.
 headstartmenu:starting_autocookie_11:100:1:10:false:false:150:Begin each run with 150 auto cookies already baked in.
 headstartmenu:starting_manualcookie_11:100:1:10:false:false:150:Begin each run with 150 manual cookies ready to go.

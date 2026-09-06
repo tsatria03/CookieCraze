@@ -506,7 +506,7 @@ void show_baker_info()
     txt += "Cookies: " + format_number(cookies) + "\r\n";
     txt += "Current rank: " + format_number(rank) + "\r\n";
     txt += "Current experience: " + format_number(cookieXP) + "\r\n";
-    txt += "Experience needed for next rank: " + format_number(max(0.0, cookiesrequiered - cookieXP)) + "\r\n";
+    txt += "Experience needed for next rank: " + format_number(max(0.0, xprequired - cookieXP)) + "\r\n";
     txt += "Current balance: " + convert_to_currency(coins) + "\r\n";
     txt += "Cookie sell price: " + convert_to_currency(cookieSellPrice) + " each\r\n";
     txt += "Earnings per sell: " + convert_to_currency(floor(cookies) * cookieSellPrice) + "\r\n";

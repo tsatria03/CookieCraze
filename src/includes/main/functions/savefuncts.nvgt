@@ -40,9 +40,9 @@ if(sd.d.exists("cookies"))
 {
 cookies=sd.read_double("cookies");
 }
-if(sd.d.exists("cookiesrequiered"))
+if(sd.d.exists("xprequired"))
 {
-cookiesrequiered=sd.read_double("cookiesrequiered");
+xprequired=sd.read_double("xprequired");
 }
 if(sd.d.exists("cookiespeed"))
 {
@@ -292,7 +292,7 @@ if (sd.d.exists("rerollHistoryCount"))
     }
 }
 readpreffs();
-cookiesrequiered = (cookiemod * (rank * (rank * 4)));
+xprequired = (cookiemod * (rank * (rank * 4)));
 // cookieXP is the cumulative rank progress. Migrate older saves that predate it (Option B): seed it to the threshold that got the player to their current rank, keeping their exact rank with a fresh bar toward the next.
 if (sd.d.exists("cookieXP"))
 cookieXP = sd.read_double("cookieXP");
@@ -306,7 +306,7 @@ void writedata()
 sd.add("autocookie",autocookie);
 sd.add("coins",coins);
 sd.add("cookies",cookies);
-sd.add("cookiesrequiered",cookiesrequiered);
+sd.add("xprequired",xprequired);
 sd.add("cookiespeed",cookiespeed);
 sd.add("manulcookie",manulcookie);
 sd.add("rank",rank);
