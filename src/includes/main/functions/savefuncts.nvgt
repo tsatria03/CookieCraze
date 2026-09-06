@@ -292,7 +292,7 @@ if (sd.d.exists("rerollHistoryCount"))
     }
 }
 readpreffs();
-cookiesrequiered = (cookiemod * (rank * (rank * difmod)));
+cookiesrequiered = (cookiemod * (rank * (rank * 10)));
 // cookieXP is the cumulative rank progress. Migrate older saves that predate it (Option B): seed it to the threshold that got the player to their current rank, keeping their exact rank with a fresh bar toward the next.
 if (sd.d.exists("cookieXP"))
 cookieXP = sd.read_double("cookieXP");

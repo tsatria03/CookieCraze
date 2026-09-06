@@ -45,6 +45,7 @@ if(manulcookie<=0)
 manulcookie=0;
 }
 stat_cookies_baked = safe_cap(stat_cookies_baked);
+cookieXP = safe_cap(cookieXP);
 stat_coins_earned = safe_cap(stat_coins_earned);
 stat_coins_spent = safe_cap(stat_coins_spent);
 if(clicktime<=50)
@@ -169,6 +170,7 @@ else if(manulcookie>=1)
     }
     cookies += manualGain;
 stat_cookies_baked += manualGain;
+cookieXP += manualGain * cookieExpMod;
 stat_manual_bakes_performed++;
 pool.play_stationary("sounds/misc/manulbake.ogg", false);
 if(playervents2==true) attempt_manebaker_event(evchanse2);
@@ -219,6 +221,7 @@ autoGain = autocookie;
 if (prestige_cookie_multiplier > 0) autoGain *= 1.0 + (prestige_cookie_multiplier / 100.0);
 cookies += autoGain;
 stat_cookies_baked += autoGain;
+cookieXP += autoGain * cookieExpMod;
 stat_auto_bakes_performed++;
 if(bakesfx==true) pool.play_stationary("sounds/misc/autobake.ogg", false);
 if(playervents==true) attempt_autobaker_event(evchanse);
@@ -239,10 +242,10 @@ if (combosConfig.enabled && rank >= combosConfig.enabled_rank && comboCount > 0 
     if (combosConfig.stop_sound != "" && !buffer_muted("combos")) pool.play_stationary("sounds/" + combosConfig.stop_sound, false);
     speak_buffer(breakMsg, "combos");
 }
-if (cookies >= cookiesrequiered)
+if (cookieXP >= cookiesrequiered)
 {
     rank += 1;
-    cookiesrequiered = (cookiemod * (rank * (rank * difmod)));
+    cookiesrequiered = (cookiemod * (rank * (rank * 10)));
     if (prestige_rank_discount > 0) cookiesrequiered *= max(0.01, 1.0 - (prestige_rank_discount / 100.0));
     if (rankDefault.length() > 0)
     {
