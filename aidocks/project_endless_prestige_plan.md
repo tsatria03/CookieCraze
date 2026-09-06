@@ -7,6 +7,8 @@ metadata:
   originSessionId: 6e820f7e-c923-43e9-bd1c-7c123f031f23
 ---
 
+**STATUS: SHIPPED in 6.7.** All six build sections completed, documented, and committed. This file is kept as the design record.
+
 Endless prestige upgrades: a repeatable endgame sink so leftover prestige points always have somewhere to go after the finite store is cleared. Extends the prestige store ([[project_prestige_store_schema]]). Approved 2026 (targeting a 6.7+ block). The dev commits each section; code/config first, docks last ([[feedback_docks_last]]).
 
 ## Locked design decisions

@@ -893,8 +893,9 @@ void prestige_store_category_menu(prestige_store_item[]@ items, string chosenMen
         {
             double owned = prestige_endless_count(items[i].item_id);
             double nextCost = prestige_endless_cost(items[i], owned, 1);
+            double maxbuy = calc_max_buyable(double(prestige_points), owned, items[i].cost, items[i].cost_multiplier);
             string pointWord = (nextCost == 1) ? "point" : "points";
-            m.add_item(string_replace(items[i].item_id, "_", " ", true) + ", owned " + format_number(owned) + ", next costs " + format_number(nextCost) + " prestige " + pointWord + ". Description: " + items[i].description, "item" + string(i));
+            m.add_item(string_replace(items[i].item_id, "_", " ", true) + ", costs " + format_number(nextCost) + " prestige " + pointWord + ". You can buy " + format_number(maxbuy) + ". Description: " + items[i].description, "item" + string(i));
         }
         else
         {
@@ -968,7 +969,9 @@ void prestige_store_category_menu(prestige_store_item[]@ items, string chosenMen
             pool.play_stationary("sounds/store/buy" + random(1, 4) + ".ogg", false);
             pool.play_stationary("sounds/store/order.ogg", false);
             double newNext = prestige_endless_cost(items[i], owned + qty, 1);
-            dlgmessage_return("Purchase successful! You bought " + format_number(qty) + " " + string_replace(items[i].item_id, "_", " ", true) + " for " + format_number(totalCost) + " prestige points. You now own " + format_number(owned + qty) + ", and the next one costs " + format_number(newNext) + " prestige points.");
+            string boughtWord = (totalCost == 1) ? "point" : "points";
+            string nextWord = (newNext == 1) ? "point" : "points";
+            dlgmessage_return("Purchase successful! You bought " + format_number(qty) + " " + string_replace(items[i].item_id, "_", " ", true) + " for " + format_number(totalCost) + " prestige " + boughtWord + ". Next upgrade will cost " + format_number(newNext) + " prestige " + nextWord + ".");
             prestige_store_category_menu(items, chosenMenu);
             return;
         }

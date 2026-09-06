@@ -448,15 +448,15 @@ Standard Passive contains one-time upgrades that permanently boost your cookie p
 
 Standard Head Start contains one-time upgrades that give you bonus resources at the beginning of each new run, such as starting coins, auto cookies, or manual cookies.
 
-Endless Passive contains repeatable versions of the cookie and coin multipliers that you can keep buying forever, with no upper limit.
+Endless Passive contains infinite versions of the cookie and coin multipliers that you can keep buying forever, with no upper limit.
 
-Endless Head Start contains repeatable versions of the starting coins, auto cookies, and manual cookies bonuses that you can keep buying forever, with no upper limit.
+Endless Head Start contains infinite versions of the starting coins, auto cookies, and manual cookies bonuses that you can keep buying forever, with no upper limit.
 
 The two Endless categories unlock only once you have reached prestige level 10 and purchased every standard upgrade. Until then they show as locked when the show locked items setting is enabled, and are hidden when it is disabled. There is no endless rank discount, since the cookies needed to rank up cannot be reduced without limit.
 
 How prestige upgrades work.
 
-The standard upgrades use a one-time purchase system. Each standard upgrade can only ever be bought once. Once purchased, it is immediately active and stays active permanently across every future run, including after further prestiges. You will never need to buy it again, and you cannot buy it a second time even if you wanted to. The endless upgrades are the exception. They are repeatable and can be bought as many times as you like, with each purchase costing a little more prestige points than the last and adding another stack of its bonus. This gives your prestige points a permanent place to go once you have cleared the standard store.
+The standard upgrades use a one-time purchase system. Each standard upgrade can only ever be bought once. Once purchased, it is immediately active and stays active permanently across every future run, including after further prestiges. You will never need to buy it again, and you cannot buy it a second time even if you wanted to. The endless upgrades are the exception. They are infinite and can be bought as many times as you like, with each purchase costing a little more prestige points than the last and adding another stack of its bonus. This gives your prestige points a permanent place to go once you have cleared the standard store.
 
 Passive bonus upgrades work as multipliers layered on top of your existing stats. For example, buying a cookie multiplier upgrade does not add to your auto cookie or manual cookie counts directly. Instead, every time a bake fires, the output is multiplied by the bonus percentage. So if you normally produce 100 cookies per bake and you have a 5% cookie multiplier, you produce 105 instead. The higher your stats grow through the normal shop, the more noticeable the multiplier becomes. Similarly, a coin multiplier does not change your cookie sell price. It multiplies the total payout after the price is applied, so larger sell batches benefit more.
 
@@ -1571,13 +1571,13 @@ starting_coins = gives bonus coins at the start of each new run after prestige.
 starting_autocookie = gives bonus auto cookies at the start of each new run after prestige.
 starting_manualcookie = gives bonus manual cookies at the start of each new run after prestige.
 
-Each prefix is also matched when it appears inside a longer id, so a repeatable upgrade named endless_cookie_multiplier is recognised as a cookie multiplier.
+Each prefix is also matched when it appears inside a longer id, so an infinite upgrade named endless_cookie_multiplier is recognised as a cookie multiplier.
 
 cost
-The number of prestige points required to purchase this upgrade. For a repeatable upgrade this is the base cost of the first purchase.
+The number of prestige points required to purchase this upgrade. For an infinite upgrade this is the base cost of the first purchase.
 
 cost_multiplier
-How much the point cost grows with each purchase of a repeatable upgrade. Each successive purchase costs the previous cost multiplied by this value, rounded up to a whole point. Set to 1 for one-time upgrades, where it has no effect.
+How much the point cost grows with each purchase of an infinite upgrade. Each successive purchase costs the previous cost multiplied by this value, rounded up to a whole point. Set to 1 for one-time upgrades, where it has no effect.
 
 min_level
 The minimum prestige level required to see and purchase this item. Set to 0 for no requirement.
@@ -1589,7 +1589,7 @@ repeatable
 Set to true to make this an endless upgrade that can be bought any number of times, with its point cost compounding by cost_multiplier each purchase and its effect stacking. Set to false for a normal one-time upgrade.
 
 amount
-The value applied when this upgrade is purchased. For multiplier and rank discount upgrades this is a percentage. For starting stat upgrades this is a flat amount added at the start of each run. For a repeatable upgrade this amount is granted again with every purchase and stacks.
+The value applied when this upgrade is purchased. For multiplier and rank discount upgrades this is a percentage. For starting stat upgrades this is a flat amount added at the start of each run. For an infinite upgrade this amount is granted again with every purchase and stacks.
 
 description
 The text shown when the player highlights this item in the prestige store.
