@@ -36,9 +36,11 @@ On load, if the `cookieXP` save key is absent, seed `cookieXP = cookiemod * ((ra
 
 ## Build sections (commit-safe order — one per turn, pause for commit)
 
-1. **Globals + save** — `dec.nvgt`: add `double cookieXP = 0;` and `double cookieExpMod = 1;`; remove `difmod`. `savefuncts.nvgt`: save/load/reset the two new vars, drop difmod, add the migration seed (mechanic #2), and update the threshold formula at line 280.
-2. **Rank + XP gain** — `game.nvgt` + `ranks_table.nvgt`: change the rank check from `cookies` to `cookieXP` (`game.nvgt:242`, `ranks_table.nvgt:137`); swap difmod → constant 10 in the threshold (`game.nvgt:245`, `ranks_table.nvgt:140`); add `cookieXP +=` on both bake paths (mechanic #1). Keep the existing rank-up announcement thinning intact.
-3. **UI + wording** — `settings_menu.nvgt`: rename the slider to "Cookie Experience Modifier" and bind it to `cookieExpMod` (lines 57, 79). `game.nvgt`: update the R-key line (`:391`) to the experience wording; tidy the C-key line (`:435`).
+NOTE (compile-safety): `difmod` is referenced by the rank formula (game.nvgt, ranks_table.nvgt, savefuncts.nvgt) AND the settings slider, so it can't be removed until all those are repointed. Removal is therefore deferred to Section 3 (after the slider moves to cookieExpMod). Every section stays compilable.
+
+1. **Globals + save** — DONE (Section 1, compile-safe/additive). `dec.nvgt`: added `double cookieXP = 0;` + `double cookieExpMod = 1;` (difmod KEPT). `savefuncts.nvgt`: cookieExpMod load/reset/save in the preffs (readpreffs/reset_game_settings/writepreffs, `st`); cookieXP load with Option-B migration seed (in readdata, after readpreffs so cookiemod is loaded) + save (writedata, `sd`). No formula change, no removal — purely additive.
+2. **Rank + XP gain** — `game.nvgt` + `ranks_table.nvgt`: change the rank check from `cookies` to `cookieXP` (`game.nvgt:242`, `ranks_table.nvgt:137`); swap difmod → constant 10 in the threshold (`game.nvgt:245`, `ranks_table.nvgt:140`, and `savefuncts.nvgt` readdata formula ~line 295); add `cookieXP += bakeGain * cookieExpMod` on both bake paths + `cookieXP = safe_cap(cookieXP)` in the normalizer. **Also add `cookieXP = 0;` to `reset_game_state()` (cycrz.nvgt, alongside `cookies=0` line ~283) so prestige resets rank progress** — critical, else post-prestige rank rockets back up. Keep the rank-up announcement thinning intact.
+3. **UI + wording** — `settings_menu.nvgt`: rename the slider to "Cookie Experience Modifier" and bind it to `cookieExpMod` (was difmod). Then **remove `difmod`**: the global (dec.nvgt) + its save/load/reset (savefuncts writepreffs/readpreffs/reset_game_settings). `game.nvgt`: update the R-key line (`:391`) to the experience wording; tidy the C-key line (`:435`).
 4. **Docks** — readme (rank/XP model + the two modifiers), changelog entry, `build/version.txt` bump.
 
 ## Tuning knobs (all live-adjustable)

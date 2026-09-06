@@ -293,6 +293,11 @@ if (sd.d.exists("rerollHistoryCount"))
 }
 readpreffs();
 cookiesrequiered = (cookiemod * (rank * (rank * difmod)));
+// cookieXP is the cumulative rank progress. Migrate older saves that predate it (Option B): seed it to the threshold that got the player to their current rank, keeping their exact rank with a fresh bar toward the next.
+if (sd.d.exists("cookieXP"))
+cookieXP = sd.read_double("cookieXP");
+else
+cookieXP = cookiemod * ((rank - 1) * ((rank - 1) * 10));
 // Recompute prestige upgrade effects from the just-loaded purchases and endless counts, so every load path applies them (not just startup).
 apply_all_prestige_store_upgrades();
 }
@@ -344,6 +349,7 @@ sd.add("completedQuestCount", int(completedKeys.length()));
 for (uint i = 0; i < completedKeys.length(); i++)
     sd.add("completedQuest_" + string(i), completedKeys[i]);
 sd.add("stat_cookies_baked", stat_cookies_baked);
+sd.add("cookieXP", cookieXP);
 sd.add("stat_manual_bakes_performed", stat_manual_bakes_performed);
 sd.add("stat_auto_bakes_performed", stat_auto_bakes_performed);
 sd.add("stat_coins_earned", stat_coins_earned);
@@ -511,6 +517,10 @@ if(st.d.exists("cookiemod"))
 {
 cookiemod=st.read_double("cookiemod");
 }
+if(st.d.exists("cookieExpMod"))
+{
+cookieExpMod=st.read_double("cookieExpMod");
+}
 if(st.d.exists("cookieSellPrice"))
 {
 cookieSellPrice=st.read_double("cookieSellPrice");
@@ -549,6 +559,7 @@ slotMultiplier=1.01;
 manualSlotMultiplier=1.01;
 cookiemod=5;
 difmod=10;
+cookieExpMod=1;
 cookieSellPrice=50;
 evchanse=50;
 evchanse2=50;
@@ -594,6 +605,7 @@ st.add("slotMultiplier", slotMultiplier);
 st.add("manualSlotMultiplier", manualSlotMultiplier);
 st.add("difmod",difmod);
 st.add("cookiemod",cookiemod);
+st.add("cookieExpMod",cookieExpMod);
 st.add("cookieSellPrice",cookieSellPrice);
 st.add("evchanse",evchanse);
 st.add("evchanse2",evchanse2);
