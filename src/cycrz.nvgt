@@ -65,7 +65,6 @@ parse_lottery_table("data/config/tables/lottery.table");
 parse_tickets_store("data/config/stores/tickets.store");
 assign_quests();
 readdata();
-apply_all_prestige_store_upgrades();
 init_achievements(loadedAchievements, achievementsUnlocked);
 readpreffs();
 readpreffs2();
