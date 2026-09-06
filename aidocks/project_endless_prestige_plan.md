@@ -44,4 +44,4 @@ Effect type is still encoded in the item_id prefix (`cookie_multiplier` / `coin_
 6. **Docks** — readme (document endless upgrades + the new 9-field config format), changelog entry, `build/version.txt` bump.
 
 ## Tuning knobs (all config, retune anytime)
-base_cost 5 · cost_multiplier 1.1 · +1% per multiplier buy · head start +10000¢ / +150 / +150.
+Shipped values (retuned in 6.7 for consistency with the singles shop's 1.01 curve): base_cost 1 · cost_multiplier 1.01 · +1% per multiplier buy · head start +10000¢ / +150 / +150. (Originally planned at base_cost 5 · cost_multiplier 1.1.)

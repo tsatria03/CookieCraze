@@ -110,10 +110,10 @@ headstartmenu:starting_autocookie_11:100:1:10:false:false:150:Begin each run wit
 headstartmenu:starting_manualcookie_11:100:1:10:false:false:150:Begin each run with 150 manual cookies ready to go.
 
 ; Endless items
-; Infinite buys, unlocked at prestige level 10 once all standard upgrades are purchased. base_cost 5, cost_multiplier 1.1 (each purchase costs a little more).
+; Infinite buys, unlocked at prestige level 10 once all standard upgrades are purchased. base_cost 1, cost_multiplier 1.01 (each purchase costs a little more).
 
-endlesspassivemenu:endless_cookie_multiplier:5:1.1:10:false:true:1:An infinite 1% boost to all cookie production. Stacks with every purchase.
-endlesspassivemenu:endless_coin_multiplier:5:1.1:10:false:true:1:An infinite 1% boost to all money earned from selling cookies. Stacks with every purchase.
-endlessheadstartmenu:endless_starting_coins:5:1.1:10:false:true:10000:Begin each run with an extra $100.00 in your pocket.
-endlessheadstartmenu:endless_starting_autocookie:5:1.1:10:false:true:150:Begin each run with an extra 150 auto cookies already baked in.
-endlessheadstartmenu:endless_starting_manualcookie:5:1.1:10:false:true:150:Begin each run with an extra 150 manual cookies ready to go.
+endlesspassivemenu:endless_cookie_multiplier:1:1.01:10:false:true:1:An infinite 1% boost to all cookie production. Stacks with every purchase.
+endlesspassivemenu:endless_coin_multiplier:1:1.01:10:false:true:1:An infinite 1% boost to all money earned from selling cookies. Stacks with every purchase.
+endlessheadstartmenu:endless_starting_coins:1:1.01:10:false:true:10000:Begin each run with an extra $100.00 in your pocket.
+endlessheadstartmenu:endless_starting_autocookie:1:1.01:10:false:true:150:Begin each run with an extra 150 auto cookies already baked in.
+endlessheadstartmenu:endless_starting_manualcookie:1:1.01:10:false:true:150:Begin each run with an extra 150 manual cookies ready to go.
