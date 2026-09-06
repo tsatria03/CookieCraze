@@ -178,7 +178,10 @@ if (prestige)
             questsDoneThisRun++;
     }
     mark_completed_quests();
-    prestige_points += prestigeConfig.points_per_prestige * int(completedQuestIds.get_size());
+    double perQuestPoints = eval_event_amount(prestigeConfig.points_per_prestige, double(prestigeLevel));
+    if (perQuestPoints < 0) perQuestPoints = 0;
+    int pointsEarned = int(floor(perQuestPoints * double(completedQuestIds.get_size())));
+    prestige_points += pointsEarned;
     reset_game_state();
     string rewardSummary = "";
     if (rewardEarned)
@@ -213,7 +216,6 @@ if (prestige)
     historyEntry.rank_reached = rankReached;
     historyEntry.reward = rewardSummary;
     prestigeHistory.insert_last(historyEntry);
-    int pointsEarned = prestigeConfig.points_per_prestige * int(completedQuestIds.get_size());
     show_prestige_summary(prestigeLevel, rankReached, questsDoneThisRun, questsTotalThisRun, rewardSummary, pointsEarned);
 }
 else

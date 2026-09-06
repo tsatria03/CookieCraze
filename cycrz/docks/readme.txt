@@ -438,7 +438,7 @@ Spend prestige points on permanent upgrades that carry into every future run.
 
 The prestige store becomes available after your first prestige. A prestige store button appears in the quests screen directly below the prestige button once you have at least one completed prestige run.
 
-Prestige points are earned each time you prestige. The number of points awarded is equal to the points_per_prestige setting in prestige.table multiplied by the number of quests you completed before prestiging. If you prestige without completing any quests, you earn no points for that run.
+Prestige points are earned each time you prestige. The number of points awarded is equal to the points_per_prestige setting in prestige.table multiplied by the number of quests you completed before prestiging. By default this base value scales with your prestige level, so the deeper you prestige, the more points each completed quest is worth. If you prestige without completing any quests, you earn no points for that run.
 
 To check how many prestige points you have, open the prestige store. The store announces your current balance when it opens.
 
@@ -1480,7 +1480,7 @@ min_rank
 The minimum rank the player must reach before prestige becomes available.
 
 points_per_prestige
-The base number of prestige points awarded per quest completed when the player prestiges. The total points earned for a run is this value multiplied by the number of quests completed before prestiging. If the player completes no quests, they earn no points for that run.
+The base number of prestige points awarded per quest completed when the player prestiges. The total points earned for a run is this value multiplied by the number of quests completed before prestiging. If the player completes no quests, they earn no points for that run. This setting supports the same rank scaling operators as ranks.table, evaluated against the player's prestige level, so values like 10*rank, 10/rank, 10+rank, and 10-rank are valid, with a plain number staying flat. A negative result is clamped to zero so the player never loses points.
 
 sound
 The sound file to play when the player prestiges. Relative to sounds/misc/.

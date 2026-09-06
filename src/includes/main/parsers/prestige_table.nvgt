@@ -1,7 +1,7 @@
 class prestige_config
 {
     int min_rank;
-    int points_per_prestige = 10;
+    string points_per_prestige = "10";
     string sound;
     string message;
 }
@@ -77,7 +77,7 @@ void parse_prestige_table(string filepath)
             string key = line.substr(0, eq);
             string val = line.substr(eq + 1);
             if (key == "min_rank") prestigeConfig.min_rank = string_to_int(val);
-            else if (key == "points_per_prestige") prestigeConfig.points_per_prestige = string_to_int(val);
+            else if (key == "points_per_prestige") prestigeConfig.points_per_prestige = val;
             else if (key == "sound")   prestigeConfig.sound = val;
             else if (key == "message") prestigeConfig.message = val;
         }

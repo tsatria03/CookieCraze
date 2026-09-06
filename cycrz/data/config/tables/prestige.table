@@ -3,7 +3,7 @@
 ; Required header — removing or renaming this will break the file.
 
 min_rank=5
-points_per_prestige=100
+points_per_prestige=10*rank
 sound=prestige.ogg
 message=Congratulations! You have reached prestige level %prestige%. Your bakery has been reset, but your legacy lives on. Good luck on your next run!
 

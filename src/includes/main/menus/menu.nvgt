@@ -937,7 +937,8 @@ void prestige_store_category_menu(prestige_store_item[]@ items, string chosenMen
             {
                 pool.play_stationary("sounds/store/error.ogg", false);
                 double one = prestige_endless_cost(items[i], owned, 1);
-                dlgmessage_return("Error! You can't afford another one. The next one costs " + format_number(one) + " prestige points.");
+                string oneWord = (one == 1) ? "point" : "points";
+                dlgmessage_return("Error! You can't afford another " + string_replace(items[i].item_id, "_", " ", true) + ". The next one costs " + format_number(one) + " prestige " + oneWord + ".");
                 prestige_store_category_menu(items, chosenMenu);
                 return;
             }
