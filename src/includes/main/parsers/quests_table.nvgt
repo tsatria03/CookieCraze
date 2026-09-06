@@ -120,6 +120,27 @@ void parse_quests_table(string filepath, quest_item[]@ quests_out)
     f.close();
 }
 
+double get_quest_endless_count(string id)
+{
+    double c = 0;
+    if (questEndlessCounts.exists(id)) questEndlessCounts.get(id, c);
+    return c;
+}
+double endless_threshold(quest_item@ q)
+{
+    /* An infinite quest's active threshold escalates by its growth multiplier for each past completion. */
+    if (!q.infinite) return q.threshold;
+    return floor(q.threshold * pow(q.growth, get_quest_endless_count(q.id)));
+}
+int endless_difficulty(quest_item@ q)
+{
+    /* With difficulty_step > 0 the quest climbs one difficulty tier every difficulty_step completions, capped at 10. */
+    if (!q.infinite || q.difficulty_step <= 0) return q.difficulty;
+    int d = q.difficulty + int(get_quest_endless_count(q.id) / double(q.difficulty_step));
+    if (d < 1) d = 1;
+    if (d > 10) d = 10;
+    return d;
+}
 void assign_quests()
 {
     activeQuests.resize(0);
@@ -183,7 +204,7 @@ void assign_quests()
         {
             for (int s = 0; s < slots; s++)
             {
-                if (!slotFilled[s] && slotDifficulties[s] == loadedQuests[i].difficulty)
+                if (!slotFilled[s] && slotDifficulties[s] == endless_difficulty(loadedQuests[i]))
                 {
                     activeQuests.insert_last(loadedQuests[i]);
                     slotFilled[s] = true;
@@ -221,7 +242,7 @@ void assign_quests()
         quest_item[] preferred;
         for (uint c = 0; c < candidates.length(); c++)
         {
-            if (candidates[c].difficulty == targetDiff) preferred.insert_last(candidates[c]);
+            if (endless_difficulty(candidates[c]) == targetDiff) preferred.insert_last(candidates[c]);
         }
         quest_item[]@ pool = preferred.length() > 0 ? preferred : candidates;
         if (pool.length() > 0)
@@ -232,6 +253,15 @@ void assign_quests()
         }
     }
 
+    for (uint i = 0; i < activeQuests.length(); i++)
+    {
+        if (activeQuests[i].infinite)
+        {
+            activeQuests[i].threshold  = endless_threshold(activeQuests[i]);
+            activeQuests[i].difficulty = endless_difficulty(activeQuests[i]);
+        }
+        activeQuests[i].name = string_replace(activeQuests[i].name, "%threshold%", format_quest_value(activeQuests[i].stat, activeQuests[i].threshold), true);
+    }
     for (uint i = 0; i < activeQuests.length(); i++)
     {
         for (uint j = i + 1; j < activeQuests.length(); j++)
