@@ -6,6 +6,7 @@
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Add endless prestige upgrades to the prestige store.
 **Finished. Add a roulette minigame where you stake one item across one or more bet types at once, such as a color, even or odd, or a single number, then spin the wheel to see which of your bets pay out.
 **Finished. Make some achievements grant a reward of one of the five items when unlocked, such as cookies, money, auto cookies, manual cookies, or baking speed, with rank scalable amounts defined in the achievements config.
 **Finished. Add a higher or lower card minigame where you bet on whether the next card will be higher or lower, build a streak with a growing multiplier, and bank your earnings or risk them on another guess.

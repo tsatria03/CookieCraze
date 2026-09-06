@@ -243,6 +243,7 @@ Current balance: how much money you currently have.
 Cookie sell price: the current price per cookie as set in the game settings.
 Earnings per sell: how much money you would earn if you sold your entire current cookie stockpile right now. Updates live as your cookie count changes.
 Prestige level: how many times you have prestiged. Starts at 0 on a fresh save.
+Prestige points: how many prestige points you currently have available to spend in the prestige store.
 Prestige reward condition: describes what you need to complete to receive a reward on your next prestige, based on the require_all setting in quests.table.
 
 Mode 1 means no reward is given, regardless of how many quests are complete.
@@ -441,15 +442,21 @@ Prestige points are earned each time you prestige. The number of points awarded 
 
 To check how many prestige points you have, open the prestige store. The store announces your current balance when it opens.
 
-The prestige store is divided into two categories.
+The prestige store is divided into four categories.
 
-Passive Bonuses contains upgrades that permanently boost your cookie production or reduce the cookies needed to rank up, applied across every run from the moment you buy them.
+Standard Passive contains one-time upgrades that permanently boost your cookie production or reduce the cookies needed to rank up, applied across every run from the moment you buy them.
 
-Head Start contains upgrades that give you bonus resources at the beginning of each new run, such as starting coins, auto cookies, or manual cookies.
+Standard Head Start contains one-time upgrades that give you bonus resources at the beginning of each new run, such as starting coins, auto cookies, or manual cookies.
+
+Endless Passive contains repeatable versions of the cookie and coin multipliers that you can keep buying forever, with no upper limit.
+
+Endless Head Start contains repeatable versions of the starting coins, auto cookies, and manual cookies bonuses that you can keep buying forever, with no upper limit.
+
+The two Endless categories unlock only once you have reached prestige level 10 and purchased every standard upgrade. Until then they show as locked when the show locked items setting is enabled, and are hidden when it is disabled. There is no endless rank discount, since the cookies needed to rank up cannot be reduced without limit.
 
 How prestige upgrades work.
 
-Unlike the bundle, single, and ticket shops, the prestige store uses a one-time purchase system. Every upgrade in the store can only ever be bought once. Once purchased, the upgrade is immediately active and stays active permanently across every future run, including after further prestiges. You will never need to buy it again, and you cannot buy it a second time even if you wanted to.
+The standard upgrades use a one-time purchase system. Each standard upgrade can only ever be bought once. Once purchased, it is immediately active and stays active permanently across every future run, including after further prestiges. You will never need to buy it again, and you cannot buy it a second time even if you wanted to. The endless upgrades are the exception. They are repeatable and can be bought as many times as you like, with each purchase costing a little more prestige points than the last and adding another stack of its bonus. This gives your prestige points a permanent place to go once you have cleared the standard store.
 
 Passive bonus upgrades work as multipliers layered on top of your existing stats. For example, buying a cookie multiplier upgrade does not add to your auto cookie or manual cookie counts directly. Instead, every time a bake fires, the output is multiplied by the bonus percentage. So if you normally produce 100 cookies per bake and you have a 5% cookie multiplier, you produce 105 instead. The higher your stats grow through the normal shop, the more noticeable the multiplier becomes. Similarly, a coin multiplier does not change your cookie sell price. It multiplies the total payout after the price is applied, so larger sell batches benefit more.
 
@@ -457,9 +464,9 @@ Head start upgrades work differently. They add a flat amount directly to your st
 
 Passive bonus upgrades take effect immediately after purchase and apply to your current run without needing to prestige again.
 
-Since each upgrade can only be bought once, the store shrinks over time as you work through it. Once you have purchased everything available at your current prestige level, the store has nothing left to offer until you reach a higher prestige level that unlocks new items. If you have bought every item across all prestige levels, the store is permanently empty and points accumulate with nowhere to go. This makes the prestige store most valuable in the early and middle stages of your prestige journey, where the bonuses meaningfully reduce the grind of each new run.
+Since each standard upgrade can only be bought once, the standard side of the store shrinks over time as you work through it. Once you have purchased everything available at your current prestige level, the standard categories have nothing left to offer until you reach a higher prestige level that unlocks new items. Once you have cleared every standard upgrade at prestige level 10, the Endless categories open up, and from that point your prestige points always have somewhere to go, because endless upgrades never run out. This makes the standard upgrades most valuable in the early and middle stages of your prestige journey, where they meaningfully reduce the grind of each new run, while the endless upgrades become the long term sink for every run after that.
 
-Each upgrade in the prestige store can only be purchased once. Once bought, it is removed from the shop permanently. If all upgrades in a category are purchased, entering that category shows a message instead of an empty menu. If all upgrades available at your current prestige level are purchased, opening the store returns you to the quests screen with a message reminding you that more upgrades unlock at higher prestige levels. Locked items and categories follow the same show locked items setting as the other shops. Items locked behind a higher prestige level show the required level when show locked items is enabled, or are hidden entirely when it is disabled.
+Each standard upgrade in the prestige store can only be purchased once, and once bought it is removed from the shop permanently. Endless upgrades are never removed, since they can always be bought again. If all standard upgrades in a category are purchased, entering that category shows a message instead of an empty menu. If all upgrades available at your current prestige level are purchased and the Endless categories are not yet open, opening the store returns you to the quests screen with a message reminding you that more upgrades unlock at higher prestige levels. Locked items and categories follow the same show locked items setting as the other shops. Items locked behind a higher prestige level show the required level when show locked items is enabled, or are hidden entirely when it is disabled. The Endless categories behave the same way, showing their requirement to clear the standard upgrades at prestige level 10 when show locked items is enabled, or hidden when it is disabled.
 
 All prestige store upgrades, costs, point requirements, and effects are fully configurable in prestige.store.
 
@@ -1545,7 +1552,9 @@ Format: alias=Full Menu Name|min_level|hidden|Description
 
 Works the same as singles.store menu aliases, except min_level refers to the player's prestige level rather than their rank. Set min_level to 0 for a category available from the first prestige. Set hidden to true to hide the category entirely until the prestige level is reached, or false to show it as locked with the required level displayed.
 
-Item format: menu:item_id:cost:min_level:hidden:amount:description
+Item format: menu:item_id:cost:cost_multiplier:min_level:hidden:repeatable:amount:description
+
+For backward compatibility, older seven field lines without the cost_multiplier and repeatable fields, in the form menu:item_id:cost:min_level:hidden:amount:description, are still read and treated as one-time upgrades with a cost multiplier of 1.
 
 menu
 The alias of the category this item belongs to.
@@ -1562,8 +1571,13 @@ starting_coins = gives bonus coins at the start of each new run after prestige.
 starting_autocookie = gives bonus auto cookies at the start of each new run after prestige.
 starting_manualcookie = gives bonus manual cookies at the start of each new run after prestige.
 
+Each prefix is also matched when it appears inside a longer id, so a repeatable upgrade named endless_cookie_multiplier is recognised as a cookie multiplier.
+
 cost
-The number of prestige points required to purchase this upgrade.
+The number of prestige points required to purchase this upgrade. For a repeatable upgrade this is the base cost of the first purchase.
+
+cost_multiplier
+How much the point cost grows with each purchase of a repeatable upgrade. Each successive purchase costs the previous cost multiplied by this value, rounded up to a whole point. Set to 1 for one-time upgrades, where it has no effect.
 
 min_level
 The minimum prestige level required to see and purchase this item. Set to 0 for no requirement.
@@ -1571,8 +1585,11 @@ The minimum prestige level required to see and purchase this item. Set to 0 for 
 hidden
 Set to true to hide this item until the prestige level is reached. Set to false to show it as locked with the required level displayed.
 
+repeatable
+Set to true to make this an endless upgrade that can be bought any number of times, with its point cost compounding by cost_multiplier each purchase and its effect stacking. Set to false for a normal one-time upgrade.
+
 amount
-The value applied when this upgrade is purchased. For cookie_multiplier and rank_discount this is a percentage. For starting stat upgrades this is a flat amount added at the start of each run.
+The value applied when this upgrade is purchased. For multiplier and rank discount upgrades this is a percentage. For starting stat upgrades this is a flat amount added at the start of each run. For a repeatable upgrade this amount is granted again with every purchase and stacks.
 
 description
 The text shown when the player highlights this item in the prestige store.

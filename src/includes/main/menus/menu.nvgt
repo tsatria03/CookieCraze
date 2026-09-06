@@ -844,7 +844,12 @@ void prestige_store_menu()
     {
         int idx = string_to_int(sel.substr(6));
         pool.play_stationary("sounds/store/error.ogg", false);
-        dlgmessage_return("This category is locked. You need to reach prestige level " + string(menus[idx].min_level) + " to access it.");
+        string reason;
+        if (prestigeLevel < menus[idx].min_level)
+            reason = "You need to reach prestige level " + string(menus[idx].min_level) + " to access it.";
+        else
+            reason = "You need to purchase every standard prestige upgrade first.";
+        dlgmessage_return("This category is locked. " + reason);
         prestige_store_menu();
         return;
     }

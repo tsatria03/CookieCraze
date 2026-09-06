@@ -493,6 +493,7 @@ void show_baker_info()
     txt += "Cookie sell price: " + convert_to_currency(cookieSellPrice) + " each\r\n";
     txt += "Earnings per sell: " + convert_to_currency(floor(cookies) * cookieSellPrice) + "\r\n";
     txt += "Prestige level: " + string(prestigeLevel) + "\r\n";
+    txt += "Prestige points: " + string(prestige_points) + "\r\n";
     int completedQuests = 0;
     for (uint i = 0; i < activeQuests.length(); i++)
     {
