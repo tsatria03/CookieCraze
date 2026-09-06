@@ -15,6 +15,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Repo hygiene](project_repo_hygiene.md) — .gitattributes CRLF enforcement + binary rules; what's gitignored; CLAUDE.md + aidocks/ are committed.
 - [Engine pinned to nvgt](project_engine_pinned_nvgt2.md) — runs on the legacy fork at C:\nvgt (BASS); upstream C:\nvgt2 (miniaudio) is incompatible; don't target it or suggest upgrading.
 - [Prestige store schema](project_prestige_store_schema.md) — prestige.store item_id suffixes count up in prestige-level order (1..11 per track); save schema key + `migrate_prestige_id_v2` migration protects already-purchased ids. Renumbered in 6.3.
+- [Endless prestige plan](project_endless_prestige_plan.md) — approved plan for repeatable/compounding prestige upgrades: 4 flat categories (Standard/Endless × Passive/Head Start), base 5 × mult 1.1, per-item counts, unlock after clearing Standard at prestige 10; 6 build sections listed.
 - [Number overflow cap](project_number_overflow_cap.md) — shipped 6.3: stop `Inf`/`$inf` by clamping the growing balances + `stat_*` totals to 1e308 (via `floor(safe_cap(x))` normalizers, a loop clamp, and capped display locals), not just cost formulas.
 
 ## How-to guides
@@ -31,6 +32,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 
 ## Feedback — how the dev wants you to work
 - [Confirm before implementing](feedback_confirm_before_implementing.md) — a design discussion or any `?` is a request for a plan, not a green light to edit; wait for explicit go-ahead.
+- [Plan features in memory first](feedback_plan_features_in_memory.md) — before coding any new feature, write the agreed plan (locked decisions + numbered build sections) into an aidocks/ memory file and index it; only then build, section by section.
 - [Ask one question at a time](feedback_ask_one_question_at_a_time.md) — surface ONE question per turn and wait; don't batch a numbered list.
 - [Ignore bang commands](feedback_ignore_bang_commands.md) — ignore the user's in-session `!` command runs and their output; act only on the user's typed prose unless they explicitly reference them.
 - [List modified files](feedback_list_modified_files.md) — end every editing turn with a bare-filename "Files changed:" list; then note whether a relaunch is needed.
