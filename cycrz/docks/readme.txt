@@ -242,7 +242,7 @@ Cookies: how many cookies you have right now.
 Current rank: your current rank number.
 Current experience: how much baking experience you have earned toward ranking up. Experience only ever goes up as you bake and is separate from the cookies you spend.
 Experience needed for next rank: how much more experience you need to reach the next rank.
-Current balance: how much money you currently have.
+Balance: how much money you currently have.
 Cookie sell price: the current price per cookie as set in the game settings.
 Earnings per sell: how much money you would earn if you sold your entire current cookie stockpile right now. Updates live as your cookie count changes.
 Prestige level: how many times you have prestiged. Starts at 0 on a fresh save.
