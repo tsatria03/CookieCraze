@@ -34,6 +34,7 @@ double rank = 1;
 double usercoins = 0;
 int bakemode = 0;
 int clicktime = 1000;
+const double COOKIESPEED_MAX = 950; /* cookiespeed's useful ceiling = base clicktime (1000) - min clicktime (50); past this the bake interval is already at its floor, so more does nothing. */
 
 double autocookie_purchases = 0;
 double automationBaseCost = 15;

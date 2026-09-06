@@ -46,6 +46,23 @@ double buy_item(double level, double base_cost, double multiplier)
 {
     return safe_cap(base_cost * pow(multiplier, level));
 }
+double gain_cookiespeed(double amount)
+{
+    /* Adds up to `amount` cookiespeed, never past COOKIESPEED_MAX, keeping clicktime in sync.
+    Returns the amount actually applied, so callers report the real gain, not the requested one. */
+    if (amount < 0) amount = 0;
+    double room = COOKIESPEED_MAX - cookiespeed;
+    if (room < 0) room = 0;
+    double applied = min(amount, room);
+    cookiespeed += applied;
+    clicktime -= int(applied);
+    if (cookiespeed > COOKIESPEED_MAX) cookiespeed = COOKIESPEED_MAX;
+    if (cookiespeed < 0) cookiespeed = 0;
+    if (clicktime < 50) clicktime = 50;
+    if (clicktime > 1000) clicktime = 1000;
+    cookiespeed = floor(cookiespeed);
+    return applied;
+}
 double calc_max_buyable(double coins, double level, double base_cost, double multiplier)
 {
     double currentCost = safe_cap(base_cost * pow(multiplier, level));

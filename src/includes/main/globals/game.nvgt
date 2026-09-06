@@ -39,6 +39,10 @@ if(cookiespeed<=0)
 {
 cookiespeed=0;
 }
+if(cookiespeed>COOKIESPEED_MAX)
+{
+cookiespeed=COOKIESPEED_MAX;
+}
 manulcookie = floor(safe_cap(manulcookie));
 if(manulcookie<=0)
 {
