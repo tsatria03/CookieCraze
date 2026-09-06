@@ -1099,6 +1099,22 @@ void bakermenu()
     string chosenCurrency = menus[catIndex].currency;
     bakercategorymenu(items, chosenMenu, chosenCurrency);
 }
+double max_useful_speed_copies(store_item@ it)
+{
+    /* How many copies of a speed upgrade still shave time before cookiespeed reaches COOKIESPEED_MAX. Returns 0 once maxed. */
+    double room = COOKIESPEED_MAX - cookiespeed;
+    if (room <= 0) return 0;
+    double per = it.use_percent ? (cookiespeed * (it.amount / 100.0)) : it.amount;
+    if (per <= 0) return 0;
+    return ceil(room / per);
+}
+double cap_speed_maxbuy(store_item@ it, double maxbuy)
+{
+    /* Speed upgrades can't be bought past what fits under COOKIESPEED_MAX; other targets are unaffected. */
+    if (it.target != 3) return maxbuy;
+    double useful = max_useful_speed_copies(it);
+    return (maxbuy < useful) ? maxbuy : useful;
+}
 void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurrency)
 {
     while (true)
@@ -1116,7 +1132,7 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
         }
         double level = (items[i].target == 2) ? manulcookie_purchases : (items[i].target == 3) ? cookiespeed_purchases : autocookie_purchases;
         double cost = buy_item(level, items[i].base_cost, items[i].cost_multiplier);
-        double maxbuy = calc_max_buyable(balance, level, items[i].base_cost, items[i].cost_multiplier);
+        double maxbuy = cap_speed_maxbuy(items[i], calc_max_buyable(balance, level, items[i].base_cost, items[i].cost_multiplier));
         string costStr = (chosenCurrency == "cookies") ? format_number(cost) + " baked cookies" : convert_to_currency(cost);
         m.add_item(items[i].item_type + ", costs " + costStr + ". You can buy " + format_number(maxbuy) + ". Description: " + items[i].description, "item" + string(i));
     }
@@ -1126,7 +1142,7 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
         if (items[i].menu != chosenMenu) continue;
         if (items[i].min_rank > 0 && rank < items[i].min_rank) continue;
         double level = (items[i].target == 2) ? manulcookie_purchases : (items[i].target == 3) ? cookiespeed_purchases : autocookie_purchases;
-        double maxbuy = calc_max_buyable(balance, level, items[i].base_cost, items[i].cost_multiplier);
+        double maxbuy = cap_speed_maxbuy(items[i], calc_max_buyable(balance, level, items[i].base_cost, items[i].cost_multiplier));
         if (maxbuy >= 1) { anyAffordable = true; break; }
     }
     if (anyAffordable)
@@ -1158,7 +1174,7 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
             if (items[i].menu != chosenMenu) continue;
             if (items[i].min_rank > 0 && rank < items[i].min_rank) continue;
             double level = (items[i].target == 2) ? manulcookie_purchases : (items[i].target == 3) ? cookiespeed_purchases : autocookie_purchases;
-            double maxbuy = calc_max_buyable(balance, level, items[i].base_cost, items[i].cost_multiplier);
+            double maxbuy = cap_speed_maxbuy(items[i], calc_max_buyable(balance, level, items[i].base_cost, items[i].cost_multiplier));
             if (maxbuy > overallMax) overallMax = maxbuy;
         }
         vd.set_disallowed_chars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()[]{};:'\"\\|,.<>?/+-=`~_", false, "This character is not allowed.");
@@ -1179,7 +1195,7 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
             if (items[i].menu != chosenMenu) continue;
             if (items[i].min_rank > 0 && rank < items[i].min_rank) continue;
             double level = (items[i].target == 2) ? manulcookie_purchases : (items[i].target == 3) ? cookiespeed_purchases : autocookie_purchases;
-            double maxbuy = calc_max_buyable(balance, level, items[i].base_cost, items[i].cost_multiplier);
+            double maxbuy = cap_speed_maxbuy(items[i], calc_max_buyable(balance, level, items[i].base_cost, items[i].cost_multiplier));
             if (maxbuy < 1) continue;
             double quantity = (bulkQuantity < maxbuy) ? bulkQuantity : maxbuy;
             double totalCost = calc_total_upgrade_cost(level, quantity, items[i].base_cost, items[i].cost_multiplier);
@@ -1262,7 +1278,13 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
         }
         if (sel != "item" + string(i)) continue;
         double level = (items[i].target == 2) ? manulcookie_purchases : (items[i].target == 3) ? cookiespeed_purchases : autocookie_purchases;
-        double maxbuy = calc_max_buyable(balance, level, items[i].base_cost, items[i].cost_multiplier);
+        double maxbuy = cap_speed_maxbuy(items[i], calc_max_buyable(balance, level, items[i].base_cost, items[i].cost_multiplier));
+        if (items[i].target == 3 && max_useful_speed_copies(items[i]) <= 0)
+        {
+            pool.play_stationary("sounds/store/error.ogg", false);
+            dlgmessage_return("Your baking speed is already at its maximum.");
+            break;
+        }
         vd.set_disallowed_chars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()[]{};:'\"\\|,.<>?/+-=`~_", false, "This character is not allowed.");
         string promptName = string_replace(items[i].item_type, "_", " ", true);
         string promptPlural;
@@ -1280,6 +1302,11 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
             pool.play_stationary("sounds/store/error.ogg", false);
             dlgmessage_return("Error! Please enter a valid number to buy!");
             break;
+        }
+        if (items[i].target == 3)
+        {
+            double speedCap = max_useful_speed_copies(items[i]);
+            if (quantity > speedCap) quantity = speedCap;
         }
         double totalCost = calc_total_upgrade_cost(level, quantity, items[i].base_cost, items[i].cost_multiplier);
         if (balance >= totalCost)
@@ -1304,16 +1331,9 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
             else if (items[i].target == 3)
             {
                 if (items[i].use_percent)
-                {
-                    double gained = safe_cap((cookiespeed * (items[i].amount / 100.0)) * quantity);
-                    cookiespeed += gained;
-                    clicktime -= gained;
-                }
+                    gain_cookiespeed(safe_cap((cookiespeed * (items[i].amount / 100.0)) * quantity));
                 else
-                {
-                    cookiespeed += quantity * items[i].amount;
-                    clicktime -= cookiespeed;
-                }
+                    gain_cookiespeed(quantity * items[i].amount);
                 cookiespeed_purchases += quantity;
             }
             double nextCost = buy_item(level + quantity, items[i].base_cost, items[i].cost_multiplier);
