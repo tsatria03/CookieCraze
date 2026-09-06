@@ -20,6 +20,9 @@ class quest_item
     bool required;
     bool advance;
     int difficulty;
+    double growth = 1;
+    bool infinite = false;
+    int difficulty_step = 0;
     string description;
 }
 
@@ -35,6 +38,7 @@ quests_config questsConfig;
 quest_item[] loadedQuests;
 quest_item[] activeQuests;
 dictionary completedQuestIds;
+dictionary questEndlessCounts;
 int questRerollCount = 0;
 
 void parse_quests_table(string filepath, quest_item[]@ quests_out)
@@ -75,7 +79,7 @@ void parse_quests_table(string filepath, quest_item[]@ quests_out)
         }
         else if (section == "quests")
         {
-            string[] parts = parse_delimited_line(line, 8);
+            string[] parts = parse_delimited_line(line, 11);
             if (parts.length() < 9) continue;
             quest_item item;
             item.id          = parts[0];
@@ -88,7 +92,28 @@ void parse_quests_table(string filepath, quest_item[]@ quests_out)
             item.difficulty  = string_to_int(parts[7]);
             if (item.difficulty < 1)  item.difficulty = 1;
             if (item.difficulty > 10) item.difficulty = 10;
-            item.description = parts[8];
+            /* Two formats are supported, distinguished by field count so pre-endless quests.table files
+            still parse. New (12 fields, endless-aware):
+            id:name:stat:threshold:use_percent:required:advance:difficulty:growth:infinite:difficulty_step:description
+            Old (9 fields): id:name:stat:threshold:use_percent:required:advance:difficulty:description */
+            if (parts.length() >= 12)
+            {
+                item.growth = string_to_number(parts[8]);
+                if (item.growth <= 0) item.growth = 1;
+                item.infinite = (parts[9] == "true");
+                item.difficulty_step = string_to_int(parts[10]);
+                if (item.difficulty_step < 0) item.difficulty_step = 0;
+                item.description = parts[11];
+            }
+            else
+            {
+                item.growth = 1;
+                item.infinite = false;
+                item.difficulty_step = 0;
+                string desc = parts[8];
+                for (uint p = 9; p < parts.length(); p++) desc += ":" + parts[p];
+                item.description = desc;
+            }
             quests_out.insert_last(item);
         }
     }

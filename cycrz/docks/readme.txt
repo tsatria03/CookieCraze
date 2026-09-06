@@ -173,7 +173,7 @@ You can reveal cards manually, or enable automatic card revealing with the check
 
 Roulette. Unlocked at rank 60.
 
-Intermediate. The odds are familiar casino odds, but choosing and stacking several bets on one spin rewards a little planning.
+Advanced. The odds are familiar casino odds, but choosing and stacking several bets on one spin rewards a little planning.
 Stake one item across as many bet types as you like, then spin the wheel and see which of your bets pay out.
 
 Before spinning, choose an item to bet and enter your bet amount. When betting money, you can enter the amount as a dollar value, for example type 1 to bet $1.00 or 0.50 to bet 50 cents. All other items are entered as whole numbers. Then check one or more bet types in the list, such as a color, even or odd, a dozen, a column, or a single number. Your bet amount is staked on each bet type you check, so checking three bet types with a bet of 10 stakes 30 in total.
@@ -186,7 +186,7 @@ You can spin manually, or enable automatic wheel spinning with the checkbox in t
 
 Slot machine. Unlocked at rank 70.
 
-Intermediate. Multiple reels, payout combinations, and bet management make it more complex than early minigames.
+Advanced. Multiple reels, payout combinations, and bet management make it more complex than early minigames.
 Spin the reels and match symbols to win multiples of your bet.
 
 Like the other minigames, you choose which item to bet and how much. When betting money, you enter the amount as a dollar value, for example type 1 to bet $1.00 or 0.50 to bet 50 cents. All other items are entered as whole numbers.
