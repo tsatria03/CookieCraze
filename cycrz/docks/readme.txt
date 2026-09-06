@@ -35,7 +35,9 @@ Once you purchase and enable slots through the baking slots manager, production 
 
 Ranking up.
 
-Reach new ranks by baking cookies. Every rank rewards you with money, and milestone ranks unlock new features.
+Reach new ranks by baking cookies. Each cookie you bake earns experience toward your next rank, and every rank rewards you with money while milestone ranks unlock new features.
+
+Your rank experience is tracked separately from the cookies you can spend, and it only ever goes up. Selling cookies, buying from the shops, or betting in minigames never lowers your rank progress, so you can spend freely without setting your ranking back. Two settings control the pace: the Cookie Rank Modifier sets how much experience each rank requires, and the Cookie Experience Modifier sets how much experience you earn per bake. Press R at any time to hear your current experience and how much more you need for the next rank.
 
 The money reward scales with your current rank, so higher ranks pay out more.
 Certain milestone ranks also award bonus stat boosts on top of the money reward, such as extra auto cookies or manual cookies.
@@ -444,7 +446,7 @@ To check how many prestige points you have, open the prestige store. The store a
 
 The prestige store is divided into four categories.
 
-Standard Passive contains one-time upgrades that permanently boost your cookie production or reduce the cookies needed to rank up, applied across every run from the moment you buy them.
+Standard Passive contains one-time upgrades that permanently boost your cookie production or reduce the experience needed to rank up, applied across every run from the moment you buy them.
 
 Standard Head Start contains one-time upgrades that give you bonus resources at the beginning of each new run, such as starting coins, auto cookies, or manual cookies.
 
@@ -452,7 +454,7 @@ Endless Passive contains infinite versions of the cookie and coin multipliers th
 
 Endless Head Start contains infinite versions of the starting coins, auto cookies, and manual cookies bonuses that you can keep buying forever, with no upper limit.
 
-The two Endless categories unlock only once you have reached prestige level 10 and purchased every standard upgrade. Until then they show as locked when the show locked items setting is enabled, and are hidden when it is disabled. There is no endless rank discount, since the cookies needed to rank up cannot be reduced without limit.
+The two Endless categories unlock only once you have reached prestige level 10 and purchased every standard upgrade. Until then they show as locked when the show locked items setting is enabled, and are hidden when it is disabled. There is no endless rank discount, since the experience needed to rank up cannot be reduced without limit.
 
 How prestige upgrades work.
 
@@ -1566,7 +1568,7 @@ The item_id also determines what effect the upgrade has. The game recognises the
 
 cookie_multiplier = permanently increases all cookie production by a percentage each bake.
 coin_multiplier = permanently increases all money earned from selling cookies by a percentage.
-rank_discount = permanently reduces the cookies required to rank up by a percentage.
+rank_discount = permanently reduces the experience required to rank up by a percentage.
 starting_coins = gives bonus coins at the start of each new run after prestige.
 starting_autocookie = gives bonus auto cookies at the start of each new run after prestige.
 starting_manualcookie = gives bonus manual cookies at the start of each new run after prestige.

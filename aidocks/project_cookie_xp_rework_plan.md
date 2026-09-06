@@ -7,6 +7,8 @@ metadata:
   originSessionId: 6e820f7e-c923-43e9-bd1c-7c123f031f23
 ---
 
+**STATUS: SHIPPED in 6.7.** All four build sections completed, documented, and committed. Kept as the design record. (Notable in-build change: `cookieExpMod` default set to 5, not 1; `difmod` removal deferred to Section 3 for compile-safety.)
+
 Rework ranking to mirror SimpleFighter's level/XP model, so the two rank sliders stop being redundant and selling no longer fights rank progress. Modeled on SimpleFighter (`SimpleFighter/src/includes/main/globals/game.nvgt` + `menus/menu.nvgt:739`). Planned per [[feedback_plan_features_in_memory]]; build after the endless-prestige feature ([[project_endless_prestige_plan]]) is finished. The dev commits each section; docks last ([[feedback_docks_last]]).
 
 ## The problem this fixes
@@ -32,7 +34,7 @@ Today `cookies` is one balance doing triple duty: it goes UP when baking (`game.
 
 On load, if the `cookieXP` save key is absent, seed `cookieXP = cookiemod * ((rank-1) * ((rank-1) * 10))` — the threshold that got them to their current rank. This keeps the player's exact rank and starts their XP bar at the beginning of that rank (rank 1 → 0). Do NOT seed from `stat_cookies_baked`: it counts sold cookies too, so it dwarfs the rank thresholds and would rank veterans up to absurd values on load. The old `difmod` save value is simply dropped (a customized difficulty is lost — acceptable for a rework). Note: the dev plans to start a fresh save, but the migration still matters for other existing players.
 
-## Status: fully specified — ready to build after the endless-prestige feature.
+## Status: SHIPPED in 6.7 (all four sections built and committed).
 
 ## Build sections (commit-safe order — one per turn, pause for commit)
 
@@ -44,4 +46,4 @@ NOTE (compile-safety): `difmod` is referenced by the rank formula (game.nvgt, ra
 4. **Docks** — readme (rank/XP model + the two modifiers), changelog entry, `build/version.txt` bump.
 
 ## Tuning knobs (all live-adjustable)
-Cookie Rank Modifier (threshold scalar, default 5) · Cookie Experience Modifier (XP per bake, default 1) · threshold constant 10 (in-formula).
+Cookie Rank Modifier (threshold scalar, default 5) · Cookie Experience Modifier (XP per bake, default 5 — set during the build; was 1) · threshold constant 10 (in-formula).
