@@ -141,6 +141,21 @@ if (sd.d.exists("prestigePurchasedCount"))
             prestigePurchased[i] = migrate_prestige_id_v2(prestigePurchased[i]);
     }
 }
+prestigeEndlessCounts.delete_all();
+if (sd.d.exists("prestigeEndlessCount"))
+{
+    int ecount = sd.read_int("prestigeEndlessCount");
+    for (int i = 0; i < ecount; i++)
+    {
+        string eidkey = "prestigeEndlessId_" + string(i);
+        string eamtkey = "prestigeEndlessAmount_" + string(i);
+        if (!sd.d.exists(eidkey)) continue;
+        string eid = sd.read_string(eidkey);
+        double ecnt = 0;
+        if (sd.d.exists(eamtkey)) ecnt = sd.read_double(eamtkey);
+        if (ecnt > 0) prestigeEndlessCounts.set(eid, ecnt);
+    }
+}
 if (sd.d.exists("questRerollCount")) questRerollCount = sd.read_int("questRerollCount");
 if (sd.d.exists("activeQuestCount"))
 {
@@ -309,6 +324,15 @@ sd.add("prestigeStoreSchema", 2);
 sd.add("prestigePurchasedCount", int(prestigePurchased.length()));
 for (uint i = 0; i < prestigePurchased.length(); i++)
     sd.add("prestigePurchased_" + string(i), prestigePurchased[i]);
+string[] endlessKeys = prestigeEndlessCounts.get_keys();
+sd.add("prestigeEndlessCount", int(endlessKeys.length()));
+for (uint i = 0; i < endlessKeys.length(); i++)
+{
+    double ecnt = 0;
+    prestigeEndlessCounts.get(endlessKeys[i], ecnt);
+    sd.add("prestigeEndlessId_" + string(i), endlessKeys[i]);
+    sd.add("prestigeEndlessAmount_" + string(i), ecnt);
+}
 sd.add("questRerollCount", questRerollCount);
 sd.add("activeQuestCount", int(activeQuests.length()));
 for (uint i = 0; i < activeQuests.length(); i++)
