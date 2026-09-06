@@ -388,10 +388,8 @@ speak_buffer("You have " + convert_to_currency(coins) + " available to spend", "
 }
 if(key_pressed(KEY_R))
 {
-string rCookieWord = (cookies == 1) ? "cookie" : "cookies";
-double cookiesNeeded = cookiesrequiered - cookies;
-string rNeededWord = (cookiesNeeded == 1) ? "cookie" : "cookies";
-speak_buffer("You're currently rank " + format_number(rank) + " with " + format_number(cookies) + " " + rCookieWord + ". Your next rank requires " + format_number(cookiesNeeded) + " " + rNeededWord + ".", "misc");
+double xpNeeded = cookiesrequiered - cookieXP;
+speak_buffer("You're currently rank " + format_number(rank) + " with " + format_number(cookieXP) + " experience. Your next rank requires " + format_number(xpNeeded) + " experience.", "misc");
 }
 if (key_pressed(KEY_F))
 {
@@ -435,7 +433,7 @@ if (key_pressed(KEY_F))
 if(key_pressed(KEY_C))
 {
 string cookieCountWord = (cookies == 1) ? "cookie" : "cookies";
-speak_buffer("You baked a total of " + format_number(cookies) + " " + cookieCountWord + ".", "misc");
+speak_buffer("You have " + format_number(cookies) + " " + cookieCountWord + ".", "misc");
 }
 if(key_pressed(KEY_J))
 {

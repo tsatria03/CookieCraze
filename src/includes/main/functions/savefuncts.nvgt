@@ -509,10 +509,6 @@ if (st.d.exists("manualSlotMultiplier"))
 {
 manualSlotMultiplier = st.read_double("manualSlotMultiplier");
 }
-if(st.d.exists("difmod"))
-{
-difmod=st.read_double("difmod");
-}
 if(st.d.exists("cookiemod"))
 {
 cookiemod=st.read_double("cookiemod");
@@ -558,7 +554,6 @@ automationMultiplier=1.01;
 slotMultiplier=1.01;
 manualSlotMultiplier=1.01;
 cookiemod=5;
-difmod=10;
 cookieExpMod=1;
 cookieSellPrice=50;
 evchanse=50;
@@ -603,7 +598,6 @@ st.add("show_locked_shops", show_locked_shops);
 st.add("automationMultiplier", automationMultiplier);
 st.add("slotMultiplier", slotMultiplier);
 st.add("manualSlotMultiplier", manualSlotMultiplier);
-st.add("difmod",difmod);
 st.add("cookiemod",cookiemod);
 st.add("cookieExpMod",cookieExpMod);
 st.add("cookieSellPrice",cookieSellPrice);
