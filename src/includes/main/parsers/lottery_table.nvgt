@@ -124,11 +124,8 @@ string apply_lottery_prize(lottery_prize_item@ prize)
     if (amount <= 0) return "";
     if (prize.target == "cookiespeed")
     {
-        cookiespeed += amount;
-        clicktime -= amount;
-        if (cookiespeed < 0) cookiespeed = 0;
-        if (clicktime < 50) clicktime = 50;
-        cookiespeed = floor(cookiespeed);
+        amount = gain_cookiespeed(amount);
+        if (amount <= 0) return "Your baking speed is already at its maximum.";
     }
     else
         apply_amount_effect(prize.target, amount, 1, false);
@@ -251,7 +248,7 @@ void lottery_scratch_all(lottery_ticket_item@ ticket, int ticketIdx)
     if (totalCookies > 0)     apply_amount_effect("cookies", totalCookies, 1, false);
     if (totalAutocookie > 0)  apply_amount_effect("autocookie", totalAutocookie, 1, false);
     if (totalManulcookie > 0) apply_amount_effect("manulcookie", totalManulcookie, 1, false);
-    if (totalCookiespeed > 0) { cookiespeed += totalCookiespeed; clicktime -= totalCookiespeed; if (cookiespeed < 0) cookiespeed = 0; if (clicktime < 50) clicktime = 50; cookiespeed = floor(cookiespeed); }
+    if (totalCookiespeed > 0) totalCookiespeed = gain_cookiespeed(totalCookiespeed);
     stat_lottery_wins += wins;
     stat_lottery_losses += losses;
     string endSound = (wins > 0) ? "sounds/minigames/cooky_lottery/win.ogg" : "sounds/minigames/cooky_lottery/lose" + string(random(1, 3)) + ".ogg";
