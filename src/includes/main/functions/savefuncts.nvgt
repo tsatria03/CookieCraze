@@ -156,6 +156,21 @@ if (sd.d.exists("prestigeEndlessCount"))
         if (ecnt > 0) prestigeEndlessCounts.set(eid, ecnt);
     }
 }
+questEndlessCounts.delete_all();
+if (sd.d.exists("questEndlessCount"))
+{
+    int qecount = sd.read_int("questEndlessCount");
+    for (int i = 0; i < qecount; i++)
+    {
+        string qeidkey = "questEndlessId_" + string(i);
+        string qeamtkey = "questEndlessAmount_" + string(i);
+        if (!sd.d.exists(qeidkey)) continue;
+        string qeid = sd.read_string(qeidkey);
+        double qecnt = 0;
+        if (sd.d.exists(qeamtkey)) qecnt = sd.read_double(qeamtkey);
+        if (qecnt > 0) questEndlessCounts.set(qeid, qecnt);
+    }
+}
 if (sd.d.exists("questRerollCount")) questRerollCount = sd.read_int("questRerollCount");
 if (sd.d.exists("activeQuestCount"))
 {
@@ -177,6 +192,8 @@ if (sd.d.exists("activeQuestCount"))
     }
     if (int(activeQuests.length()) < questsConfig.max_active)
         assign_quests();
+    else
+        escalate_active_quests();
 }
 if (sd.d.exists("completedQuestCount"))
 {
@@ -348,6 +365,15 @@ string[] completedKeys = completedQuestIds.get_keys();
 sd.add("completedQuestCount", int(completedKeys.length()));
 for (uint i = 0; i < completedKeys.length(); i++)
     sd.add("completedQuest_" + string(i), completedKeys[i]);
+string[] questEndlessKeys = questEndlessCounts.get_keys();
+sd.add("questEndlessCount", int(questEndlessKeys.length()));
+for (uint i = 0; i < questEndlessKeys.length(); i++)
+{
+    double qecnt = 0;
+    questEndlessCounts.get(questEndlessKeys[i], qecnt);
+    sd.add("questEndlessId_" + string(i), questEndlessKeys[i]);
+    sd.add("questEndlessAmount_" + string(i), qecnt);
+}
 sd.add("stat_cookies_baked", stat_cookies_baked);
 sd.add("cookieXP", cookieXP);
 sd.add("stat_manual_bakes_performed", stat_manual_bakes_performed);

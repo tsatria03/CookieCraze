@@ -223,6 +223,7 @@ else
     achievementsUnlocked.delete_all();
     achievements_last_id="";
     completedQuestIds.delete_all();
+    questEndlessCounts.delete_all();
     prestigeHistory.resize(0);
     stat_jack_hands=0;
     stat_jack_wins=0;

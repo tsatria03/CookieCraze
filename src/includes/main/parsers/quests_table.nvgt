@@ -141,6 +141,21 @@ int endless_difficulty(quest_item@ q)
     if (d > 10) d = 10;
     return d;
 }
+void escalate_active_quests()
+{
+    /* Rewrites each active infinite quest to its current escalated tier (threshold + effective difficulty)
+    and fills %threshold% in every active quest's name. NOT idempotent (it reads the threshold as the base),
+    so call exactly once after activeQuests is (re)built — from assign_quests, and again after a save-load. */
+    for (uint i = 0; i < activeQuests.length(); i++)
+    {
+        if (activeQuests[i].infinite)
+        {
+            activeQuests[i].threshold  = endless_threshold(activeQuests[i]);
+            activeQuests[i].difficulty = endless_difficulty(activeQuests[i]);
+        }
+        activeQuests[i].name = string_replace(activeQuests[i].name, "%threshold%", format_quest_value(activeQuests[i].stat, activeQuests[i].threshold), true);
+    }
+}
 void assign_quests()
 {
     activeQuests.resize(0);
@@ -253,15 +268,7 @@ void assign_quests()
         }
     }
 
-    for (uint i = 0; i < activeQuests.length(); i++)
-    {
-        if (activeQuests[i].infinite)
-        {
-            activeQuests[i].threshold  = endless_threshold(activeQuests[i]);
-            activeQuests[i].difficulty = endless_difficulty(activeQuests[i]);
-        }
-        activeQuests[i].name = string_replace(activeQuests[i].name, "%threshold%", format_quest_value(activeQuests[i].stat, activeQuests[i].threshold), true);
-    }
+    escalate_active_quests();
     for (uint i = 0; i < activeQuests.length(); i++)
     {
         for (uint j = i + 1; j < activeQuests.length(); j++)
