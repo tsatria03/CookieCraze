@@ -506,8 +506,10 @@ In game.
 Letter, F: Announces how many cookies you produce per bake when baking mode is active.
 Letter, J: Announces how many cookies you produce per bake when baking mode is inactive.
 Letter, C: Announces your current cookie count.
-Letter, R: Announces your current rank and how many cookies are needed to reach the next rank.
+Letter, R: Announces your current rank, your current experience, and how much more experience is needed to reach the next rank.
 Letter, M: Announces how much money you currently have.
+Letter, T: Announces how many prestige points you have to spend in the prestige store.
+Letter, P: Announces your current prestige level.
 Control S: Saves your game progress.
 Control L: Reloads all configuration files and your save data without restarting the game. Useful when editing config files.
 Escape: Opens a prompt asking whether you want to quit.
