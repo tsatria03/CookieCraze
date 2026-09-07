@@ -435,7 +435,7 @@ The following are kept: your prestige level, all achievements and achievement pr
 
 Whether you receive a reward depends on the require_all setting in quests.table. If you have not met the quest requirement, nothing is gained.
 Certain prestige levels award a milestone reward, and all other levels fall back to a default reward if one is configured. After the prestige message you will always receive a second notification telling you what you gained.
-Once all prestige dialogs are dismissed, a summary screen appears showing the prestige level, the rank you achieved, quests completed, what reward you received, and how many prestige points you earned. All prestige settings and milestone rewards are fully configurable in prestige.table.
+Once all prestige dialogs are dismissed, a summary screen appears showing the rank you achieved, quests completed, what reward you received, and how many prestige points you earned. All prestige settings and milestone rewards are fully configurable in prestige.table.
 
 Prestige store.
 
@@ -443,7 +443,7 @@ Spend prestige points on permanent upgrades that carry into every future run.
 
 The prestige store becomes available after your first prestige. A prestige store button appears in the quests screen directly below the prestige button once you have at least one completed prestige run.
 
-Prestige points are earned each time you prestige. The number of points awarded is equal to the points_per_prestige setting in prestige.table multiplied by the number of quests you completed before prestiging. By default this base value scales with your prestige level, so the deeper you prestige, the more points each completed quest is worth. If you prestige without completing any quests, you earn no points for that run.
+Prestige points are earned each time you prestige. The number awarded is the points_per_prestige setting in prestige.table multiplied by your total quest completions, counting every one-time quest you have ever finished plus every time you have completed an endless quest. This total carries across runs and keeps growing rather than resetting each prestige, so your payout increases the more quests you complete over your whole progression, and you still earn points on a run where you complete nothing new, as long as you have completed quests before. By default the points_per_prestige value also scales with your prestige level, so the deeper you prestige, the more each completion is worth.
 
 To check how many prestige points you have, open the prestige store. The store announces your current balance when it opens.
 
@@ -1487,7 +1487,7 @@ min_rank
 The minimum rank the player must reach before prestige becomes available.
 
 points_per_prestige
-The base number of prestige points awarded per quest completed when the player prestiges. The total points earned for a run is this value multiplied by the number of quests completed before prestiging. If the player completes no quests, they earn no points for that run. This setting supports the same rank scaling operators as ranks.table, evaluated against the player's prestige level, so values like 10*rank, 10/rank, 10+rank, and 10-rank are valid, with a plain number staying flat. A negative result is clamped to zero so the player never loses points.
+The base number of prestige points awarded per quest completion when the player prestiges. The total points earned is this value multiplied by the player's total quest completions, which counts every one-time quest ever finished plus every completion of an endless quest, accumulated across all runs rather than reset each prestige. Because this total carries over, the player can earn points even on a run where they complete no new quests. This setting supports the same rank scaling operators as ranks.table, evaluated against the player's prestige level, so values like 10*rank, 10/rank, 10+rank, and 10-rank are valid, with a plain number staying flat. A negative result is clamped to zero so the player never loses points.
 
 sound
 The sound file to play when the player prestiges. Relative to sounds/misc/.
