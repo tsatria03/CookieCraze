@@ -11,7 +11,7 @@ message=Congratulations! You have reached prestige level %prestige%. Your bakery
 
 ; Required header — removing or renaming this will break the file.
 
-coins:50*rank:100*rank:Prestige %level% complete! You earned %amount% bonus to start your next run.
+coins:50*rank:100*rank:Prestige complete! You earned %amount% bonus to start your next run.
 
 [rewards]
 

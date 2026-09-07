@@ -648,7 +648,7 @@ void show_prestige_history()
         for (uint i = 0; i < prestigeHistory.length(); i++)
         {
             txt += "\r\n";
-            txt += "Prestige level " + string(prestigeHistory[i].level) + ". Reached rank " + string(prestigeHistory[i].rank_reached) + ". Reward: " + prestigeHistory[i].reward + ".\r\n";
+            txt += "Prestige level " + string(prestigeHistory[i].level) + " reached. Rank reached: " + string(prestigeHistory[i].rank_reached) + ". Reward: " + prestigeHistory[i].reward + ".\r\n";
         }
     }
     form.reset();
@@ -754,7 +754,7 @@ bool all_standard_prestige_purchased()
 }
 void show_prestige_summary(int level, int rankReached, int questsDone, int questsTotal, string reward, int pointsEarned = 0)
 {
-    string txt = "Prestige level " + string(level) + " summary.\r\n";
+    string txt = "Prestige summary.\r\n";
     txt += "\r\n";
     txt += "Rank reached: " + string(rankReached) + "\r\n";
     txt += "Quests completed: " + string(questsDone) + " of " + string(questsTotal) + "\r\n";
