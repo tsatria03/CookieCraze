@@ -1741,6 +1741,7 @@ advance
 
 true means that once this quest is completed, it is permanently retired and replaced by the next tier of the same stat on the next prestige cycle. The player will never see the same quest again after beating it.
 false means the quest repeats every prestige cycle regardless of whether it was completed before.
+
 Endless quests, where infinite is true, ignore this flag entirely, since they escalate their own threshold instead of advancing to a separate tier.
 
 difficulty
@@ -1836,4 +1837,5 @@ CookieCraze started as a simple cookie clicker and has grown into a full-feature
 Every system in the game, from rank rewards to slot payouts to event effects, can be tuned or extended through the provided configuration files.
 
 Whether you are a player looking to understand the game better, or a modder building your own experience on top of it, we hope this document gives you everything you need to succeed in the baking industry.
+
 Thanks for playing, and happy baking!
