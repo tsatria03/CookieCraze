@@ -395,12 +395,12 @@ if(key_pressed(KEY_R))
 double xpNeeded = xprequired - cookieXP;
 speak_buffer("You're currently rank " + format_number(rank) + " with " + format_number(cookieXP) + " experience. Your next rank requires " + format_number(ceil(xpNeeded)) + " experience.", "misc");
 }
-if(key_pressed(KEY_T))
+if(key_pressed(KEY_P))
 {
 string pointWord = (prestige_points == 1) ? "point" : "points";
 speak_buffer("You have " + format_number(prestige_points) + " prestige " + pointWord + " to spend in the prestige store.", "misc");
 }
-if(key_pressed(KEY_P))
+if(!control_is_down() && key_pressed(KEY_L))
 {
 speak_buffer("You're currently on prestige level " + format_number(prestigeLevel) + ".", "misc");
 }
