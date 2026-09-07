@@ -7,7 +7,7 @@ metadata:
   originSessionId: 6e820f7e-c923-43e9-bd1c-7c123f031f23
 ---
 
-## Status: approved, ready to build. Not yet started.
+## Status: SHIPPED in 6.8. All sections (1-6) built and committed, plus the nearest-slot fallback and the combos_broken removal. Kept as the design record. 13 categories converted (see the locked parameter table below); 18 stats stay finite.
 
 Endless quests: an infinitely-escalating quest type so quest progression never dead-ends the way the finite tier ladders do. Modeled on endless prestige ([[project_endless_prestige_plan]]) and slotting into the existing quest `advance`/tier system. Planned per [[feedback_plan_features_in_memory]]; the dev commits each section; code/config first, docks last ([[feedback_docks_last]]).
 

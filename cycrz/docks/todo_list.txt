@@ -1,12 +1,12 @@
 ####These are the things that need to be finished for future versions of the game.
 
-****Unfinished. Add endless quests to the quests screen.
 ****Unfinished. Add an auto-buyer that automatically purchases the cheapest upgrade you can afford on a timer, extending automation from baking into spending. Unlocked at a late rank and toggleable in the settings.
 ****Unfinished. Add a temporary boosts shop where you spend cookies or coins on timed power-ups, such as double production for 60 seconds, an auto-bake burst, or an extended combo window.
 ****Unfinished. Add a session summary shown when you exit that reports what you did this session, such as cookies baked, money earned, and ranks gained, built from stats the game already tracks.
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Add endless quests to the quests screen.
 **Finished. Add endless prestige upgrades to the prestige store.
 **Finished. Add a roulette minigame where you stake one item across one or more bet types at once, such as a color, even or odd, or a single number, then spin the wheel to see which of your bets pay out.
 **Finished. Make some achievements grant a reward of one of the five items when unlocked, such as cookies, money, auto cookies, manual cookies, or baking speed, with rank scalable amounts defined in the achievements config.

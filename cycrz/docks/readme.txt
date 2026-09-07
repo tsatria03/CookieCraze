@@ -406,6 +406,8 @@ The number of active quests is configurable in quests.table and is capped at 10.
 The game ships with a variety of quests spanning both required rank milestones and random objectives across many trackable stats.
 Rerolling a quest replaces only the currently focused quest with a new one of the same difficulty, leaving the rest of your active quests untouched.
 
+Some quests are endless. Instead of a one-time goal, an endless quest escalates every time you complete it and prestige, returning the next cycle at a higher target, and it can never be permanently finished. Your rank quest is endless and always present, and several others, such as baking cookies, earning and spending money, buying upgrades, and playing each minigame, rotate through the random pool. Every endless quest you complete permanently increases the prestige points you earn on all future prestiges, so the deeper you push them the more each prestige pays out.
+
 To view your quests, press the Quests button in the main game interface.
 A Quest Category list at the top of the quests screen lets you narrow down the list. The options are All, Required, and Random, and the list updates immediately as you switch between them.
 The quests screen shows required quests at the top, followed by random quests sorted from easiest to hardest. Completed quests are labelled with complete so you can see your status at a glance.
@@ -1650,7 +1652,9 @@ reroll_message
 The message spoken after a successful reroll. Use %cost% as a placeholder for the amount deducted.
 
 Quests section.
-Format: id:name:stat:threshold:use_percent:required:advance:difficulty:description
+Format: id:name:stat:threshold:use_percent:required:advance:difficulty:growth:infinite:difficulty_step:description
+
+Two formats are supported. The full 12 field format above enables endless quests through the growth, infinite, and difficulty_step fields. The older 9 field format, id:name:stat:threshold:use_percent:required:advance:difficulty:description, still works and is read as a normal one-time quest, with growth 1, infinite false, and difficulty_step 0.
 
 id
 The internal identifier for this quest. Must be unique across all entries. Use lowercase letters and underscores, no spaces. Example: bake_million
@@ -1730,6 +1734,7 @@ advance
 
 true means that once this quest is completed, it is permanently retired and replaced by the next tier of the same stat on the next prestige cycle. The player will never see the same quest again after beating it.
 false means the quest repeats every prestige cycle regardless of whether it was completed before.
+Endless quests, where infinite is true, ignore this flag entirely, since they escalate their own threshold instead of advancing to a separate tier.
 
 difficulty
 A number from 1 to 10 controlling which slot this quest occupies in the active quest list.
@@ -1738,8 +1743,18 @@ It does not directly affect how hard the quest is to complete in practice, that 
 Two quests can share the same difficulty number, and the one with the larger threshold will naturally take longer to finish.
 
 The game spreads active slots evenly across the difficulty range found in the table, so easier quests always appear alongside harder ones.
-Required quests occupy their difficulty slot directly.
+Required quests occupy their difficulty slot directly, or the nearest open slot when no slot exactly matches their difficulty, so a required quest is never dropped from a cycle.
 The difficulty range is read dynamically from the table and capped at 10. The max_active setting is also capped at 10.
+
+growth
+The multiplier applied to an endless quest's threshold each time it is completed. Only used when infinite is true. The active threshold is the base threshold times growth raised to the number of times the quest has been completed, so a growth of 1.25 makes each new goal 25 percent higher than the one before. A growth at or below 0 is treated as 1. Ignored for non-endless quests.
+
+infinite
+true makes this an endless quest. Rather than a one-time goal, it escalates. Each time you complete it and then prestige, its completion count rises by one, its threshold grows by the growth multiplier, and it returns the next cycle at the higher goal. Endless quests are never permanently retired, and every completion permanently adds one to your prestige points multiplier, so the further you push them the more every prestige pays out. Put %threshold% in the name and description so the displayed goal always reflects the current tier.
+false is a normal one-time quest, and is the default for old format lines.
+
+difficulty_step
+For endless quests only. The number of completions required before the quest's difficulty rises by one, up to the maximum of 10. 0 keeps the difficulty fixed at its starting value no matter how high the threshold climbs. For example, a difficulty of 1 with a difficulty_step of 1 starts in the easiest slot and climbs one slot per completion, reaching the hardest slot after nine completions.
 
 description
 The message shown in the detail input box when the player focuses this quest. You do not need to include progress information in this field.
