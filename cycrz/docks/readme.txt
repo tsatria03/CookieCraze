@@ -1255,8 +1255,7 @@ Message placeholders.
 %win_count% is replaced with how many of your bet types won.
 %loss_count% is replaced with how many of your bet types lost.
 %winnings% is replaced with the total winnings from your winning bet types, used in the single win message.
-%net% is replaced with the size of your net gain or loss.
-%amount% is replaced with the size of your net gain or loss.
+%net%, or its alias %amount%, is replaced with the size of your net gain or loss.
 %item% is replaced with the name of the item bet, for example cookies or auto cookies.
 
 The message spoken as the wheel begins spinning is fixed in the game and is not set in this file. During automatic spinning it says the wheel is spinning, and in manual mode it also tells you to press enter or space to see where it lands.
