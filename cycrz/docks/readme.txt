@@ -1060,7 +1060,9 @@ sound
 The sound to play for this payout tier. Relative to sounds/minigames/.
 
 message
-The text spoken after the roll. Supports the following placeholders.
+The text spoken after the roll.
+
+Message placeholders.
 
 %roll% is replaced with the total rolled including the modifier.
 %target% is replaced with the target score the player set.
@@ -1133,22 +1135,24 @@ win_sound
 Sound to play when you bank your earnings. Relative to sounds/minigames/.
 
 start_message
-The text spoken when the first card is drawn. Supports the following placeholders.
+The text spoken when the first card is drawn.
 
 correct_message
-The text spoken after a correct guess. Supports the following placeholders.
+The text spoken after a correct guess.
 
 wrong_message
-The text spoken after a wrong guess that did not break a streak, meaning you lost on your first guess before any pot was built. Supports the following placeholders.
+The text spoken after a wrong guess that did not break a streak, meaning you lost on your first guess before any pot was built.
 
 bust_message
-The text spoken after a wrong guess that breaks a streak of one or more, when you give up the pot you had built up. Supports the following placeholders, including %pot%.
+The text spoken after a wrong guess that breaks a streak of one or more, when you give up the pot you had built up.
 
 tie_message
-The text spoken on a tie. Supports the following placeholders.
+The text spoken on a tie.
 
 win_message
-The text spoken when you bank your earnings. Supports the following placeholders.
+The text spoken when you bank your earnings.
+
+Message placeholders.
 
 %card% is replaced with the name of the card just drawn.
 %streak% is replaced with your current streak count.
@@ -1225,22 +1229,24 @@ break_sound
 Sound to play when the spin breaks even, meaning your winning and losing bets cancel out exactly. Relative to sounds/minigames/.
 
 single_win_message
-The text spoken when you bet a single bet type and it wins. Supports the following placeholders.
+The text spoken when you bet a single bet type and it wins.
 
 single_lose_message
-The text spoken when you bet a single bet type and it loses. Supports the following placeholders.
+The text spoken when you bet a single bet type and it loses.
 
 multi_win_message
-The text spoken when you bet more than one bet type and come out with a net gain. Supports the following placeholders.
+The text spoken when you bet more than one bet type and come out with a net gain.
 
 multi_lose_message
-The text spoken when you bet more than one bet type, where some may win, but you come out with a net loss. Supports the following placeholders.
+The text spoken when you bet more than one bet type, where some may win, but you come out with a net loss.
 
 multi_alllose_message
-The text spoken when you bet more than one bet type and none of them hit. Supports the following placeholders.
+The text spoken when you bet more than one bet type and none of them hit.
 
 break_message
-The text spoken when the spin breaks even, meaning your winning and losing bets cancel out to exactly zero. Supports the following placeholders.
+The text spoken when the spin breaks even, meaning your winning and losing bets cancel out to exactly zero.
+
+Message placeholders.
 
 %number% is replaced with the winning pocket number.
 %color% is replaced with the winning pocket color, red, black, or green.
