@@ -317,6 +317,8 @@ else
 cookieXP = cookiemod * ((rank - 1) * ((rank - 1) * 4));
 // Recompute prestige upgrade effects from the just-loaded purchases and endless counts, so every load path applies them (not just startup).
 apply_all_prestige_store_upgrades();
+// prestige_rank_discount is only known after the line above, so re-apply the rank discount to xprequired now, matching what check_rank and startup do. Without this the loaded threshold ignores the discount until the next rank up.
+if (prestige_rank_discount > 0) xprequired *= max(0.01, 1.0 - (prestige_rank_discount / 100.0));
 }
 void writedata()
 {
