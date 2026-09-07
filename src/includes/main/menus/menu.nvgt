@@ -2110,7 +2110,7 @@ void questsmenu()
     else
     {
         for (uint i = 0; i < prestigeHistory.length(); i++)
-            prestigeHistText += "Prestige level " + string(prestigeHistory[i].level) + " reached. Rank reached: " + string(prestigeHistory[i].rank_reached) + ". Reward: " + prestigeHistory[i].reward + ".\r\n";
+            prestigeHistText += "Prestige level " + format_number(prestigeHistory[i].level) + " reached. Rank reached: " + format_number(prestigeHistory[i].rank_reached) + ". Reward: " + prestigeHistory[i].reward + ".\r\n";
     }
     int historyBox = form.create_input_box("Prestige &History", prestigeHistText, read_only:true, multiline:true);
     int closeBtn = form.create_button("&Close", false, true);

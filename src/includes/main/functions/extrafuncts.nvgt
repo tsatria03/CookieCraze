@@ -499,8 +499,8 @@ void show_baker_info()
     txt += "Bake interval: " + format_number(max(0.0, 1000.0 - cookiespeed)) + " ms\r\n";
     txt += "\r\n";
     txt += "Slots\r\n";
-    txt += "Auto slots: " + string(autobakeSlots) + "\r\n";
-    txt += "Manual slots: " + string(manualSlots) + "\r\n";
+    txt += "Auto slots: " + format_number(autobakeSlots) + "\r\n";
+    txt += "Manual slots: " + format_number(manualSlots) + "\r\n";
     txt += "\r\n";
     txt += "Progress\r\n";
     txt += "Cookies: " + format_number(cookies) + "\r\n";
@@ -510,8 +510,8 @@ void show_baker_info()
     txt += "Balance: " + convert_to_currency(coins) + "\r\n";
     txt += "Cookie sell price: " + convert_to_currency(cookieSellPrice) + " each\r\n";
     txt += "Earnings per sell: " + convert_to_currency(floor(cookies) * cookieSellPrice) + "\r\n";
-    txt += "Prestige level: " + string(prestigeLevel) + "\r\n";
-    txt += "Prestige points: " + string(prestige_points) + "\r\n";
+    txt += "Prestige level: " + format_number(prestigeLevel) + "\r\n";
+    txt += "Prestige points: " + format_number(prestige_points) + "\r\n";
     int completedQuests = 0;
     for (uint i = 0; i < activeQuests.length(); i++)
     {
@@ -642,13 +642,13 @@ void show_prestige_history()
     }
     else
     {
-        txt = "Prestige history. " + string(prestigeHistory.length()) + " run";
+        txt = "Prestige history. " + format_number(double(prestigeHistory.length())) + " run";
         if (prestigeHistory.length() != 1) txt += "s";
         txt += " total.\r\n";
         for (uint i = 0; i < prestigeHistory.length(); i++)
         {
             txt += "\r\n";
-            txt += "Prestige level " + string(prestigeHistory[i].level) + " reached. Rank reached: " + string(prestigeHistory[i].rank_reached) + ". Reward: " + prestigeHistory[i].reward + ".\r\n";
+            txt += "Prestige level " + format_number(prestigeHistory[i].level) + " reached. Rank reached: " + format_number(prestigeHistory[i].rank_reached) + ". Reward: " + prestigeHistory[i].reward + ".\r\n";
         }
     }
     form.reset();
@@ -756,13 +756,13 @@ void show_prestige_summary(int level, int rankReached, int questsDone, int quest
 {
     string txt = "Prestige summary.\r\n";
     txt += "\r\n";
-    txt += "Rank reached: " + string(rankReached) + "\r\n";
+    txt += "Rank reached: " + format_number(rankReached) + "\r\n";
     txt += "Quests completed: " + string(questsDone) + " of " + string(questsTotal) + "\r\n";
     txt += "Reward: " + reward + "\r\n";
     if (pointsEarned > 0)
     {
         string pointWord = (pointsEarned == 1) ? "point" : "points";
-        txt += "Your dedication paid off! You earned " + string(pointsEarned) + " prestige " + pointWord + " to spend in the prestige store.\r\n";
+        txt += "Your dedication paid off! You earned " + format_number(pointsEarned) + " prestige " + pointWord + " to spend in the prestige store.\r\n";
     }
     else
         txt += "No prestige points were earned this run. Complete quests before prestiging to earn points.\r\n";
@@ -827,7 +827,7 @@ void show_achievement_statistics(achievement_item[]@ achievements, dictionary@ u
         if (achievements[i].hidden && !unlocked.exists(achievements[i].id)) continue;
         visibleTotal++;
     }
-    txt += "Achievement statistics. " + string(unlockedCount) + " of " + string(visibleTotal) + " complete.\r\n";
+    txt += "Achievement statistics. " + format_number(unlockedCount) + " of " + format_number(visibleTotal) + " complete.\r\n";
     for (uint c = 0; c < categories.length(); c++)
     {
         string catName = categories[c].name;
