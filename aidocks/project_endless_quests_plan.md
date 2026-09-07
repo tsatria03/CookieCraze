@@ -62,6 +62,28 @@ Per endless quest: `growth` (threshold multiplier per completion) · `difficulty
 ## Nearest-slot fallback (added during Section 5 discussion)
 Required quests only claimed a slot on an EXACT difficulty-tag match, so they were silently dropped when no slot targeted their tag. After the rank-ladder conversion, non-rank quests only span difficulty 1-5, so an endless rank quest with `difficulty_step > 0` climbs its tag past every slot after ~5 clears and would vanish. Fix (in `assign_quests`, the required `!completed` branch): prefer an exact match, else take the NEAREST open slot (mirrors the `completed && advance` branch, which already did nearest-slot). This also quietly fixes the latent drop bug for all required quests.
 
+## All 13 endless quests — final parameters (LOCKED, for Section 5)
+
+Every quest: growth **1.25**, `use_percent` false, `advance` false, `infinite` true, **`difficulty_step` 1** (all climb their difficulty tag as they're beaten). Only rank is `required` (always on); the other 12 are random-pool. All start at difficulty 1. Field order: `id:name:stat:threshold:use_percent:required:advance:difficulty:growth:infinite:difficulty_step:description`.
+
+| # | stat | id | base | required | diff | diff_step |
+|---|---|---|---|---|---|---|
+| 1 | rank | reach_rank_endless | 5 | true | 1 | 1 |
+| 2 | cookies_baked | bake_cookies_endless | 100 | false | 1 | 1 |
+| 3 | coins_earned | earn_coins_endless | 500 ($5.00) | false | 1 | 1 |
+| 4 | coins_spent | spend_coins_endless | 500 ($5.00) | false | 1 | 1 |
+| 5 | singles_purchased | buy_singles_endless | 5 | false | 1 | 1 |
+| 6 | cookie_flips | flip_cookie_endless | 5 | false | 1 | 1 |
+| 7 | slot_spins | spin_slots_endless | 10 | false | 1 | 1 |
+| 8 | blackjack_hands | play_blackjack_endless | 10 | false | 1 | 1 |
+| 9 | dice_rolls | roll_dice_endless | 10 | false | 1 | 1 |
+| 10 | lottery_tickets_scratched | scratch_lottery_endless | 10 | false | 1 | 1 |
+| 11 | highlow_games | play_highlow_endless | 10 | false | 1 | 1 |
+| 12 | roulette_games | play_roulette_endless | 10 | false | 1 | 1 |
+| 13 | combos_started | start_combos_endless | 5 | false | 1 | 1 |
+
+Each replaces its stat's 5-tier finite ladder (rank replaces 14 tiers) with this one line. Names/descriptions use `%threshold%` and end with "Each time you finish it and prestige, it returns at a higher goal." (rank uses "at a higher rank.").
+
 ## Rank quest final parameters (LOCKED)
 Single endless rank quest: base threshold **5**, growth **1.25** (>= 1.2 so floored thresholds never repeat; the +1 rule), difficulty **1**, `difficulty_step` **1** (tag climbs +1 per completed cycle, capped at 10 after 9 clears — needs the nearest-slot fallback above), required **true**, advance **false**, infinite **true**. Line:
 `reach_rank_endless:Reach rank %threshold%:rank:5:false:true:false:1:1.25:true:1:Reach rank %threshold% to complete this quest. Each time you finish it and prestige, it returns at a higher rank.`
