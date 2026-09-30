@@ -1,18 +1,39 @@
 ####These are the things that need to be finished for future versions of the game.
 
+****Unfinished. Make achievements save, so they stay unlocked after prestiging and reloading your game and their rewards cannot be earned a second time.
+****Unfinished. Fix a bug where saving your settings from the main menu writes over your last save slot with progress you chose not to save.
+****Unfinished. Make saving safer by keeping a backup copy, so a crash or power loss during a save cannot wipe out a save slot.
+****Unfinished. Fix the menu search so you can type letters again after using a store purchase prompt.
+****Unfinished. Make the cancel button and the escape key in the game settings, user settings, and audio settings menus undo any changes you made.
+****Unfinished. Fix a bug where leaving blackjack or higher or lower in the middle of a round silently loses your bet.
+****Unfinished. Fix Control L so reloading your game keeps your saved quests instead of giving you a new set for free.
+****Unfinished. Add the missing win and lose sounds for the dice roller.
+****Unfinished. Make achievement, combo, and event announcements stop cutting off whatever the screen reader is currently saying.
+****Unfinished. Fix the quest reroll asking the same confirmation question twice, and make a blocked reroll say why nothing happened.
+****Unfinished. Make it so you can open the store to sell cookies even when you have less than one cent.
+****Unfinished. Balance the baking speed events so a single bad event cannot wipe out all of your baking speed.
+****Unfinished. Fix the baker info screen describing the quest reward mode that never gives a reward as one that does.
+****Unfinished. Make the dice roller refund your bet when its config has no losing result, instead of keeping it.
+****Unfinished. Make the dealer play out their hand when you reach 21 by hitting in blackjack, instead of winning right away.
 ****Unfinished. Add an auto-buyer that automatically purchases the cheapest upgrade you can afford on a timer, extending automation from baking into spending. Unlocked at a late rank and toggleable in the settings.
 ****Unfinished. Add a temporary boosts shop where you spend cookies or coins on timed power-ups, such as double production for 60 seconds, an auto-bake burst, or an extended combo window.
 ****Unfinished. Add a session summary shown when you exit that reports what you did this session, such as cookies baked, money earned, and ranks gained, built from stats the game already tracks.
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Fix a bug where starting a new game keeps the prestige points, prestige store upgrades, and head start bonuses from a previous save.
+**Finished. Fix a bug where pressing Control S inside a minigame announced your baking speed instead of saving, and make it save without leaving the minigame.
+**Finished. Make the slot machine take your bet when you spin, like the other minigames, so saving or reloading during a spin can no longer undo a loss.
+**Finished. Add the minigame keyboard commands to the readme.
+**Finished. Correct the readme's description of Shift Backslash, which exports only the focused buffer and then clears it.
+**Finished. Fix a bug where buying from the shop could crash the game once your baking speed had reached its maximum.
 **Finished. Add endless quests to the quests screen.
 **Finished. Add endless prestige upgrades to the prestige store.
 **Finished. Add a roulette minigame where you stake one item across one or more bet types at once, such as a color, even or odd, or a single number, then spin the wheel to see which of your bets pay out.
 **Finished. Make some achievements grant a reward of one of the five items when unlocked, such as cookies, money, auto cookies, manual cookies, or baking speed, with rank scalable amounts defined in the achievements config.
 **Finished. Add a higher or lower card minigame where you bet on whether the next card will be higher or lower, build a streak with a growing multiplier, and bank your earnings or risk them on another guess.
-**Finished. Add a way to quikly mute frequently used buffers in the game settings, or in the game itself.
-**Ffinished. Replace raw coins with a realistic currency system using dollar and cent display.
+**Finished. Add a way to quickly mute frequently used buffers in the game settings, or in the game itself.
+**Finished. Replace raw coins with a realistic currency system using dollar and cent display.
 **Finished. Add a configurable bet confirmation prompt to the slot machine and blackjack minigames. When a bet reaches or exceeds a set threshold, a yes or no menu appears before the bet is committed. Threshold is set in slots.table and jacks.table, defaulting to 1000. Set to 0 to disable.
 **Finished. Add a baker info screen showing current auto cookies, manual cookies, baking speed, bake interval, slot counts, rank, cookies, and coins all in one place. Accessible as a button from the main game interface.
 **Finished. Add a statistics screen showing total cookies baked, coins earned, events fired, slot spins, blackjack hands, and more. Accessible as a button from the main game interface.
@@ -40,13 +61,13 @@
 **Finished. Replace the hardcoded event system with a fully data-driven one loaded from a config file.
 **Finished. Add the ability to add your own custom events to the game without touching the script.
 **Finished. Make it so you can produce multiple slots with coins.
-**Finished. Find a way to convert numbers hier than a trillion with a math rounding function.
+**Finished. Find a way to convert numbers higher than a trillion with a math rounding function.
 **Finished. Add the ability to mute auto baking sounds in the game settings menu.
 **Finished. Change ambiences for various mini games.
 **Finished. Fix rounding calculation issues.
 **Finished. Make it so the music doesn't randomize when saving your settings.
 **Finished. Fix the shop menu.
-**Finished. Add the ability to mute sertain anouncements and sounds in the game settings menu.
+**Finished. Add the ability to mute certain announcements and sounds in the game settings menu.
 **Finished. Make it so you can quickly save the game by pressing Control S.
 **Finished. Make it so you can turn off events for baking.
 **Finished. Add the ability to change your first, last, and gender of your character.

@@ -329,6 +329,13 @@ if(selectedBet==1) speak_buffer("You placed a bet of " + convert_to_currency(bet
 if(selectedBet==2) speak_buffer("You placed a bet of " + format_number(betAmount) + " auto cookies.");
 if(selectedBet==3) speak_buffer("You placed a bet of " + format_number(betAmount) + " auto cookie speeds.");
 if(selectedBet==4) speak_buffer("You placed a bet of " + format_number(betAmount) + " manual cookies.");
+/* Take the bet up front like the other minigames, before any wait that reads keys.
+Settling a loss only after the reels were announced let a save or reload during the wait dodge it. */
+if (selectedBet == 0) { cookies -= betAmount; cookies = floor(safe_cap(cookies)); }
+else if (selectedBet == 1) { coins -= betAmount; coins = floor(safe_cap(coins)); }
+else if (selectedBet == 2) { autocookie -= betAmount; autocookie = floor(safe_cap(autocookie)); }
+else if (selectedBet == 3) { cookiespeed -= betAmount; clicktime += betAmount; cookiespeed = floor(safe_cap(cookiespeed)); }
+else if (selectedBet == 4) { manulcookie -= betAmount; manulcookie = floor(safe_cap(manulcookie)); }
 mini_wait_async(1000, "slots");
 pool.play_stationary("sounds/minigames/" + resolve_sound(slotBetSound2), false);
 mini_wait_async(random(600, 800), "slots");
@@ -391,27 +398,39 @@ if (payout !is null)
     double change = safe_cap(betAmount * payout.multiplier);
     if (payout.multiplier == 0)
     {
+        /* The bet was already taken when the spin started, so a loss has nothing left to deduct. */
         stat_slot_losses++;
-        if (selectedBet == 0) { cookies -= betAmount; if (cookies < 0) cookies = 0; }
-        else if (selectedBet == 1) { coins -= betAmount; if (coins < 0) coins = 0; }
-        else if (selectedBet == 2) { autocookie -= betAmount; if (autocookie < 0) autocookie = 0; }
-        else if (selectedBet == 3) { cookiespeed -= betAmount; clicktime += betAmount; if (cookiespeed < 0) cookiespeed = 0; }
-        else if (selectedBet == 4) { manulcookie -= betAmount; if (manulcookie < 0) manulcookie = 0; }
     }
     else
     {
+        /* Return the bet taken up front plus the winnings, so the net gain is unchanged from before. */
         stat_slot_wins++;
-        if (selectedBet == 0) cookies += change;
-        else if (selectedBet == 1) coins += change;
-        else if (selectedBet == 2) autocookie += change;
-        else if (selectedBet == 3) gain_cookiespeed(change);
-        else if (selectedBet == 4) manulcookie += change;
+        if (selectedBet == 0) cookies += betAmount + change;
+        else if (selectedBet == 1) coins += betAmount + change;
+        else if (selectedBet == 2) autocookie += betAmount + change;
+        else if (selectedBet == 3) gain_cookiespeed(betAmount + change);
+        else if (selectedBet == 4) manulcookie += betAmount + change;
     }
     cookies = floor(safe_cap(cookies));
     coins = floor(safe_cap(coins));
     autocookie = floor(safe_cap(autocookie));
     cookiespeed = floor(safe_cap(cookiespeed));
     manulcookie = floor(safe_cap(manulcookie));
+}
+else
+{
+    /* No payout row matched this spin, so hand the bet back rather than keep it silently. */
+    if (selectedBet == 0) cookies += betAmount;
+    else if (selectedBet == 1) coins += betAmount;
+    else if (selectedBet == 2) autocookie += betAmount;
+    else if (selectedBet == 3) gain_cookiespeed(betAmount);
+    else if (selectedBet == 4) manulcookie += betAmount;
+    cookies = floor(safe_cap(cookies));
+    coins = floor(safe_cap(coins));
+    autocookie = floor(safe_cap(autocookie));
+    manulcookie = floor(safe_cap(manulcookie));
+    pool.destroy_sound(machineslot);
+    form.focus(spinButton);
 }
         }
 }

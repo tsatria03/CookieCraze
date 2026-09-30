@@ -918,18 +918,25 @@ void minigame_input(string game)
     if (key_pressed(KEY_F2)) toggle_buffer_by_name("combos");
     if (key_pressed(KEY_F3)) toggle_buffer_by_name("events");
     if (key_pressed(KEY_F4) && !alt_is_down()) toggle_buffer_by_name("ranks");
-    if (key_pressed(KEY_C)) speak_buffer("You have " + format_number(cookies) + " cookies.");
-    if (key_pressed(KEY_A)) speak_buffer("You have " + format_number(autocookie) + " auto cookies.");
-    if (key_pressed(KEY_S)) speak_buffer("You have " + format_number(cookiespeed) + " auto cookie speeds.");
-    if (key_pressed(KEY_M)) speak_buffer("You have " + format_number(manulcookie) + " manual cookies.");
-    if (key_pressed(KEY_O))
+    /* The status letters are only read while Control is up. key_pressed is one-shot per frame,
+    so reading plain S here used to swallow the S of Control S and the save never ran. */
+    if (!control_is_down())
     {
-        pool.destroy_sound(coinslot);
-        if (coins > 0) coinslot = pool.play_stationary("sounds/misc/cointoss.ogg", false);
-        speak_buffer("You have " + convert_to_currency(coins) + ".");
+        if (key_pressed(KEY_C)) speak_buffer("You have " + format_number(cookies) + " cookies.");
+        if (key_pressed(KEY_A)) speak_buffer("You have " + format_number(autocookie) + " auto cookies.");
+        if (key_pressed(KEY_S)) speak_buffer("You have " + format_number(cookiespeed) + " auto cookie speeds.");
+        if (key_pressed(KEY_M)) speak_buffer("You have " + format_number(manulcookie) + " manual cookies.");
+        if (key_pressed(KEY_O))
+        {
+            pool.destroy_sound(coinslot);
+            if (coins > 0) coinslot = pool.play_stationary("sounds/misc/cointoss.ogg", false);
+            speak_buffer("You have " + convert_to_currency(coins) + ".");
+        }
     }
     if (control_is_down())
     {
+        /* Saves in place without restarting the minigame, so a round in progress
+        (and the bet already taken for it) carries on instead of being thrown away. */
         if (key_pressed(KEY_S))
         {
             writedata();
@@ -940,14 +947,6 @@ void minigame_input(string game)
             if (savesfx == true) dlgplay("sounds/misc/savegame.ogg");
             ambpool.resume_sound(ambslot);
             muspool.resume_sound(mustrackslot);
-            form.reset();
-            if (game == "flipper")        flipgame();
-            else if (game == "slots")     slotsgame();
-            else if (game == "blackjack") jackgame();
-            else if (game == "lottery")   lotterygame();
-            else if (game == "dice")      dicegame();
-            else if (game == "highlow")   highlowgame();
-            else if (game == "roulette")  roulettegame();
         }
         if (key_pressed(KEY_L))
         {

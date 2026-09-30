@@ -5,7 +5,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 ## Project — what the game is and how it's built
 - [Game vision](project_game_vision.md) — audio idle/incremental cookie clicker: bake → sell → upgrade → rank up → automate → prestige, with rank-gated minigames; the load-bearing systems.
 - [Coins currency](project_coins_currency.md) — internal money identifier is `coins` (config only); all player-facing text shows dollars/cents; don't rename or surface "coins".
-- [Message buffers](project_message_buffers.md) — categorized message-buffer system (achievements/combos/critical/events/general/…), each mutable + exportable, for non-interruptive announcements.
+- [Message buffers](project_message_buffers.md) — categorized message-buffer system (achievements/combos/critical/events/general/…), each mutable + exportable (per-buffer only, by design — no export-all key), for non-interruptive announcements.
 - [Data-driven config](project_data_driven_config.md) — cycrz/data/config/ (events/stores/tables) is plain-text modder-tunable; parsers in main/parsers/ load it; docks/readme.txt is the format reference.
 - [Path conventions](project_path_conventions.md) — src/ (code) + cycrz/ (assets+launcher) + build/ + releases/ split; the cwd=cycrz/ trick; no #pragma asset (tools.py copies assets).
 - [Include tree](project_include_tree.md) — src/includes/ = version.nvgt + main/{deps,functions,globals,menus,parsers}; wildcard glob aggregation; vendored stdlib helpers incl. dget + rotation.
@@ -27,6 +27,9 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 
 ## Ideas / backlog
 - [Feature ideas](project_feature_ideas.md) — 6.4+ wish list (offline progress, golden-cookie bonus, daily streak, auto-buyer, boosts shop, QoL) + future-minigame candidates (mines, video poker, keno, audio Simon). Higher or lower + number-format shipped in 6.4; achievement rewards + roulette shipped in 6.5, roulette's rank-shift + tweaks changelogged in 6.6 (all roulette sounds delivered); rest unbuilt.
+
+## Active plan
+- [High bugs fix plan](project_high_bugs_fix_plan.md) — IN PROGRESS (6.9): 8 High player-facing bugs, one section per commit (new-game prestige leak → achievements saved → settings Save guard → safe save+backup → menu search → settings Cancel undo → mid-round Escape → Ctrl+L quests), docs last; open decisions flagged per section.
 
 ## Known bugs — full-game audit of 6.8 (2026-09-30); mark entries FIXED as they ship
 - [Player-facing bugs](project_bugs_player_facing.md) — 31 bugs a player can hit: new game leaks prestige, achievements not saved, settings Save overwrites last slot, unsafe save write, Ctrl+S dead in minigames, F3 search rejects letters, settings Cancel doesn't undo, UX convention violations.
@@ -51,7 +54,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Check git log for commits](feedback_check_git_log_for_commits.md) — the dev commits between turns; check git log/status before assuming commit state; don't commit unless asked.
 - [Stage commits before big changes](feedback_stage_commits_before_big_changes.md) — flag a commit break point before a risky stage so safe pieces land first.
 - [CLAUDE.md length limit](feedback_claudemd_length.md) — keep CLAUDE.md a dispatcher under 40,000 chars; move detail into memory files.
-- [Docks last](feedback_docks_last.md) — in any multi-section build plan, reserve the final section for dock updates (readme + changelog + version); code/config first, docs last.
+- [Docks last](feedback_docks_last.md) — in any multi-section build plan, reserve the final section for dock updates (readme + changelog + version); code/config first, docs last. EXCEPTION: bug-fix batches get changelog + todo updates per fix, as soon as the dev confirms it works.
 - [Changelog rules](feedback_changelog_rules.md) — docks/changelog.txt: player-facing prose, reverse-chronological, a record not a manual; bump version.txt with each block; cap 10 entries per minor block, 20 per major.
 - [Todo list format](feedback_todo_list_format.md) — docks/todo_list.txt: `**Finished. …` for done, `****Unfinished. …` for pending; plain-text sentences, no markdown/numbers; unfinished section on top.
 - [Dock line length 1024](feedback_dock_line_length_1024.md) — keep every line in cycrz/docks/ at or under 1024 chars; the screen reader splits longer lines.

@@ -240,6 +240,16 @@ else
     stat_lottery_losses=0;
     for (uint i = 0; i < loadedTickets.length(); i++) loadedTickets[i].owned = 0;
     prestigeLevel=0;
+    /* A new game must not inherit the previous slot's prestige progress or combo stats.
+    Recomputing the store effects zeroes the prestige multipliers, head start bonuses, and
+    rank discount before reset_game_state() applies them. */
+    prestige_points=0;
+    prestigePurchased.resize(0);
+    prestigeEndlessCounts.delete_all();
+    stat_highest_combo_reached=0;
+    stat_combos_started=0;
+    stat_combos_broken=0;
+    apply_all_prestige_store_upgrades();
     reset_game_state();
 }
 }

@@ -497,7 +497,7 @@ Misc holds things like save confirmations and other game actions.
 Ranks holds regular rank up announcements.
 
 All of the named buffers, except for All and Critical, can be muted independently so they stop being spoken aloud while still logging messages for later review. Mute states are saved automatically the moment you toggle them and restored the next time you load your game, so you never need to re-mute buffers after restarting. The four buffers that play sound effects, achievements, combos, events, and ranks, can also be muted or unmuted instantly from the main game screen using the F1 through F4 keys, and muting one of them stops both its messages and its sound effects.
-You can also export all of the buffer contents to log files at any time. Log files are saved to the logs folder inside the game's AppData directory.
+You can also export the focused buffer to a log file at any time. Only the buffer you are currently on is exported, and it is cleared once the export succeeds. Each buffer has its own log file named after it, saved to the logs folder inside the game's AppData directory, and every export is added to the end of that file under the date rather than replacing what was there before.
 
 Keyboard commands
 
@@ -515,6 +515,17 @@ Control L: Reloads all configuration files and your save data without restarting
 Escape: Opens a prompt asking whether you want to quit.
 Alt plus F4: Exits the main game immediately without saving.
 
+In minigames.
+
+These keys work while any minigame is open. Some letters differ from the main game screen, so note that M announces manual cookies here rather than money, and O announces your money instead.
+Letter, C: Announces your current cookie count.
+Letter, A: Announces how many auto cookies you have.
+Letter, S: Announces your current baking speed.
+Letter, M: Announces how many manual cookies you have.
+Letter, O: Announces how much money you currently have.
+Control S: Saves your game progress without leaving the minigame, so a round in progress carries on.
+Control L: Reloads all configuration files and your save data, then reopens the minigame you are in.
+
 Buffers.
 
 Comma: Moves to the previous item in the focused buffer.
@@ -531,7 +542,7 @@ F1: Toggles mute or unmute on the achievements buffer.
 F2: Toggles mute or unmute on the combos buffer.
 F3: Toggles mute or unmute on the events buffer.
 F4: Toggles mute or unmute on the ranks buffer.
-Shift plus Backslash: Exports all buffer items to log files in the logs folder.
+Shift plus Backslash: Exports the focused buffer to its log file in the logs folder, then clears that buffer. If the buffer is empty, nothing is exported.
 All of the buffer keys in this section, including the F1 through F4 mute keys, also work inside every minigame.
 
 Forms and menus.
