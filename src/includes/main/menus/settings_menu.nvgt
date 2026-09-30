@@ -116,8 +116,14 @@ else mainmenu();
         {
 writepreffs();
             dlgmessage_return("Settings saved.");
+/* Only touch the save slot while a game is loaded; from the main menu it would write
+leftover, unsaved progress into the last slot used. In game, readdata recomputes the rank
+requirement from a changed cookie rank modifier. */
+if (ingame)
+{
 writedata();
 readdata();
+}
             preffsmenu();
         }
 if (key_pressed(KEY_ESCAPE))

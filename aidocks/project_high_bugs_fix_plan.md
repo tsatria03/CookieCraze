@@ -36,7 +36,7 @@ As built: `readdata` end-of-function block + `writedata` after completed quests 
 - `reload_config`: stop `delete_all()`; keep the dictionary and just run `init_achievements` after re-parsing.
 - Prestige already leaves `achievementsUnlocked` alone; full reset already clears it. No open decisions. Note: saves that already lost unlocks to this bug can't be restored — unlocks come back as their stats are re-crossed, with rewards, one final time.
 
-### 3. Saving settings from the main menu overwrites the last slot (audit #3)
+### 3. Saving settings from the main menu overwrites the last slot (audit #3) — DONE, dev-tested 2026-09-30; changelog + todo updated
 `gamsetsmenu()` Save: wrap `writedata(); readdata();` in `if (ingame)`. In game the pair is still needed (readdata recomputes `xprequired` from a changed `cookiemod`). No open decisions.
 
 ### 4. Unsafe save write (audit #4)
@@ -65,7 +65,7 @@ Make `reload_config` preserve quests: record the active quest ids before re-pars
 
 ### 9. Docs — done PER SECTION, not at the end (dev-decided 2026-09-30)
 **Once the dev confirms a section works:** mark it DONE here, add its player-facing `changelog.txt` 6.9 entry (newest at top), and move its `todo_list.txt` line from `****Unfinished.` to the top of the finished section ([[feedback_todo_list_format]]). See [[feedback_docks_last]] for the bug-fix exception.
-- 6.9 changelog count: store crash, Ctrl+S/slots bet timing (logged 2026-09-30), section 1, section 2 = **4 of 10**. The 6 remaining sections fit exactly; consolidate if anything else lands ([[feedback_changelog_rules]]).
+- 6.9 changelog count: store crash, Ctrl+S/slots bet timing (logged 2026-09-30), sections 1, 2, 3 = **5 of 10**. The 5 remaining sections fit exactly; consolidate if anything else lands ([[feedback_changelog_rules]]).
 What's left for the very end:
 - `readme.txt`: only if a documented behavior changed (e.g. settings Cancel, save backup).
 - Mark each fixed item in [[project_bugs_player_facing]] **FIXED (6.9)**; mark this plan SHIPPED.

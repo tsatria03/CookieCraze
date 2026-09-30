@@ -1,6 +1,5 @@
 ####These are the things that need to be finished for future versions of the game.
 
-****Unfinished. Fix a bug where saving your settings from the main menu writes over your last save slot with progress you chose not to save.
 ****Unfinished. Make saving safer by keeping a backup copy, so a crash or power loss during a save cannot wipe out a save slot.
 ****Unfinished. Fix the menu search so you can type letters again after using a store purchase prompt.
 ****Unfinished. Make the cancel button and the escape key in the game settings, user settings, and audio settings menus undo any changes you made.
@@ -20,6 +19,7 @@
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Fix a bug where saving your settings from the main menu writes over your last save slot with progress you chose not to save.
 **Finished. Make achievements save, so they stay unlocked after prestiging and reloading your game and their rewards cannot be earned a second time.
 **Finished. Fix a bug where starting a new game keeps the prestige points, prestige store upgrades, and head start bonuses from a previous save.
 **Finished. Fix a bug where pressing Control S inside a minigame announced your baking speed instead of saving, and make it save without leaving the minigame.
