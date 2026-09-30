@@ -1255,9 +1255,8 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
             if (manulGained > 0) logParts.insert_last(format_number(manulGained) + " manual " + (manulGained == 1 ? "cookie" : "cookies"));
             if (manulPercentGained > 0) logParts.insert_last(format_number(manulPercentGained) + "% manual cookies");
             if (speedGained > 0) logParts.insert_last(format_number(speedGained) + " ms of baking speed");
-            if (logParts.length() == 1) log = logParts[0];
-            else if (logParts.length() == 2) log = logParts[0] + ", and " + logParts[1];
-            else { for (uint li = 0; li < logParts.length() - 1; li++) { if (log != "") log += ", "; log += logParts[li]; } log += ", and " + logParts[logParts.length() - 1]; }
+            log = join_spoken_list(logParts);
+            if (log == "") log = "nothing new because your baking speed is already at its maximum";
             pool.play_stationary("sounds/store/buy" + random(1, 4) + ".ogg", false);
             pool.play_stationary("sounds/store/order.ogg", false);
             stat_singles_purchased++;
@@ -1610,13 +1609,9 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
             if (autoGained > 0) gainParts.insert_last(format_number(autoGained) + " auto " + (autoGained == 1 ? "cookie" : "cookies"));
             if (manulGained > 0) gainParts.insert_last(format_number(manulGained) + " manual " + (manulGained == 1 ? "cookie" : "cookies"));
             if (speedGained > 0) gainParts.insert_last(format_number(speedGained) + " ms of baking speed");
-            if (gainParts.length() == 1) gainLog = gainParts[0];
-            else if (gainParts.length() == 2) gainLog = gainParts[0] + ", and " + gainParts[1];
-            else { for (uint li = 0; li < gainParts.length() - 1; li++) { if (gainLog != "") gainLog += ", "; gainLog += gainParts[li]; } gainLog += ", and " + gainParts[gainParts.length() - 1]; }
-            string boughtLog = "";
-            if (boughtNames.length() == 1) boughtLog = boughtNames[0];
-            else if (boughtNames.length() == 2) boughtLog = boughtNames[0] + ", and " + boughtNames[1];
-            else { for (uint li = 0; li < boughtNames.length() - 1; li++) { if (boughtLog != "") boughtLog += ", "; boughtLog += boughtNames[li]; } boughtLog += ", and " + boughtNames[boughtNames.length() - 1]; }
+            gainLog = join_spoken_list(gainParts);
+            if (gainLog == "") gainLog = "nothing new because your baking speed is already at its maximum";
+            string boughtLog = join_spoken_list(boughtNames);
             pool.play_stationary("sounds/store/buy" + random(1, 4) + ".ogg", false);
             pool.play_stationary("sounds/store/order.ogg", false);
             string spentStr = (chosenCurrency == "cookies") ? format_number(totalSpent) + " baked cookies" : convert_to_currency(totalSpent);
@@ -1690,9 +1685,8 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
         if (autoGained > 0) gainParts.insert_last(format_number(autoGained) + " auto " + (autoGained == 1 ? "cookie" : "cookies"));
         if (manulGained > 0) gainParts.insert_last(format_number(manulGained) + " manual " + (manulGained == 1 ? "cookie" : "cookies"));
         if (speedGained > 0) gainParts.insert_last(format_number(speedGained) + " ms of baking speed");
-        if (gainParts.length() == 1) gainLog = gainParts[0];
-        else if (gainParts.length() == 2) gainLog = gainParts[0] + ", and " + gainParts[1];
-        else { for (uint li = 0; li < gainParts.length() - 1; li++) { if (gainLog != "") gainLog += ", "; gainLog += gainParts[li]; } gainLog += ", and " + gainParts[gainParts.length() - 1]; }
+        gainLog = join_spoken_list(gainParts);
+        if (gainLog == "") gainLog = "nothing new because your baking speed is already at its maximum";
         double nextBundleCost = 0;
         for (uint j = 0; j < bundles[idx].entries.length(); j++)
         {

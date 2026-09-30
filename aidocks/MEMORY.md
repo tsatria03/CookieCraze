@@ -9,7 +9,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Data-driven config](project_data_driven_config.md) — cycrz/data/config/ (events/stores/tables) is plain-text modder-tunable; parsers in main/parsers/ load it; docks/readme.txt is the format reference.
 - [Path conventions](project_path_conventions.md) — src/ (code) + cycrz/ (assets+launcher) + build/ + releases/ split; the cwd=cycrz/ trick; no #pragma asset (tools.py copies assets).
 - [Include tree](project_include_tree.md) — src/includes/ = version.nvgt + main/{deps,functions,globals,menus,parsers}; wildcard glob aggregation; vendored stdlib helpers incl. dget + rotation.
-- [Build pipeline](project_build_pipeline.md) — cycrz.py launcher + build/tools.py (commit tools + compile→package→release→website), version mirroring, tools.ini + ~/.game_tools/tools.ini config.
+- [Build pipeline](project_build_pipeline.md) — cycrz.py launcher + build/tools.py (commit tools + compile→package→release→website), version mirroring, tools.ini + ~/.game_tools/tools.ini config; cycrz/lib/ ships BASS + screen-reader DLLs.
 - [Audio model](project_audio_model.md) — sound_pool + HRTF; cycrz/sounds/ layout (ambience/menu/misc/dlg/store/combos/events/minigames/buffer); no sound packs.
 - [Save-data layout](project_save_data_layout.md) — writable data in AppData under tsatria03/CookieCraze/ (logs/preffs/saves); multiple save slots.
 - [Repo hygiene](project_repo_hygiene.md) — .gitattributes CRLF enforcement + binary rules; what's gitignored; CLAUDE.md + aidocks/ are committed.
@@ -26,7 +26,13 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Minigame build guide](project_minigame_build_guide.md) — repeatable steps to add a new minigame: blueprint first, plan sections, code one section per turn and wait for commit, docks last; full file/function wiring map.
 
 ## Ideas / backlog
-- [Feature ideas](project_feature_ideas.md) — 6.4+ wish list (offline progress, golden-cookie bonus, daily streak, auto-buyer, boosts shop, QoL) + future-minigame candidates (mines, video poker, keno, audio Simon). Higher or lower + number-format shipped in 6.4; achievement rewards + roulette shipped in 6.5, roulette's rank-shift + tweaks changelogged in 6.6; rest unbuilt.
+- [Feature ideas](project_feature_ideas.md) — 6.4+ wish list (offline progress, golden-cookie bonus, daily streak, auto-buyer, boosts shop, QoL) + future-minigame candidates (mines, video poker, keno, audio Simon). Higher or lower + number-format shipped in 6.4; achievement rewards + roulette shipped in 6.5, roulette's rank-shift + tweaks changelogged in 6.6 (all roulette sounds delivered); rest unbuilt.
+
+## Known bugs — full-game audit of 6.8 (2026-09-30); mark entries FIXED as they ship
+- [Player-facing bugs](project_bugs_player_facing.md) — 31 bugs a player can hit: new game leaks prestige, achievements not saved, settings Save overwrites last slot, unsafe save write, Ctrl+S dead in minigames, F3 search rejects letters, settings Cancel doesn't undo, UX convention violations.
+- [Exploits and balance](project_bugs_exploits_balance.md) — minigame EV table; dice always pays 8x, blackjack pays 3x, highlow/slots/gold+diamond tickets are +EV; prestige spam, hold-Enter combos, lopsided speed events, pacing notes.
+- [Code bugs](project_bugs_code.md) — save/load ordering, int overflow in reward rolls + prestige_points, recursive game loop/menus, missing stat increments, parser robustness, unchecked config loads, stale vendored deps, duplication hotspots.
+- [Build and docs bugs](project_bugs_build_docs.md) — site updater x.0 regex, tools.py deletes release first + import-time KeyError, hardcoded paths, gitignore gaps, installer mutex, readme inaccuracies/typos, two stale memory notes.
 
 ## NVGT / AngelScript gotchas — these cause compile failures (game won't launch)
 - [AngelScript braceless if](project_angelscript_braceless_if.md) — a braceless if/else governs one statement; a second orphans the else → compile error.

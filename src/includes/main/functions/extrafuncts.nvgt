@@ -63,6 +63,22 @@ double gain_cookiespeed(double amount)
     cookiespeed = floor(cookiespeed);
     return applied;
 }
+string join_spoken_list(string[]@ parts)
+{
+    /* Joins parts as "a", "a, and b", or "a, b, and c" for speech.
+    Returns "" for an empty list; length() is unsigned, so never index with length() - 1 on an empty array. */
+    uint n = parts.length();
+    if (n == 0) return "";
+    if (n == 1) return parts[0];
+    if (n == 2) return parts[0] + ", and " + parts[1];
+    string joined = "";
+    for (uint i = 0; i < n - 1; i++)
+    {
+        if (joined != "") joined += ", ";
+        joined += parts[i];
+    }
+    return joined + ", and " + parts[n - 1];
+}
 double calc_max_buyable(double coins, double level, double base_cost, double multiplier)
 {
     double currentCost = safe_cap(base_cost * pow(multiplier, level));
