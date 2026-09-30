@@ -51,7 +51,8 @@ The dev does not want `.bak` backup files (would mean up to 20 extra files in `s
 As built: `vd.input_box` calls `this.set_disallowed_chars("")` just before its single `return`; the bundles "buy one of every affordable bundle" prompt (`menu.nvgt`, `bundlecategorymenu`) got its own numbers-only `set_disallowed_chars` since it had been relying on the leftover restriction. Rule going forward: every `vd.input_box` that needs a restriction must set it immediately before the call.
 Root cause: the global `vd`'s disallowed-character setting persists between prompts (`deps/virtual_dialogs.nvgt` `input_box` ~132-145). **Recommended fix:** clear the stored restriction at the end of `vd.input_box`, so a restriction applies only to the prompt that set it (every current caller sets it right before its own prompt). Fallback if the dev prefers minimal: `vd.set_disallowed_chars("")` in `find_searched_item` (`deps/custom_menu.nvgt` ~218). Confirm at this section.
 
-### 6. Settings Cancel/Escape don't undo changes (dev #6, audit #7)
+### 6. Settings Cancel/Escape don't undo changes (dev #6, audit #7) — DONE, dev-tested 2026-09-30; changelog + todo updated
+Decision: **Cancel also reverts name changes** (dev accepted the recommendation 2026-09-30). As built in `settings_menu.nvgt`: `setsnap_*` globals + `snapshot_/restore_{game,sound,user}_settings()` at the top of the file; `preffsmenu` snapshots before opening each submenu; each submenu's Escape and Cancel are merged into one `if (key_pressed(KEY_ESCAPE) || form.is_pressed(cansets))` that restores, speaks "canceled", and returns to `preffsmenu`. Sound restore re-applies all four pool volumes and, only when in game and the track changed, restarts the original ambience/music.
 Snapshot in `preffsmenu()` when a submenu button is pressed (submenus recurse, so they can't snapshot themselves); restore on Cancel and Escape, and speak "canceled" ([[feedback_menus_say_canceled]]).
 - Game settings: every slider/checkbox/list global in `gamsetsmenu` (multipliers, `cookiemod`, `cookieExpMod`, `evchanse`/`evchanse2`, `cookieSellPrice`, `numberFormatMode`, the sfx/event/distribution/locked-shop bools).
 - Audio: the four volumes plus `ambtype`/`ambienceIndex`/`mustype`/`musicIndex`; if a track changed, restart the original track; re-apply volumes.
@@ -68,7 +69,7 @@ Make `reload_config` preserve quests: record the active quest ids before re-pars
 
 ### 9. Docs — done PER SECTION, not at the end (dev-decided 2026-09-30)
 **Once the dev confirms a section works:** mark it DONE here, add its player-facing `changelog.txt` 6.9 entry (newest at top), and move its `todo_list.txt` line from `****Unfinished.` to the top of the finished section ([[feedback_todo_list_format]]). See [[feedback_docks_last]] for the bug-fix exception.
-- 6.9 changelog count: store crash, Ctrl+S/slots bet timing (logged 2026-09-30), sections 1, 2, 3, 8, 5 = **7 of 10**. Section 4 skipped, so the 2 remaining sections (6, 7) leave 1 spare slot; consolidate if anything else lands ([[feedback_changelog_rules]]).
+- 6.9 changelog count: store crash, Ctrl+S/slots bet timing (logged 2026-09-30), sections 1, 2, 3, 8, 5, 6 = **8 of 10**. Section 4 skipped, so the last section (7) leaves 1 spare slot; consolidate if anything else lands ([[feedback_changelog_rules]]).
 What's left for the very end:
 - `readme.txt`: only if a documented behavior changed (e.g. settings Cancel, save backup).
 - Mark each fixed item in [[project_bugs_player_facing]] **FIXED (6.9)**; mark this plan SHIPPED.

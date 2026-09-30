@@ -1,3 +1,111 @@
+/* Settings snapshots. preffsmenu takes one as a settings submenu opens, and Cancel or Escape in that
+submenu restores it, so nothing changed there sticks without pressing Save. The submenus re-enter
+themselves after a name change or a cancelled reset, so they can't take the snapshot themselves. */
+double setsnap_automationMultiplier, setsnap_slotMultiplier, setsnap_manualSlotMultiplier;
+double setsnap_cookiemod, setsnap_cookieExpMod, setsnap_cookieSellPrice;
+int setsnap_evchanse, setsnap_evchanse2, setsnap_numberFormatMode;
+bool setsnap_introsfx, setsnap_logosfx, setsnap_exitsfx, setsnap_bakesfx, setsnap_savesfx;
+bool setsnap_slotDistribution, setsnap_manualSlotDistribution, setsnap_show_locked_shops;
+bool setsnap_playervents, setsnap_playervents2;
+double setsnap_ambvolume, setsnap_musvolume, setsnap_storambvolume, setsnap_stormusvolume;
+string setsnap_ambtype, setsnap_mustype;
+int setsnap_ambienceIndex, setsnap_musicIndex;
+int setsnap_playergender;
+string setsnap_playername, setsnap_playername2;
+void snapshot_game_settings()
+{
+setsnap_automationMultiplier = automationMultiplier;
+setsnap_slotMultiplier = slotMultiplier;
+setsnap_manualSlotMultiplier = manualSlotMultiplier;
+setsnap_cookiemod = cookiemod;
+setsnap_cookieExpMod = cookieExpMod;
+setsnap_cookieSellPrice = cookieSellPrice;
+setsnap_evchanse = evchanse;
+setsnap_evchanse2 = evchanse2;
+setsnap_numberFormatMode = numberFormatMode;
+setsnap_introsfx = introsfx;
+setsnap_logosfx = logosfx;
+setsnap_exitsfx = exitsfx;
+setsnap_bakesfx = bakesfx;
+setsnap_savesfx = savesfx;
+setsnap_slotDistribution = slotDistribution;
+setsnap_manualSlotDistribution = manualSlotDistribution;
+setsnap_show_locked_shops = show_locked_shops;
+setsnap_playervents = playervents;
+setsnap_playervents2 = playervents2;
+}
+void restore_game_settings()
+{
+automationMultiplier = setsnap_automationMultiplier;
+slotMultiplier = setsnap_slotMultiplier;
+manualSlotMultiplier = setsnap_manualSlotMultiplier;
+cookiemod = setsnap_cookiemod;
+cookieExpMod = setsnap_cookieExpMod;
+cookieSellPrice = setsnap_cookieSellPrice;
+evchanse = setsnap_evchanse;
+evchanse2 = setsnap_evchanse2;
+numberFormatMode = setsnap_numberFormatMode;
+introsfx = setsnap_introsfx;
+logosfx = setsnap_logosfx;
+exitsfx = setsnap_exitsfx;
+bakesfx = setsnap_bakesfx;
+savesfx = setsnap_savesfx;
+slotDistribution = setsnap_slotDistribution;
+manualSlotDistribution = setsnap_manualSlotDistribution;
+show_locked_shops = setsnap_show_locked_shops;
+playervents = setsnap_playervents;
+playervents2 = setsnap_playervents2;
+}
+void snapshot_sound_settings()
+{
+setsnap_ambvolume = ambvolume;
+setsnap_musvolume = musvolume;
+setsnap_storambvolume = storambvolume;
+setsnap_stormusvolume = stormusvolume;
+setsnap_ambtype = ambtype;
+setsnap_mustype = mustype;
+setsnap_ambienceIndex = ambienceIndex;
+setsnap_musicIndex = musicIndex;
+}
+void restore_sound_settings()
+{
+bool ambChanged = (ambtype != setsnap_ambtype);
+bool musChanged = (mustype != setsnap_mustype);
+ambvolume = setsnap_ambvolume;
+musvolume = setsnap_musvolume;
+storambvolume = setsnap_storambvolume;
+stormusvolume = setsnap_stormusvolume;
+ambtype = setsnap_ambtype;
+mustype = setsnap_mustype;
+ambienceIndex = setsnap_ambienceIndex;
+musicIndex = setsnap_musicIndex;
+ambpool.update_sound_start_values(ambslot, 0, ambvolume, ambpitch);
+muspool.update_sound_start_values(mustrackslot, 0, musvolume, muspitch);
+storambpool.update_sound_start_values(storambslot, 0, storambvolume, storambpitch);
+stormuspool.update_sound_start_values(stortrackslot, 0, stormusvolume, stormuspitch);
+if (ingame && ambChanged)
+{
+ambpool.destroy_sound(ambslot);
+ambslot = ambpool.play_stationary_extended("sounds/ambience/" + ambtype + ".ogg", true, 0, 0, ambvolume, ambpitch, false);
+}
+if (ingame && musChanged)
+{
+muspool.destroy_sound(mustrackslot);
+mustrackslot = muspool.play_stationary_extended("sounds/ambience/" + mustype + ".ogg", true, 0, 0, musvolume, muspitch, false);
+}
+}
+void snapshot_user_settings()
+{
+setsnap_playergender = playergender;
+setsnap_playername = playername;
+setsnap_playername2 = playername2;
+}
+void restore_user_settings()
+{
+playergender = setsnap_playergender;
+playername = setsnap_playername;
+playername2 = setsnap_playername2;
+}
 void preffsmenu()
 {
 form.reset();
@@ -12,14 +120,17 @@ form.focus(audsets);
         wait(5);
         if (form.is_pressed(gamsets))
         {
+snapshot_game_settings();
 gamsetsmenu();
 }
         if (form.is_pressed(audsets))
         {
+snapshot_sound_settings();
 soundsetsmenu();
 }
         if (form.is_pressed(usersets))
         {
+snapshot_user_settings();
 usersetsmenu();
 }
         if (key_pressed(KEY_ESCAPE))
@@ -126,12 +237,10 @@ readdata();
 }
             preffsmenu();
         }
-if (key_pressed(KEY_ESCAPE))
+if (key_pressed(KEY_ESCAPE) || form.is_pressed(cansets))
         {
-preffsmenu();
-}
-            if (form.is_pressed(cansets))
-        {
+restore_game_settings();
+speak("canceled");
 preffsmenu();
 }
 }
@@ -229,12 +338,10 @@ writepreffs2();
 dlgmessage_return("Settings saved.");
 preffsmenu();
 }
-        if (key_pressed(KEY_ESCAPE))
+        if (key_pressed(KEY_ESCAPE) || form.is_pressed(cansets))
         {
-preffsmenu();
-}
-            if (form.is_pressed(cansets))
-        {
+restore_sound_settings();
+speak("canceled");
 preffsmenu();
 }
     }
@@ -346,12 +453,10 @@ restart("cycrz.exe");
             dlgmessage_return("Settings saved.");
 preffsmenu();
         }
-        if (key_pressed(KEY_ESCAPE))
+        if (key_pressed(KEY_ESCAPE) || form.is_pressed(cansets))
         {
-preffsmenu();
-}
-            if (form.is_pressed(cansets))
-        {
+restore_user_settings();
+speak("canceled");
 preffsmenu();
 }
     }
