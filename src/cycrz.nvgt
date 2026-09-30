@@ -32,9 +32,14 @@ if (loadedFlipperEvents.length() == 0)
     exit();
 }
 parse_slots_table("data/config/tables/slots.table", slotSymbols, slotPayouts, slotReels, slotMinBet, slotMaxBet, slotConfirmThreshold, slotConfirmUsePercent);
-if (slotSymbols.length() < 10 || slotPayouts.length() == 0)
+if (slotSymbols.length() == 0 || slotPayouts.length() == 0)
 {
     alert("Error", "Could not load slot machine data from data/config/tables/slots.table. Please check the file and try again.");
+    exit();
+}
+if (int(slotSymbols.length()) < slotMinSymbols)
+{
+    alert("Error", "The min_symbols setting in data/config/tables/slots.table is " + string(slotMinSymbols) + ", but only " + string(slotSymbols.length()) + " symbols are defined. Please add more symbols or lower min_symbols and try again.");
     exit();
 }
 parse_ranks_table("data/config/tables/ranks.table", rankSounds, rankDefault, rankRewards);

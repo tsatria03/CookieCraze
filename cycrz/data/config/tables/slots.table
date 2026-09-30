@@ -7,6 +7,8 @@ reels=5
 min_bet=1
 max_bet=0
 confirm_threshold=1000:false
+house_edge=5
+min_symbols=10
 
 ; Sounds
 
