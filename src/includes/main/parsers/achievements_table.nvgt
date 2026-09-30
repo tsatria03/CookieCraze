@@ -301,10 +301,12 @@ void achievements_menu(achievement_item[]@ achievements, dictionary@ unlocked, a
             m.add_item(categories[c].name + ", contains " + string(total) + " achievements", "cat_" + categories[c].alias);
         }
         m.add_item("Back", "back");
-        int unlockedCount = unlocked.get_keys().length();
+        // Count only unlocks that still exist in the table, since saved ids can outlive a removed achievement.
+        int unlockedCount = 0;
         int visibleTotal = 0;
         for (uint i = 0; i < achievements.length(); i++)
         {
+            if (unlocked.exists(achievements[i].id)) unlockedCount++;
             if (achievements[i].hidden && !unlocked.exists(achievements[i].id)) continue;
             visibleTotal++;
         }

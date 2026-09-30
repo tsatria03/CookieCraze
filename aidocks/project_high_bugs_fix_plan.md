@@ -28,7 +28,8 @@ Agreed 2026-09-30. Source list: the High items in [[project_bugs_player_facing]]
 ### 1. New game keeps the previous slot's prestige progress (audit #1) — DONE, dev-tested 2026-09-30; changelog + todo updated
 In `resetgame()`'s full-reset branch (`cycrz.nvgt`), before `reset_game_state()`: `prestige_points = 0; prestigePurchased.resize(0); prestigeEndlessCounts.delete_all();` plus the combo stats (`stat_highest_combo_reached`, `stat_combos_started`, `stat_combos_broken` — confirm exact names), then `apply_all_prestige_store_upgrades()` so the `prestige_*` multipliers, starting bonuses and rank discount recompute to zero before `reset_game_state()` adds them. No open decisions. Test: prestige on one slot, start a new game on another, check prestige points, prestige store, starting money.
 
-### 2. Achievements aren't saved (audit #2)
+### 2. Achievements aren't saved (audit #2) — DONE, dev-tested 2026-09-30; changelog + todo updated
+As built: `readdata` end-of-function block + `writedata` after completed quests (`savefuncts.nvgt`); removed the post-`readdata` `init_achievements` at `cycrz.nvgt` startup and `menu.nvgt` load; `reload_config` no longer `delete_all`s. Extra: the achievements menu's "N of M unlocked" now counts only ids present in the table (`achievements_table.nvgt`), because saved ids are kept even if a modder removes an achievement — dropping unknown ids on load would lose every unlock if the table ever failed to load.
 - `writedata`: `achievementCount` + `achievement_<i>` ids (same shape as `prestigePurchasedCount`).
 - `readdata`: always `achievementsUnlocked.delete_all()` first (slot isolation). If `achievementCount` exists, load every saved id. Either way, then call `init_achievements(...)`, which silently adds any whose stat already crosses (keeps old saves working and migrates them on next save).
 - Remove the now-redundant `init_achievements` calls after `readdata()` (`cycrz.nvgt` ~68, `menu.nvgt` ~157) — `readdata` owns it.
@@ -64,7 +65,7 @@ Make `reload_config` preserve quests: record the active quest ids before re-pars
 
 ### 9. Docs — done PER SECTION, not at the end (dev-decided 2026-09-30)
 **Once the dev confirms a section works:** mark it DONE here, add its player-facing `changelog.txt` 6.9 entry (newest at top), and move its `todo_list.txt` line from `****Unfinished.` to the top of the finished section ([[feedback_todo_list_format]]). See [[feedback_docks_last]] for the bug-fix exception.
-- 6.9 changelog count: store crash, Ctrl+S/slots bet timing (logged 2026-09-30), section 1 = **3 of 10**. The 7 remaining sections fit exactly; consolidate if anything else lands ([[feedback_changelog_rules]]).
+- 6.9 changelog count: store crash, Ctrl+S/slots bet timing (logged 2026-09-30), section 1, section 2 = **4 of 10**. The 6 remaining sections fit exactly; consolidate if anything else lands ([[feedback_changelog_rules]]).
 What's left for the very end:
 - `readme.txt`: only if a documented behavior changed (e.g. settings Cancel, save backup).
 - Mark each fixed item in [[project_bugs_player_facing]] **FIXED (6.9)**; mark this plan SHIPPED.

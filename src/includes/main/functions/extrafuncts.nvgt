@@ -494,7 +494,7 @@ void reload_config(bool force = false)
     loadedAchievements.resize(0);
     loadedAchievementCategories.resize(0);
     parse_achievements("data/config/tables/achievements.table", loadedAchievements, loadedAchievementCategories);
-    achievementsUnlocked.delete_all();
+    // Keep the unlocked achievements readdata restored; only add any the fresh table now counts as met.
     init_achievements(loadedAchievements, achievementsUnlocked);
     parse_prestige_table("data/config/tables/prestige.table");
     loadedQuests.resize(0);

@@ -1,6 +1,5 @@
 ####These are the things that need to be finished for future versions of the game.
 
-****Unfinished. Make achievements save, so they stay unlocked after prestiging and reloading your game and their rewards cannot be earned a second time.
 ****Unfinished. Fix a bug where saving your settings from the main menu writes over your last save slot with progress you chose not to save.
 ****Unfinished. Make saving safer by keeping a backup copy, so a crash or power loss during a save cannot wipe out a save slot.
 ****Unfinished. Fix the menu search so you can type letters again after using a store purchase prompt.
@@ -21,6 +20,7 @@
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Make achievements save, so they stay unlocked after prestiging and reloading your game and their rewards cannot be earned a second time.
 **Finished. Fix a bug where starting a new game keeps the prestige points, prestige store upgrades, and head start bonuses from a previous save.
 **Finished. Fix a bug where pressing Control S inside a minigame announced your baking speed instead of saving, and make it save without leaving the minigame.
 **Finished. Make the slot machine take your bet when you spin, like the other minigames, so saving or reloading during a spin can no longer undo a loss.

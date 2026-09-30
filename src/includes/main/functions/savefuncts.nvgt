@@ -319,6 +319,21 @@ cookieXP = cookiemod * ((rank - 1) * ((rank - 1) * 4));
 apply_all_prestige_store_upgrades();
 // prestige_rank_discount is only known after the line above, so re-apply the rank discount to xprequired now, matching what check_rank and startup do. Without this the loaded threshold ignores the discount until the next rank up.
 if (prestige_rank_discount > 0) xprequired *= max(0.01, 1.0 - (prestige_rank_discount / 100.0));
+/* Unlocked achievements are saved, because prestige zeroes the per-run stats they were earned from
+and rebuilding them from stats alone re-locked them on reload and let their rewards pay out again.
+Saves from before this have no achievementCount, so they rebuild from stats as before and are migrated
+on their next save. init_achievements then silently adds any whose stat already qualifies. */
+achievementsUnlocked.delete_all();
+if (sd.d.exists("achievementCount"))
+{
+    int acount = sd.read_int("achievementCount");
+    for (int i = 0; i < acount; i++)
+    {
+        string akey = "achievement_" + string(i);
+        if (sd.d.exists(akey)) achievementsUnlocked.set(sd.read_string(akey), true);
+    }
+}
+init_achievements(loadedAchievements, achievementsUnlocked);
 }
 void writedata()
 {
@@ -367,6 +382,10 @@ string[] completedKeys = completedQuestIds.get_keys();
 sd.add("completedQuestCount", int(completedKeys.length()));
 for (uint i = 0; i < completedKeys.length(); i++)
     sd.add("completedQuest_" + string(i), completedKeys[i]);
+string[] achievementKeys = achievementsUnlocked.get_keys();
+sd.add("achievementCount", int(achievementKeys.length()));
+for (uint i = 0; i < achievementKeys.length(); i++)
+    sd.add("achievement_" + string(i), achievementKeys[i]);
 string[] questEndlessKeys = questEndlessCounts.get_keys();
 sd.add("questEndlessCount", int(questEndlessKeys.length()));
 for (uint i = 0; i < questEndlessKeys.length(); i++)

@@ -153,8 +153,6 @@ ambslot=ambpool.play_stationary_extended("sounds/ambience/"+ambtype+".ogg", true
 mustrackslot=muspool.play_stationary_extended("sounds/ambience/"+mustype+".ogg", true,0,0,musvolume,muspitch,false);
 ingame=true;
 readdata();
-achievementsUnlocked.delete_all();
-init_achievements(loadedAchievements, achievementsUnlocked);
 clickergame();
 }
 else
