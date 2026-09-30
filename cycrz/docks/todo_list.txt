@@ -1,6 +1,5 @@
 ####These are the things that need to be finished for future versions of the game.
 
-****Unfinished. Fix the menu search so you can type letters again after using a store purchase prompt.
 ****Unfinished. Make the cancel button and the escape key in the game settings, user settings, and audio settings menus undo any changes you made.
 ****Unfinished. Fix a bug where leaving blackjack or higher or lower in the middle of a round silently loses your bet.
 ****Unfinished. Add the missing win and lose sounds for the dice roller.
@@ -17,6 +16,7 @@
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Fix the menu search so you can type letters again after using a store purchase prompt.
 **Finished. Fix Control L so reloading your game keeps your saved quests instead of giving you a new set for free.
 **Finished. Fix a bug where saving your settings from the main menu writes over your last save slot with progress you chose not to save.
 **Finished. Make achievements save, so they stay unlocked after prestiging and reloading your game and their rewards cannot be earned a second time.

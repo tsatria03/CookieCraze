@@ -47,7 +47,8 @@ The dev does not want `.bak` backup files (would mean up to 20 extra files in `s
 - Check any code that deletes a save slot also deletes its `.bak`/`.tmp`.
 - **Open decision (ask at this section):** where to announce the backup restore (recommend: on load, before entering the game).
 
-### 5. Menu search rejects letters after a purchase prompt (dev #5, audit #6)
+### 5. Menu search rejects letters after a purchase prompt (dev #5, audit #6) — DONE (option A, dev-chosen), dev-tested 2026-09-30; changelog + todo updated
+As built: `vd.input_box` calls `this.set_disallowed_chars("")` just before its single `return`; the bundles "buy one of every affordable bundle" prompt (`menu.nvgt`, `bundlecategorymenu`) got its own numbers-only `set_disallowed_chars` since it had been relying on the leftover restriction. Rule going forward: every `vd.input_box` that needs a restriction must set it immediately before the call.
 Root cause: the global `vd`'s disallowed-character setting persists between prompts (`deps/virtual_dialogs.nvgt` `input_box` ~132-145). **Recommended fix:** clear the stored restriction at the end of `vd.input_box`, so a restriction applies only to the prompt that set it (every current caller sets it right before its own prompt). Fallback if the dev prefers minimal: `vd.set_disallowed_chars("")` in `find_searched_item` (`deps/custom_menu.nvgt` ~218). Confirm at this section.
 
 ### 6. Settings Cancel/Escape don't undo changes (dev #6, audit #7)
@@ -67,7 +68,7 @@ Make `reload_config` preserve quests: record the active quest ids before re-pars
 
 ### 9. Docs — done PER SECTION, not at the end (dev-decided 2026-09-30)
 **Once the dev confirms a section works:** mark it DONE here, add its player-facing `changelog.txt` 6.9 entry (newest at top), and move its `todo_list.txt` line from `****Unfinished.` to the top of the finished section ([[feedback_todo_list_format]]). See [[feedback_docks_last]] for the bug-fix exception.
-- 6.9 changelog count: store crash, Ctrl+S/slots bet timing (logged 2026-09-30), sections 1, 2, 3, 8 = **6 of 10**. Section 4 skipped, so the 3 remaining sections (5, 6, 7) leave 1 spare slot; consolidate if anything else lands ([[feedback_changelog_rules]]).
+- 6.9 changelog count: store crash, Ctrl+S/slots bet timing (logged 2026-09-30), sections 1, 2, 3, 8, 5 = **7 of 10**. Section 4 skipped, so the 2 remaining sections (6, 7) leave 1 spare slot; consolidate if anything else lands ([[feedback_changelog_rules]]).
 What's left for the very end:
 - `readme.txt`: only if a documented behavior changed (e.g. settings Cancel, save backup).
 - Mark each fixed item in [[project_bugs_player_facing]] **FIXED (6.9)**; mark this plan SHIPPED.

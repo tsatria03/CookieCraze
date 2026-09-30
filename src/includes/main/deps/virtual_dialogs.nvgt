@@ -156,6 +156,9 @@ else if (this.form.is_pressed(cancel_button))
 break;
 }
 this.destroy_window();
+/* A character restriction applies only to the prompt it was set for. Left in place, a store
+quantity prompt's numbers-only rule carried over and made the menu search reject every letter. */
+this.set_disallowed_chars("");
 return result;
 }
 int message_box(const string title, const string caption, string[]@ buttons, int flags = 0) {

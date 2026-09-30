@@ -1565,6 +1565,7 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
     {
         double passDefault = max_affordable_bundle_passes(bundles, chosenMenu, storeItems, balance);
         if (passDefault < 1) passDefault = 1;
+        vd.set_disallowed_chars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()[]{};:'\"\\|,.<>?/+-=`~_", false, "This character is not allowed.");
         string qInput = vd.input_box("", "How many of each affordable bundle would you like to buy? Press enter to buy the maximum amount.", string(round(passDefault, 0)));
         if (qInput == "") { continue; }
         double passes = string_to_number(qInput);
