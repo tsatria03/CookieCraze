@@ -477,8 +477,14 @@ void jackgame()
             jack_game_input();
         if (key_pressed(KEY_ESCAPE))
         {
-            pool.destroy_sound(gameslot);
-            mingamsmenu();
+            /* The bet is taken when the hand is dealt, so leaving mid-hand used to lose it silently. */
+            if (in_round)
+                speak_buffer("Finish this round before leaving by hitting or standing.");
+            else
+            {
+                pool.destroy_sound(gameslot);
+                mingamsmenu();
+            }
         }
 check_rank();
 check_achievements(loadedAchievements, achievementsUnlocked);
@@ -1054,8 +1060,14 @@ void highlowgame()
             highlow_game_input();
         if (key_pressed(KEY_ESCAPE))
         {
-            pool.destroy_sound(gameslot);
-            mingamsmenu();
+            /* The bet is taken when the round starts, so leaving mid-streak used to lose it and any unbanked pot. */
+            if (in_round)
+                speak_buffer("Finish this round before leaving by guessing or banking your earnings.");
+            else
+            {
+                pool.destroy_sound(gameslot);
+                mingamsmenu();
+            }
         }
         check_rank();
         check_achievements(loadedAchievements, achievementsUnlocked);

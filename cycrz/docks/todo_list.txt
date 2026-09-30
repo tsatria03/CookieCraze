@@ -1,6 +1,5 @@
 ####These are the things that need to be finished for future versions of the game.
 
-****Unfinished. Fix a bug where leaving blackjack or higher or lower in the middle of a round silently loses your bet.
 ****Unfinished. Add the missing win and lose sounds for the dice roller.
 ****Unfinished. Make achievement, combo, and event announcements stop cutting off whatever the screen reader is currently saying.
 ****Unfinished. Fix the quest reroll asking the same confirmation question twice, and make a blocked reroll say why nothing happened.
@@ -15,6 +14,7 @@
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Fix a bug where leaving blackjack or higher or lower in the middle of a round silently loses your bet.
 **Finished. Make the cancel button and the escape key in the game settings, user settings, and audio settings menus undo any changes you made.
 **Finished. Fix the menu search so you can type letters again after using a store purchase prompt.
 **Finished. Fix Control L so reloading your game keeps your saved quests instead of giving you a new set for free.

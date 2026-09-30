@@ -1,6 +1,6 @@
 ---
 name: project_high_bugs_fix_plan
-description: "IN PROGRESS (6.9): plan to fix the 8 open High-severity player-facing bugs one per section/commit — new-game prestige leak, achievements not saved, settings Save overwriting a slot, unsafe save write, dead menu search, settings Cancel not undoing, mid-round Escape losing the bet, Ctrl+L free quest reroll — then docs last."
+description: "SHIPPED 6.9 (2026-09-30): 7 of 8 fixed and dev-tested, section 4 (backup saves) skipped by the dev. Plan that fixed the 8 open High-severity player-facing bugs one per section/commit — new-game prestige leak, achievements not saved, settings Save overwriting a slot, unsafe save write, dead menu search, settings Cancel not undoing, mid-round Escape losing the bet, Ctrl+L free quest reroll — then docs last."
 metadata:
   node_type: memory
   type: project
@@ -59,7 +59,8 @@ Snapshot in `preffsmenu()` when a submenu button is pressed (submenus recurse, s
 - User settings: `playergender`.
 - **Open decision (ask at this section):** should Cancel also revert first/last name changes made through their own prompts (recommend yes — nothing sticks without Save).
 
-### 7. Escape mid-round loses the bet (dev #7, audit #8)
+### 7. Escape mid-round loses the bet (dev #7, audit #8) — DONE (option A, dev-chosen), dev-tested 2026-09-30; changelog + todo updated
+As built: the Escape handlers in `jackgame` and `highlowgame` check the local `in_round`; while true they `speak_buffer` one sentence ("Finish this round before leaving by hitting or standing." / "…by guessing or banking your earnings.") and stay put, otherwise they leave as before. Control L still reloads mid-round (by design — it restores the last save).
 At the Escape handlers in `jackgame` and `highlowgame`, check `in_round`.
 - **Open decision (ask at this section):** (a) block leaving until the round ends, with one sentence such as "Finish this round before leaving." (recommended — simplest, player keeps control); (b) leave and count it as a loss; (c) higher or lower only: bank the pot on exit when a streak is running.
 
@@ -69,7 +70,7 @@ Make `reload_config` preserve quests: record the active quest ids before re-pars
 
 ### 9. Docs — done PER SECTION, not at the end (dev-decided 2026-09-30)
 **Once the dev confirms a section works:** mark it DONE here, add its player-facing `changelog.txt` 6.9 entry (newest at top), and move its `todo_list.txt` line from `****Unfinished.` to the top of the finished section ([[feedback_todo_list_format]]). See [[feedback_docks_last]] for the bug-fix exception.
-- 6.9 changelog count: store crash, Ctrl+S/slots bet timing (logged 2026-09-30), sections 1, 2, 3, 8, 5, 6 = **8 of 10**. Section 4 skipped, so the last section (7) leaves 1 spare slot; consolidate if anything else lands ([[feedback_changelog_rules]]).
+- 6.9 changelog count: store crash, Ctrl+S/slots bet timing (logged 2026-09-30), sections 1, 2, 3, 8, 5, 6, 7 = **9 of 10** — plan complete, 1 spare slot left in 6.9; consolidate if anything else lands ([[feedback_changelog_rules]]).
 What's left for the very end:
 - `readme.txt`: only if a documented behavior changed (e.g. settings Cancel, save backup).
 - Mark each fixed item in [[project_bugs_player_facing]] **FIXED (6.9)**; mark this plan SHIPPED.
