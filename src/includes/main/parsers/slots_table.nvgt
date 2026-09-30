@@ -131,3 +131,78 @@ void parse_slots_table(string filepath, string[]@ symbols_out, payout_item[]@ pa
     }
     f.close();
 }
+
+double[] slot_match_distribution(int symbolCount, int reels)
+{
+    /* Chance that the largest group of matching symbols is exactly k, for k = 0..reels, when every checked
+    symbol is equally likely on each reel. Uses P(largest <= m) = reels! * [x^reels] (sum over j = 0..m of
+    (x / symbolCount)^j / j!) ^ symbolCount, built by repeated polynomial multiplication cut off at degree
+    reels, then takes differences. Index 0 is always 0. */
+    double[] dist(reels + 1, 0.0);
+    if (symbolCount < 1 || reels < 1) return dist;
+    double reelsFact = 1;
+    for (int i = 2; i <= reels; i++) reelsFact *= i;
+    double prevCum = 0;
+    for (int m = 1; m <= reels; m++)
+    {
+        double[] base(reels + 1, 0.0);
+        double term = 1;
+        for (int j = 0; j <= m; j++)
+        {
+            if (j > 0) term = term / (double(symbolCount) * j);
+            base[j] = term;
+        }
+        double[] poly(reels + 1, 0.0);
+        poly[0] = 1;
+        for (int n = 0; n < symbolCount; n++)
+        {
+            double[] product(reels + 1, 0.0);
+            for (int a = 0; a <= reels; a++)
+            {
+                if (poly[a] == 0) continue;
+                for (int b = 0; a + b <= reels && b <= m; b++)
+                    product[a + b] += poly[a] * base[b];
+            }
+            poly = product;
+        }
+        // The largest match can never exceed the reel count, so the last step is exactly 1; this removes rounding drift.
+        double cum = (m == reels) ? 1.0 : poly[reels] * reelsFact;
+        dist[m] = max(0.0, cum - prevCum);
+        prevCum = cum;
+    }
+    return dist;
+}
+
+payout_item@ slot_payout_for_match(int maxMatch)
+{
+    // The same lookup slotsgame uses: the first row whose matches equals the largest match, with the 0 row as the loss when nothing matches.
+    for (uint i = 0; i < slotPayouts.length(); i++)
+    {
+        if (slotPayouts[i].matches == maxMatch || (maxMatch < 2 && slotPayouts[i].matches == 0))
+            return @slotPayouts[i];
+    }
+    return null;
+}
+
+double slot_payout_scale(int symbolCount)
+{
+    /* Factor every paying multiplier is multiplied by so the average result per bet is exactly minus house_edge
+    at this symbol count: scale = (chance of losing - house edge) / (sum of chance times multiplier over paying rows).
+    A match size with no payout row refunds the bet and counts as neither. Returns -1 when the chance of losing is
+    not above the house edge, since no positive payout could then reach it (too few symbols for the reel count),
+    and 1 when no row pays anything, since there is nothing to scale. */
+    double[] dist = slot_match_distribution(symbolCount, slotReels);
+    double loseChance = 0;
+    double weightedPay = 0;
+    for (int k = 1; k <= slotReels; k++)
+    {
+        payout_item@ row = slot_payout_for_match(k);
+        if (row is null) continue;
+        if (row.multiplier <= 0) loseChance += dist[k];
+        else weightedPay += dist[k] * row.multiplier;
+    }
+    if (weightedPay <= 0) return 1.0;
+    double edge = slotHouseEdge / 100.0;
+    if (loseChance - edge <= 0) return -1;
+    return (loseChance - edge) / weightedPay;
+}
