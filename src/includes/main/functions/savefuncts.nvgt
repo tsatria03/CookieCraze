@@ -175,25 +175,14 @@ if (sd.d.exists("questRerollCount")) questRerollCount = sd.read_int("questReroll
 if (sd.d.exists("activeQuestCount"))
 {
     int qcount = sd.read_int("activeQuestCount");
-    activeQuests.resize(0);
+    string[] savedQuestIds;
     for (int i = 0; i < qcount; i++)
     {
         string qkey = "activeQuest_" + string(i);
-        if (!sd.d.exists(qkey)) continue;
-        string qid = sd.read_string(qkey);
-        for (uint j = 0; j < loadedQuests.length(); j++)
-        {
-            if (loadedQuests[j].id == qid)
-            {
-                activeQuests.insert_last(loadedQuests[j]);
-                break;
-            }
-        }
+        if (sd.d.exists(qkey)) savedQuestIds.insert_last(sd.read_string(qkey));
     }
-    if (int(activeQuests.length()) < questsConfig.max_active)
+    if (!restore_active_quests(savedQuestIds))
         assign_quests();
-    else
-        escalate_active_quests();
 }
 if (sd.d.exists("completedQuestCount"))
 {

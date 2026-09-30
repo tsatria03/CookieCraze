@@ -39,7 +39,8 @@ As built: `readdata` end-of-function block + `writedata` after completed quests 
 ### 3. Saving settings from the main menu overwrites the last slot (audit #3) — DONE, dev-tested 2026-09-30; changelog + todo updated
 `gamsetsmenu()` Save: wrap `writedata(); readdata();` in `if (ingame)`. In game the pair is still needed (readdata recomputes `xprequired` from a changed `cookiemod`). No open decisions.
 
-### 4. Unsafe save write (audit #4)
+### 4. Unsafe save write (audit #4) — SKIPPED (dev-decided 2026-09-30)
+The dev does not want `.bak` backup files (would mean up to 20 extra files in `saves/`, one per slot). Don't re-propose backups. A no-extra-files variant (write `.tmp`, then swap it in — protects against a truncated save but gives no fallback copy) was mentioned once and not taken up; only build it if the dev asks. Todo line removed. Original plan kept below for reference.
 - `savedata::save()` (`deps/savedata.nvgt`): write `fn + ".tmp"`, close; if the tmp is non-empty, `file_delete(fn + ".bak")`, `file_move(fn, fn + ".bak")` (if `fn` exists), `file_move(fn + ".tmp", fn)`. Port the legacy fork's explicit close.
 - `savedata::load()`: port the fork's missing-file guard. If the loaded dictionary is empty (failed decrypt/truncated) and `fn + ".bak"` exists, load the backup and set a `loaded_from_backup` flag.
 - Caller announces the restore in one sentence ([[feedback_one_sentence_game_messages]]).
@@ -60,12 +61,13 @@ Snapshot in `preffsmenu()` when a submenu button is pressed (submenus recurse, s
 At the Escape handlers in `jackgame` and `highlowgame`, check `in_round`.
 - **Open decision (ask at this section):** (a) block leaving until the round ends, with one sentence such as "Finish this round before leaving." (recommended — simplest, player keeps control); (b) leave and count it as a loss; (c) higher or lower only: bank the pot on exit when a streak is running.
 
-### 8. Ctrl+L gives a free quest reroll (dev #8, audit #9)
+### 8. Ctrl+L gives a free quest reroll (dev #8, audit #9) — DONE, dev-tested 2026-09-30; changelog + todo updated
+As built: new `restore_active_quests(string[]@ ids)` in `quests_table.nvgt` (fresh copies from `loadedQuests` by id, then `escalate_active_quests()` once — that function is NOT idempotent, so never escalate already-escalated copies; returns false if fewer than `max_active` resolve). Used by `readdata` (replacing its inline loop, same behavior) and `reload_config` (records active ids before re-parsing, restores after, `assign_quests()` only as fallback). Known leftover, not in scope: on the fallback path `assign_quests()` still rolls the whole set, not just the missing slots.
 Make `reload_config` preserve quests: record the active quest ids before re-parsing `quests.table`, re-resolve them by id against the fresh `loadedQuests`, and only call `assign_quests()` to fill slots whose id no longer exists (or when none were active). Works regardless of the readdata/reload order. No open decisions.
 
 ### 9. Docs — done PER SECTION, not at the end (dev-decided 2026-09-30)
 **Once the dev confirms a section works:** mark it DONE here, add its player-facing `changelog.txt` 6.9 entry (newest at top), and move its `todo_list.txt` line from `****Unfinished.` to the top of the finished section ([[feedback_todo_list_format]]). See [[feedback_docks_last]] for the bug-fix exception.
-- 6.9 changelog count: store crash, Ctrl+S/slots bet timing (logged 2026-09-30), sections 1, 2, 3 = **5 of 10**. The 5 remaining sections fit exactly; consolidate if anything else lands ([[feedback_changelog_rules]]).
+- 6.9 changelog count: store crash, Ctrl+S/slots bet timing (logged 2026-09-30), sections 1, 2, 3, 8 = **6 of 10**. Section 4 skipped, so the 3 remaining sections (5, 6, 7) leave 1 spare slot; consolidate if anything else lands ([[feedback_changelog_rules]]).
 What's left for the very end:
 - `readme.txt`: only if a documented behavior changed (e.g. settings Cancel, save backup).
 - Mark each fixed item in [[project_bugs_player_facing]] **FIXED (6.9)**; mark this plan SHIPPED.

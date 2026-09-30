@@ -29,7 +29,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Feature ideas](project_feature_ideas.md) — 6.4+ wish list (offline progress, golden-cookie bonus, daily streak, auto-buyer, boosts shop, QoL) + future-minigame candidates (mines, video poker, keno, audio Simon). Higher or lower + number-format shipped in 6.4; achievement rewards + roulette shipped in 6.5, roulette's rank-shift + tweaks changelogged in 6.6 (all roulette sounds delivered); rest unbuilt.
 
 ## Active plan
-- [High bugs fix plan](project_high_bugs_fix_plan.md) — IN PROGRESS (6.9): 8 High player-facing bugs, one section per commit (new-game prestige leak → achievements saved → settings Save guard → safe save+backup → menu search → settings Cancel undo → mid-round Escape → Ctrl+L quests), docs last; open decisions flagged per section.
+- [High bugs fix plan](project_high_bugs_fix_plan.md) — IN PROGRESS (6.9): 8 High player-facing bugs, one section per commit (new-game prestige leak → achievements saved → settings Save guard → (safe save+backup SKIPPED, dev declined .bak files) → menu search → settings Cancel undo → mid-round Escape → Ctrl+L quests), docs last; open decisions flagged per section.
 
 ## Known bugs — full-game audit of 6.8 (2026-09-30); mark entries FIXED as they ship
 - [Player-facing bugs](project_bugs_player_facing.md) — 31 bugs a player can hit: new game leaks prestige, achievements not saved, settings Save overwrites last slot, unsafe save write, Ctrl+S dead in minigames, F3 search rejects letters, settings Cancel doesn't undo, UX convention violations.

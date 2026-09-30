@@ -497,9 +497,15 @@ void reload_config(bool force = false)
     // Keep the unlocked achievements readdata restored; only add any the fresh table now counts as met.
     init_achievements(loadedAchievements, achievementsUnlocked);
     parse_prestige_table("data/config/tables/prestige.table");
+    /* Keep the active quests across the re-parse. Rolling a fresh set here made Control L a free reroll,
+    since it runs right after readdata restored the saved quests. */
+    string[] activeQuestIds;
+    for (uint i = 0; i < activeQuests.length(); i++)
+        activeQuestIds.insert_last(activeQuests[i].id);
     loadedQuests.resize(0);
     parse_quests_table("data/config/tables/quests.table", loadedQuests);
-    assign_quests();
+    if (!restore_active_quests(activeQuestIds))
+        assign_quests();
     apply_all_prestige_store_upgrades();
     config_loaded = true;
 }

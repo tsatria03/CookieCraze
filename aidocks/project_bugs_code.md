@@ -12,7 +12,7 @@ Defects a player may not see directly but that cause wrong state, latent crashes
 
 ## Save / load
 
-1. **Unsafe save write + silent empty load** — see [[project_bugs_player_facing]] #4 (`deps/savedata.nvgt` `save()`/`load()`). The vendored `savedata.nvgt` is also *older* than the legacy fork's: it lacks the fork's missing-file guard in `load()` and the explicit `f.close()` in `save()`. Port both.
+1. **(Backup part WON'T FIX — dev declined `.bak` files 2026-09-30.)** **Unsafe save write + silent empty load** — see [[project_bugs_player_facing]] #4 (`deps/savedata.nvgt` `save()`/`load()`). The vendored `savedata.nvgt` is also *older* than the legacy fork's: it lacks the fork's missing-file guard in `load()` and the explicit `f.close()` in `save()`. Port both.
 2. **Achievements not persisted** — see [[project_bugs_player_facing]] #2.
 3. **Saved quests restored before `completedQuestIds` is loaded** (`savefuncts.nvgt` `readdata`, active-quest block ~175-197 before completed block ~198-214). If fewer saved quest ids resolve than `max_active` (id renamed, `max_active` raised), the fallback `assign_quests()` runs against the *previous slot's* (or empty) completed list and may offer done tiers or skip open ones. Fix: move the `completedQuestCount` block above `activeQuestCount`.
 4. **Unknown completed-quest ids are dropped and then erased** (`savefuncts.nvgt` ~207-212). If `quests.table` fails to load (unchecked, #9) or an id is renamed, the next save deletes those completions permanently, lowering the prestige-points multiplier. Fix: keep unknown ids in a side list and write them back.

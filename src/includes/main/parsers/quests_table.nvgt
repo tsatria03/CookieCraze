@@ -296,6 +296,28 @@ void assign_quests()
     }
 }
 
+bool restore_active_quests(string[]@ ids)
+{
+    /* Rebuilds activeQuests from the given ids using fresh copies from loadedQuests, then escalates them once.
+    Returns false when fewer than max_active ids still exist, so the caller can fall back to assign_quests().
+    Used by readdata and reload_config so reloading keeps your quests instead of rolling a new set. */
+    activeQuests.resize(0);
+    for (uint i = 0; i < ids.length(); i++)
+    {
+        for (uint j = 0; j < loadedQuests.length(); j++)
+        {
+            if (loadedQuests[j].id == ids[i])
+            {
+                activeQuests.insert_last(loadedQuests[j]);
+                break;
+            }
+        }
+    }
+    if (int(activeQuests.length()) < questsConfig.max_active) return false;
+    escalate_active_quests();
+    return true;
+}
+
 quest_item@ find_next_tier(string stat, int currentDiff, bool required)
 {
     quest_item@ best = null;
