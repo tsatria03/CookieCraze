@@ -2,7 +2,6 @@
 
 ****Unfinished. Make it so you can open the store to sell cookies even when you have less than one cent.
 ****Unfinished. Balance the baking speed events so a single bad event cannot wipe out all of your baking speed.
-****Unfinished. Fix rerolled quests so their goal is filled in and escalated, instead of showing a placeholder or an endless quest's starting goal.
 ****Unfinished. Make the dice roller refund your bet when its config has no losing result, instead of keeping it.
 ****Unfinished. Make the dealer play out their hand when you reach 21 by hitting in blackjack, instead of winning right away.
 ****Unfinished. Add an auto-buyer that automatically purchases the cheapest upgrade you can afford on a timer, extending automation from baking into spending. Unlocked at a late rank and toggleable in the settings.
@@ -11,6 +10,7 @@
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Fix rerolled quests so their goal is filled in and escalated, instead of showing a placeholder or an endless quest's starting goal.
 **Finished. Fix the baker info screen describing the quest reward mode that never gives a reward as one that does.
 **Finished. Fix the quest reroll asking the same confirmation question twice, and make a blocked reroll say why nothing happened.
 **Finished. Make achievement, combo, event, and rank up announcements stop cutting off whatever the screen reader is currently saying.

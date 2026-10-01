@@ -147,14 +147,18 @@ void escalate_active_quests()
     and fills %threshold% in every active quest's name. NOT idempotent (it reads the threshold as the base),
     so call exactly once after activeQuests is (re)built — from assign_quests, and again after a save-load. */
     for (uint i = 0; i < activeQuests.length(); i++)
+        escalate_quest(activeQuests[i]);
+}
+void escalate_quest(quest_item@ q)
+{
+    /* Escalates one freshly copied quest: an infinite quest moves to its current tier (threshold + effective
+    difficulty), and %threshold% in its name is filled. Same NOT-idempotent rule: call once per fresh copy. */
+    if (q.infinite)
     {
-        if (activeQuests[i].infinite)
-        {
-            activeQuests[i].threshold  = endless_threshold(activeQuests[i]);
-            activeQuests[i].difficulty = endless_difficulty(activeQuests[i]);
-        }
-        activeQuests[i].name = string_replace(activeQuests[i].name, "%threshold%", format_quest_value(activeQuests[i].stat, activeQuests[i].threshold), true);
+        q.threshold  = endless_threshold(q);
+        q.difficulty = endless_difficulty(q);
     }
+    q.name = string_replace(q.name, "%threshold%", format_quest_value(q.stat, q.threshold), true);
 }
 void assign_quests()
 {
@@ -405,7 +409,8 @@ void reroll_quest(int questIndex)
     for (uint i = 0; i < loadedQuests.length(); i++)
     {
         if (loadedQuests[i].required) continue;
-        if (loadedQuests[i].difficulty != targetDiff) continue;
+        // Match on the escalated difficulty, the same way assign_quests picks quests for a slot.
+        if (endless_difficulty(loadedQuests[i]) != targetDiff) continue;
         bool alreadyActive = false;
         for (uint a = 0; a < activeQuests.length(); a++)
         {
@@ -417,6 +422,9 @@ void reroll_quest(int questIndex)
     {
         int idx = random(0, candidates.length() - 1);
         activeQuests[questIndex] = candidates[idx];
+        /* The new quest is a fresh copy from the table, so fill its %threshold% and move an endless quest to its
+        current goal. Only this one is escalated, since the others already were and escalating is not repeatable. */
+        escalate_quest(activeQuests[questIndex]);
     }
     reroll_history_entry rentry;
     rentry.old_name = oldQuestName;
