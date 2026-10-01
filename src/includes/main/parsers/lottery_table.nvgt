@@ -5,6 +5,8 @@ class lottery_prize_item
     double min_amount;
     double max_amount;
     bool use_percent;
+    // True when the 5th field is "value": min/max are a money value in cents, converted to items at current prices when scratched.
+    bool value_mode;
     int weight;
     string sound;
     string message;
@@ -69,6 +71,7 @@ void parse_lottery_table(string filepath)
         prize.min_amount = string_to_number(parts[2]);
         prize.max_amount = string_to_number(parts[3]);
         prize.use_percent = (parts[4] == "true");
+        prize.value_mode = (parts[4] == "value");
         prize.weight = string_to_int(parts[5]);
         prize.sound = parts[6];
         prize.message = parts[7];
