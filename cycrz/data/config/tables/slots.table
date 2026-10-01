@@ -25,8 +25,8 @@ stop_sound3=slot_machine/stop3.ogg
 
 ; Required header — removing or renaming this will break the file.
 
-5:4:slot_machine/win1.ogg:You won 4 times your bet!
-4:3:slot_machine/win2.ogg:You won triple your bet!
-3:2:slot_machine/win2.ogg:You won double your bet!
-2:0.5:slot_machine/win3.ogg:You won half your bet!
+5:4:slot_machine/win1.ogg:You matched five of a kind and won %amount%, %multiplier% times your bet!
+4:3:slot_machine/win2.ogg:You matched four of a kind and won %amount%, %multiplier% times your bet!
+3:2:slot_machine/win2.ogg:You matched three of a kind and won %amount%, %multiplier% times your bet!
+2:0.5:slot_machine/win3.ogg:You matched a pair and won %amount%, %multiplier% times your bet!
 0:0:slot_machine/lose.ogg:You lost the bet!

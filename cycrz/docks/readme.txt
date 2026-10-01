@@ -190,7 +190,9 @@ Advanced. Multiple reels, payout combinations, and bet management make it more c
 Spin the reels and match symbols to win multiples of your bet.
 
 Like the other minigames, you choose which item to bet and how much. When betting money, you enter the amount as a dollar value, for example type 1 to bet $1.00 or 0.50 to bet 50 cents. All other items are entered as whole numbers.
-Payouts depend on how many reels match and which symbols line up, with higher matches paying out larger multiples. The symbols, payout multipliers, reel count, sounds, and bet limits are all configurable in slots.table.
+Before spinning, you choose which symbols can land on the reels from a checklist, and every symbol starts checked. You must keep at least 10 symbols checked to spin. The fewer symbols you check, the more often the reels match, so wins come often but pay less, while checking more symbols makes matches rare but pays far more for each one. Payouts adjust automatically to however many symbols you check, so no choice is better or worse on average, and you are simply choosing how risky each spin feels.
+Your winnings depend on the largest group of matching symbols, from a pair up to every reel matching. Press the check the payouts button, or alt plus p, to hear your chance of losing and what each match pays for the symbols you currently have checked. Each win tells you exactly how much you won and how many times your bet that is.
+The symbols, the minimum number you must check, the house edge, the relative payout for each match, the reel count, sounds, and bet limits are all configurable in slots.table.
 
 A configurable confirmation prompt can be set to appear when your bet reaches a certain threshold, protecting you from accidentally placing a large bet.
 
@@ -1429,7 +1431,7 @@ Defines the slot machine symbols, reel count, bet limits, action sounds, and pay
 symbols
 Format: symbols=order:name, name, name, ...
 
-A comma separated list of symbol names for the slot machine reels. You must have at least 10 symbols defined.
+A comma separated list of symbol names for the slot machine reels. You must define at least as many symbols as min_symbols, which defaults to 10. There is no upper limit. More symbols make matches rarer and each win larger, while the average return stays at the house edge.
 
 The list can begin with an optional ordering prefix followed by a colon, which controls how the symbols are sorted when the game loads. Use asc for alphabetical order, dsc for reverse alphabetical order, or none to keep the exact order you wrote them in. For example, symbols=asc:cherry, apple, bell is listed in game as apple, bell, cherry. If you omit the prefix entirely, the list is kept as written, the same as none.
 
@@ -1457,6 +1459,13 @@ For example, 25:true prompts when the bet is 25 percent or more of their current
 
 Set the amount to 0 to disable the prompt entirely.
 
+house_edge
+The percentage of each bet the slot machine keeps on average, which defaults to 5. Before every spin, all payout multipliers are scaled up or down based on how many symbols the player has checked, so the average result is the same at every symbol count. Set it to 0 for a machine that breaks even on average. The value is capped at 99.
+If too few symbols are checked for the reel count to reach the house edge, the spin is refused and the player is asked to check more symbols. This can only happen with many reels and very few symbols.
+
+min_symbols
+The fewest symbols a player must keep checked before spinning, which defaults to 10. It cannot be lower than 2, and it must not be higher than the number of symbols defined, or the game shows an error at startup explaining the mismatch.
+
 bet_sound1
 bet_sound2
 bet_sound3
@@ -1480,16 +1489,16 @@ matches
 The number of matching symbols across the reels required to trigger this payout. Use 0 to define the loss outcome. This value should not exceed the number of reels.
 
 multiplier
-How much of the bet is returned to the player. 4 means the player wins 4 times their bet. 0.5 means the player wins half their bet, and 0 means the player loses their bet entirely.
-
-This is a flat multiplier applied once to the bet amount.
-Setting a payout multiplier very high for common match counts will make the slot machine trivially easy to exploit and can rapidly inflate the player's stats.
+The relative size of this payout compared with the other rows. Payouts are scaled before every spin to match the house edge for the number of symbols checked, so these values set the shape of the payout table rather than the exact amount won. With the default table, five of a kind always pays 8 times what a pair pays, since 4 divided by 0.5 is 8. Use 0 to mark the loss outcome, where the player loses their bet.
+Because of the scaling, raising a multiplier does not make the machine easier overall. It only shifts more of the winnings toward that match size and away from the others.
 
 sound
-The sound file to play when this outcome fires, relative to sounds/misc/. You can include a subfolder prefix to use a different folder, for example store/coin1.ogg.
+The sound file to play when this outcome fires, relative to sounds/minigames/. You can include a subfolder prefix to use a different folder, for example slot_machine/win1.ogg.
 
 message
 The text spoken to the player when this outcome fires.
+%amount% is replaced with what the player won, shown as money or as an item count.
+%multiplier% is replaced with the scaled payout for that spin, such as 2.92, meaning 2.92 times the bet.
 
 prestige.table
 

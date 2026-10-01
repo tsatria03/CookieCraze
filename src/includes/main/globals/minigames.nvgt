@@ -200,6 +200,7 @@ string[] symbols = slotSymbols;
 int betInput = form.create_input_box("Enter your b&et amount:", "", "", 0, false, false, false);
     int slotAuto = form.create_checkbox("automatic reel stopping", slotmode);
     int spinButton = form.create_button("Spin the &reels", true);
+    int payoutsButton = form.create_button("Check the &payouts");
 form.focus(betChoice);
 form.set_disallowed_chars(betInput, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()[]{};:'\"\\|,<>?/+-=`~_", false, "This character is not allowed.");
 string[] reelResults(slotReels, "");
@@ -255,6 +256,15 @@ check_rank();
 check_achievements(loadedAchievements, achievementsUnlocked);
         bool slotModeNew = form.is_checked(slotAuto);
         if (slotModeNew != slotmode) { slotmode = slotModeNew; writepreffs(); }
+        if (form.is_pressed(payoutsButton))
+        {
+            int checkedCount = 0;
+            for (uint i = 0; i < symbols.length(); i++)
+            {
+                if (form.is_list_item_checked(symbolChoices, i)) checkedCount++;
+            }
+            speak_buffer(slot_payouts_summary(checkedCount));
+        }
         if (form.is_pressed(spinButton))
         {
             selectedBet = form.get_list_position(betChoice);
@@ -296,9 +306,18 @@ betAmount = floor(selectedBet == 1 ? string_to_number(betStr) * 100.0 : string_t
                     activeSymbols.insert_last(symbols[i]); 
                 }
             }
-            if (activeSymbols.length()<10)
+            if (int(activeSymbols.length()) < slotMinSymbols)
 {
-                dlg_buffer("You must select at least 10 symbols in order to spin!");
+                dlg_buffer("You must select at least " + slotMinSymbols + " symbols in order to spin!");
+                form.focus(spinButton);
+                continue;
+            }
+            /* Payouts are scaled by how many symbols are checked so every count has the same house edge;
+            fewer symbols match more often and pay less, more symbols match rarely and pay more. */
+            double payScale = slot_payout_scale(int(activeSymbols.length()));
+            if (payScale < 0)
+            {
+                dlg_buffer("With " + slotReels + " reels, please check more symbols so the payouts can be balanced.");
                 form.focus(spinButton);
                 continue;
             }
@@ -378,24 +397,20 @@ for (uint i = 0; i < symbolCount.length(); i++)
         maxMatch = symbolCount[i];
     }
 }
-payout_item@ payout = null;
-for (uint i = 0; i < slotPayouts.length(); i++)
-{
-    if (slotPayouts[i].matches == maxMatch || (maxMatch < 2 && slotPayouts[i].matches == 0))
-    {
-        @payout = slotPayouts[i];
-        break;
-    }
-}
+payout_item@ payout = slot_payout_for_match(maxMatch);
 if (payout !is null)
 {
     if (slotmode == true) mini_wait_async(random(1000, 2000), "slots");
     pool.destroy_sound(machineslot);
     if (payout.sound != "" && payout.sound != "none")
         pool.play_stationary("sounds/minigames/" + payout.sound, false);
-    dlg_buffer(payout.message);
+    double change = floor(safe_cap(betAmount * payout.multiplier * payScale));
+    string slotItemName = (selectedBet == 0 ? "cookies" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies")));
+    string payMsg = payout.message;
+    payMsg = string_replace(payMsg, "%amount%", (selectedBet == 1 ? convert_to_currency(change) : format_number(change) + " " + slotItemName), true);
+    payMsg = string_replace(payMsg, "%multiplier%", string(round(payout.multiplier * payScale, 2)), true);
+    dlg_buffer(payMsg);
     form.focus(spinButton);
-    double change = safe_cap(betAmount * payout.multiplier);
     if (payout.multiplier == 0)
     {
         /* The bet was already taken when the spin started, so a loss has nothing left to deduct. */

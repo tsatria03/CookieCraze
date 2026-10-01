@@ -206,3 +206,36 @@ double slot_payout_scale(int symbolCount)
     if (loseChance - edge <= 0) return -1;
     return (loseChance - edge) / weightedPay;
 }
+
+string slot_match_name(int k)
+{
+    if (k == 2) return "a pair";
+    if (k == 3) return "three of a kind";
+    if (k == 4) return "four of a kind";
+    if (k == 5) return "five of a kind";
+    return string(k) + " of a kind";
+}
+
+string slot_payouts_summary(int checkedCount)
+{
+    /* One sentence for the check payouts button: the chance of losing and what each paying match size pays
+    at the current number of checked symbols, using the same scale the next spin would use. */
+    if (checkedCount < slotMinSymbols)
+        return "Check at least " + slotMinSymbols + " symbols to see the payouts.";
+    double scale = slot_payout_scale(checkedCount);
+    if (scale < 0)
+        return "With " + slotReels + " reels, please check more symbols so the payouts can be balanced.";
+    double[] dist = slot_match_distribution(checkedCount, slotReels);
+    double loseChance = 0;
+    string[] parts;
+    for (int k = 1; k <= slotReels; k++)
+    {
+        payout_item@ row = slot_payout_for_match(k);
+        if (row is null) continue;
+        if (row.multiplier <= 0) loseChance += dist[k];
+        else parts.insert_last(slot_match_name(k) + " pays " + round(row.multiplier * scale, 2) + " times your bet");
+    }
+    string msg = "With " + checkedCount + " symbols checked, you lose about " + round(loseChance * 100, 0) + " percent of spins";
+    if (parts.length() > 0) msg += ", " + join_spoken_list(parts);
+    return msg + ".";
+}
