@@ -663,7 +663,10 @@ check_achievements(loadedAchievements, achievementsUnlocked);
             if (outcome == 1)
             {
                 stat_jack_wins++;
-                double winnings = floor(safe_cap(betAmount * jacksConfig.win_multiplier));
+                /* win_multiplier is the TOTAL returned (2 means a $1.00 bet returns $2.00), and the bet was already taken
+                when the hand was dealt, so the winnings on top are bet * (multiplier - 1). It used to add bet * multiplier
+                on top of the returned bet, paying 3x and more than a natural blackjack. */
+                double winnings = floor(safe_cap(betAmount * max(0.0, jacksConfig.win_multiplier - 1.0)));
                 if (selectedBet == 0) { cookies += betAmount + winnings; cookies = floor(safe_cap(cookies)); }
                 else if (selectedBet == 1) { coins += betAmount + winnings; coins = floor(safe_cap(coins)); }
                 else if (selectedBet == 2) { autocookie += betAmount + winnings; autocookie = floor(safe_cap(autocookie)); }
@@ -908,6 +911,15 @@ void dicegame()
                 dlg_buffer("Warning! Your target of " + string(target) + " is impossible to reach with " + string(diceCount) + " D" + string(sides) + " and a modifier of " + string(modifier) + ". The maximum possible roll is " + string(maxPossible) + ".");
                 continue;
             }
+            /* Payouts are scaled to the real odds of this dice, modifier and target, so every setup keeps the same house
+            edge: easy targets pay little and long shots pay a lot. A target too easy to lose is refused before the bet. */
+            double diceScale = dice_payout_scale(sides, diceCount, modifier, target);
+            if (diceScale < 0)
+            {
+                pool.play_stationary("sounds/misc/gamefail.ogg", false);
+                dlg_buffer("That target is too easy for these dice to pay out, so please choose a higher target.");
+                continue;
+            }
             if (diceConfig.confirm_threshold > 0)
             {
                 double statTotal = (selectedBet == 0 ? floor(cookies) : (selectedBet == 1 ? floor(coins) : (selectedBet == 2 ? floor(autocookie) : (selectedBet == 3 ? floor(cookiespeed) : floor(manulcookie)))));
@@ -993,7 +1005,7 @@ void dicegame()
             else
             {
                 stat_dice_wins++;
-                double winAmount = floor(safe_cap(betAmount * payout.multiplier));
+                double winAmount = floor(safe_cap(betAmount * payout.multiplier * diceScale));
                 string amtStr = (selectedBet == 1 ? convert_to_currency(winAmount) : format_number(winAmount));
                 if (selectedBet == 0) { cookies += winAmount; cookies = floor(safe_cap(cookies)); }
                 else if (selectedBet == 1) { coins += winAmount; coins = floor(safe_cap(coins)); stat_coins_earned += winAmount; }
@@ -1200,6 +1212,8 @@ void highlowgame()
                 dlg_buffer("Please place a bet and deal first.");
                 continue;
             }
+            // The odds of this guess, taken before the next card replaces the current one.
+            double guessChance = highlow_win_chance(curVal, guessHigher);
             if (highlowmode) speak_buffer((guessHigher ? "Higher chosen" : "Lower chosen") + ", drawing the next card.");
             else dlg_buffer((guessHigher ? "Higher chosen" : "Lower chosen") + ", drawing the next card. Press enter or space to reveal.");
             pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.draw_sound), false);
@@ -1227,7 +1241,13 @@ void highlowgame()
             else if (outcome == 1)
             {
                 streak++;
-                currentMultiplier = highlowConfig.starting_multiplier + (streak - 1) * highlowConfig.streak_multiplier_growth;
+                /* The pot grows by the real odds of the guess just won, so a safe guess barely grows it and a risky one
+                multiplies it a lot. The house edge is taken once, on the first correct guess, so every round averages
+                minus house_edge however long the streak runs and whenever it is banked. A flat starting multiplier plus
+                fixed growth ignored the card showing and let careful play win money on average. */
+                double guessStep = (guessChance > 0) ? 1.0 / guessChance : 0;
+                if (streak == 1) currentMultiplier = (1.0 - highlowConfig.house_edge / 100.0) * guessStep;
+                else currentMultiplier *= guessStep;
                 if (double(streak) > stat_highlow_highest_streak) stat_highlow_highest_streak = streak;
                 curName = nextName;
                 curVal = nextVal;

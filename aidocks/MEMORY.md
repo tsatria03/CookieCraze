@@ -29,7 +29,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Feature ideas](project_feature_ideas.md) — 6.4+ wish list (offline progress, golden-cookie bonus, daily streak, auto-buyer, boosts shop, QoL) + future-minigame candidates (mines, video poker, keno, audio Simon). Higher or lower + number-format shipped in 6.4; achievement rewards + roulette shipped in 6.5, roulette's rank-shift + tweaks changelogged in 6.6 (all roulette sounds delivered); rest unbuilt.
 
 ## Release status
-- [Release status](project_release_status.md) — 6.9 RELEASED (built, published, site shows V6.90) and frozen; 7.0 IN PROGRESS (version.txt 7.0, changelog block open, 11 of 20 entries; all Medium bugs done) (changelog block full, 10/10); the next change opens a 7.0 major block (up to 20 entries) and bumps build/version.txt to 7.0, not 6.10; what 6.9 shipped and what's open next.
+- [Release status](project_release_status.md) — 6.9 RELEASED (built, published, site shows V6.90) and frozen; 7.0 IN PROGRESS (version.txt 7.0, changelog block open, 15 of 20 entries; all Medium bugs and all four payout exploits done) (changelog block full, 10/10); the next change opens a 7.0 major block (up to 20 entries) and bumps build/version.txt to 7.0, not 6.10; what 6.9 shipped and what's open next.
 
 ## Finished plans (6.9)
 - [Slots scaled payouts plan](project_slots_scaled_payouts_plan.md) — SHIPPED 6.9: scale slot payouts by checked-symbol count to a fixed house edge (default 5%); house_edge + min_symbols config, %amount%/%multiplier% tokens, check-payouts button, readme docs for how symbols work; 4 sections, docs last.
@@ -50,6 +50,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 ## Feedback — how the dev wants you to work
 - [Confirm before implementing](feedback_confirm_before_implementing.md) — a design discussion or any `?` is a request for a plan, not a green light to edit; wait for explicit go-ahead.
 - [Plan features in memory first](feedback_plan_features_in_memory.md) — before coding any new feature, write the agreed plan (locked decisions + numbered build sections) into an aidocks/ memory file and index it; only then build, section by section.
+- [Pause after each fix](feedback_pause_after_each_fix.md) — after a fix + its docs, end the turn with the summary for review; never start the next item (reading, analysis, or its question) in the same reply, even in a batch.
 - [Ask one question at a time](feedback_ask_one_question_at_a_time.md) — surface ONE question per turn and wait; don't batch a numbered list.
 - [Ignore bang commands](feedback_ignore_bang_commands.md) — ignore the user's in-session `!` command runs and their output; act only on the user's typed prose unless they explicitly reference them.
 - [List modified files](feedback_list_modified_files.md) — end every editing turn with a bare-filename "Files changed:" list; then note whether a relaunch is needed.

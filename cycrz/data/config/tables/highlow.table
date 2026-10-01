@@ -5,8 +5,7 @@ max_bet=0
 confirm_threshold=1000:false
 ace_high=true
 tie_rule=push
-starting_multiplier=1.5
-streak_multiplier_growth=0.5
+house_edge=5
 max_streak=0
 streak_sound_threshold=3
 

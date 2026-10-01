@@ -17,6 +17,7 @@ class dice_config
     bool confirm_use_percent = false;
     int min_target = 2;
     int max_target = 0;
+    double house_edge = 5.0;
     string shake_sound = "dice_roller/shake.ogg";
     string land_sound = "dice_roller/land(1,2).ogg";
     dice_payout[] payouts;
@@ -29,6 +30,7 @@ void parse_dice_table(string filepath)
     diceConfig.dice_types.resize(0);
     diceConfig.modifiers.resize(0);
     diceConfig.payouts.resize(0);
+    diceConfig.house_edge = 5.0;
     file f;
     if (!f.open(filepath, "r")) return;
     while (!f.eof)
@@ -47,6 +49,7 @@ void parse_dice_table(string filepath)
             else if (key == "min_target") diceConfig.min_target = max(1, string_to_int(val));
             else if (key == "max_target") diceConfig.max_target = max(0, string_to_int(val));
             else if (key == "max_dice_count") diceConfig.max_dice_count = max(1, string_to_int(val));
+            else if (key == "house_edge") diceConfig.house_edge = max(0.0, min(99.0, string_to_number(val)));
             else if (key == "shake_sound") diceConfig.shake_sound = val;
             else if (key == "land_sound") diceConfig.land_sound = val;
             else if (key == "confirm_threshold")
@@ -130,4 +133,53 @@ dice_payout@ pick_dice_payout(int margin)
         }
     }
     return best;
+}
+
+double dice_payout_scale(int sides, int diceCount, int modifier, int target)
+{
+    /* Factor every winning tier's multiplier is multiplied by so the average result per bet is exactly minus
+    house_edge for this exact roll setup, the same idea as the slot machine. The bet is taken before rolling and a
+    win returns bet * multiplier in total, so scale = (1 - edge - chance of a refund) / (sum of chance * multiplier
+    over winning results). A result with no payout row refunds when at or above the target and loses below it,
+    matching dicegame. Returns -1 when the target is so easy that the chance of losing is not above the house edge,
+    and 1 when no row pays anything. The sum distribution is built die by die with prefix sums, so 20 dice of 100
+    sides stays quick. */
+    if (sides < 1 || diceCount < 1) return 1.0;
+    int maxSum = sides * diceCount;
+    double[] dist(maxSum + 1, 0.0);
+    dist[0] = 1;
+    for (int d = 0; d < diceCount; d++)
+    {
+        double[] prefix(maxSum + 2, 0.0);
+        for (int s = 0; s <= maxSum; s++) prefix[s + 1] = prefix[s] + dist[s];
+        double[] next(maxSum + 1, 0.0);
+        for (int s = 1; s <= maxSum; s++)
+        {
+            int lo = s - sides;
+            if (lo < 0) lo = 0;
+            next[s] = (prefix[s] - prefix[lo]) / sides;
+        }
+        dist = next;
+    }
+    double loseChance = 0;
+    double refundChance = 0;
+    double weightedPay = 0;
+    for (int s = diceCount; s <= maxSum; s++)
+    {
+        if (dist[s] <= 0) continue;
+        int margin = s + modifier - target;
+        dice_payout@ row = pick_dice_payout(margin);
+        if (row is null)
+        {
+            if (margin >= 0) refundChance += dist[s];
+            else loseChance += dist[s];
+            continue;
+        }
+        if (row.multiplier <= 0) loseChance += dist[s];
+        else weightedPay += dist[s] * row.multiplier;
+    }
+    if (weightedPay <= 0) return 1.0;
+    double edge = diceConfig.house_edge / 100.0;
+    if (loseChance - edge <= 0) return -1;
+    return (1.0 - edge - refundChance) / weightedPay;
 }

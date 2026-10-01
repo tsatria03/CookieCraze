@@ -6,6 +6,7 @@ max_bet=0
 confirm_threshold=1000:false
 min_target=10
 max_target=0
+house_edge=5
 
 shake_sound=dice_roller/shake.ogg
 land_sound=dice_roller/land(1,2).ogg

@@ -99,7 +99,7 @@ The fourth is buying all affordable items at the maximum quantity. The prompt pr
 
 The ticket shop.
 
-Buy scratch tickets using your money. Tickets are sold in tiers, with higher tiers costing more but offering larger prizes and better odds at the top end. Each tier draws from its own prize pool defined in lottery.table, with prizes weighted so smaller wins are more common.
+Buy scratch tickets using your money. Tickets are sold in tiers, with higher tiers costing more but offering larger prizes and better odds at the top end. Each tier draws from its own prize pool defined in lottery.table, with prizes weighted so smaller wins are more common. On average a ticket pays back less money than it costs, so tickets are a gamble for the occasional big win rather than a way to grow your money, with cookie, auto cookie, manual cookie, and baking speed prizes as a bonus on top.
 By default, locked ticket tiers are shown with their required rank displayed. You can hide them entirely by disabling the show locked items option in the game settings.
 
 Random events.
@@ -155,7 +155,8 @@ Roll a set of dice against a target score you set yourself and bet an item of yo
 
 Before rolling, choose an item to bet, then select your dice type, how many dice to roll, and a modifier to add or subtract from the total. Next, enter your bet amount and a target score. When betting money, you can enter the amount as a dollar value, for example type 1 to bet $1.00 or 0.50 to bet 50 cents. All other items are entered as whole numbers. Hitting or beating the target wins a payout scaled to how far you exceeded it. Falling short loses the bet.
 
-The higher you set the target relative to what your dice can realistically roll, the greater the potential payout. If the target you enter is mathematically impossible to reach with your current dice type, count, and modifier, the game will block the roll and tell you the maximum possible score so you can adjust your settings. Keep in mind that negative modifiers can push the maximum possible roll below zero, making most targets unreachable, so use large negative modifiers with care. A configurable confirmation prompt can be set to appear when your bet reaches a certain threshold. The dice types, modifier options, payout tiers, sounds, and bet limits are all configurable in dice.table.
+The higher you set the target relative to what your dice can realistically roll, the greater the potential payout. Payouts are worked out from the real odds of your dice, modifier, and target, so every setup keeps the same small house edge: an easy target wins often but pays little, sometimes less than your bet for a bare exact hit, while a long shot rarely wins but pays a lot. If a target is so easy that you would almost never lose, the game refuses the roll and asks for a higher target.
+If the target you enter is mathematically impossible to reach with your current dice type, count, and modifier, the game will block the roll and tell you the maximum possible score so you can adjust your settings. Keep in mind that negative modifiers can push the maximum possible roll below zero, making most targets unreachable, so use large negative modifiers with care. A configurable confirmation prompt can be set to appear when your bet reaches a certain threshold. The dice types, modifier options, payout tiers, sounds, and bet limits are all configurable in dice.table.
 
 You can roll manually, or enable automatic rolling with the checkbox in the game so the result appears after a short random delay. When disabled, the result is held until you press enter or space.
 
@@ -166,9 +167,9 @@ Bet on whether the next card will be higher or lower, then build a streak and ba
 
 Before playing, choose an item to bet and enter your bet amount. When betting money, you can enter the amount as a dollar value, for example type 1 to bet $1.00 or 0.50 to bet 50 cents. All other items are entered as whole numbers. Deal to draw the first card, then guess whether the next card will be higher or lower than it.
 
-Each correct guess extends your streak and grows your pot by a rising multiplier. After any correct guess you can bank your earnings to keep the pot and end the round, or risk it all on another guess. A wrong guess loses your bet. A tie, when the next card matches the current one, follows the configurable tie rule, which by default holds your streak and draws again. Whether the ace counts as the highest or the lowest card is also configurable.
+Each correct guess extends your streak and grows your pot based on the real odds of the guess you just won, so a safe guess, such as higher than a two, barely grows it, while a risky one grows it a lot. A small house edge is taken once per round, so no way of playing wins money on average. After any correct guess you can bank your earnings to keep the pot and end the round, or risk it all on another guess. A wrong guess loses your bet. A tie, when the next card matches the current one, follows the configurable tie rule, which by default holds your streak and draws again. Whether the ace counts as the highest or the lowest card is also configurable.
 
-The deck, starting multiplier, streak growth, tie rule, ace ranking, sounds, messages, and bet limits are all configurable in highlow.table. A configurable confirmation prompt can be set to appear when your bet reaches a certain threshold.
+The deck, house edge, tie rule, ace ranking, sounds, messages, and bet limits are all configurable in highlow.table. A configurable confirmation prompt can be set to appear when your bet reaches a certain threshold.
 
 You can reveal cards manually, or enable automatic card revealing with the checkbox in the game so each card appears after a short random delay. When disabled, each result is held until you press enter or space.
 
@@ -1051,10 +1052,14 @@ Format: confirm_threshold=amount:use_percent
 Triggers a yes or no confirmation prompt when the bet meets or exceeds the threshold. Works the same way as in jacks.table and slots.table.
 
 min_target
-The lowest target score the player is allowed to enter. Prevents trivially easy targets.
+The lowest target score the player is allowed to enter. Targets that are too easy for the chosen dice are also refused automatically, as described under house_edge.
 
 max_target
 The highest target score the player is allowed to enter. Set to 0 for no upper limit.
+
+house_edge
+The percentage of each bet the dice roller keeps on average, which defaults to 5. Before every roll, the winning payout multipliers are scaled up or down based on the exact odds of the chosen dice type, number of dice, modifier, and target, so the average result is the same for every setup. Set it to 0 for a game that breaks even on average. The value is capped at 99.
+If the target is so easy that the chance of losing is no higher than the house edge, the roll is refused and the player is asked to choose a higher target.
 
 shake_sound
 Sound to play when the dice are rolled. Relative to sounds/minigames/. Supports random range syntax.
@@ -1071,7 +1076,7 @@ margin
 How much the roll total must exceed the target for this tier to apply. The highest matching tier is always used. Use -1 for the loss entry, which fires when the total falls short of the target.
 
 multiplier
-The payout multiplier applied to the bet. The bet amount is deducted before rolling, and the winnings replace it. Set to 0 for a loss with no return.
+The relative size of this tier's payout compared with the other tiers. The bet amount is deducted before rolling, and a win returns the bet times this multiplier after it has been scaled to the house edge for that roll, so these values set the shape of the payout table rather than the exact amount. With the default table, beating the target by 6 or more always pays 4 times what an exact hit pays. Set to 0 for a loss with no return.
 
 sound
 The sound to play for this payout tier. Relative to sounds/minigames/.
@@ -1091,7 +1096,7 @@ highlow.table
 
 Location: data/config/tables/highlow.table
 
-Defines all higher or lower settings including the deck, streak multipliers, tie handling, ace ranking, bet limits, sounds, and messages.
+Defines all higher or lower settings including the deck, house edge, tie handling, ace ranking, bet limits, sounds, and messages.
 
 min_bet
 The minimum amount of any item a player must bet per round. Set to 1 to allow any positive bet.
@@ -1110,11 +1115,8 @@ Whether the ace is the highest card in the deck. Set to true for ace high, where
 tie_rule
 What happens when the next card matches the current one. Set to push to redraw with your streak intact, win to count the tie as a correct guess, or lose to count it as a wrong guess.
 
-starting_multiplier
-The pot multiplier after your first correct guess. For example 1.5 pays back one and a half times your bet at a streak of one.
-
-streak_multiplier_growth
-How much the multiplier grows with each additional correct guess. For example 0.5 raises the multiplier by half for each further streak.
+house_edge
+The percentage of each bet the game keeps on average, which defaults to 5. Every correct guess multiplies the pot by the real odds of that guess, worked out from the deck, the card showing, the ace ranking, and the tie rule, and the house edge is taken once, on the first correct guess. As a result every round averages the same small loss no matter how long the streak runs or when it is banked. Set it to 0 for a game that breaks even on average. The value is capped at 99.
 
 max_streak
 The highest streak allowed before the round is automatically banked for you. Set to 0 for no limit.

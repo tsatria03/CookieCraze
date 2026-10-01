@@ -12,8 +12,10 @@ class highlow_config
     bool confirm_use_percent = false;
     bool ace_high = true;
     string tie_rule = "push";
+    // starting_multiplier and streak_multiplier_growth are still read so older tables load, but the pot now comes from house_edge and the odds of each guess.
     double starting_multiplier = 1.5;
     double streak_multiplier_growth = 0.5;
+    double house_edge = 5.0;
     int max_streak = 0;
     int streak_sound_threshold = 3;
     string draw_sound = "higher_or_lower/player_draw(1,2).ogg";
@@ -36,6 +38,7 @@ highlow_config highlowConfig;
 void parse_highlow_table(string filepath)
 {
     highlowConfig.deck.resize(0);
+    highlowConfig.house_edge = 5.0;
     file f;
     if (!f.open(filepath, "r"))
         return;
@@ -70,6 +73,7 @@ void parse_highlow_table(string filepath)
             else if (key == "tie_rule") highlowConfig.tie_rule = val;
             else if (key == "starting_multiplier") highlowConfig.starting_multiplier = string_to_number(val);
             else if (key == "streak_multiplier_growth") highlowConfig.streak_multiplier_growth = string_to_number(val);
+            else if (key == "house_edge") highlowConfig.house_edge = max(0.0, min(99.0, string_to_number(val)));
             else if (key == "max_streak") highlowConfig.max_streak = max(0, string_to_int(val));
             else if (key == "streak_sound_threshold") highlowConfig.streak_sound_threshold = max(1, string_to_int(val));
             else if (key == "draw_sound") highlowConfig.draw_sound = val;
@@ -97,4 +101,27 @@ void parse_highlow_table(string filepath)
         }
     }
     f.close();
+}
+
+double highlow_win_chance(int curVal, bool guessHigher)
+{
+    /* Chance that this guess is judged correct, using the same rules as highlowgame: each draw is a uniformly random
+    deck entry, an ace counts as 1 when ace_high is false, and a tie follows tie_rule. Under push a tie redraws, so ties
+    are left out; under win a tie counts as correct; under lose it counts as wrong. */
+    int better = 0;
+    int ties = 0;
+    int total = int(highlowConfig.deck.length());
+    for (int i = 0; i < total; i++)
+    {
+        int v = highlowConfig.deck[i].value;
+        if (!highlowConfig.ace_high && highlowConfig.deck[i].name == "ace") v = 1;
+        if (v == curVal) ties++;
+        else if ((v > curVal) == guessHigher) better++;
+    }
+    if (total <= 0) return 0;
+    if (highlowConfig.tie_rule == "win") return double(better + ties) / total;
+    if (highlowConfig.tie_rule == "lose") return double(better) / total;
+    int nonTie = total - ties;
+    if (nonTie <= 0) return 0;
+    return double(better) / nonTie;
 }
