@@ -531,7 +531,8 @@ void show_baker_info()
     txt += "Experience needed for next rank: " + format_number(max(0.0, xprequired - cookieXP)) + "\r\n";
     txt += "Balance: " + convert_to_currency(coins) + "\r\n";
     txt += "Cookie sell price: " + convert_to_currency(cookieSellPrice) + " each\r\n";
-    txt += "Earnings per sell: " + convert_to_currency(floor(cookies) * cookieSellPrice) + "\r\n";
+    // Capped at 1e308 like the sell itself, so a huge cookie count can't make this read as Inf.
+    txt += "Earnings per sell: " + convert_to_currency(safe_cap(floor(cookies) * cookieSellPrice)) + "\r\n";
     txt += "Prestige level: " + format_number(prestigeLevel) + "\r\n";
     txt += "Prestige points: " + format_number(prestige_points) + "\r\n";
     int completedQuests = 0;

@@ -29,7 +29,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Feature ideas](project_feature_ideas.md) — 6.4+ wish list (offline progress, golden-cookie bonus, daily streak, auto-buyer, boosts shop, QoL) + future-minigame candidates (mines, video poker, keno, audio Simon). Higher or lower + number-format shipped in 6.4; achievement rewards + roulette shipped in 6.5, roulette's rank-shift + tweaks changelogged in 6.6 (all roulette sounds delivered); rest unbuilt.
 
 ## Release status
-- [Release status](project_release_status.md) — 6.9 RELEASED (built, published, site shows V6.90) and frozen; 7.0 IN PROGRESS (version.txt 7.0, changelog block open, 18 of 20 entries; all Medium bugs and all four payout exploits done) (changelog block full, 10/10); the next change opens a 7.0 major block (up to 20 entries) and bumps build/version.txt to 7.0, not 6.10; what 6.9 shipped and what's open next.
+- [Release status](project_release_status.md) — 6.9 RELEASED (built, published, site shows V6.90) and frozen; 7.0 IN PROGRESS (version.txt 7.0, changelog block open, 19 of 20 entries; all Medium bugs and all four payout exploits done) (changelog block full, 10/10); the next change opens a 7.0 major block (up to 20 entries) and bumps build/version.txt to 7.0, not 6.10; what 6.9 shipped and what's open next.
 
 ## Finished plans (7.0)
 - [Lottery value prizes plan](project_lottery_value_prizes_plan.md) — SHIPPED 7.0: item prizes defined by money value, converted at current prices (cookies via sell price, auto/manual via the basic store item's current price), money fallback; balance all four tiers to ~85% total; 5 sections, docs last; fixes exploit #5 properly.

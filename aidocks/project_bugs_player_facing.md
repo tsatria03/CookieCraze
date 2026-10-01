@@ -43,7 +43,7 @@ All High items are done (7 fixed in 6.9, #4 won't fix). This is the remaining ba
 - #28 **WON'T FIX — not a bug (dev, 2026-09-30)**: the readme covers the keys and players can open it from the in-game documentation menu. Don't re-propose an in-game key list. Original: There's no in-game list of keys; they're only in the readme.
 - #29 **FIXED (7.0), dev-tested; NO changelog entry (dev: too small)** — `usersetsmenu` last-name error path now stores its sound in `alertslot` (like the first-name path), so the following `pool.destroy_sound(alertslot)` stops its own error sound instead of whatever older sound `alertslot` held. Original: An error sound while typing a last name can cut off another sound that was playing.
 - #30 **FIXED (7.0), dev-tested** (one combined changelog entry for slots + lottery scratch all) — `slotsgame`'s auto-mode "spinning..." pause is now `mini_wait_async(random(1000,2000), "slots")` instead of plain `wait()`. Safe because slots takes the bet up front (6.9). The same plain `wait(random(1000, 2000))` in `lottery_scratch_all` (`lottery_table.nvgt`, after the scratch sound) was also switched to `mini_wait_async(..., "lottery")` at the dev's request, matching single scratches. No plain `wait(random…)` is left in src/includes/main. Original: The slot machine ignores all keys for 1–2 seconds during its spin.
-- #31 The earnings-per-sell figure can show as Inf with a very large cookie count.
+- #31 **FIXED (7.0), dev-tested** — Baker Info "Earnings per sell" now `convert_to_currency(safe_cap(floor(cookies) * cookieSellPrice))`, capped at 1e308 like the actual sell (`menu.nvgt` sell path already used safe_cap). Original: The earnings-per-sell figure can show as Inf with a very large cookie count.
 
 ## Fixed since the audit
 
