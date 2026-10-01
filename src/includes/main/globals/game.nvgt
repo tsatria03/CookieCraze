@@ -386,12 +386,11 @@ form.reset();
 clickergame();
 }
 }
-if(key_pressed(KEY_M))
-{
-pool.destroy_sound(coinslot);
-if(coins>0) coinslot=pool.play_stationary("sounds/misc/cointoss.ogg", false);
-speak_buffer("You have " + convert_to_currency(coins) + " available to spend", "misc");
-}
+if(key_pressed(KEY_M)) announce_money();
+// Same stat keys as inside the minigames. Plain S only, since Control S saves.
+if(key_pressed(KEY_A)) announce_auto_cookies();
+if(!control_is_down() && key_pressed(KEY_S)) announce_baking_speed();
+if(key_pressed(KEY_N)) announce_manual_cookies();
 if(key_pressed(KEY_R))
 {
 double xpNeeded = xprequired - cookieXP;

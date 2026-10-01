@@ -8,6 +8,7 @@
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Make the stat keys mean the same thing on the main game screen and in every minigame, with M for money, A for auto cookies, S for baking speed, and N for manual cookies.
 **Finished. Balance the baking speed events so a single bad event cannot wipe out all of your baking speed.
 **Finished. Make it so you can open the store to sell cookies even when you have less than one cent.
 **Finished. Fix rerolled quests so their goal is filled in and escalated, instead of showing a placeholder or an endless quest's starting goal.

@@ -510,6 +510,9 @@ Letter, J: Announces how many cookies you produce per bake when baking mode is i
 Letter, C: Announces your current cookie count.
 Letter, R: Announces your current rank, your current experience, and how much more experience is needed to reach the next rank.
 Letter, M: Announces how much money you currently have.
+Letter, A: Announces how many auto cookies you have.
+Letter, S: Announces your current baking speed and how long each bake takes.
+Letter, N: Announces how many manual cookies you have.
 Letter, L: Announces your current prestige level.
 Letter, P: Announces how many prestige points you have to spend in the prestige store.
 Control S: Saves your game progress.
@@ -519,12 +522,12 @@ Alt plus F4: Exits the main game immediately without saving.
 
 In minigames.
 
-These keys work while any minigame is open. Some letters differ from the main game screen, so note that M announces manual cookies here rather than money, and O announces your money instead.
+These keys work while any minigame is open, and they mean the same as on the main game screen.
 Letter, C: Announces your current cookie count.
+Letter, M: Announces how much money you currently have.
 Letter, A: Announces how many auto cookies you have.
-Letter, S: Announces your current baking speed.
-Letter, M: Announces how many manual cookies you have.
-Letter, O: Announces how much money you currently have.
+Letter, S: Announces your current baking speed and how long each bake takes.
+Letter, N: Announces how many manual cookies you have.
 Control S: Saves your game progress without leaving the minigame, so a round in progress carries on.
 Control L: Reloads all configuration files and your save data, then reopens the minigame you are in.
 

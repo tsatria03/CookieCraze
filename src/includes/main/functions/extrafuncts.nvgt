@@ -917,6 +917,26 @@ void set_save_slot(int slot)
     sd = savedata(currentSaveSlot, "rQP8u9I5iWYwcmwPkJ5EzU3ri4r6IQFP77dvgYedgyGQPxzHEi1eKGdBEENLRbYEWBr3hAmmQLgyevhYJJ7Q3sUQt5n6BKjzYVZMWQb2LyYx");
 }
 
+/* Stat readouts shared by the main game screen and every minigame, so each letter means the same thing
+everywhere: M money, A auto cookies, S baking speed, N manual cookies (C cookies is handled by each screen). */
+void announce_money()
+{
+    pool.destroy_sound(coinslot);
+    if (coins > 0) coinslot = pool.play_stationary("sounds/misc/cointoss.ogg", false);
+    speak_buffer("You have " + convert_to_currency(coins) + " available to spend", "misc");
+}
+void announce_auto_cookies()
+{
+    speak_buffer("You have " + format_number(autocookie) + (autocookie == 1 ? " auto cookie." : " auto cookies."), "misc");
+}
+void announce_baking_speed()
+{
+    speak_buffer("Your baking speed is " + format_number(cookiespeed) + " ms, so each bake takes " + format_number(clicktime) + " ms.", "misc");
+}
+void announce_manual_cookies()
+{
+    speak_buffer("You have " + format_number(manulcookie) + (manulcookie == 1 ? " manual cookie." : " manual cookies."), "misc");
+}
 void minigame_input(string game)
 {
     buffer_check_keys();
@@ -929,15 +949,10 @@ void minigame_input(string game)
     if (!control_is_down())
     {
         if (key_pressed(KEY_C)) speak_buffer("You have " + format_number(cookies) + " cookies.");
-        if (key_pressed(KEY_A)) speak_buffer("You have " + format_number(autocookie) + " auto cookies.");
-        if (key_pressed(KEY_S)) speak_buffer("You have " + format_number(cookiespeed) + " auto cookie speeds.");
-        if (key_pressed(KEY_M)) speak_buffer("You have " + format_number(manulcookie) + " manual cookies.");
-        if (key_pressed(KEY_O))
-        {
-            pool.destroy_sound(coinslot);
-            if (coins > 0) coinslot = pool.play_stationary("sounds/misc/cointoss.ogg", false);
-            speak_buffer("You have " + convert_to_currency(coins) + ".");
-        }
+        if (key_pressed(KEY_M)) announce_money();
+        if (key_pressed(KEY_A)) announce_auto_cookies();
+        if (key_pressed(KEY_S)) announce_baking_speed();
+        if (key_pressed(KEY_N)) announce_manual_cookies();
     }
     if (control_is_down())
     {
