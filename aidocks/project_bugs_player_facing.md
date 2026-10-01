@@ -1,6 +1,6 @@
 ---
 name: project_bugs_player_facing
-description: "Bug audit 2026-09-30 (v6.8): bugs a player can notice in play — lost/leaked progress, broken keys, settings Cancel, dead search, missing sounds, UX convention violations. Unfixed unless marked."
+description: "Bug audit 2026-09-30 (v6.8): bugs a player can notice in play. All High items done in 6.9; the 'Open after 6.9' section at the top lists the remaining 10 Medium + 12 Low in the dev's wording, for 7.0. Unfixed unless marked."
 metadata:
   node_type: memory
   type: project
@@ -11,6 +11,36 @@ metadata:
 A full-game review (five parallel reviewers, the worst re-verified by hand) produced this list. Nothing was fixed at audit time. **Line numbers are from 6.8 — re-locate by symbol before fixing** ([[feedback_verify_code_while_fixing]]). Exploits and balance live in [[project_bugs_exploits_balance]]; internal code defects in [[project_bugs_code]]; build/docs in [[project_bugs_build_docs]]. Mark an entry **FIXED (version)** when it ships rather than deleting it.
 
 **Mirrored in `cycrz/docks/todo_list.txt` (2026-09-30):** every open High and Medium item here (#1–#4, #6–#11, #14–#19; not #13's code mismatch, not the Low convention items #20–#31) has a `****Unfinished.` line there, and the fixed ones (#0, #5, the slots bet timing, #12/#13 readme) have `**Finished.` lines ([[feedback_todo_list_format]]). **When you fix one of these, also move its todo line to the finished section.**
+
+## Open after 6.9 (dev's list, saved 2026-09-30 when 6.9 was released)
+
+All High items are done (7 fixed in 6.9, #4 won't fix). This is the remaining backlog in the dev's own wording, highest first; the detailed entries with file/line pointers are further down under the same numbers. Fixes land in the 7.0 block ([[project_release_status]]).
+
+**Medium (10)**
+- #10 Dice results play no sound because the win and lose sound files are missing.
+- #11 Achievement, combo and event messages always cut off whatever the screen reader is saying.
+- #12 (readme fixed) Shift+Backslash exports only the current buffer and then clears it. The readme said it exported all buffers; it now describes the real behavior, which is intended. Nothing left to do in code.
+- #13 (readme fixed) Minigame status keys don't match the main game: M is money on the main screen but manual cookies in minigames. The minigame keys are now in the readme; the letter mismatch in the code is unchanged.
+- #14 Rerolling a quest asks the same "Are you sure?" twice. In warning mode 5 a blocked reroll gives no message at all.
+- #15 With less than 1 cent you can't enter the store, and selling cookies is inside the store. A new player who spends their starting money can get stuck.
+- #16 A single speed-loss event can wipe out all your baking speed, while speed gains are tiny. The cookie flipper has the same imbalance. Also listed in the balance file.
+- #17 The Baker Info screen describes quest mode 1 as giving a reward for any completed quest, but that mode never gives a reward.
+- #18 A dice table with no losing row keeps your bet without a refund. A maximum dice count under 6 breaks the dice list.
+- #19 Reaching exactly 21 by hitting in blackjack wins straight away without the dealer playing. The message is also fixed text instead of coming from the config.
+
+**Low (12)**
+- #20 "canceled" is spoken on only 3 of about 40 menus. The search box also spells it "Cancelled."
+- #21 Cancelling a quantity or name box gives an "Error! Please enter a valid number" message instead of "canceled."
+- #22 Some Yes/No menus use lowercase "yes"/"no". Pressing Escape during profile setup quits the whole game. The quit prompt has four long options.
+- #23 More than 60 messages are longer than one sentence, mostly because of the added "Press enter or space to continue". One message says it twice.
+- #24 Some numbers are still read raw instead of formatted: the prestige store intro, the tickets you can buy, and the slot counts. The prestige store intro also has the typo "brows" for "browse".
+- #25 Some coin amounts play no coin sound at all, for example 491–499 and 9991–9999.
+- #26 There's no sound or speech when you reach either end of a message buffer.
+- #27 Pressing Home in a menu with nothing selected repeats the current item instead of jumping to the top. The "3 of 20" position announcement is always off, with no setting to turn it on.
+- #28 There's no in-game list of keys; they're only in the readme.
+- #29 An error sound while typing a last name can cut off another sound that was playing.
+- #30 The slot machine ignores all keys for 1–2 seconds during its spin.
+- #31 The earnings-per-sell figure can show as Inf with a very large cookie count.
 
 ## Fixed since the audit
 

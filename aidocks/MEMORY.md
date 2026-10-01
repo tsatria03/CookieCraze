@@ -28,12 +28,15 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 ## Ideas / backlog
 - [Feature ideas](project_feature_ideas.md) — 6.4+ wish list (offline progress, golden-cookie bonus, daily streak, auto-buyer, boosts shop, QoL) + future-minigame candidates (mines, video poker, keno, audio Simon). Higher or lower + number-format shipped in 6.4; achievement rewards + roulette shipped in 6.5, roulette's rank-shift + tweaks changelogged in 6.6 (all roulette sounds delivered); rest unbuilt.
 
+## Release status
+- [Release status](project_release_status.md) — 6.9 RELEASED and frozen (changelog block full, 10/10); the next change opens a 7.0 major block (up to 20 entries) and bumps build/version.txt to 7.0, not 6.10; what 6.9 shipped and what's open next.
+
 ## Finished plans (6.9)
 - [Slots scaled payouts plan](project_slots_scaled_payouts_plan.md) — SHIPPED 6.9: scale slot payouts by checked-symbol count to a fixed house edge (default 5%); house_edge + min_symbols config, %amount%/%multiplier% tokens, check-payouts button, readme docs for how symbols work; 4 sections, docs last.
 - [High bugs fix plan](project_high_bugs_fix_plan.md) — SHIPPED 6.9 (7 fixed, backup saves skipped by dev); kept as design record: 8 High player-facing bugs, one section per commit (new-game prestige leak → achievements saved → settings Save guard → (safe save+backup SKIPPED, dev declined .bak files) → menu search → settings Cancel undo → mid-round Escape → Ctrl+L quests), docs last; open decisions flagged per section.
 
 ## Known bugs — full-game audit of 6.8 (2026-09-30); mark entries FIXED as they ship
-- [Player-facing bugs](project_bugs_player_facing.md) — 31 bugs a player can hit: new game leaks prestige, achievements not saved, settings Save overwrites last slot, unsafe save write, Ctrl+S dead in minigames, F3 search rejects letters, settings Cancel doesn't undo, UX convention violations.
+- [Player-facing bugs](project_bugs_player_facing.md) — "Open after 6.9" at the top = remaining 10 Medium + 12 Low backlog in the dev's wording. Originally 31 bugs a player can hit: new game leaks prestige, achievements not saved, settings Save overwrites last slot, unsafe save write, Ctrl+S dead in minigames, F3 search rejects letters, settings Cancel doesn't undo, UX convention violations.
 - [Exploits and balance](project_bugs_exploits_balance.md) — minigame EV table; dice always pays 8x, blackjack pays 3x, highlow/slots/gold+diamond tickets are +EV; prestige spam, hold-Enter combos, lopsided speed events, pacing notes.
 - [Code bugs](project_bugs_code.md) — save/load ordering, int overflow in reward rolls + prestige_points, recursive game loop/menus, missing stat increments, parser robustness, unchecked config loads, stale vendored deps, duplication hotspots.
 - [Build and docs bugs](project_bugs_build_docs.md) — site updater x.0 regex, tools.py deletes release first + import-time KeyError, hardcoded paths, gitignore gaps, installer mutex, readme inaccuracies/typos, two stale memory notes.
