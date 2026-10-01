@@ -8,5 +8,5 @@ gain_autocookie:gain.ogg,give.ogg:1:autocookie:1*rank:5*rank:false:100:Lucky fli
 lose_autocookie:lose.ogg:2:autocookie:1*rank:5*rank:false:100:Bad luck! You lost %amount% auto-cookies. Your auto-baking rate has decreased.
 gain_manulcookie:gain.ogg,give.ogg:1:manulcookie:1*rank:5*rank:false:100:Nice! You gained %amount% manual cookies. You can now bake more cookies with each click.
 lose_manulcookie:lose.ogg:2:manulcookie:1*rank:5*rank:false:100:Oops! You lost %amount% manual cookies. Your baking rate per click has decreased.
-increase_cookiespeed:gain.ogg,give.ogg,powerup.ogg:1:cookiespeed:5/rank:5/rank:false:100:Cool! Your baking speed has increased by %amount%ms.
-decrease_cookiespeed:lose.ogg,powerdown.ogg:2:cookiespeed:5*rank:5*rank:false:100:Oh dear! Something has slowed down your baking speed by %amount%ms.
+increase_cookiespeed:gain.ogg,give.ogg,powerup.ogg:1:cookiespeed:5:10:false:100:Cool! Your baking speed has increased by %amount%ms.
+decrease_cookiespeed:lose.ogg,powerdown.ogg:2:cookiespeed:5:10:false:100:Oh dear! Something has slowed down your baking speed by %amount%ms.

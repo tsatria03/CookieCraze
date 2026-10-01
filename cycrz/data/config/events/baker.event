@@ -1,8 +1,8 @@
 ; Flat events
 
 bonus_cookies:give.ogg:3:1:cookies:40*rank:80*rank:false:100:Lucky bake! You gained an extra %amount% cookies!
-increase_cookiespeed:give.ogg,powerup.ogg:3:1:cookiespeed:10/rank:10/rank:false:100:Amazing! Your baking speed has increased by %amount% ms. Cookies bake faster now.
-decrease_cookiespeed:lose.ogg,powerdown.ogg:3:2:cookiespeed:10*rank:10*rank:false:100:Oh no! Something has slowed down your baking speed by %amount% ms.
+increase_cookiespeed:give.ogg,powerup.ogg:3:1:cookiespeed:10:20:false:100:Amazing! Your baking speed has increased by %amount% ms. Cookies bake faster now.
+decrease_cookiespeed:lose.ogg,powerdown.ogg:3:2:cookiespeed:10:20:false:100:Oh no! Something has slowed down your baking speed by %amount% ms.
 gain_coins:give.ogg,store/coin50.ogg:3:1:coins:40*rank:80*rank:false:100:Wonderful! You found a hidden stash! You gained %amount%.
 lose_coins:lose.ogg,misc/cointoss.ogg:3:2:coins:40*rank:80*rank:false:100:Oh crap! Your pocket had a hole in it! You lost %amount%.
 gain_autocookie:give.ogg:3:1:autocookie:10*rank:50*rank:false:100:Nice! You gained %amount% auto-cookies. Your auto baking rate has increased.
