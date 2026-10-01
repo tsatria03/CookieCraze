@@ -402,7 +402,7 @@ Quests.
 Complete a set of objectives to unlock the prestige option and start a new run with a permanent bonus.
 
 Quests are automatically assigned at the start of each prestige cycle using a difficulty-based system. Each quest has a difficulty from 1 to 10, and active slots are spread evenly across the range so you always get a balanced mix.
-Required quests occupy their difficulty slot directly, and random quests fill the rest. Only one required quest per stat can be active at a time, so if a stat has multiple required tiers only the current one will appear.
+Required quests occupy their difficulty slot directly, or the nearest open slot when none matches, and random quests fill the rest. Only one required quest per stat can be active at a time, so if a stat has multiple required tiers only the current one will appear.
 
 The number of active quests is configurable in quests.table and is capped at 10.
 The game ships with a variety of quests spanning both required rank milestones and random objectives across many trackable stats.
@@ -418,12 +418,12 @@ Arrow to any quest and the detail box updates automatically, showing the descrip
 The prestige button is located in the quests screen and its label updates dynamically to reflect your current status.
 A prestige history box also appears in the quests screen after the prestige button, showing a log of every prestige run.
 A reroll history box appears directly after the reroll button, showing the last 50 rerolls and listing which quest was replaced, what replaced it, and how much it cost. It is hidden when a required quest is focused, always visible when the category is set to Random, and toggles as you move between quests when set to All.
-Both boxes show a message when empty and reset when starting a new game.
+Both boxes show a message when empty. The prestige history resets when starting a new game, and the reroll history also clears at the start of each prestige cycle.
 Before reaching the minimum rank the prestige button shows unlocked at rank X. Once unlocked, it shows no reward available or reward available depending on your quest completion status.
 
 If you want a different quest, arrow to it and press the reroll button. Rerolling replaces only that quest with a new random one of the same difficulty. The reroll button does not appear when a required quest is focused.
-Rerolling deducts a cost from a configurable stat, and the cost increases each time using compounding scaling. The reroll count resets at the start of each prestige cycle so costs go back to base.
-The reroll_warning setting in quests.table controls how the reroll button behaves when a quest is complete. See the configuration file reference for details.
+Rerolling deducts a cost from a configurable stat, and the cost increases each time using compounding scaling. The reroll count resets at the start of each prestige cycle so costs go back to base. If you cannot afford a reroll, you are told right away, before any confirmation.
+The reroll_warning setting in quests.table controls whether you are asked to confirm a reroll, depending on whether the quest is complete, and whether completed quests can be rerolled at all. With the default setting, only completed quests ask before rerolling. See the configuration file reference for details.
 
 Prestige.
 
@@ -1650,7 +1650,7 @@ reroll_target
 The stat deducted when the player rerolls their random quests.
 
 cookies = deducts from the player's current cookie count.
-coins = deducts from the player's current coin count.
+coins = deducts from the player's money.
 autocookie = deducts from the player's auto cookie production rate.
 manulcookie = deducts from the player's manual cookie production rate.
 cookiespeed = deducts from the player's baking speed.
@@ -1664,7 +1664,7 @@ How much the reroll cost increases with each reroll. Uses compounding scaling, t
 Keep this value low. Setting it too high will make rerolling unaffordable very quickly.
 
 reroll_warning
-Controls how the reroll button behaves when the focused quest is already complete. Accepts a number from 1 to 5.
+Controls whether a confirmation prompt appears before a reroll, based on whether the focused quest is complete, and whether completed quests can be rerolled at all. Accepts a number from 1 to 5. The cost is always checked first, so a player who cannot afford the reroll is told before any prompt appears.
 
 1 = No confirmation on any reroll. The reroll fires immediately.
 2 = Shows a confirmation prompt only when rerolling an incomplete quest.

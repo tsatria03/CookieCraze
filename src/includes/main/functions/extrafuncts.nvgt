@@ -540,7 +540,7 @@ void show_baker_info()
         if (get_stat_value(activeQuests[i].stat) >= activeQuests[i].threshold) completedQuests++;
     }
     string questRewardMode = "";
-    if (questsConfig.require_all == 1) questRewardMode = "Reward fires if any quest happens to be complete";
+    if (questsConfig.require_all == 1) questRewardMode = "No reward is given, regardless of quest completion";
     else if (questsConfig.require_all == 2) questRewardMode = "At least one quest must be complete";
     else if (questsConfig.require_all == 3) questRewardMode = "All " + string(activeQuests.length()) + " quests must be complete";
     txt += "Prestige reward condition: " + questRewardMode + "\r\n";

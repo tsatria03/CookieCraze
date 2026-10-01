@@ -2269,27 +2269,13 @@ void questsmenu()
             else if (rwarn == 5 && rerollQuestComplete) doBlock = true;
             if (doBlock)
             {
+                dlgmessage_return("You cannot reroll a completed quest.");
                 form.reset();
                 questsmenu();
                 return;
             }
-            if (doConfirm)
-            {
-                setupmenu(false);
-                m.add_item("Yes", "yes");
-                m.add_item("No", "no");
-                if (rerollQuestComplete)
-                    m.intro_text = "Are you sure you want to reroll this quest? This quest is already complete. Rerolling it will remove its completed status, which may affect your prestige reward. This action cannot be undone.";
-                else
-                    m.intro_text = "Are you sure you want to reroll this quest? This action cannot be undone.";
-                int wres = m.run();
-                if (wres == -1 || m.get_item_id(wres) == "no")
-                {
-                    form.reset();
-                    questsmenu();
-                    return;
-                }
-            }
+            /* Affordability is checked before any prompt so the player never confirms a reroll they can't pay for,
+            and the reroll_warning mode alone decides whether a prompt appears (it used to ask a second time on every reroll). */
             double rerollConfirmCost = floor(questsConfig.reroll_base_cost * pow(questsConfig.reroll_multiplier, questRerollCount));
             double rerollStatVal = 0;
             if (questsConfig.reroll_target == "coins")           rerollStatVal = coins;
@@ -2332,16 +2318,23 @@ void questsmenu()
                 questsmenu();
                 return;
             }
-            setupmenu(false);
-            m.add_item("Yes", "yes");
-            m.add_item("No", "no");
-            m.intro_text = "Are you sure you want to reroll this quest? This action cannot be undone.";
-            int mres = m.run();
-            if (mres == -1 || m.get_item_id(mres) == "no")
+            if (doConfirm)
             {
-                form.reset();
-                questsmenu();
-                return;
+                setupmenu(false);
+                m.add_item("Yes", "yes");
+                m.add_item("No", "no");
+                if (rerollQuestComplete)
+                    m.intro_text = "Are you sure you want to reroll this quest? This quest is already complete. Rerolling it will remove its completed status, which may affect your prestige reward. This action cannot be undone.";
+                else
+                    m.intro_text = "Are you sure you want to reroll this quest? This action cannot be undone.";
+                int wres = m.run();
+                if (wres == -1 || m.get_item_id(wres) == "no")
+                {
+                    speak("canceled");
+                    form.reset();
+                    questsmenu();
+                    return;
+                }
             }
             string rerollId = questOrder[rerollPos].id;
             int actualRerollPos = -1;
