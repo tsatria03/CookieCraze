@@ -1,6 +1,5 @@
 ####These are the things that need to be finished for future versions of the game.
 
-****Unfinished. Make the dice roller refund your bet when its config has no losing result, instead of keeping it.
 ****Unfinished. Make the dealer play out their hand when you reach 21 by hitting in blackjack, instead of winning right away.
 ****Unfinished. Add an auto-buyer that automatically purchases the cheapest upgrade you can afford on a timer, extending automation from baking into spending. Unlocked at a late rank and toggleable in the settings.
 ****Unfinished. Add a temporary boosts shop where you spend cookies or coins on timed power-ups, such as double production for 60 seconds, an auto-bake burst, or an extended combo window.
@@ -8,6 +7,7 @@
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Make the dice roller handle a dice table with no row for a result, returning the bet on a win and still counting a loss, and stop the dice count list breaking when the maximum is below 6.
 **Finished. Make the stat keys mean the same thing on the main game screen and in every minigame, with M for money, A for auto cookies, S for baking speed, and N for manual cookies.
 **Finished. Balance the baking speed events so a single bad event cannot wipe out all of your baking speed.
 **Finished. Make it so you can open the store to sell cookies even when you have less than one cent.

@@ -15,4 +15,6 @@ metadata:
 
 **Why:** Players read the changelog; engine internals, file names, and how-to instructions don't belong there. The changelog + `todo_list.txt` are the durable human record of the project's evolution.
 
+**Bug-fix entries open with "Fixed a bug where" followed by the issue (dev, 2026-09-30)** — e.g. "Fixed a bug where the dice roller kept your bet when…". Not "Fixed two problems…", "Fixed the X screen…", or other openers. Feature/balance changes keep their own openers (Added…, Made it so…, Rebalanced…, Reworked…).
+
 **How to apply:** Describe the observable change in a sentence or two. Trust the changelog over the readme/todo when they disagree. Keep lines within the dock line limit ([[feedback_dock_line_length_1024]]).

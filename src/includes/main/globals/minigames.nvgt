@@ -803,7 +803,10 @@ void dicegame()
     int diceCountList = form.create_list("Dice &Number:", diceConfig.max_dice_count, false, false);
     for (int i = diceConfig.max_dice_count; i >= 1; i--)
         form.add_list_item(diceCountList, string(i) + (i == 1 ? " die" : " dice"), "", -1, false);
-    form.set_list_position(diceCountList, diceConfig.max_dice_count - 6);
+    // Start on 6 dice, or on the largest count available when max_dice_count is below 6.
+    int defaultCountPos = diceConfig.max_dice_count - 6;
+    if (defaultCountPos < 0) defaultCountPos = 0;
+    form.set_list_position(diceCountList, defaultCountPos);
     int modifierList = form.create_list("Dice &Modifier:", diceConfig.modifiers.length(), false, false);
     uint modCount = diceConfig.modifiers.length();
     for (uint i = 0; i < modCount; i++)
@@ -954,17 +957,34 @@ void dicegame()
             total += modifier;
             stat_dice_rolls++;
             int margin = total - target;
-            dice_payout@ payout = pick_dice_payout(margin);
-            if (payout is null)
-            {
-                dlg_buffer("Something went wrong reading the payout table.");
-                continue;
-            }
             string modStr = (modifier > 0 ? "+" : "") + string(modifier);
             string modifierText = "";
             if (modifier > 0) modifierText = "plus " + string(modifier);
             else if (modifier < 0) modifierText = "minus " + string(abs(modifier));
             string rollSummary = "The dice show: " + rollDetails + (modifier != 0 ? ", with a modifier of " + modifierText : "") + ", for a total score of " + string(total) + ", with a target score of " + string(target) + ".";
+            dice_payout@ payout = pick_dice_payout(margin);
+            /* A table with no row for this result used to keep the bet with an error. A winning margin with no row
+            returns the bet, since no payout was defined for it. A losing roll with no -1 row is still a loss with a
+            built-in message, because refunding it would make every losing roll free. */
+            if (payout is null && margin >= 0)
+            {
+                if (selectedBet == 0) { cookies += betAmount; cookies = floor(safe_cap(cookies)); }
+                else if (selectedBet == 1) { coins += betAmount; coins = floor(safe_cap(coins)); }
+                else if (selectedBet == 2) { autocookie += betAmount; autocookie = floor(safe_cap(autocookie)); }
+                else if (selectedBet == 3) gain_cookiespeed(betAmount);
+                else if (selectedBet == 4) { manulcookie += betAmount; manulcookie = floor(safe_cap(manulcookie)); }
+                dlg_buffer(rollSummary + " No payout is set for that result in the dice table, so your bet was returned.");
+                continue;
+            }
+            if (payout is null)
+            {
+                dice_payout fallbackLoss;
+                fallbackLoss.margin = -1;
+                fallbackLoss.multiplier = 0;
+                fallbackLoss.sound = "dice_roller/lose.ogg";
+                fallbackLoss.message = "You rolled %roll% but needed %target%. You lost your bet.";
+                @payout = fallbackLoss;
+            }
             pool.play_stationary("sounds/minigames/" + resolve_sound(payout.sound), false);
             if (payout.multiplier <= 0)
             {
