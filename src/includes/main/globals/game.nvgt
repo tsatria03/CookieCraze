@@ -182,11 +182,13 @@ if(playervents2==true) attempt_manebaker_event(evchanse2);
 }
 if(form.is_pressed(shop))
 {
-if(coins<1)
+/* Selling cookies lives inside the store, so cookies alone are enough to get in; otherwise a player
+who spent all their money had no way to sell their way back to any. Purchases inside check affordability themselves. */
+if(coins<1 && cookies<1)
 {
-speak_buffer("You need at least 1 cent to enter the cookie store.", "general");
+speak_buffer("You need at least 1 cent or 1 cookie to enter the cookie store.", "general");
 }
-else if(coins>=1)
+else
 {
 ambpool.destroy_sound(ambslot);
 muspool.destroy_sound(mustrackslot);
