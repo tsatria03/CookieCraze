@@ -416,7 +416,7 @@ vd.set_disallowed_chars(" !@#$%^&*()[]{};:'\"\\|,.<>?/+-=`~_", false, "This char
 string fn2=vd.input_box("","Enter the last name of this character.");
 if(fn2.is_empty())
 {
-pool.play_stationary("sounds/dlg/error.ogg",false);
+alertslot=pool.play_stationary("sounds/dlg/error.ogg",false);
 dlg("Error! Your character's last name is invalid!");
 pool.destroy_sound(alertslot);
             form.reset();

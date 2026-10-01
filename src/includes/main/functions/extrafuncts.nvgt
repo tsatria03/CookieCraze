@@ -468,12 +468,12 @@ docksmenu();
 void play_coin_sound(double amount)
 {
     string snd = "";
-    if (amount > 0 && amount < 10) snd = "coin1.ogg";
-    else if (amount >= 10 && amount <= 490) snd = "coin1.ogg";
-    else if (amount >= 500 && amount <= 9990) snd = "coin50.ogg";
-    else if (amount >= 10000 && amount <= 99990) snd = "coin1000.ogg";
-    else if (amount >= 100000 && amount <= 499990) snd = "coin10000.ogg";
-    else if (amount >= 500000 && amount <= 999990) snd = "coin50000.ogg";
+    // Each band ends where the next begins, so no amount falls between them (the old <= 490, <= 9990 bounds left 491 to 499 and the like silent).
+    if (amount > 0 && amount < 500) snd = "coin1.ogg";
+    else if (amount >= 500 && amount < 10000) snd = "coin50.ogg";
+    else if (amount >= 10000 && amount < 100000) snd = "coin1000.ogg";
+    else if (amount >= 100000 && amount < 500000) snd = "coin10000.ogg";
+    else if (amount >= 500000 && amount < 1000000) snd = "coin50000.ogg";
     else if (amount >= 1000000) snd = "coin100000.ogg";
     if (snd != "") pool.play_stationary("sounds/store/" + snd, false);
 }

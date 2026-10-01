@@ -17,4 +17,6 @@ metadata:
 
 **Bug-fix entries open with "Fixed a bug where" followed by the issue (dev, 2026-09-30)** — e.g. "Fixed a bug where the dice roller kept your bet when…". Not "Fixed two problems…", "Fixed the X screen…", or other openers. Feature/balance changes keep their own openers (Added…, Made it so…, Rebalanced…, Reworked…).
 
+**Skip the changelog for fixes too small for a player to notice (dev, 2026-09-30)** — e.g. #29, a last-name error sound stored in the wrong sound slot. Record them only in the bug memory (and the todo list only if they were already on it). When unsure, ask whether it's worth an entry rather than adding one.
+
 **How to apply:** Describe the observable change in a sentence or two. Trust the changelog over the readme/todo when they disagree. Keep lines within the dock line limit ([[feedback_dock_line_length_1024]]).

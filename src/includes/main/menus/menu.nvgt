@@ -652,7 +652,7 @@ void lottery_buy_menu()
                         canBuy = min(double(lotteryMaxTickets) - t.owned, floor(coins / cost));
                     else
                         canBuy = floor(coins / cost);
-                    label += " You can buy " + string(canBuy) + ".";
+                    label += " You can buy " + format_number(canBuy) + ".";
                 }
                 if (t.description != "") label += " Description: " + t.description;
                 m.add_item(label, "ticket" + string(i));
@@ -683,7 +683,7 @@ void lottery_buy_menu()
             if (lotteryMaxTickets > 0 && ticket.owned >= lotteryMaxTickets)
             {
                 pool.play_stationary("sounds/store/error.ogg", false);
-                dlgmessage_return("Your inventory is full. You can hold a maximum of " + string(lotteryMaxTickets) + ". Scratch some first!");
+                dlgmessage_return("Your inventory is full. You can hold a maximum of " + format_number(lotteryMaxTickets) + ". Scratch some first!");
                 continue;
             }
             double cost = get_ticket_current_cost(@ticket);
@@ -711,7 +711,7 @@ void lottery_buy_menu()
             if (lotteryMaxTickets > 0 && ticket.owned + qty > double(lotteryMaxTickets))
             {
                 pool.play_stationary("sounds/store/error.ogg", false);
-                dlgmessage_return("You can only hold " + string(lotteryMaxTickets) + " tickets of this type. You currently have " + format_number(ticket.owned) + ".");
+                dlgmessage_return("You can only hold " + format_number(lotteryMaxTickets) + " tickets of this type. You currently have " + format_number(ticket.owned) + ".");
                 continue;
             }
             coins -= totalCost;
@@ -830,7 +830,7 @@ void prestige_store_menu()
     }
     m.add_item("back", "back");
     string pointWord = (prestige_points == 1) ? "point" : "points";
-    m.intro_text = "Prestige store. Please choose a category to brows. You have " + string(prestige_points) + " prestige " + pointWord + " available to spend.";
+    m.intro_text = "Prestige store. Please choose a category to browse. You have " + format_number(prestige_points) + " prestige " + pointWord + " available to spend.";
     int mres = m.run(0, true);
     string sel = m.get_item_id(mres);
     if (mres == -1 || sel == "back")
@@ -1775,13 +1775,13 @@ if (slotprod == "add_slot12")  count = 10000;
                 pool.destroy_sound(alertslot);
                 alertslot = pool.play_stationary("sounds/misc/prodslot.ogg", false);
 int produced = baking_slots.length();
-speak("Added " + string(count) + " slot" + (count == 1 ? "" : "s") + ". You now have " + string(produced) + " produced slot" + (produced == 1 ? "" : "s") + ".");
+speak("Added " + format_number(count) + " slot" + (count == 1 ? "" : "s") + ". You now have " + format_number(produced) + " produced slot" + (produced == 1 ? "" : "s") + ".");
             add_auto_slots();
             }
             else
             {
                 alertslot = pool.play_stationary("sounds/dlg/error.ogg", false);
-                dlg("Error! You can't afford " + string(count) + " new slot" + (count == 1 ? "" : "s") + "!");
+                dlg("Error! You can't afford " + format_number(count) + " new slot" + (count == 1 ? "" : "s") + "!");
                 pool.destroy_sound(alertslot);
 add_auto_slots();
 }
@@ -1803,7 +1803,7 @@ void add_manual_slots()
     m.add_item("Add 5000 manual slots for " + convert_to_currency(calc_slot_cost(5000, manualSlotBaseCost, manualSlotMultiplier)), "add_mslot11");
     m.add_item("Add 10000 manual slots for "+ convert_to_currency(calc_slot_cost(10000,manualSlotBaseCost, manualSlotMultiplier)), "add_mslot12");
     m.add_item("Back", "back");
-    m.intro_text = "Manual slots menu. You have " + string(manualSlots) + " manual " + (manualSlots == 1 ? "slot" : "slots") + ".";
+    m.intro_text = "Manual slots menu. You have " + format_number(manualSlots) + " manual " + (manualSlots == 1 ? "slot" : "slots") + ".";
     int start_pos = 0;
     if (last_menu_id != "")
     {
@@ -1847,13 +1847,13 @@ void add_manual_slots()
                 manualSlotBaseCost *= manualSlotMultiplier;
             pool.destroy_sound(alertslot);
             alertslot = pool.play_stationary("sounds/misc/prodslot.ogg", false);
-            speak("Added " + string(count) + " manual " + (count == 1 ? "slot" : "slots") + ". You now have " + string(manualSlots) + " manual " + (manualSlots == 1 ? "slot" : "slots") + ".");
+            speak("Added " + format_number(count) + " manual " + (count == 1 ? "slot" : "slots") + ". You now have " + format_number(manualSlots) + " manual " + (manualSlots == 1 ? "slot" : "slots") + ".");
             add_manual_slots();
         }
         else
         {
             alertslot = pool.play_stationary("sounds/dlg/error.ogg", false);
-            dlg("Error! You can't afford " + string(count) + " manual " + (count == 1 ? "slot" : "slots") + "!");
+            dlg("Error! You can't afford " + format_number(count) + " manual " + (count == 1 ? "slot" : "slots") + "!");
             pool.destroy_sound(alertslot);
             add_manual_slots();
         }
@@ -1868,7 +1868,7 @@ void auto_slots_menu()
     int produced = baking_slots.length();
     int automated = autobakeSlots;
     int nonauto = produced - automated;
-    m.intro_text = "Auto slots menu. You have " + string(produced) + " produced " + (produced == 1 ? "slot" : "slots") + ", " + string(automated) + " automated " + (automated == 1 ? "slot" : "slots") + ", and " + string(nonauto) + " unautomated " + (nonauto == 1 ? "slot" : "slots") + ".";
+    m.intro_text = "Auto slots menu. You have " + format_number(produced) + " produced " + (produced == 1 ? "slot" : "slots") + ", " + format_number(automated) + " automated " + (automated == 1 ? "slot" : "slots") + ", and " + format_number(nonauto) + " unautomated " + (nonauto == 1 ? "slot" : "slots") + ".";
     int mres = m.run();
     string selected = m.get_item_id(mres);
     if (mres == -1 || selected == "back")
@@ -1985,7 +1985,7 @@ void automate_baking_slots()
                 stat_auto_slots_enabled += nonAutoCount;
                 pool.destroy_sound(alertslot);
                 alertslot = pool.play_stationary("sounds/misc/autslot.ogg", false);
-                speak("Successfully automated " + string(nonAutoCount) + " slot" + (nonAutoCount == 1 ? "" : "s") + ".");
+                speak("Successfully automated " + format_number(nonAutoCount) + " slot" + (nonAutoCount == 1 ? "" : "s") + ".");
             }
             else
             {
