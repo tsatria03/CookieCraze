@@ -137,6 +137,7 @@ usersetsmenu();
 }
         if (key_pressed(KEY_ESCAPE))
         {
+speak("canceled");
 if(ingame==true)
 {
 form.reset();
@@ -208,18 +209,11 @@ show_locked_shops = form.is_checked(showLockedToggle);
         playervents2 = form.is_checked(playvents2);
         if (form.is_pressed(restsets))
         {
-setupmenu(false);
-m.add_item("Yes", "yes");
-m.add_item("No", "no");
-m.intro_text = "Are you sure you want to reset your game settings to their defaults? This action cannot be undone.";
-int resmres = m.run();
-string rescfm = m.get_item_id(resmres);
-if (resmres == -1 || rescfm == "no")
+if (!yes_no("Are you sure you want to reset your game settings to their defaults? This action cannot be undone."))
 {
-speak("canceled");
 gamsetsmenu();
 }
-if (rescfm == "yes")
+else
 {
 reset_game_settings();
 dlgmessage_return("Game settings reset.");
@@ -310,18 +304,11 @@ if(ingame==true) musicIndex = form.get_list_position(musslist);
         }
         if (form.is_pressed(restsets))
         {
-setupmenu(false);
-m.add_item("Yes", "yes");
-m.add_item("No", "no");
-m.intro_text = "Are you sure you want to reset your sound settings to their defaults? This action cannot be undone.";
-int resmres = m.run();
-string rescfm = m.get_item_id(resmres);
-if (resmres == -1 || rescfm == "no")
+if (!yes_no("Are you sure you want to reset your sound settings to their defaults? This action cannot be undone."))
 {
-speak("canceled");
 soundsetsmenu();
 }
-if (rescfm == "yes")
+else
 {
 reset_sound_settings();
 if (ingame)
@@ -432,18 +419,11 @@ playername2=fn2;
 }
         if (form.is_pressed(restsets))
         {
-setupmenu(false);
-m.add_item("Yes", "yes");
-m.add_item("No", "no");
-m.intro_text = "Are you sure you want to reset your user settings? This will restart the game and take you back to profile setup. This action cannot be undone.";
-int resmres = m.run();
-string rescfm = m.get_item_id(resmres);
-if (resmres == -1 || rescfm == "no")
+if (!yes_no("Are you sure you want to reset your user settings? This will restart the game and take you back to profile setup. This action cannot be undone."))
 {
-speak("canceled");
 usersetsmenu();
 }
-if (rescfm == "yes")
+else
 {
 if (file_exists(APPDATA_DIR + "preffs/usersets.crz")) file_delete(APPDATA_DIR + "preffs/usersets.crz");
 speak("restarting");

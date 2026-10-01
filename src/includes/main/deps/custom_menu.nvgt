@@ -53,6 +53,21 @@ m.enter_sound=entersound;
 m.open_sound=opensound;
 m.wrap_sound=wrapsound;
 }
+bool yes_no(string question, bool start_focused = false, bool music_added = false)
+{
+    /* Asks a yes or no question and returns true only for Yes. Every yes or no prompt in the game goes through
+    here, so the labels are always exactly "Yes" then "No", the answer is checked by id rather than position, and
+    No or Escape always speaks "canceled". start_focused begins with Yes already selected (the minigame bet
+    confirmations do this); music_added plays the menu music (the new game overwrite prompt does this). */
+    setupmenu(music_added);
+    m.add_item("Yes", "yes");
+    m.add_item("No", "no");
+    m.intro_text = question;
+    int res = start_focused ? m.run(0, true) : m.run();
+    if (m.get_item_id(res) == "yes") return true;
+    speak("canceled");
+    return false;
+}
 
 class custom_menu_item
 {
@@ -218,7 +233,7 @@ void find_searched_item()
     string query = vd.input_box("Find an item", "Enter a keyword to search for:", last_search_query);
     if (query == "" || get_last_error() == -12)
     {
-        speak("Cancelled.");
+        speak("canceled");
         return;
     }
     last_search_query = query;

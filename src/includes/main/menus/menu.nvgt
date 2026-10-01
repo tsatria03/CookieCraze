@@ -55,6 +55,7 @@ int mres=m.run();
 string dnm=m.get_item_id(mres);
 if(mres==-1)
 {
+speak("canceled");
 mainmenu();
 }
 if(dnm=="changelog")
@@ -83,6 +84,7 @@ dockread("docks/todo_list.txt");
 }
 if(dnm=="back")
 {
+speak("canceled");
 mainmenu();
 }
 }
@@ -97,6 +99,7 @@ int mres=m.run();
 string gamem = m.get_item_id(mres);
 if(mres==-1)
 {
+speak("canceled");
 mainmenu();
 }
 if (gamem == "lg")
@@ -109,6 +112,7 @@ newgamemenu();
 }
 if (gamem == "back")
 {
+speak("canceled");
 mainmenu();
 }
 }
@@ -134,10 +138,12 @@ int mres = m.run();
 string slotem = m.get_item_id(mres);
 if(mres==-1)
 {
+speak("canceled");
 gamemenu();
 }
 if (slotem == "back")
 {
+speak("canceled");
 gamemenu();
 }
 int slotNumber = string_to_int(slotem.substr(2));
@@ -187,27 +193,25 @@ int mres = m.run();
 string slotem2 = m.get_item_id(mres);
 if(mres==-1)
 {
+speak("canceled");
 gamemenu();
 }
 if (slotem2 == "back")
 {
+speak("canceled");
 gamemenu();
 }
 int slotNumber = string_to_int(slotem2.substr(2));
 set_save_slot(slotNumber);
 if (file_exists(currentSaveSlot))
 {
-setupmenu();
-m.add_item("yes");
-m.add_item("no");
-m.intro_text = "Are you sure you want to start over from the beginning? This will erase all progress on the selected save slot.";
-int mres2=m.run();
-if(mres2==-1)
+// The menu music keeps playing on this prompt, as it did before, so the fade below still has music to fade.
+if (!yes_no("Are you sure you want to start over from the beginning? This will erase all progress on the selected save slot.", false, true))
 {
 ingame=false;
 newgamemenu();
 }
-if(mres2==1)
+else
 {
 speak("Loading slot " + string(slotNumber));
 m.fade_music();
@@ -219,11 +223,6 @@ mustrackslot=muspool.play_stationary_extended("sounds/ambience/"+mustype+".ogg",
 ingame=true;
 resetgame();
 clickergame();
-}
-if (mres2==2)
-{
-ingame=false;
-newgamemenu();
 }
 }
 else
@@ -258,6 +257,7 @@ wait(5);
 form.monitor();
         if (key_pressed(KEY_ESCAPE))
         {
+speak("canceled");
 form.reset();
 clickergame();
 }
@@ -2320,17 +2320,9 @@ void questsmenu()
             }
             if (doConfirm)
             {
-                setupmenu(false);
-                m.add_item("Yes", "yes");
-                m.add_item("No", "no");
-                if (rerollQuestComplete)
-                    m.intro_text = "Are you sure you want to reroll this quest? This quest is already complete. Rerolling it will remove its completed status, which may affect your prestige reward. This action cannot be undone.";
-                else
-                    m.intro_text = "Are you sure you want to reroll this quest? This action cannot be undone.";
-                int wres = m.run();
-                if (wres == -1 || m.get_item_id(wres) == "no")
+                string rerollQuestion = rerollQuestComplete ? "Are you sure you want to reroll this quest? This quest is already complete. Rerolling it will remove its completed status, which may affect your prestige reward. This action cannot be undone." : "Are you sure you want to reroll this quest? This action cannot be undone.";
+                if (!yes_no(rerollQuestion))
                 {
-                    speak("canceled");
                     form.reset();
                     questsmenu();
                     return;
@@ -2358,21 +2350,17 @@ void questsmenu()
 
 void start_prestige()
 {
-    setupmenu(false);
-    m.add_item("Yes", "yes");
-    m.add_item("No", "no");
     string confirmText = "Are you sure you want to prestige? Your cookies, money, rank, upgrades, and baking slots will be reset. Your achievements, minigame stats, and prestige bonus will be kept.";
     bool willGetReward = quests_reward_earned();
     if (!willGetReward)
         confirmText += " Warning: you have not met the quest requirement, so you will not receive any reward for this prestige.";
     else
         confirmText += " You have met the quest requirement and will receive your reward.";
-    m.intro_text = confirmText;
-    int mres = m.run();
-    if (mres == -1 || m.get_item_id(mres) == "no")
+    if (!yes_no(confirmText))
     {
+        // Prestige is only started from the quests screen, so a cancel goes back there rather than to the main game screen.
         form.reset();
-        clickergame();
+        questsmenu();
         return;
     }
     ambpool.pause_sound(ambslot);

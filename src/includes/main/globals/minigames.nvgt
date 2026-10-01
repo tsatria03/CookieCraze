@@ -328,13 +328,7 @@ if (slotConfirmThreshold > 0)
     if (betAmount >= effectiveThreshold)
     {
         string betItemName2 = (selectedBet == 0 ? "cookies" : (selectedBet == 1 ? "currency" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies"))));
-        setupmenu(false);
-        m.add_item("Yes", "yes");
-        m.add_item("No", "no");
-        m.intro_text = "Are you sure you want to bet " + (selectedBet == 1 ? convert_to_currency(betAmount) : format_number(betAmount) + " " + betItemName2) + "?";
-        int cres = m.run(0, true);
-        string csel = m.get_item_id(cres);
-        if (cres == -1 || csel == "no")
+        if (!yes_no("Are you sure you want to bet " + (selectedBet == 1 ? convert_to_currency(betAmount) : format_number(betAmount) + " " + betItemName2) + "?", true))
         {
             form.focus(spinButton);
             continue;
@@ -554,13 +548,7 @@ check_achievements(loadedAchievements, achievementsUnlocked);
                 if (betNum >= effectiveThreshold2)
                 {
                     string betItemName2 = (selectedBet == 0 ? "cookies" : (selectedBet == 1 ? "currency" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies"))));
-                    setupmenu(false);
-                    m.add_item("Yes", "yes");
-                    m.add_item("No", "no");
-                    m.intro_text = "Are you sure you want to bet " + (selectedBet == 1 ? convert_to_currency(betNum) : format_number(betNum) + " " + betItemName2) + "?";
-                    int cres = m.run(0, true);
-                    string csel = m.get_item_id(cres);
-                    if (cres == -1 || csel == "no")
+                    if (!yes_no("Are you sure you want to bet " + (selectedBet == 1 ? convert_to_currency(betNum) : format_number(betNum) + " " + betItemName2) + "?", true))
                         continue;
                 }
             }
@@ -928,13 +916,7 @@ void dicegame()
                 if (betNum >= effectiveThreshold)
                 {
                     string betItemName2 = (selectedBet == 0 ? "cookies" : (selectedBet == 1 ? "currency" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies"))));
-                    setupmenu(false);
-                    m.add_item("Yes", "yes");
-                    m.add_item("No", "no");
-                    m.intro_text = "Are you sure you want to bet " + (selectedBet == 1 ? convert_to_currency(betNum) : format_number(betNum) + " " + betItemName2) + "?";
-                    int cres = m.run(0, true);
-                    string csel = m.get_item_id(cres);
-                    if (cres == -1 || csel == "no")
+                    if (!yes_no("Are you sure you want to bet " + (selectedBet == 1 ? convert_to_currency(betNum) : format_number(betNum) + " " + betItemName2) + "?", true))
                         continue;
                 }
             }
@@ -1170,13 +1152,7 @@ void highlowgame()
                 if (betNum >= effectiveThreshold)
                 {
                     string betItemName2 = (selectedBet == 0 ? "cookies" : (selectedBet == 1 ? "currency" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies"))));
-                    setupmenu(false);
-                    m.add_item("Yes", "yes");
-                    m.add_item("No", "no");
-                    m.intro_text = "Are you sure you want to bet " + (selectedBet == 1 ? convert_to_currency(betNum) : format_number(betNum) + " " + betItemName2) + "?";
-                    int cres = m.run(0, true);
-                    string csel = m.get_item_id(cres);
-                    if (cres == -1 || csel == "no")
+                    if (!yes_no("Are you sure you want to bet " + (selectedBet == 1 ? convert_to_currency(betNum) : format_number(betNum) + " " + betItemName2) + "?", true))
                         continue;
                 }
             }
@@ -1506,13 +1482,7 @@ void roulettegame()
                 if (totalStake >= effectiveThreshold)
                 {
                     string betItemName2 = (selectedBet == 0 ? "cookies" : (selectedBet == 1 ? "currency" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies"))));
-                    setupmenu(false);
-                    m.add_item("Yes", "yes");
-                    m.add_item("No", "no");
-                    m.intro_text = "Are you sure you want to stake a total of " + (selectedBet == 1 ? convert_to_currency(totalStake) : format_number(totalStake) + " " + betItemName2) + " across " + numBets + " bet types?";
-                    int cres = m.run(0, true);
-                    string csel = m.get_item_id(cres);
-                    if (cres == -1 || csel == "no")
+                    if (!yes_no("Are you sure you want to stake a total of " + (selectedBet == 1 ? convert_to_currency(totalStake) : format_number(totalStake) + " " + betItemName2) + " across " + numBets + " bet types?", true))
                     {
                         form.focus(spinButton);
                         continue;

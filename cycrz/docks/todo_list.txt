@@ -6,6 +6,7 @@
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Make answering no to the profile setup confirmation bring the profile setup back instead of closing the game.
 **Finished. Stop the baker info screen's earnings per sell from reading as infinity with an enormous number of cookies.
 **Finished. Make the slot machine's automatic spin and the lottery's scratch all keep responding to your keys during their pauses.
 **Finished. Format the numbers still read out raw in the prestige store, ticket store, and baking slots menus, and make every money amount play a coin sound.

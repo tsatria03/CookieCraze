@@ -77,9 +77,17 @@ if(logosfx==true) dlgplay("sounds/misc/logo"+random(1,2)+".ogg");
 if(playerprofed == false)
 {
 wait(500);
+/* Profile setup repeats until the player confirms it. Answering No or pressing Escape on the confirmation
+used to close the game; now it brings the form back, pre-filled with what they typed, so a typo is easy to fix.
+Escaping the form itself still closes the game, since a profile is required to play. */
+string first_name = "";
+string last_name = "";
+string gender = "";
+while (true)
+{
 input_form f("game registration");
-f.add_text_field("first_name", "What would you like your character's first name to be?", "", true, false, " ");
-f.add_text_field("last_name", "What would you like your character's last name to be?", "", true, false, " ");
+f.add_text_field("first_name", "What would you like your character's first name to be?", first_name, true, false, " ");
+f.add_text_field("last_name", "What would you like your character's last name to be?", last_name, true, false, " ");
 f.add_choice_field("gender", "What would you like your character's gender to be?", {"male", "female", "non binary"});
 f.description = "Welcome to Cookie Craze! Please complete the following profile setup to personalize your game experience. You’ll be asked to provide basic information, which will be used to create your player profile. Answer each question to get started on your cookie-baking journey! Please press enter to continue the profile setup.";
 dictionary@ result = f.run();
@@ -88,9 +96,9 @@ if(f.user_canceled)
 alert("Profile setup unsuccessful", "Profile setup is needed to start your cookie-baking adventure. Please complete your profile to begin playing!");
 exit();
 }
-string first_name = dgets(result, "first_name");
-string last_name = dgets(result, "last_name");
-string gender = dgets(result, "gender");
+first_name = dgets(result, "first_name");
+last_name = dgets(result, "last_name");
+gender = dgets(result, "gender");
 playername = first_name;
 playername2 = last_name;
 if (gender == "male")
@@ -105,17 +113,8 @@ else if (gender == "non binary")
 {
 playergender = 2;
 }
-setupmenu(false);
-m.add_item("yes");
-m.add_item("no");
-m.intro_text="Alright, let's confirm your profile info. Your character's first name is " + first_name + ". Your character's last name is " + last_name + ". Your character's gender is " + gender + ". Is this information correct?";
-int mres=m.run();
-if(mres==-1)
-{
-alert("Profile setup unsuccessful", "Profile setup is needed to start your cookie-baking adventure. Please complete your profile to begin playing!");
-exit();
+if (yes_no("Alright, let's confirm your profile info. Your character's first name is " + first_name + ". Your character's last name is " + last_name + ". Your character's gender is " + gender + ". Is this information correct?")) break;
 }
-if (mres==1)
 {
 dlgmessage_return("Congratulations! You've successfully completed your profile setup. I'll give you " + convert_to_currency(10) + " to get you started on your way.");
 usercoins=10;
@@ -137,11 +136,6 @@ playerprofed = true;
 writepreffs3();
 ingame=false;
 mainmenu();
-}
-else
-{
-alert("Profile setup unsuccessful", "Profile setup is needed to start your cookie-baking adventure. Please complete your profile to begin playing!");
-exit();
 }
 }
 else if(playerprofed == true)
