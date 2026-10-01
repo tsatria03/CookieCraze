@@ -99,7 +99,8 @@ The fourth is buying all affordable items at the maximum quantity. The prompt pr
 
 The ticket shop.
 
-Buy scratch tickets using your money. Tickets are sold in tiers, with higher tiers costing more but offering larger prizes and better odds at the top end. Each tier draws from its own prize pool defined in lottery.table, with prizes weighted so smaller wins are more common. On average a ticket pays back less money than it costs, so tickets are a gamble for the occasional big win rather than a way to grow your money, with cookie, auto cookie, manual cookie, and baking speed prizes as a bonus on top.
+Buy scratch tickets using your money. Tickets are sold in tiers, with higher tiers costing more but offering larger prizes and better odds at the top end. Each tier draws from its own prize pool defined in lottery.table, with prizes weighted so smaller wins are more common. On average a ticket pays back less than it costs, counting everything it can give you, so tickets are a gamble for the occasional big win rather than a way to grow your money.
+Cookie, auto cookie, and manual cookie prizes are sized by money value, so a prize gives as many items as its value would buy at current prices: plenty while items are cheap early on, and fewer later as they get more expensive. If a prize's value cannot buy even one item, you receive it as money instead.
 By default, locked ticket tiers are shown with their required rank displayed. You can hide them entirely by disabling the show locked items option in the game settings.
 
 Random events.
@@ -1825,7 +1826,7 @@ target
 The stat this prize affects when it is scratched.
 
 cookies = the player's current cookie count.
-coins = the player's current coin count.
+coins = the player's money.
 autocookie = the player's auto cookie production rate.
 manulcookie = the player's manual cookie production rate.
 cookiespeed = the player's baking speed.
@@ -1837,18 +1838,19 @@ min_amount and max_amount
 The range of values the prize can award. A random value between them is chosen at scratch time.
 
 use_percent
-Controls whether the amount is treated as a flat value or a percentage of the player's current stat.
+Controls how the rolled amount is turned into a prize.
 
 false = the rolled amount is applied directly.
 true = the rolled amount is treated as a percentage of what the player currently has.
+value = the rolled amount is a money value in cents, turned into items at what one item is worth when the ticket is scratched. Cookies use the cookie sell price, and auto cookies and manual cookies use the current price of the basic auto cookie and manual cookie items in the singles store, so the prize is worth the same money at any stage of the game. If the value cannot buy even one item, the player receives the value as money instead. For a coins prize, value works the same as false. Value prizes are the recommended way to give item prizes, since flat and percentage item prizes grow more valuable as store prices and balances rise and can make tickets pay out more than they cost.
 
 weight
 The relative chance of this prize being selected within its pool. Higher values are more common.
 Weights are relative to each other within the pool only. A weight of 200 is twice as likely as 100.
 
 sound
-The sound file to play when this prize is revealed, relative to sounds/misc/.
-Supports random range syntax, for example ticklose(1,3).ogg picks randomly from ticklose1 to ticklose3.
+The sound file to play when this prize is revealed, relative to sounds/minigames/.
+Supports random range syntax, for example cooky_lottery/lose(1,3).ogg picks randomly from lose1 to lose3.
 Set to none to play no sound.
 
 message
