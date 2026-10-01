@@ -470,12 +470,11 @@ else if ((key_repeating(KEY_LEFT)) && enable_left_and_right)
 }
             else if (key_repeating(KEY_HOME) && enable_home_and_end)
             {
+                /* Home always goes to the first item, like End always goes to the last. It used to read the
+                remembered starting item instead when nothing was focused yet, so it took two presses to reach the top. */
                 if (!has_focus)
                 {
                     has_focus = true;
-                    play_click_sound();
-                    speak(get_item_description(current_item));
-                    continue;
                 }
                 if (current_item != 0)
                 {

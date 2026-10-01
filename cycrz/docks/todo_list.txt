@@ -6,6 +6,7 @@
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Make home always jump to the first menu item, and add a game setting to speak the position of each item in menus.
 **Finished. Fix scratch tickets of every tier paying back more than they cost, by sizing item prizes by money value at current prices.
 **Finished. Fix higher or lower paying out more than you bet on average, by growing the pot with the real odds of each guess.
 **Finished. Fix the dice roller paying out far more than you bet on easy targets, by scaling its payouts to the real odds of each roll.

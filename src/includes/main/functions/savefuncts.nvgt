@@ -481,6 +481,10 @@ if(st.d.exists("savesfx"))
 {
 savesfx=st.read_bool("savesfx");
 }
+if(st.d.exists("speak_menu_position"))
+{
+speak_menu_position=st.read_bool("speak_menu_position");
+}
 if(st.d.exists("numberFormatMode"))
 {
 numberFormatMode=st.read_int("numberFormatMode");
@@ -573,6 +577,7 @@ exitsfx=true;
 introsfx=true;
 logosfx=true;
 savesfx=true;
+speak_menu_position=false;
 playervents=true;
 playervents2=true;
 flipmode=true;
@@ -618,6 +623,7 @@ st.add("exitsfx",exitsfx);
 st.add("introsfx",introsfx);
 st.add("logosfx",logosfx);
 st.add("savesfx",savesfx);
+st.add("speak_menu_position",speak_menu_position);
 st.add("numberFormatMode",numberFormatMode);
 st.add("slotDistribution",slotDistribution);
 st.add("manualSlotDistribution",manualSlotDistribution);
