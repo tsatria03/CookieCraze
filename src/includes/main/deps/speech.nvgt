@@ -40,6 +40,8 @@ bool speak_buffer(string text, string buffer_name = "misc", bool interrupt = tts
         if (buffers[buffer_index].muted) {
             return false;
         }
+        // A buffer set not to interrupt (achievements, combos, events, ranks) queues its message instead of cutting off speech.
+        if (!buffers[buffer_index].interrupt) interrupt = false;
     }
     return speak(text, interrupt, translate_text, braille);
 }

@@ -18,7 +18,7 @@ All High items are done (7 fixed in 6.9, #4 won't fix). This is the remaining ba
 
 **Medium (10)**
 - #10 **FIXED (7.0)** — the dev added `cycrz/sounds/minigames/dice_roller/win.ogg` and `lose.ogg` (names already matched `dice.table`; no code change). Original: Dice results play no sound because the win and lose sound files are missing.
-- #11 Achievement, combo and event messages always cut off whatever the screen reader is saying.
+- #11 **FIXED (7.0), dev-tested** — `buffer.interrupt` now defaults true; `create_buffer` sets it false for achievements/combos/events/ranks (ranks added at the dev's request); `speak_buffer` (the only path that actually speaks — `add_buffer_item` is always called with speakMessage false) forces interrupt off for those buffers; `add_buffer_item`'s unused speak path also honours the field. Player key readouts go to misc and still interrupt; critical (milestone rank rewards, locked notices) still interrupts. Original: Achievement, combo and event messages always cut off whatever the screen reader is saying.
 - #12 (readme fixed) Shift+Backslash exports only the current buffer and then clears it. The readme said it exported all buffers; it now describes the real behavior, which is intended. Nothing left to do in code.
 - #13 (readme fixed) Minigame status keys don't match the main game: M is money on the main screen but manual cookies in minigames. The minigame keys are now in the readme; the letter mismatch in the code is unchanged.
 - #14 Rerolling a quest asks the same "Are you sure?" twice. In warning mode 5 a blocked reroll gives no message at all.

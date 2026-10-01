@@ -1,6 +1,5 @@
 ####These are the things that need to be finished for future versions of the game.
 
-****Unfinished. Make achievement, combo, and event announcements stop cutting off whatever the screen reader is currently saying.
 ****Unfinished. Fix the quest reroll asking the same confirmation question twice, and make a blocked reroll say why nothing happened.
 ****Unfinished. Make it so you can open the store to sell cookies even when you have less than one cent.
 ****Unfinished. Balance the baking speed events so a single bad event cannot wipe out all of your baking speed.
@@ -13,6 +12,7 @@
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Make achievement, combo, event, and rank up announcements stop cutting off whatever the screen reader is currently saying.
 **Finished. Add the missing win and lose sounds for the dice roller.
 **Finished. Make the slot machine's payouts adjust to how many symbols you check so every choice has the same house edge, and add a button that tells you the current payouts before you spin.
 **Finished. Fix a bug where leaving blackjack or higher or lower in the middle of a round silently loses your bet.

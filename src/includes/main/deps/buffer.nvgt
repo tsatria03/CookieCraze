@@ -10,7 +10,7 @@ name=n;
 }class buffer
 {
 string name;
-bool interrupt=false;
+bool interrupt=true;
 bool muted=false;
 buffer_item@[]items;
 int bpos;
@@ -61,6 +61,9 @@ buffer allbuffer("all");
 buffers.insert_last(allbuffer);
 }
 buffer buffer1(name);
+/* Background announcements queue behind whatever is being spoken instead of cutting it off;
+everything else, including keys the player presses, still interrupts. */
+if (name == "achievements" || name == "combos" || name == "events" || name == "ranks") buffer1.interrupt = false;
 buffers.insert_last(buffer1);
 }
 void add_buffer_item(string buffername, string itemname, bool speakMessage = true)
@@ -73,7 +76,7 @@ if (!buffers[0].muted && buffername != "all") {
 buffers[0].items.insert_last(temp);
 }
 if (!buffers[b].muted && speakMessage) {
-speak(itemname, true);
+speak(itemname, buffers[b].interrupt);
 }
 }
 bool export_current_buffer()
