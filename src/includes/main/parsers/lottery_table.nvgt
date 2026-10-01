@@ -269,7 +269,8 @@ void lottery_scratch_all(lottery_ticket_item@ ticket, int ticketIdx)
     double baseCookiespeed = cookiespeed;
 
     pool.play_stationary("sounds/minigames/cooky_lottery/scratch.ogg", false);
-    wait(random(1000, 2000));
+    // Keep reading keys during the pause, the same as a single scratch; the tickets are already used, so saving here is safe.
+    mini_wait_async(random(1000, 2000), "lottery");
 
     for (uint i = 0; i < prizes.length(); i++)
     {
