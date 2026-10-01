@@ -102,6 +102,39 @@ lottery_prize_item@ pick_lottery_prize(string prize_id)
     return prizes[prizes.length() - 1];
 }
 
+double lottery_unit_price(string target)
+{
+    /* Money value in cents of one unit of target right now, used to turn a value prize into items.
+    cookies: what one cookie sells for. autocookie / manulcookie: the current price of the basic auto_cookie /
+    manual_cookie single, divided by how many it gives, using the same level and formula as the store. In the shipped
+    store the basic item is also the cheapest per unit. If its menu is priced in cookies, the price is converted to
+    money through the sell price. Returns 0 when no price is known, so the caller pays the value as money instead. */
+    if (target == "cookies") return cookieSellPrice;
+    string itemType = "";
+    if (target == "autocookie") itemType = "auto_cookie";
+    else if (target == "manulcookie") itemType = "manual_cookie";
+    if (itemType == "") return 0;
+    store_item[] items;
+    store_menu[] menus;
+    parse_store("data/config/stores/singles.store", items, menus);
+    for (uint i = 0; i < items.length(); i++)
+    {
+        if (items[i].item_type != itemType || items[i].use_percent || items[i].amount <= 0) continue;
+        double level = (items[i].target == 2) ? manulcookie_purchases : autocookie_purchases;
+        double price = buy_item(level, items[i].base_cost, items[i].cost_multiplier) / items[i].amount;
+        for (uint j = 0; j < menus.length(); j++)
+        {
+            if (menus[j].alias == items[i].menu && menus[j].currency == "cookies")
+            {
+                price *= cookieSellPrice;
+                break;
+            }
+        }
+        return price;
+    }
+    return 0;
+}
+
 double get_ticket_current_cost(lottery_ticket_item@ ticket)
 {
     return floor(safe_cap(ticket.base_cost * pow(ticket.cost_multiplier, ticket.owned)));
