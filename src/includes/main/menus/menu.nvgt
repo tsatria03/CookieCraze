@@ -1569,7 +1569,7 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
         string qInput = vd.input_box("", "How many of each affordable bundle would you like to buy? Press enter to buy the maximum amount.", string(round(passDefault, 0)));
         if (qInput == "") { continue; }
         double passes = string_to_number(qInput);
-        if (passes < 1) { pool.play_stationary("sounds/store/error.ogg", false); dlgmessage_return("Please enter a number greater than zero. Press enter or space to continue."); continue; }
+        if (passes < 1) { pool.play_stationary("sounds/store/error.ogg", false); dlgmessage_return("Please enter a number greater than zero."); continue; }
         double totalSpent = 0;
         double autoGained = 0, manulGained = 0, speedGained = 0;
         string[] boughtNames;
