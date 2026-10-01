@@ -144,7 +144,29 @@ string apply_lottery_prize(lottery_prize_item@ prize)
 {
     if (prize.target == "none") return "";
     double amount = 0;
-    if (prize.use_percent)
+    // The target actually paid; a value prize that can't buy even one item falls back to money.
+    string target = prize.target;
+    if (prize.value_mode)
+    {
+        /* A value prize rolls a money amount in cents and converts it to items at what one item is worth right now,
+        so it is worth the same money at any stage of the game. */
+        double cents = floor(double(random(int(prize.min_amount), int(prize.max_amount))));
+        if (target == "coins")
+            amount = cents;
+        else
+        {
+            double unit = lottery_unit_price(target);
+            double count = (unit > 0) ? floor(cents / unit) : 0;
+            if (count >= 1)
+                amount = count;
+            else
+            {
+                target = "coins";
+                amount = cents;
+            }
+        }
+    }
+    else if (prize.use_percent)
     {
         double base = 0;
         if (prize.target == "coins") base = coins;
@@ -158,25 +180,28 @@ string apply_lottery_prize(lottery_prize_item@ prize)
     else
         amount = floor(double(random(int(prize.min_amount), int(prize.max_amount))));
     if (amount <= 0) return "";
-    if (prize.target == "cookiespeed")
+    if (target == "cookiespeed")
     {
         amount = gain_cookiespeed(amount);
         if (amount <= 0) return "Your baking speed is already at its maximum.";
     }
     else
-        apply_amount_effect(prize.target, amount, 1, false);
+        apply_amount_effect(target, amount, 1, false);
     string amtStr = "";
-    if (prize.target == "coins") amtStr = convert_to_currency(amount);
+    if (target == "coins") amtStr = convert_to_currency(amount);
     else amtStr = format_number(amount);
     string itemStr = "";
-    if (prize.target == "cookies") itemStr = (amount == 1 ? "cookie" : "cookies");
-    else if (prize.target == "autocookie") itemStr = (amount == 1 ? "auto cookie" : "auto cookies");
-    else if (prize.target == "manulcookie") itemStr = (amount == 1 ? "manual cookie" : "manual cookies");
-    else if (prize.target == "cookiespeed") itemStr = "ms";
+    if (target == "cookies") itemStr = (amount == 1 ? "cookie" : "cookies");
+    else if (target == "autocookie") itemStr = (amount == 1 ? "auto cookie" : "auto cookies");
+    else if (target == "manulcookie") itemStr = (amount == 1 ? "manual cookie" : "manual cookies");
+    else if (target == "cookiespeed") itemStr = "ms";
+    // With no item word, as for money, drop the space before %item% so the message doesn't end in a stray space.
+    string msg = prize.message;
+    if (itemStr == "") msg = string_replace(msg, " %item%", "", true);
     dictionary@ tokens = dictionary();
     tokens.set("amount", amtStr);
     tokens.set("item", itemStr);
-    return format_template(prize.message, tokens);
+    return format_template(msg, tokens);
 }
 
 void lottery_scratch_one(lottery_ticket_item@ ticket, int ticketIdx)
@@ -254,7 +279,27 @@ void lottery_scratch_all(lottery_ticket_item@ ticket, int ticketIdx)
         if (share <= 0) continue;
         wins += share;
         double amount = 0;
-        if (prizes[i].use_percent)
+        // The target actually paid; a value prize too small to buy one item pays money instead, as in a single scratch.
+        string paidTarget = prizes[i].target;
+        if (prizes[i].value_mode)
+        {
+            double midValue = floor((prizes[i].min_amount + prizes[i].max_amount) / 2.0);
+            if (paidTarget == "coins")
+                amount = midValue * share;
+            else
+            {
+                double unit = lottery_unit_price(paidTarget);
+                double perTicket = (unit > 0) ? floor(midValue / unit) : 0;
+                if (perTicket >= 1)
+                    amount = perTicket * share;
+                else
+                {
+                    paidTarget = "coins";
+                    amount = midValue * share;
+                }
+            }
+        }
+        else if (prizes[i].use_percent)
         {
             double base = 0;
             if (prizes[i].target == "coins") base = baseCoins;
@@ -270,11 +315,11 @@ void lottery_scratch_all(lottery_ticket_item@ ticket, int ticketIdx)
             double midAmount = floor((prizes[i].min_amount + prizes[i].max_amount) / 2.0);
             amount = midAmount * share;
         }
-        if (prizes[i].target == "coins") totalCoins += amount;
-        else if (prizes[i].target == "cookies") totalCookies += amount;
-        else if (prizes[i].target == "autocookie") totalAutocookie += amount;
-        else if (prizes[i].target == "manulcookie") totalManulcookie += amount;
-        else if (prizes[i].target == "cookiespeed") totalCookiespeed += amount;
+        if (paidTarget == "coins") totalCoins += amount;
+        else if (paidTarget == "cookies") totalCookies += amount;
+        else if (paidTarget == "autocookie") totalAutocookie += amount;
+        else if (paidTarget == "manulcookie") totalManulcookie += amount;
+        else if (paidTarget == "cookiespeed") totalCookiespeed += amount;
     }
 
     // Remaining tickets lost to rounding go to losses
