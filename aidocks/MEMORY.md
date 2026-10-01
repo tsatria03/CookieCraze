@@ -29,7 +29,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Feature ideas](project_feature_ideas.md) — 6.4+ wish list (offline progress, golden-cookie bonus, daily streak, auto-buyer, boosts shop, QoL) + future-minigame candidates (mines, video poker, keno, audio Simon). Higher or lower + number-format shipped in 6.4; achievement rewards + roulette shipped in 6.5, roulette's rank-shift + tweaks changelogged in 6.6 (all roulette sounds delivered); rest unbuilt.
 
 ## Release status
-- [Release status](project_release_status.md) — 6.9 COMPLETE and frozen, not yet built/published by the dev (site shows V6.80 until then) (changelog block full, 10/10); the next change opens a 7.0 major block (up to 20 entries) and bumps build/version.txt to 7.0, not 6.10; what 6.9 shipped and what's open next.
+- [Release status](project_release_status.md) — 6.9 RELEASED (built, published, site shows V6.90) and frozen; 7.0 IN PROGRESS (version.txt 7.0, changelog block open, 1 of 20 entries) (changelog block full, 10/10); the next change opens a 7.0 major block (up to 20 entries) and bumps build/version.txt to 7.0, not 6.10; what 6.9 shipped and what's open next.
 
 ## Finished plans (6.9)
 - [Slots scaled payouts plan](project_slots_scaled_payouts_plan.md) — SHIPPED 6.9: scale slot payouts by checked-symbol count to a fixed house edge (default 5%); house_edge + min_symbols config, %amount%/%multiplier% tokens, check-payouts button, readme docs for how symbols work; 4 sections, docs last.
