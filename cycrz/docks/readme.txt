@@ -116,6 +116,7 @@ A card game where you bet an item of your choice and try to reach 21 without goi
 
 You can bet money, cookies, auto cookies, manual cookies, or baking speed. When betting money, you enter the amount as a dollar value, for example type 1 to bet $1.00 or 0.50 to bet 50 cents. All other items are entered as whole numbers.
 A natural 21 on your opening two cards pays out at 1.5 times your bet. A standard win pays double, and a tie returns your original bet. The dealer stands at 17 by default.
+If you hit and reach exactly 21, you stand automatically and the dealer plays out their hand, so the round ends in a win, or a tie if the dealer also reaches 21.
 
 The deal button appears first in the tab order, followed by hit and stand.
 You can draw cards manually, or enable automatic drawing with the checkbox in the game.
@@ -337,7 +338,7 @@ Break-evens: counts spins where your winning and losing bets canceled out to exa
 Blackjack.
 
 Hands played: counts every round where a bet was placed and cards were dealt.
-Wins: counts rounds you won, including naturals, hitting 21, and dealer busts.
+Wins: counts rounds you won, including naturals and dealer busts.
 Losses: counts rounds where you busted, or the dealer beat you.
 Pushes: counts rounds that ended in a tie, where your original bet was returned.
 

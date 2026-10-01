@@ -609,6 +609,8 @@ check_achievements(loadedAchievements, achievementsUnlocked);
                 form.focus(dealButton);
             }
         }
+        // Set when a hit reaches exactly 21, so the stand logic below plays the dealer's turn this same pass.
+        bool autoStand = false;
         if (form.is_pressed(hitButton))
         {
             if (!in_round)
@@ -633,31 +635,21 @@ check_achievements(loadedAchievements, achievementsUnlocked);
             }
             else if (p_points == 21)
             {
-                double winnings = floor(safe_cap(betAmount * jacksConfig.win_multiplier));
-                if (selectedBet == 0) { cookies += betAmount + winnings; cookies = floor(safe_cap(cookies)); }
-                else if (selectedBet == 1) { coins += betAmount + winnings; coins = floor(safe_cap(coins)); }
-                else if (selectedBet == 2) { autocookie += betAmount + winnings; autocookie = floor(safe_cap(autocookie)); }
-                else if (selectedBet == 3) gain_cookiespeed(betAmount + winnings);
-                else if (selectedBet == 4) { manulcookie += betAmount + winnings; manulcookie = floor(safe_cap(manulcookie)); }
-                stat_jack_wins++;
-                pool.play_stationary("sounds/minigames/" + resolve_sound(jacksConfig.win_sound), false);
-                dlg_buffer("Twenty-one! You win " + ((selectedBet == 1) ? convert_to_currency(winnings) : (format_number(winnings) + " " + betItemName)) + "!");
-                in_round = false;
-                betAmount = 0;
-                p_points = 0; d_points = 0;
-                p_aces = 0; d_aces = 0;
-                form.focus(dealButton);
+                /* Reaching 21 by hitting stands automatically. It used to pay a win on the spot without the dealer
+                playing, so a hand the dealer would have tied at 21 was paid as a win instead of a push. */
+                autoStand = true;
             }
         }
-        if (form.is_pressed(standButton))
+        if (form.is_pressed(standButton) || autoStand)
         {
             if (!in_round)
             {
                 dlg_buffer("Please place a bet and deal first.");
                 continue;
             }
-            if (jackmode) speak_buffer("You stand with " + p_points + ". Dealer's turn.");
-            else dlg_buffer("You stand with " + p_points + ". Dealer's turn. Press enter or space after each card.");
+            string standIntro = autoStand ? "Twenty-one! You stand. Dealer's turn." : "You stand with " + p_points + ". Dealer's turn.";
+            if (jackmode) speak_buffer(standIntro);
+            else dlg_buffer(standIntro + " Press enter or space after each card.");
             if (jackmode) mini_wait_async(random(1000, 2000), "blackjack");
             while (d_points < jacksConfig.dealer_stand)
             {
