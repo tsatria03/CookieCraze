@@ -1,10 +1,14 @@
 ---
 name: project_release_status
-description: "Release status: 6.9 is RELEASED (2026-09-30; built, published, site shows V6.90) and frozen — its changelog block is frozen at 10/10; the next change opens a 7.0 MAJOR block (cap 20 entries) and bumps build/version.txt to 7.0 — dev-decided, NOT 6.10. Lists what 6.9 shipped."
+description: "Release status: 7.0 RELEASED (V7.00, 2026-10-01) and frozen. 7.1 IN PROGRESS (opened 2026-10-25; build/version.txt 7.1, set by the dev): minor block, cap 10, count entries before adding. 6.9 also released and frozen. Lists what 6.9 and 7.0 shipped."
 metadata:
   node_type: memory
   type: project
 ---
+
+**7.1 IN PROGRESS (opened 2026-10-25):** the dev bumped `build/version.txt` to 7.1 themselves; `cycrz/docks/changelog.txt` has a `New in 7.1.` block at the top. It's a **minor** block — **at most 10 entries** ([[feedback_changelog_rules]]); re-count before adding (the dev sometimes adds their own). Entries so far, newest first: 2 of 10 — Control L on an unsaved new game + new games saved once at start (code #28); F and J production readouts (per-slot vs total wording, J matches F with even splitting, prestige cookie bonus included; code #32 in [[project_bugs_code]]). Add each new entry at the top of the 7.1 block. Open work for 7.1+ is the `****Unfinished.` list in `cycrz/docks/todo_list.txt`.
+
+**7.0 is RELEASED (verified 2026-10-25 with `gh release list`):** "CookieCraze V7.0", tag `V7.00`, published 2026-10-01, marked Latest; the tag is on commit 15901fc ("Major dock enhancements."). Only commit since: 5eeba37 (gitignore). Treat 7.0 as frozen like 6.9: don't add, edit or reorder entries in the `New in 7.0.` changelog block (full, 20 of 20). The **next** player-facing change opens a new block at the top of `cycrz/docks/changelog.txt` and bumps `build/version.txt` in the same turn ([[feedback_update_build_version_txt]]) — **ask the dev which version number** (likely 7.1; a minor block caps at 10 entries, a major at 20 — [[feedback_changelog_rules]]). Check `gh release list` / `git tag` rather than trusting this note when release state matters. Open work after 7.0 is in [[project_bugs_code]], [[project_bugs_build_docs]], [[project_bugs_exploits_balance]] and [[project_design_review_7_0]]. The notes below are the history up to the 7.0 release.
 
 **6.9 is RELEASED (dev, 2026-09-30): built, published, and the website updated** — verified the github.io page shows V6.90 in all five places (both headings, both download URLs, the release URL), which also confirms the site updater works. Treat 6.9 as frozen:
 - Do **not** add, edit or reorder entries in the `New in 6.9.` block of `cycrz/docks/changelog.txt` (it is also full, 10 of 10 — [[feedback_changelog_rules]]).

@@ -1,11 +1,29 @@
 ####These are the things that need to be finished for future versions of the game.
 
+****Unfinished. Fix scratch all in the cookie lottery so every ticket you scratch is either paid out or counted as a loss, instead of leftover tickets being used up for nothing and small batches of one or two tickets winning nothing.
+****Unfinished. Make a quest reroll check that a replacement quest exists before taking your money, and stop it offering a quest tier you already finished or a second quest for a stat that already has one.
+****Unfinished. Make winnings from the slot machine and blackjack count toward your money earned statistic, achievements, and quests.
+****Unfinished. Stop the store charging for baking speed you cannot use once your baking speed is at its maximum.
+****Unfinished. Add a short getting started section to the top of the readme that teaches a new player the first few minutes of the game.
+****Unfinished. Reorganize the readme so it goes welcome, getting started, keyboard commands, game features, modding, and conclusion, and move the note on currency into the modding section.
+****Unfinished. Add the missing keys to the readme's keyboard commands, covering menu keys, dialog keys, and the Alt shortcuts for buttons, and explain that F3 searches inside a menu but mutes the events buffer on the game screen.
+****Unfinished. Make a huge gain of experience award every rank it earns straight away, instead of one rank at a time, and announce it with one summary message from ranks.table saying how many ranks you climbed and the total reward you earned.
+****Unfinished. Make milestone rank rewards announce the same way every time, instead of sometimes appearing in a dialog and sometimes only being spoken.
+****Unfinished. Fix rank rewards and baker event rewards taking money away instead of giving it once you pass about rank 21 million.
+****Unfinished. Fix rank up announcements and milestone rank rewards stopping once you pass about rank 2 billion.
+****Unfinished. Fix the endless quests for blackjack, the slot machine, the cookie lottery, and combos already being complete straight after you prestige.
+****Unfinished. Correct the readme saying that prestige keeps all minigame stats, since it resets some of them.
+****Unfinished. Stop prestige from paying out large amounts of prestige points when you prestige over and over within a minute or so.
+****Unfinished. Make store prices for auto and manual cookies go back down when you lose some of them by any means, such as events, the cookie flipper, or minigame bets, so that replacing what you lost costs about what you paid before.
+****Unfinished. Add a session summary shown when you exit that reports what you did this session, such as cookies baked, money earned, and ranks gained, built from stats the game already tracks.
 ****Unfinished. Add an auto-buyer that automatically purchases the cheapest upgrade you can afford on a timer, extending automation from baking into spending. Unlocked at a late rank and toggleable in the settings.
 ****Unfinished. Add a temporary boosts shop where you spend cookies or coins on timed power-ups, such as double production for 60 seconds, an auto-bake burst, or an extended combo window.
-****Unfinished. Add a session summary shown when you exit that reports what you did this session, such as cookies baked, money earned, and ranks gained, built from stats the game already tracks.
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Fix a bug where pressing Control L on a save slot that was never saved clears your baking slots and achievements and resets your experience, and save a new game once as soon as it starts.
+**Finished. Make the F and J production readouts include your prestige cookie bonus, so they report what you actually produce once you have bought that prestige upgrade.
+**Finished. Make the F and J production readouts say clearly how much each slot produces and how much you produce in total, and make J describe manual slots the same way F describes automated slots when even splitting is on.
 **Finished. Make answering no to the profile setup confirmation bring the profile setup back instead of closing the game.
 **Finished. Stop the baker info screen's earnings per sell from reading as infinity with an enormous number of cookies.
 **Finished. Make the slot machine's automatic spin and the lottery's scratch all keep responding to your keys during their pauses.

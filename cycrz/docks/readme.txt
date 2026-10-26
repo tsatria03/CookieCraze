@@ -211,7 +211,9 @@ There are two types of slots.
 Auto slots bake cookies passively without any input, scaling with your auto cookie stat.
 Manual slots multiply the output of each bake press, scaling with your manual cookie stat.
 
-You can purchase additional slots of either type, and toggle individual auto slots on or off to fine-tune how much of your production is automated versus manual.
+Two game settings change how slots work: evenly distributing cookie production across automated slots, and the same for manual slots. With a setting off, every slot of that type produces your full auto or manual cookies, so 10 slots produce 10 times as much. With it on, your cookies are shared out between the slots instead, so your total stays the same as having no slots. Slots never store or protect your auto and manual cookies; if those drop to zero, every slot produces zero.
+
+You can purchase additional slots of either type. A new auto slot does nothing until you pay to automate it in the slot automation menu, and automating a slot is permanent. Manual slots start working as soon as you buy them. Slots and automation cannot be sold back once purchased.
 Both submenus are locked behind a rank requirement, defaulting to rank 80.
 The slot manager menu itself is always accessible so you can see what is coming, but you cannot enter either submenu until you reach the required rank.
 
@@ -484,6 +486,7 @@ Save slots.
 
 The game supports multiple save slots for separate playthroughs, selected from the main menu. Each slot is completely independent, with its own rank, cookies, money, upgrades, and settings.
 You can start a new game in any slot at any time without affecting your other saves.
+A new game is saved once as soon as it starts, so starting over on a slot that already has a save erases the old game straight away. After that, the game does not save by itself: press control S, or choose one of the save options when you quit, to keep your progress.
 
 Buffers.
 
@@ -508,8 +511,8 @@ Keyboard commands
 
 In game.
 
-Letter, F: Announces how many cookies you produce per bake when baking mode is active.
-Letter, J: Announces how many cookies you produce per bake when baking mode is inactive.
+Letter, F: Announces how many cookies your auto baking produces each bake. If you have automated slots, it tells you how much each slot produces and how much you produce in total. Your prestige cookie bonus is included.
+Letter, J: Announces how many cookies each press of the bake button produces. If you have manual slots, it tells you how much each slot produces and how much you produce in total. Your prestige cookie bonus is included, but combo multipliers are not.
 Letter, C: Announces your current cookie count.
 Letter, R: Announces your current rank, your current experience, and how much more experience is needed to reach the next rank.
 Letter, M: Announces how much money you currently have.
@@ -519,7 +522,7 @@ Letter, N: Announces how many manual cookies you have.
 Letter, L: Announces your current prestige level.
 Letter, P: Announces how many prestige points you have to spend in the prestige store.
 Control S: Saves your game progress.
-Control L: Reloads all configuration files and your save data without restarting the game. Useful when editing config files.
+Control L: Reloads all configuration files and your save data without restarting the game, taking you back to your last save. Useful when editing config files. If there is no save to reload, only the configuration files are reloaded.
 Escape: Opens a prompt asking whether you want to quit.
 Alt plus F4: Exits the main game immediately without saving.
 
@@ -532,7 +535,7 @@ Letter, A: Announces how many auto cookies you have.
 Letter, S: Announces your current baking speed and how long each bake takes.
 Letter, N: Announces how many manual cookies you have.
 Control S: Saves your game progress without leaving the minigame, so a round in progress carries on.
-Control L: Reloads all configuration files and your save data, then reopens the minigame you are in.
+Control L: Reloads all configuration files and your save data, then reopens the minigame you are in. If there is no save to reload, only the configuration files are reloaded.
 
 Buffers.
 

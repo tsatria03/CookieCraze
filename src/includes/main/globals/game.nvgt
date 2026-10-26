@@ -373,11 +373,16 @@ clickergame();
 }
 if(key_pressed(KEY_L))
 {
-readdata();
+/* A new game is not written to disk until its first save, so there may be no file to reload yet.
+Loading a missing file used to run readdata's resets on nothing, clearing baking slots and achievements
+and resetting experience. Without a save, only the config files are reloaded. */
+bool hasSave = file_exists(currentSaveSlot);
+if (hasSave) readdata();
 reload_config(true);
 ambpool.pause_sound(ambslot);
 muspool.pause_sound(mustrackslot);
-speak_buffer("game reloaded", "misc");
+if (hasSave) speak_buffer("game reloaded", "misc");
+else speak_buffer("This game has not been saved yet, so only the configuration files were reloaded.", "misc");
 if(savesfx==false) wait(500);
 if(savesfx==true) dlgplay("sounds/misc/savegame.ogg");
 ambpool.resume_sound(ambslot);
@@ -386,7 +391,8 @@ form.reset();
 clickergame();
 }
 }
-if(key_pressed(KEY_M)) announce_money();
+// Plain M and C only, since Shift M mutes the buffer and Shift C copies the buffer item above.
+if(!shift_is_down() && key_pressed(KEY_M)) announce_money();
 // Same stat keys as inside the minigames. Plain S only, since Control S saves.
 if(key_pressed(KEY_A)) announce_auto_cookies();
 if(!control_is_down() && key_pressed(KEY_S)) announce_baking_speed();
@@ -413,54 +419,53 @@ if (key_pressed(KEY_F))
         if (autobakeSlotEnabled[i])
             slotCount++;
     }
-        double cookiesPerSlot;
-        double totalCookies;
-        if (slotDistribution)
-        {
-            cookiesPerSlot = (slotCount > 0) ? autocookie / slotCount : autocookie;
-            totalCookies = autocookie;
-        }
-        else
-        {
-            cookiesPerSlot = autocookie;
-            totalCookies = autocookie * slotCount;
-        }
-        if (slotCount > 0)
-        {
-            string slotWord = (slotCount == 1) ? "slot" : "slots";
-            string perSlotWord = (cookiesPerSlot == 1) ? "cookie" : "cookies";
-            string totalWord = (totalCookies == 1) ? "cookie" : "cookies";
-            if (clicktime == 1000)
-                speak_buffer("You produce " + format_number(cookiesPerSlot) + " " + perSlotWord + " per second. With " + slotCount + " automated " + slotWord + ", you produce " + format_number(totalCookies) + " " + totalWord + " per second.", "misc");
-            else
-                speak_buffer("You produce " + format_number(cookiesPerSlot) + " " + perSlotWord + " every " + clicktime + " milliseconds. With " + slotCount + " automated " + slotWord + ", you produce " + format_number(totalCookies) + " " + totalWord + " every " + clicktime + " milliseconds.", "misc");
-        }
-        else
-        {
-            string autoWord = (autocookie == 1) ? "cookie" : "cookies";
-            if (clicktime == 1000)
-                speak_buffer("You produce " + format_number(autocookie) + " " + autoWord + " per second.", "misc");
-            else
-                speak_buffer("You produce " + format_number(autocookie) + " " + autoWord + " every " + clicktime + " milliseconds.", "misc");
-        }
+    /* Mirrors the auto bake in the main loop, prestige cookie bonus included, and names both numbers:
+    what each automated slot makes and what you make in total. With even splitting on, the slots share
+    your auto cookies, so the total stays the same and only the per slot share changes. */
+    double bonus = (prestige_cookie_multiplier > 0) ? 1.0 + (prestige_cookie_multiplier / 100.0) : 1.0;
+    string period = "per second";
+    if (clicktime != 1000) period = "every " + clicktime + " milliseconds";
+    if (slotCount > 0)
+    {
+        double cookiesPerSlot = (slotDistribution ? autocookie / slotCount : autocookie) * bonus;
+        double totalCookies = (slotDistribution ? autocookie : autocookie * slotCount) * bonus;
+        string slotWord = (slotCount == 1) ? "slot" : "slots";
+        string perSlotWord = (cookiesPerSlot == 1) ? "cookie" : "cookies";
+        string totalWord = (totalCookies == 1) ? "cookie" : "cookies";
+        speak_buffer("Each automated slot produces " + format_number(cookiesPerSlot) + " " + perSlotWord + " " + period + ". With " + format_number(slotCount) + " automated " + slotWord + ", you produce " + format_number(totalCookies) + " " + totalWord + " " + period + " in total.", "misc");
     }
-if(key_pressed(KEY_C))
+    else
+    {
+        double totalCookies = autocookie * bonus;
+        string autoWord = (totalCookies == 1) ? "cookie" : "cookies";
+        speak_buffer("You produce " + format_number(totalCookies) + " " + autoWord + " " + period + ".", "misc");
+    }
+}
+if(!shift_is_down() && key_pressed(KEY_C))
 {
 string cookieCountWord = (cookies == 1) ? "cookie" : "cookies";
 speak_buffer("You have " + format_number(cookies) + " " + cookieCountWord + ".", "misc");
 }
 if(key_pressed(KEY_J))
 {
-    string cookieWord = (manulcookie == 1) ? "cookie" : "cookies";
+    /* Mirrors the manual bake, prestige cookie bonus included, and describes manual slots the same way
+    F describes automated ones. Combo multipliers are left out, since they only last while a combo runs. */
+    double bonus = (prestige_cookie_multiplier > 0) ? 1.0 + (prestige_cookie_multiplier / 100.0) : 1.0;
     if (manualSlots > 0)
     {
-        double totalManual = manualSlotDistribution ? manulcookie : manulcookie * manualSlots;
+        double perSlot = (manualSlotDistribution ? manulcookie / manualSlots : manulcookie) * bonus;
+        double totalManual = (manualSlotDistribution ? manulcookie : manulcookie * manualSlots) * bonus;
+        string perSlotWord = (perSlot == 1) ? "cookie" : "cookies";
         string totalWord = (totalManual == 1) ? "cookie" : "cookies";
         string slotWord = (manualSlots == 1) ? "slot" : "slots";
-        speak_buffer("You produce " + format_number(manulcookie) + " " + cookieWord + " per press. With " + manualSlots + " manual " + slotWord + ", you produce " + format_number(totalManual) + " " + totalWord + " per press.", "misc");
+        speak_buffer("Each manual slot produces " + format_number(perSlot) + " " + perSlotWord + " per press. With " + format_number(manualSlots) + " manual " + slotWord + ", you produce " + format_number(totalManual) + " " + totalWord + " per press in total.", "misc");
     }
     else
-        speak_buffer("You produce " + format_number(manulcookie) + " " + cookieWord + " per press.", "misc");
+    {
+        double totalManual = manulcookie * bonus;
+        string cookieWord = (totalManual == 1) ? "cookie" : "cookies";
+        speak_buffer("You produce " + format_number(totalManual) + " " + cookieWord + " per press.", "misc");
+    }
 }
 if(key_pressed(KEY_F1)) toggle_buffer_by_name("achievements");
 if(key_pressed(KEY_F2)) toggle_buffer_by_name("combos");

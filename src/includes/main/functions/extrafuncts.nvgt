@@ -949,8 +949,9 @@ void minigame_input(string game)
     so reading plain S here used to swallow the S of Control S and the save never ran. */
     if (!control_is_down())
     {
-        if (key_pressed(KEY_C)) speak_buffer("You have " + format_number(cookies) + " cookies.");
-        if (key_pressed(KEY_M)) announce_money();
+        // Plain C and M only, since buffer_check_keys uses Shift C to copy and Shift M to mute.
+        if (!shift_is_down() && key_pressed(KEY_C)) speak_buffer("You have " + format_number(cookies) + " cookies.");
+        if (!shift_is_down() && key_pressed(KEY_M)) announce_money();
         if (key_pressed(KEY_A)) announce_auto_cookies();
         if (key_pressed(KEY_S)) announce_baking_speed();
         if (key_pressed(KEY_N)) announce_manual_cookies();
@@ -972,11 +973,14 @@ void minigame_input(string game)
         }
         if (key_pressed(KEY_L))
         {
-            readdata();
+            // Same as the main game screen: with no save file yet, only the config files are reloaded.
+            bool hasSave = file_exists(currentSaveSlot);
+            if (hasSave) readdata();
             reload_config(true);
             ambpool.pause_sound(ambslot);
             muspool.pause_sound(mustrackslot);
-            speak_buffer("game reloaded", "misc");
+            if (hasSave) speak_buffer("game reloaded", "misc");
+            else speak_buffer("This game has not been saved yet, so only the configuration files were reloaded.", "misc");
             if (savesfx == false) wait(500);
             if (savesfx == true) dlgplay("sounds/misc/savegame.ogg");
             ambpool.resume_sound(ambslot);

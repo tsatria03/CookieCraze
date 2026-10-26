@@ -1,6 +1,6 @@
 ---
 name: project_bugs_build_docs
-description: "Bug audit 2026-09-30 (v6.8): build/release pipeline bugs (site updater x.0 regex, tools.py release deletion + import-time KeyError, hardcoded paths, gitignore gaps, installer mutex), player-doc inaccuracies and typos, stale memory notes. Unfixed unless marked."
+description: "Bug audit 2026-09-30 (v6.8): build/release pipeline bugs (site updater x.0 regex, tools.py release deletion + import-time KeyError, hardcoded paths, gitignore gaps, installer mutex), player-doc inaccuracies and typos, stale memory notes. Unfixed unless marked. Re-verified 2026-10-25 against 7.0 (status at the top) + #19 cycrz/lib gone."
 metadata:
   node_type: memory
   type: project
@@ -9,6 +9,8 @@ metadata:
 # Build, release and docs bugs (audit of 6.8, 2026-09-30)
 
 Companion to [[project_bugs_player_facing]], [[project_bugs_exploits_balance]], [[project_bugs_code]]. Pipeline context: [[project_build_pipeline]]. Mark **FIXED (version)** when shipped.
+
+**Re-verified against 7.0 (2026-10-25):** #2, #3, #4, #5, #6, #7, #9 STILL PRESENT; #8 FIXED (sounds now tracked); #10 still applies. Highest priority: #2 (tools.py KeyError at import), #3 (release deleted before the new one is created, git return codes unchecked), then #4 (hardcoded engine/Python paths), #9 (installer mutex never matches) and #7 (errors.txt not gitignored). #19 resolved (cycrz/lib removed then restored by the dev; no Tolk.dll is intentional, excluded in C:\nvgt\config.properties).
 
 ## Build / release (medium)
 
@@ -22,7 +24,7 @@ Companion to [[project_bugs_player_facing]], [[project_bugs_exploits_balance]], 
 5. **`cycrz.py` `COMPILE_WAIT = 5`** — a compile error after 5 s, or a runtime throw, goes to a temp log nobody reads; one log leaks per launch. Fix: configurable wait or poll the log for "Compilation error".
 6. **`origin/HEAD..HEAD`** (`tools.py` ~84, ~164) fails when `origin/HEAD` isn't set → menu shows 0 unpushed commits. Fix: `@{u}..HEAD`.
 7. **`.gitignore` gaps** — `cycrz/errors.txt` and a leftover `src/cycrz/` bundle folder aren't ignored (confirmed with `git check-ignore`); `do_commit` runs `git add -A`, so a failed launch/compile gets committed. Fix: ignore both. See [[project_repo_hygiene]].
-8. **`sounds/` and `lib/` are gitignored** (`.gitignore` ~7-8), so a fresh clone has no audio or BASS/Tolk DLLs and can't be played or built. Likely intentional — document it.
+8. **FIXED (2026-10, commit 5eeba37)** — `sounds/` is now tracked (156 files); `lib/` is still ignored but `cycrz/lib/` no longer exists (see #19). Original: **`sounds/` and `lib/` are gitignored** (`.gitignore` ~7-8), so a fresh clone has no audio or BASS/Tolk DLLs and can't be played or built. Likely intentional — document it.
 9. **Installer mutex mismatch** — `build/installer.iss` ~21 `AppMutex=CookieCraze_Mutex` doesn't match the game's `crc32(NVGT_VERSION_COMMIT_HASH + "cycrz")` (`deps/instance.nvgt` ~17), so the installer can't detect a running game. Fix: remove the line or give the game a matching named mutex.
 10. Informational: the `tools.ini` password isn't secret (appears in every published filename).
 
@@ -37,5 +39,6 @@ Companion to [[project_bugs_player_facing]], [[project_bugs_exploits_balance]], 
 
 ## Stale memory notes
 
-17. **FIXED (2026-09-30)** — [[project_build_pipeline]] said `cycrz/lib/` is absent; it exists (BASS, Tolk, phonon…) and tools.py bundles it. Memory updated with the DLL list.
+17. **FIXED (2026-09-30)** — [[project_build_pipeline]] said `cycrz/lib/` is absent; it exists (BASS, Tolk, phonon…) and tools.py bundles it. Memory updated with the DLL list. **Superseded 2026-10-25:** `cycrz/lib/` is gone again; see #19.
 18. **FIXED (2026-09-30)** — [[project_feature_ideas]] said roulette sounds were still owed; all exist (`spin`, `land`, `bet1-3`, `win`, `lose`, `break`). Also annotated higher or lower's draft sound names with the shipped ones.
+19. **RESOLVED (2026-10-25), not a bug** — the dev restored `cycrz/lib/` the same day (still gitignored, untracked by design). It holds 7 DLLs: `bass.dll`, `bass_fx.dll`, `bassmix.dll`, `nvdaControllerClient64.dll`, `SAAPI64.dll`, `zdsrapi.dll`, `phonon.dll`. **No `Tolk.dll` is intentional:** `C:\nvgt\config.properties` sets `build.shared_library_excludes=... Tolk` (with plist, TrueAudioNext, GPUUtilities, systemd_notify, sqlite, git2, curl, opus, bassflac, bassmidi, unicode), and the dev confirmed compiled builds don't ship it. Don't re-flag a missing Tolk.dll. Original: **`cycrz/lib/` no longer exists, so its DLLs may not ship.** The tools.py copy loop skips `lib` when absent, so a build now carries only what `nvgt -c` copies from `C:\nvgt\lib`, which may not include `phonon.dll` (HRTF) or `nvdaControllerClient64.dll` (NVDA speech). Unverified — check a built bundle for the BASS, Tolk, NVDA client and phonon DLLs before the next release. The out-of-date notes in [[project_build_pipeline]] and [[project_repo_hygiene]] were corrected the same day.

@@ -28,8 +28,10 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 ## Ideas / backlog
 - [Feature ideas](project_feature_ideas.md) — 6.4+ wish list (offline progress, golden-cookie bonus, daily streak, auto-buyer, boosts shop, QoL) + future-minigame candidates (mines, video poker, keno, audio Simon). Higher or lower + number-format shipped in 6.4; achievement rewards + roulette shipped in 6.5, roulette's rank-shift + tweaks changelogged in 6.6 (all roulette sounds delivered); rest unbuilt.
 
+- [Design review 7.0](project_design_review_7_0.md) — 2026-10-25 evaluation, potential improvements only: runaway 1.01 economy (rank 90 in ~5 min), prestige spam, endless quests pre-done after prestige, minigames lack purpose, settings as cheats, readme onboarding + agreed readme reorganization and missing keys, small config gate/category issues; #8 store prices don't drop after losing auto/manual cookies (proposed: scale purchase count by share kept).
+
 ## Release status
-- [Release status](project_release_status.md) — 6.9 RELEASED (built, published, site shows V6.90) and frozen; 7.0 IN PROGRESS (version.txt 7.0, changelog block FULL at 20 of 20; all Medium bugs and all four payout exploits done) (changelog block full, 10/10); the next change opens a 7.0 major block (up to 20 entries) and bumps build/version.txt to 7.0, not 6.10; what 6.9 shipped and what's open next.
+- [Release status](project_release_status.md) — 7.1 IN PROGRESS (version.txt 7.1, minor block, 2 of 10 entries); 7.0 RELEASED 2026-10-01 (tag V7.00) and frozen; what 6.9 and 7.0 shipped.
 
 ## Finished plans (7.0)
 - [Lottery value prizes plan](project_lottery_value_prizes_plan.md) — SHIPPED 7.0: item prizes defined by money value, converted at current prices (cookies via sell price, auto/manual via the basic store item's current price), money fallback; balance all four tiers to ~85% total; 5 sections, docs last; fixes exploit #5 properly.
@@ -41,19 +43,22 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 ## Known bugs — full-game audit of 6.8 (2026-09-30); mark entries FIXED as they ship
 - [Player-facing bugs](project_bugs_player_facing.md) — "Open after 6.9" at the top = remaining 10 Medium + 12 Low backlog in the dev's wording. Originally 31 bugs a player can hit: new game leaks prestige, achievements not saved, settings Save overwrites last slot, unsafe save write, Ctrl+S dead in minigames, F3 search rejects letters, settings Cancel doesn't undo, UX convention violations.
 - [Exploits and balance](project_bugs_exploits_balance.md) — minigame EV table; dice always pays 8x, blackjack pays 3x, highlow/slots/gold+diamond tickets are +EV; prestige spam, hold-Enter combos, lopsided speed events, pacing notes.
-- [Code bugs](project_bugs_code.md) — save/load ordering, int overflow in reward rolls + prestige_points, recursive game loop/menus, missing stat increments, parser robustness, unchecked config loads, stale vendored deps, duplication hotspots.
-- [Build and docs bugs](project_bugs_build_docs.md) — site updater x.0 regex, tools.py deletes release first + import-time KeyError, hardcoded paths, gitignore gaps, installer mutex, readme inaccuracies/typos, two stale memory notes.
+- [Code bugs](project_bugs_code.md) — save/load ordering, int overflow in reward rolls + prestige_points, recursive game loop/menus, missing stat increments, parser robustness, unchecked config loads, stale vendored deps, duplication hotspots. Re-verified against 7.0 on 2026-10-25 (only #2 fixed, #6/#14 partly; priority list at the top). Plus #26–#31 found 2026-10-25 (Scratch all drops leftover tickets, reroll charges before checking candidates, Ctrl+L on unsaved slot, Ctrl+L partial reload, Shift+M/C double-fire (NOT a bug, verified in engine source), int(rank) overflow).
+- [Build and docs bugs](project_bugs_build_docs.md) — site updater x.0 regex, tools.py deletes release first + import-time KeyError, hardcoded paths, gitignore gaps, installer mutex, readme inaccuracies/typos, two stale memory notes. Re-verified against 7.0 on 2026-10-25 (only #8 fixed, sounds now tracked) + #19: cycrz/lib was removed then restored (untracked by design); no Tolk.dll is intentional (excluded in C:\nvgt\config.properties).
 
 ## NVGT / AngelScript gotchas — these cause compile failures (game won't launch)
 - [AngelScript braceless if](project_angelscript_braceless_if.md) — a braceless if/else governs one statement; a second orphans the else → compile error.
 - [AngelScript reserved words](project_angelscript_reserved_words.md) — never name a variable `out` (or in/inout/shared/final/from…); reserved keyword → compile error.
-- [NVGT key_pressed one-shot](project_nvgt_key_pressed_oneshot.md) — key_pressed() is consumed on first read each frame; read a multi-purpose key once and branch inside.
+- [NVGT key_pressed one-shot](project_nvgt_key_pressed_oneshot.md) — key_pressed() is consumed on first read each frame, and key_repeating() consumes the same pressed flag; read a multi-purpose key once and branch inside.
+- [Legacy NVGT source](reference_legacy_nvgt_source.md) — engine C++ source at tsatria03\misc\Legacy-NVGT (src/input.cpp…); C:\nvgt is binaries only.
 - [NVGT sound preload cache](project_nvgt_sound_preload_cache.md) — sound.load caches by filename; reusing a name for changed audio replays the old clip; use a fresh name or allow_preloads=false.
 
 ## Feedback — how the dev wants you to work
 - [Confirm before implementing](feedback_confirm_before_implementing.md) — a design discussion or any `?` is a request for a plan, not a green light to edit; wait for explicit go-ahead.
 - [Plan features in memory first](feedback_plan_features_in_memory.md) — before coding any new feature, write the agreed plan (locked decisions + numbered build sections) into an aidocks/ memory file and index it; only then build, section by section.
+- [Flag todo prerequisites](feedback_flag_todo_prerequisites.md) — dev picks todo items at random; say up front if one needs another item or a decision first.
 - [Pause after each fix](feedback_pause_after_each_fix.md) — after a fix + its docs, end the turn with the summary for review; never start the next item (reading, analysis, or its question) in the same reply, even in a batch.
+- [Bug list format](feedback_bug_list_format.md) — when listing bugs, split player-facing vs code (internal/modder/build), group each by game section, one line per bug with its memory id.
 - [Ask one question at a time](feedback_ask_one_question_at_a_time.md) — surface ONE question per turn and wait; don't batch a numbered list.
 - [Ignore bang commands](feedback_ignore_bang_commands.md) — ignore the user's in-session `!` command runs and their output; act only on the user's typed prose unless they explicitly reference them.
 - [List modified files](feedback_list_modified_files.md) — end every editing turn with a bare-filename "Files changed:" list; then note whether a relaunch is needed.
@@ -63,6 +68,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Stage commits before big changes](feedback_stage_commits_before_big_changes.md) — flag a commit break point before a risky stage so safe pieces land first.
 - [CLAUDE.md length limit](feedback_claudemd_length.md) — keep CLAUDE.md a dispatcher under 40,000 chars; move detail into memory files.
 - [Docks last](feedback_docks_last.md) — in any multi-section build plan, reserve the final section for dock updates (readme + changelog + version); code/config first, docs last. EXCEPTION: bug-fix batches get changelog + todo updates per fix, as soon as the dev confirms it works.
+- [Update readme with fixes](feedback_update_readme_with_fixes.md) — always update readme.txt wherever a fix/change touches what it describes, in the same pass as changelog + todo; don't ask first.
 - [Changelog rules](feedback_changelog_rules.md) — docks/changelog.txt: player-facing prose, reverse-chronological, a record not a manual; bump version.txt with each block; cap 10 entries per minor block, 20 per major.
 - [Todo list format](feedback_todo_list_format.md) — docks/todo_list.txt: `**Finished. …` for done, `****Unfinished. …` for pending; plain-text sentences, no markdown/numbers; unfinished section on top.
 - [Dock line length 1024](feedback_dock_line_length_1024.md) — keep every line in cycrz/docks/ at or under 1024 chars; the screen reader splits longer lines.
