@@ -7,9 +7,9 @@
 ****Unfinished. Correct the readme saying that prestige keeps all minigame stats, since it resets some of them.
 ****Unfinished. Stop prestige from paying out large amounts of prestige points when you prestige over and over within a minute or so.
 ****Unfinished. Make store prices for auto and manual cookies go back down when you lose some of them by any means, such as events, the cookie flipper, or minigame bets, so that replacing what you lost costs about what you paid before.
-****Unfinished. Add a session summary shown when you exit that reports what you did this session, such as cookies baked, money earned, and ranks gained, built from stats the game already tracks.
-****Unfinished. Add an auto-buyer that automatically purchases the cheapest upgrade you can afford on a timer, extending automation from baking into spending. Unlocked at a late rank and toggleable in the settings.
 ****Unfinished. Add a temporary boosts shop where you spend cookies or coins on timed power-ups, such as double production for 60 seconds, an auto-bake burst, or an extended combo window.
+****Unfinished. Add an auto-buyer that automatically purchases the cheapest upgrade you can afford on a timer, extending automation from baking into spending. Unlocked at a late rank and toggleable in the settings.
+****Unfinished. Add a session summary shown when you exit that reports what you did this session, such as cookies baked, money earned, and ranks gained, built from stats the game already tracks.
 
 ##These are the things that are already finished from earlier versions of the game.
 

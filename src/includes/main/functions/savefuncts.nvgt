@@ -244,6 +244,23 @@ if (sd.d.exists("stat_lottery_losses")) stat_lottery_losses = sd.read_double("st
 if (sd.d.exists("stat_highest_combo_reached")) stat_highest_combo_reached = sd.read_double("stat_highest_combo_reached");
 if (sd.d.exists("stat_combos_started")) stat_combos_started = sd.read_double("stat_combos_started");
 if (sd.d.exists("stat_combos_broken")) stat_combos_broken = sd.read_double("stat_combos_broken");
+// Read after the stats above, since saves from before quest baselines existed build theirs from the loaded stats.
+if (sd.d.exists("questBaselineCount"))
+{
+    questStatBaseline.delete_all();
+    int qbcount = sd.read_int("questBaselineCount");
+    for (int i = 0; i < qbcount; i++)
+    {
+        string qbstatkey = "questBaselineStat_" + string(i);
+        string qbvalkey = "questBaselineValue_" + string(i);
+        if (!sd.d.exists(qbstatkey)) continue;
+        double qbval = 0;
+        if (sd.d.exists(qbvalkey)) qbval = sd.read_double(qbvalkey);
+        questStatBaseline.set(sd.read_string(qbstatkey), qbval);
+    }
+}
+else
+    migrate_quest_baselines();
 if (sd.d.exists("lotteryTicketCount"))
 {
     int ltcount = sd.read_int("lotteryTicketCount");
@@ -384,6 +401,15 @@ for (uint i = 0; i < questEndlessKeys.length(); i++)
     questEndlessCounts.get(questEndlessKeys[i], qecnt);
     sd.add("questEndlessId_" + string(i), questEndlessKeys[i]);
     sd.add("questEndlessAmount_" + string(i), qecnt);
+}
+string[] questBaselineKeys = questStatBaseline.get_keys();
+sd.add("questBaselineCount", int(questBaselineKeys.length()));
+for (uint i = 0; i < questBaselineKeys.length(); i++)
+{
+    double qbval = 0;
+    questStatBaseline.get(questBaselineKeys[i], qbval);
+    sd.add("questBaselineStat_" + string(i), questBaselineKeys[i]);
+    sd.add("questBaselineValue_" + string(i), qbval);
 }
 sd.add("stat_cookies_baked", stat_cookies_baked);
 sd.add("cookieXP", cookieXP);

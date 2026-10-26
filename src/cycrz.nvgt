@@ -237,6 +237,22 @@ else
     stat_lottery_tickets_scratched=0;
     stat_lottery_wins=0;
     stat_lottery_losses=0;
+    stat_flipper_events_fired=0;
+    stat_flipper_flips=0;
+    stat_cookie_flips=0;
+    stat_penny_flips=0;
+    stat_dice_rolls=0;
+    stat_dice_wins=0;
+    stat_dice_losses=0;
+    stat_highlow_games=0;
+    stat_highlow_wins=0;
+    stat_highlow_losses=0;
+    stat_highlow_highest_streak=0;
+    stat_roulette_games=0;
+    stat_roulette_wins=0;
+    stat_roulette_losses=0;
+    stat_roulette_straight_hits=0;
+    stat_roulette_breaks=0;
     for (uint i = 0; i < loadedTickets.length(); i++) loadedTickets[i].owned = 0;
     prestigeLevel=0;
     /* A new game must not inherit the previous slot's prestige progress or combo stats.
@@ -262,22 +278,8 @@ stat_coins_spent=0;
 stat_singles_purchased=0;
 stat_bundles_purchased=0;
 stat_baker_events_fired=0;
-stat_flipper_events_fired=0;
-stat_flipper_flips=0;
-stat_cookie_flips=0;
-stat_penny_flips=0;
-stat_dice_rolls=0;
-stat_dice_wins=0;
-stat_dice_losses=0;
-stat_highlow_games=0;
-stat_highlow_wins=0;
-stat_highlow_losses=0;
-stat_highlow_highest_streak=0;
-stat_roulette_games=0;
-stat_roulette_wins=0;
-stat_roulette_losses=0;
-stat_roulette_straight_hits=0;
-stat_roulette_breaks=0;
+/* Minigame stats are kept for life across prestiges, like blackjack, slots, lottery, and combos already were;
+only a new game zeroes them (resetgame). Quests count their progress from snapshot_quest_baselines below. */
 comboCount=0;
 preComboCount=0;
 preComboTarget=2;
@@ -309,6 +311,8 @@ activeQuests.resize(0);
 assign_quests();
 flipperHistory.resize(0);
 rerollHistory.resize(0);
+// Taken before the head start bonuses below, so head start money still counts toward quests that track money earned.
+snapshot_quest_baselines();
 if (prestige_starting_coins > 0) { coins += prestige_starting_coins; stat_coins_earned += prestige_starting_coins; }
 if (prestige_starting_autocookie > 0) autocookie += prestige_starting_autocookie;
 if (prestige_starting_manualcookie > 0) manulcookie += prestige_starting_manualcookie;

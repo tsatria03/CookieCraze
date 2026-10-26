@@ -40,6 +40,58 @@ quest_item[] activeQuests;
 dictionary completedQuestIds;
 dictionary questEndlessCounts;
 int questRerollCount = 0;
+/* Each stat's value at the start of the current run. Prestige keeps minigame and other lifetime stats, so a quest
+counts only what was done this run: its progress is the stat minus this baseline. Saved with the game. */
+dictionary questStatBaseline;
+
+/* Count stats a quest measures from the run's start. Left out: rank, which a quest compares directly; the two
+personal bests, highest combo and highest higher or lower streak, where subtracting makes no sense; and idle auto
+slots, which is worked out from the slots you own rather than counted. */
+string[] quest_baseline_stats()
+{
+    string[] stats = {STAT_COOKIES_BAKED, STAT_MANUAL_BAKES_PERFORMED, STAT_AUTO_BAKES_PERFORMED, STAT_COINS_EARNED, STAT_COINS_SPENT,
+        STAT_SINGLES_PURCHASED, STAT_BUNDLES_PURCHASED, STAT_BAKER_EVENTS_FIRED, STAT_FLIPPER_EVENTS_FIRED, STAT_FLIPPER_FLIPS,
+        STAT_COOKY_FLIPS, STAT_PENNY_FLIPS, STAT_DICE_ROLLS, STAT_DICE_WINS, STAT_DICE_LOSSES, STAT_SLOT_SPINS, STAT_SLOT_WINS,
+        STAT_SLOT_LOSSES, STAT_BLACKJACK_HANDS, STAT_BLACKJACK_WINS, STAT_BLACKJACK_LOSSES, STAT_BLACKJACK_PUSHES,
+        STAT_AUTO_SLOTS_PURCHASED, STAT_MANUAL_SLOTS_PURCHASED, STAT_AUTO_SLOTS_ENABLED, STAT_LOTTERY_TICKETS_BOUGHT,
+        STAT_LOTTERY_TICKETS_SCRATCHED, STAT_LOTTERY_WINS, STAT_LOTTERY_LOSSES, STAT_HIGHLOW_GAMES, STAT_HIGHLOW_WINS,
+        STAT_HIGHLOW_LOSSES, STAT_ROULETTE_GAMES, STAT_ROULETTE_WINS, STAT_ROULETTE_LOSSES, STAT_ROULETTE_STRAIGHT_HITS,
+        STAT_ROULETTE_BREAKS, STAT_QUESTS_COMPLETED, STAT_REROLLS_PERFORMED, STAT_COMBOS_STARTED, STAT_COMBOS_BROKEN};
+    return stats;
+}
+
+// Records every count stat's value now, as the start of a run. Called when a run starts (prestige or new game).
+void snapshot_quest_baselines()
+{
+    questStatBaseline.delete_all();
+    string[] stats = quest_baseline_stats();
+    for (uint i = 0; i < stats.length(); i++)
+        questStatBaseline.set(stats[i], get_stat_value(stats[i]));
+}
+
+/* For saves from before baselines existed. Stats that prestige already kept (blackjack, slots, lottery, combos,
+quests completed, rerolls) start from their value at load, so quests on them can't be instantly complete. Every
+other stat starts from 0, since it was reset at the last prestige and its value is already this run's progress. */
+void migrate_quest_baselines()
+{
+    questStatBaseline.delete_all();
+    string[] kept = {STAT_BLACKJACK_HANDS, STAT_BLACKJACK_WINS, STAT_BLACKJACK_LOSSES, STAT_BLACKJACK_PUSHES,
+        STAT_SLOT_SPINS, STAT_SLOT_WINS, STAT_SLOT_LOSSES, STAT_LOTTERY_TICKETS_BOUGHT, STAT_LOTTERY_TICKETS_SCRATCHED,
+        STAT_LOTTERY_WINS, STAT_LOTTERY_LOSSES, STAT_COMBOS_STARTED, STAT_COMBOS_BROKEN, STAT_QUESTS_COMPLETED,
+        STAT_REROLLS_PERFORMED};
+    for (uint i = 0; i < kept.length(); i++)
+        questStatBaseline.set(kept[i], get_stat_value(kept[i]));
+}
+
+// A quest stat's progress this run: the stat minus its baseline, or the stat itself when it has no baseline.
+double quest_stat_progress(string stat)
+{
+    double value = get_stat_value(stat);
+    double baseline = 0;
+    if (questStatBaseline.exists(stat)) questStatBaseline.get(stat, baseline);
+    double progress = value - baseline;
+    return (progress < 0) ? 0 : progress;
+}
 
 void parse_quests_table(string filepath, quest_item[]@ quests_out)
 {

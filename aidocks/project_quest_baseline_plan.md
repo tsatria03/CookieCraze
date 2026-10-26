@@ -1,0 +1,32 @@
+---
+name: project_quest_baseline_plan
+description: "PLAN (7.1, agreed 2026-10-25, not built): prestige keeps ALL minigame stats for life (stops resetting dice/highlow/roulette/flipper), and every quest on a count stat measures progress from a run-start baseline, so no quest starts already complete. Fixes exploit #8 + the readme 'prestige keeps minigame stats' line. 3 sections, docs last."
+metadata:
+  node_type: memory
+  type: project
+---
+
+# Quest baseline plan (7.1)
+
+Covers two todo items as one change (dev, 2026-10-25): "Fix the endless quests for blackjack, the slot machine, the cookie lottery, and combos already being complete straight after you prestige" and "Correct the readme saying that prestige keeps all minigame stats". Background: exploit #8 in [[project_bugs_exploits_balance]]. One section per turn, dev tests between sections, docs last ([[feedback_docks_last]]). Re-locate code by symbol.
+
+## Locked decisions
+
+- **Option B (dev chose):** prestige keeps every minigame stat for life. `reset_game_state` (`cycrz.nvgt`) stops zeroing the dice (rolls/wins/losses), higher or lower (games/wins/losses/highest streak), roulette (games/wins/losses/straight hits/breaks) and flipper (`stat_flipper_events_fired`, `stat_flipper_flips`, `stat_cookie_flips`, `stat_penny_flips`) stats. Blackjack, slots, lottery and combo stats already persist. The statistics screen then shows true lifetime totals, and the readme's "prestige keeps minigame stats" (prestige section) and "lifetime personal best" for highest streak become true.
+- **New game must still zero them:** since `reset_game_state` no longer does, add those minigame stats to the full-reset branch of `resetgame(false)` alongside the blackjack/slots/lottery ones.
+- **Baseline applies to every count-stat quest, endless AND tiered (dev: "do what you recommend"):** at each run start, snapshot every quest stat; a quest's progress = `get_stat_value(stat) - baseline[stat]` (never below 0). So no quest can start already complete from old totals.
+  - **Excluded:** `rank` (resets anyway; "reach rank X" must compare the real rank), and the two record stats `highest_combo_reached` and `highlow_highest_streak` (bests, not counts — subtracting makes no sense). Those keep comparing the raw stat; a tier on them still completes at once if the record already beats it (as today for combos).
+  - Per-run stats (cookies baked, coins earned, …) snapshot as 0 at run start, so they behave exactly as today.
+  - **Snapshot timing:** in `reset_game_state`, right after the stat resets and BEFORE the prestige head-start additions (`prestige_starting_coins` also adds to `stat_coins_earned`), so head-start money still counts toward "earn" quests as it does now.
+  - Rerolled-in quests use the same run-start baseline (progress since the run began, not since the reroll), matching today's per-run stats.
+- **Storage:** a `dictionary questStatBaseline` (stat name → double), saved in `writedata` as a count + id/value pairs, cleared and loaded in `readdata` (clear first — slot isolation, code #6 in [[project_bugs_code]]).
+- **Old saves (no baseline saved):** for stats that already persisted before this change (blackjack hands/wins/losses/pushes, slot spins/wins/losses, lottery bought/scratched/wins/losses, combos started/broken, quests completed, rerolls performed) set the baseline to the value at load, so they can't instantly complete; their this-run progress restarts from the load (one-time, acceptable). Every other stat gets baseline 0 — the newly kept minigame stats were reset at the last prestige, so their current value IS this run's progress.
+- **Achievements are untouched:** they keep comparing lifetime stats via `get_stat_value`.
+
+## Build sections
+
+**Progress:** section 1 BUILT (2026-10-25), awaiting dev test. As built: `reset_game_state` (`cycrz.nvgt`) no longer zeroes the 16 dice/highlow/roulette/flipper stats; `resetgame(false)` does. In `quests_table.nvgt`: global `dictionary questStatBaseline`; `quest_baseline_stats()` (41 count stats — everything `get_stat_value` knows except rank, the two record stats and auto_slots_idle); `snapshot_quest_baselines()` called in `reset_game_state` after `rerollHistory.resize(0)` and before the head-start bonuses; `migrate_quest_baselines()` (the 15 previously-kept stats get their loaded value, the rest have no entry = 0); `quest_stat_progress(stat)` = stat − baseline, min 0 (no entry → raw stat). `savefuncts.nvgt`: `writedata` saves `questBaselineCount` + `questBaselineStat_<i>` / `questBaselineValue_<i>`; `readdata` reads them right after the stat block, else calls `migrate_quest_baselines()`. Nothing calls `quest_stat_progress` yet (section 2).
+
+1. **Keep minigame stats + baseline storage.** Remove the minigame stat resets from `reset_game_state`; add them to `resetgame(false)`'s full-reset branch. Add `questStatBaseline`, a `snapshot_quest_baselines()` called in `reset_game_state` after the resets and before head starts, a `quest_progress(quest_item@ q)` helper (raw stat for rank/record stats, else stat − baseline, min 0), save/load with the old-save rule. No quest code uses it yet — behavior unchanged except the stats screen keeping minigame totals across prestige. Dev tests: prestige, check the statistics screen keeps dice/higher or lower/roulette/flipper totals; new game zeroes them; save/reload.
+2. **Use quest_progress everywhere quests read progress.** Every quest `get_stat_value(... .stat) >= threshold` site: `resetgame` this-run count (`cycrz.nvgt`), the quests menu (several in `menu.nvgt`), baker info (`extrafuncts.nvgt`), and `quests_table.nvgt` (`mark_completed_quests`, `advance_endless_quests`, `quests_reward_earned` both modes, quest detail/progress text). Dev tests: on an experienced save, prestige — the blackjack/slots/lottery/combo endless quests show 0 progress, not complete; play a few hands — progress counts; tiered quests on kept stats start from 0; reach rank quest still works; reload mid-run keeps progress.
+3. **Docs.** Readme: prestige section (minigame stats kept for life; quest progress counts from the start of each run), quests section (progress since the run began for kept stats; record-stat quests compare your best), and fix line ~385 calling cookies baked "a lifetime running total" when prestige resets it (found while planning). Changelog 7.1: one entry for the pair (7 of 10 after). Move both todo lines to finished. Mark exploit #8 FIXED in [[project_bugs_exploits_balance]].
