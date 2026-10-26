@@ -524,14 +524,6 @@ if (st.d.exists("manualSlotDistribution"))
 {
 manualSlotDistribution = st.read_bool("manualSlotDistribution");
 }
-if(st.d.exists("playervents"))
-{
-playervents=st.read_bool("playervents");
-}
-if(st.d.exists("playervents2"))
-{
-playervents2=st.read_bool("playervents2");
-}
 if(st.d.exists("slotmode"))
 {
 slotmode=st.read_bool("slotmode");
@@ -575,8 +567,6 @@ introsfx=true;
 logosfx=true;
 savesfx=true;
 speak_menu_position=false;
-playervents=true;
-playervents2=true;
 flipmode=true;
 jackmode=true;
 lotterymode=true;
@@ -616,8 +606,6 @@ st.add("speak_menu_position",speak_menu_position);
 st.add("numberFormatMode",numberFormatMode);
 st.add("slotDistribution",slotDistribution);
 st.add("manualSlotDistribution",manualSlotDistribution);
-st.add("playervents",playervents);
-st.add("playervents2",playervents2);
 st.add("slotmode",slotmode);
 st.add("jackmode",jackmode);
 st.add("lotterymode",lotterymode);

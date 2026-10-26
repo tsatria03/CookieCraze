@@ -177,7 +177,8 @@ stat_cookies_baked += manualGain;
 cookieXP += manualGain * cookieExpMod;
 stat_manual_bakes_performed++;
 pool.play_stationary("sounds/misc/manulbake.ogg", false);
-if(playervents2==true) attempt_manebaker_event(evchanse2);
+// Events can no longer be switched off in the settings; main.table's manual_event_chance of 0 is the only off switch.
+attempt_manebaker_event(evchanse2);
 }
 }
 if(form.is_pressed(shop))
@@ -230,7 +231,7 @@ stat_cookies_baked += autoGain;
 cookieXP += autoGain * cookieExpMod;
 stat_auto_bakes_performed++;
 if(bakesfx==true) pool.play_stationary("sounds/misc/autobake.ogg", false);
-if(playervents==true) attempt_autobaker_event(evchanse);
+attempt_autobaker_event(evchanse);
 clicktimer.restart();
 }
 else if(bakemode==1 and autocookie<=0)

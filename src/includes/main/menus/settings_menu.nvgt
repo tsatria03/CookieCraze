@@ -1,13 +1,9 @@
 /* Settings snapshots. preffsmenu takes one as a settings submenu opens, and Cancel or Escape in that
 submenu restores it, so nothing changed there sticks without pressing Save. The submenus re-enter
 themselves after a name change or a cancelled reset, so they can't take the snapshot themselves. */
-double setsnap_automationMultiplier, setsnap_slotMultiplier, setsnap_manualSlotMultiplier;
-double setsnap_cookiemod, setsnap_cookieExpMod, setsnap_cookieSellPrice;
-double setsnap_evchanse, setsnap_evchanse2;
 int setsnap_numberFormatMode;
 bool setsnap_introsfx, setsnap_logosfx, setsnap_exitsfx, setsnap_bakesfx, setsnap_savesfx, setsnap_speak_menu_position;
 bool setsnap_slotDistribution, setsnap_manualSlotDistribution, setsnap_show_locked_shops;
-bool setsnap_playervents, setsnap_playervents2;
 double setsnap_ambvolume, setsnap_musvolume, setsnap_storambvolume, setsnap_stormusvolume;
 string setsnap_ambtype, setsnap_mustype;
 int setsnap_ambienceIndex, setsnap_musicIndex;
@@ -15,14 +11,6 @@ int setsnap_playergender;
 string setsnap_playername, setsnap_playername2;
 void snapshot_game_settings()
 {
-setsnap_automationMultiplier = automationMultiplier;
-setsnap_slotMultiplier = slotMultiplier;
-setsnap_manualSlotMultiplier = manualSlotMultiplier;
-setsnap_cookiemod = cookiemod;
-setsnap_cookieExpMod = cookieExpMod;
-setsnap_cookieSellPrice = cookieSellPrice;
-setsnap_evchanse = evchanse;
-setsnap_evchanse2 = evchanse2;
 setsnap_numberFormatMode = numberFormatMode;
 setsnap_introsfx = introsfx;
 setsnap_logosfx = logosfx;
@@ -33,19 +21,9 @@ setsnap_speak_menu_position = speak_menu_position;
 setsnap_slotDistribution = slotDistribution;
 setsnap_manualSlotDistribution = manualSlotDistribution;
 setsnap_show_locked_shops = show_locked_shops;
-setsnap_playervents = playervents;
-setsnap_playervents2 = playervents2;
 }
 void restore_game_settings()
 {
-automationMultiplier = setsnap_automationMultiplier;
-slotMultiplier = setsnap_slotMultiplier;
-manualSlotMultiplier = setsnap_manualSlotMultiplier;
-cookiemod = setsnap_cookiemod;
-cookieExpMod = setsnap_cookieExpMod;
-cookieSellPrice = setsnap_cookieSellPrice;
-evchanse = setsnap_evchanse;
-evchanse2 = setsnap_evchanse2;
 numberFormatMode = setsnap_numberFormatMode;
 introsfx = setsnap_introsfx;
 logosfx = setsnap_logosfx;
@@ -56,8 +34,6 @@ speak_menu_position = setsnap_speak_menu_position;
 slotDistribution = setsnap_slotDistribution;
 manualSlotDistribution = setsnap_manualSlotDistribution;
 show_locked_shops = setsnap_show_locked_shops;
-playervents = setsnap_playervents;
-playervents2 = setsnap_playervents2;
 }
 void snapshot_sound_settings()
 {
@@ -161,19 +137,11 @@ int exitSFX = form.create_checkbox("Enable playing the exit sound upon exiting t
 int menuPositionToggle = form.create_checkbox("Enable speaking the position of each item in menus.", speak_menu_position);
 int saveSFX = form.create_checkbox("Enable save sound effects when reloading and saving the game.", savesfx);
 int bakeSFX = form.create_checkbox("Enable auto bake sound effects when baking cookies.", bakesfx);
-int playvents = form.create_checkbox("Enable player events during auto baking.", playervents);
-int playvents2 = form.create_checkbox("Enable player events during manual baking.", playervents2);
+/* The event on/off checkboxes and the cost multiplier, rank, experience, event chance, and sell price sliders were
+removed: switching events off or changing those values was effectively a cheat. They now live in main.table for modders. */
 int bakeSplitToggle = form.create_checkbox("Enable evenly distributing cookie production across automated slots.", slotDistribution);
 int manualBakeSplitToggle = form.create_checkbox("Enable evenly distributing cookie production across manual slots.", manualSlotDistribution);
 int showLockedToggle = form.create_checkbox("Enable showing locked items and menus in the shop list.", show_locked_shops);
-int automationMultiplierSlider = form.create_slider("Automation slot Cost Multiplier.", round((automationMultiplier - 1.0) * 100, 0), 1, 100, "X", 1);
-int slotMultiplierSlider = form.create_slider("Auto slot production Cost Multiplier.", round((slotMultiplier - 1.0) * 100, 0), 1, 100, "X", 1);
-int manualSlotMultiplierSlider = form.create_slider("Manual slot production Cost Multiplier.", round((manualSlotMultiplier - 1.0) * 100, 0), 1, 100, "X", 1);
-int cookieRankModifierSlider = form.create_slider("Cookie Rank Modifier.", cookiemod, 1, 100, "x", 1);
-int cookieExpModSlider = form.create_slider("Cookie Experience Modifier.", cookieExpMod, 1, 100, "x", 1);
-int autoChanceSlider = form.create_slider("Auto-Baking Event chance.", 100 - evchanse, 0, 100, "percent", 1);
-int manualChanceSlider = form.create_slider("Manual-Baking Event chance.", 100 - evchanse2, 0, 100, "percent", 1);
-int sellPriceSlider = form.create_slider("Cookie sell price.", cookieSellPrice, 1, 100, "cents", 1);
 int numberFormatList = form.create_list("Number format", 4);
 form.add_list_item(numberFormatList, "Raw. Example, 5,230.");
 form.add_list_item(numberFormatList, "Suffix short. Example, 5.23 K.");
@@ -188,14 +156,6 @@ form.focus(logoSFX);
     {
         wait(5);
         form.monitor();
-automationMultiplier = 1.0 + (form.get_slider(automationMultiplierSlider) * 0.01);
-slotMultiplier = 1.0 + (form.get_slider(slotMultiplierSlider) * 0.01);
-manualSlotMultiplier = 1.0 + (form.get_slider(manualSlotMultiplierSlider) * 0.01);
-cookiemod = form.get_slider(cookieRankModifierSlider);
-cookieExpMod = form.get_slider(cookieExpModSlider);
-evchanse = 100 - form.get_slider(autoChanceSlider);
-evchanse2 = 100 - form.get_slider(manualChanceSlider);
-cookieSellPrice = form.get_slider(sellPriceSlider);
 numberFormatMode = form.get_list_position(numberFormatList);
 introsfx = form.is_checked(introSFX);
 logosfx = form.is_checked(logoSFX);
@@ -206,8 +166,6 @@ speak_menu_position = form.is_checked(menuPositionToggle);
 slotDistribution = form.is_checked(bakeSplitToggle);
 manualSlotDistribution = form.is_checked(manualBakeSplitToggle);
 show_locked_shops = form.is_checked(showLockedToggle);
-        playervents = form.is_checked(playvents);
-        playervents2 = form.is_checked(playvents2);
         if (form.is_pressed(restsets))
         {
 if (!yes_no("Are you sure you want to reset your game settings to their defaults? This action cannot be undone."))

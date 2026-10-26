@@ -152,7 +152,6 @@ chance from baker.event still applies first. */
 void attempt_autobaker_event(double chance)
 {
     if (loadedEvents.length() == 0) return;
-    if (!playervents) return;
     event_item[] pool_auto;
     for (uint i = 0; i < loadedEvents.length(); i++)
     {
@@ -177,7 +176,6 @@ void attempt_autobaker_event(double chance)
 void attempt_manebaker_event(double chance)
 {
     if (loadedEvents.length() == 0) return;
-    if (!playervents2) return;
     event_item[] pool_manual;
     for (uint i = 0; i < loadedEvents.length(); i++)
     {
