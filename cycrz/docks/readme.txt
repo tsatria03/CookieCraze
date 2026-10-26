@@ -382,7 +382,7 @@ The statistics screen is divided into thirteen sections.
 
 Baking.
 
-Cookies baked: counts the total number of cookies you have ever produced across all sources. This is a lifetime running total and never decreases when you sell cookies. Your cookie stockpile shown in the main game reflects only what you currently hold, while this stat reflects everything you have ever baked. Achievements that track cookies baked use this lifetime total, so they can unlock well before your stockpile reaches the same number.
+Cookies baked: counts the total number of cookies you have produced across all sources during the current run. This running total never decreases when you sell cookies, though it starts again from zero when you prestige, along with your other baking and economy stats. Your cookie stockpile shown in the main game reflects only what you currently hold, while this stat reflects everything you have baked this run. Achievements that track cookies baked use this total, so they can unlock well before your stockpile reaches the same number.
 
 Auto bakes performed: counts every time the auto baker fires a cycle.
 Manual bakes performed: counts every time you press the bake button manually.
@@ -521,6 +521,8 @@ Rerolling a quest replaces only the currently focused quest with a new one of th
 
 Some quests are endless. Instead of a one-time goal, an endless quest escalates every time you complete it and prestige, returning the next cycle at a higher target, and it can never be permanently finished. Your rank quest is endless and always present, and several others, such as baking cookies, earning and spending money, buying upgrades, and playing each minigame, rotate through the random pool. Every endless quest you complete permanently increases the prestige points you earn on all future prestiges, so the deeper you push them the more each prestige pays out.
 
+Quest progress counts only what you do during the current run. Many stats, such as blackjack hands, dice rolls, and lottery tickets scratched, are kept as lifetime totals across every prestige, so a quest on one of them measures how far you have come since the run began rather than your lifetime total. That way no quest, endless or not, is already complete the moment it is assigned. Rank quests compare your current rank, and quests on your two personal bests, your highest combo and your longest higher or lower streak, compare your best ever.
+
 To view your quests, press the Quests button in the main game interface.
 A Quest Category list at the top of the quests screen lets you narrow down the list. The options are All, Required, and Random, and the list updates immediately as you switch between them.
 The quests screen shows required quests at the top, followed by random quests sorted from easiest to hardest. Completed quests are labelled with complete so you can see your status at a glance.
@@ -544,7 +546,7 @@ The prestige option is available from the quests screen.
 Once you reach the minimum rank, pressing the prestige button opens a confirmation dialog explaining what resets and what carries over, and whether you will receive a reward based on your current quest completion status.
 
 When you prestige, the following are reset: your money, cookies, rank, all upgrade purchases, baking slots, and baking and economy stats.
-The following are kept: your prestige level, all achievements and achievement progress, minigame unlocks, minigame stats, and preferences.
+The following are kept: your prestige level, all achievements and achievement progress, minigame unlocks, minigame stats, and preferences. Minigame stats for every minigame keep counting up as lifetime totals across all of your prestiges, while your quests count only what you do in each new run.
 
 Whether you receive a reward depends on the require_all setting in quests.table. If you have not met the quest requirement, nothing is gained.
 Certain prestige levels award a milestone reward, and all other levels fall back to a default reward if one is configured. After the prestige message you will always receive a second notification telling you what you gained.

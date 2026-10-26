@@ -3,8 +3,6 @@
 ****Unfinished. Fix scratch all in the cookie lottery so every ticket you scratch is either paid out or counted as a loss, instead of leftover tickets being used up for nothing and small batches of one or two tickets winning nothing.
 ****Unfinished. Make a quest reroll check that a replacement quest exists before taking your money, and stop it offering a quest tier you already finished or a second quest for a stat that already has one.
 ****Unfinished. Make winnings from the slot machine and blackjack count toward your money earned statistic, achievements, and quests.
-****Unfinished. Fix the endless quests for blackjack, the slot machine, the cookie lottery, and combos already being complete straight after you prestige.
-****Unfinished. Correct the readme saying that prestige keeps all minigame stats, since it resets some of them.
 ****Unfinished. Stop prestige from paying out large amounts of prestige points when you prestige over and over within a minute or so.
 ****Unfinished. Make store prices for auto and manual cookies go back down when you lose some of them by any means, such as events, the cookie flipper, or minigame bets, so that replacing what you lost costs about what you paid before.
 ****Unfinished. Add a temporary boosts shop where you spend cookies or coins on timed power-ups, such as double production for 60 seconds, an auto-bake burst, or an extended combo window.
@@ -13,6 +11,8 @@
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Correct the readme saying that prestige keeps all minigame stats, by making prestige keep every minigame stat for life.
+**Finished. Fix the endless quests for blackjack, the slot machine, the cookie lottery, and combos already being complete straight after you prestige, by making every quest count only what you do in the current run.
 **Finished. Add the missing keys to the readme's keyboard commands, covering menu keys, dialog keys, and the Alt shortcuts for buttons, and explain that F3 searches inside a menu but mutes the events buffer on the game screen.
 **Finished. Reorganize the readme so it goes welcome, getting started, keyboard commands, game features, modding, and conclusion, and move the note on currency into the modding section.
 **Finished. Add a short getting started section to the top of the readme that teaches a new player the first few minutes of the game.
