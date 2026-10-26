@@ -61,6 +61,7 @@ The beginner and advanced categories use coins. All higher categories from exper
 One important thing to understand about bundle pricing: bundles do not have their own fixed prices.
 Instead, the game uses the singles shop as a backend price engine, looking up the current price of each item based on how many you have already bought and adding them up.
 This means bundle prices scale up naturally as you progress, just like singles do.
+Bundles also follow the baking speed cap. A bundle only charges for the baking speed that still fits under the cap, so once your baking speed is at its maximum you pay only for the bundle's auto and manual cookies. A bundle that contains nothing but baking speed is shown as unavailable at the cap and cannot be bought.
 
 The advantage of bundles is that they package multiple items into one convenient purchase, so you get more total stats per transaction than buying the same items one at a time.
 

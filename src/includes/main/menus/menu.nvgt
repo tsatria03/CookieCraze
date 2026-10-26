@@ -1372,6 +1372,42 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
     }
     }
 }
+/* A bundle's speed entry only counts the copies that still fit under COOKIESPEED_MAX, the same limit the
+singles shop uses, so a bundle's price, purchase, and speed purchase count never include speed you cannot use.
+Other targets are unaffected. */
+double bundle_entry_qty(store_item@ it, double qty)
+{
+    if (it.target != 3) return qty;
+    double useful = max_useful_speed_copies(it);
+    return (qty < useful) ? qty : useful;
+}
+/* How many copies of a bundle are still worth buying. Unlimited when it holds anything besides speed; a
+speed only bundle stops once its speed no longer fits under COOKIESPEED_MAX, and returns 0 at the cap. */
+double bundle_copy_limit(bundle_item@ bundle, store_item[]@ storeItems)
+{
+    double limit = 0;
+    bool anyMatched = false;
+    for (uint j = 0; j < bundle.entries.length(); j++)
+    {
+        for (uint k = 0; k < storeItems.length(); k++)
+        {
+            if (storeItems[k].item_type == bundle.entries[j].item_type)
+            {
+                anyMatched = true;
+                if (storeItems[k].target != 3) return 1e308;
+                double q = bundle.entries[j].quantity;
+                if (q > 0)
+                {
+                    double c = ceil(max_useful_speed_copies(storeItems[k]) / q);
+                    if (c > limit) limit = c;
+                }
+                break;
+            }
+        }
+    }
+    if (!anyMatched) return 1e308;
+    return limit;
+}
 double calc_bundle_total_qty(bundle_item@ bundle, store_item[]@ storeItems, double copies)
 {
     double total = 0;
@@ -1382,7 +1418,7 @@ double calc_bundle_total_qty(bundle_item@ bundle, store_item[]@ storeItems, doub
             if (storeItems[k].item_type == bundle.entries[j].item_type)
             {
                 double level = (storeItems[k].target == 2) ? manulcookie_purchases : (storeItems[k].target == 3) ? cookiespeed_purchases : autocookie_purchases;
-                total = safe_cap(total + calc_total_upgrade_cost(level, bundle.entries[j].quantity * copies, storeItems[k].base_cost, storeItems[k].cost_multiplier));
+                total = safe_cap(total + calc_total_upgrade_cost(level, bundle_entry_qty(storeItems[k], bundle.entries[j].quantity * copies), storeItems[k].base_cost, storeItems[k].cost_multiplier));
                 break;
             }
         }
@@ -1398,7 +1434,14 @@ double calc_bundle_total(bundle_item@ bundle, store_item[]@ storeItems)
 // (no per-copy loop), so it stays instant even when the true answer is astronomically large.
 double max_affordable_bundle_copies(bundle_item@ bundle, store_item[]@ storeItems, double balance)
 {
+    double copyLimit = bundle_copy_limit(bundle, storeItems);
+    if (copyLimit < 1) return 0;
     if (calc_bundle_total_qty(bundle, storeItems, 1) > balance) return 0;
+    double found = max_affordable_bundle_copies_uncapped(bundle, storeItems, balance);
+    return (found < copyLimit) ? found : copyLimit;
+}
+double max_affordable_bundle_copies_uncapped(bundle_item@ bundle, store_item[]@ storeItems, double balance)
+{
     double hi = 1;
     while (hi < 1e307 && calc_bundle_total_qty(bundle, storeItems, hi * 2) <= balance)
         hi *= 2;
@@ -1422,6 +1465,7 @@ double calc_bundles_pass_cost(bundle_item[]@ bundles, string chosenMenu, store_i
     {
         if (bundles[i].menu != chosenMenu) continue;
         if (bundles[i].min_rank > 0 && rank < bundles[i].min_rank) continue;
+        if (bundle_copy_limit(bundles[i], storeItems) < 1) continue;
         total = safe_cap(total + calc_bundle_total_qty(bundles[i], storeItems, copies));
     }
     return total;
@@ -1474,6 +1518,7 @@ void bundlemenu()
                 if (bundles[j].menu != menus[i].name) continue;
                 totalBundles++;
                 if (bundles[j].min_rank > 0 && rank < bundles[j].min_rank) continue;
+                if (bundle_copy_limit(bundles[j], storeItems) < 1) continue;
                 double totalCost = calc_bundle_total(bundles[j], storeItems);
                 double bundleMenuBalance = (menus[i].currency == "cookies") ? cookies : coins;
                 if (bundleMenuBalance >= totalCost)
@@ -1531,6 +1576,11 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
             m.add_item(bundles[i].name + ". Unlocked at rank " + string(bundles[i].min_rank) + ". Description: " + bundles[i].description, "locked" + string(i));
             continue;
         }
+        if (bundle_copy_limit(bundles[i], storeItems) < 1)
+        {
+            m.add_item(bundles[i].name + ". Your baking speed is already at its maximum. Description: " + bundles[i].description, "maxed" + string(i));
+            continue;
+        }
         double totalCost = calc_bundle_total(bundles[i], storeItems);
         double canAfford = max_affordable_bundle_copies(bundles[i], storeItems, balance);
         string costStr = (chosenCurrency == "cookies") ? format_number(totalCost) + " baked cookies" : convert_to_currency(totalCost);
@@ -1541,6 +1591,7 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
     {
         if (bundles[i].menu != chosenMenu) continue;
         if (bundles[i].min_rank > 0 && rank < bundles[i].min_rank) continue;
+        if (bundle_copy_limit(bundles[i], storeItems) < 1) continue;
         double totalCost = calc_bundle_total(bundles[i], storeItems);
         if (balance >= totalCost) { anyBundleAffordable = true; break; }
     }
@@ -1595,7 +1646,7 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
                 {
                     if (storeItems[k].item_type == bundles[i].entries[j].item_type)
                     {
-                        double amount = bundles[i].entries[j].quantity * copies;
+                        double amount = bundle_entry_qty(storeItems[k], bundles[i].entries[j].quantity * copies);
                         if (storeItems[k].target == 1) { autocookie += amount * storeItems[k].amount; autocookie_purchases += amount; autoGained = safe_cap(autoGained + amount * storeItems[k].amount); }
                         else if (storeItems[k].target == 2) { manulcookie += amount * storeItems[k].amount; manulcookie_purchases += amount; manulGained = safe_cap(manulGained + amount * storeItems[k].amount); }
                         else if (storeItems[k].target == 3) { double applied = gain_cookiespeed(amount * storeItems[k].amount); cookiespeed_purchases += amount; speedGained = safe_cap(speedGained + applied); }
@@ -1631,6 +1682,12 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
         dlgmessage_return("This bundle is locked. You need to reach rank " + string(bundles[idx].min_rank) + " to purchase it.");
         continue;
     }
+    if (sel.substr(0, 5) == "maxed")
+    {
+        pool.play_stationary("sounds/store/error.ogg", false);
+        dlgmessage_return("Your baking speed is already at its maximum.");
+        continue;
+    }
     if (sel.substr(0, 6) == "bundle")
     {
         int idx = string_to_int(sel.substr(6));
@@ -1645,6 +1702,9 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
             dlgmessage_return("Error! Please enter a valid number to buy!");
             continue;
         }
+        // A speed only bundle can't be bought past the copies whose speed still fits under the maximum.
+        double copyLimit = bundle_copy_limit(bundles[idx], storeItems);
+        if (qty > copyLimit) qty = copyLimit;
         double grandTotal = calc_bundle_total_qty(bundles[idx], storeItems, qty);
         if (balance < grandTotal)
         {
@@ -1661,7 +1721,7 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
             {
                 if (storeItems[k].item_type == bundles[idx].entries[j].item_type)
                 {
-                    double amount = bundles[idx].entries[j].quantity * qty;
+                    double amount = bundle_entry_qty(storeItems[k], bundles[idx].entries[j].quantity * qty);
                     if (storeItems[k].target == 1)
                     {
                         autocookie += amount * storeItems[k].amount;
@@ -1690,19 +1750,8 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
         if (speedGained > 0) gainParts.insert_last(format_number(speedGained) + " ms of baking speed");
         gainLog = join_spoken_list(gainParts);
         if (gainLog == "") gainLog = "nothing new because your baking speed is already at its maximum";
-        double nextBundleCost = 0;
-        for (uint j = 0; j < bundles[idx].entries.length(); j++)
-        {
-            for (uint k = 0; k < storeItems.length(); k++)
-            {
-                if (storeItems[k].item_type == bundles[idx].entries[j].item_type)
-                {
-                    double level = (storeItems[k].target == 2) ? manulcookie_purchases : (storeItems[k].target == 3) ? cookiespeed_purchases : autocookie_purchases;
-                    nextBundleCost += calc_total_upgrade_cost(level, bundles[idx].entries[j].quantity, storeItems[k].base_cost, storeItems[k].cost_multiplier);
-                    break;
-                }
-            }
-        }
+        // Same capped price the menu shows, so the next price never includes speed past the maximum.
+        double nextBundleCost = calc_bundle_total(bundles[idx], storeItems);
         stat_bundles_purchased += qty;
         pool.play_stationary("sounds/store/buy" + random(1, 4) + ".ogg", false);
         pool.play_stationary("sounds/store/order.ogg", false);

@@ -3,7 +3,6 @@
 ****Unfinished. Fix scratch all in the cookie lottery so every ticket you scratch is either paid out or counted as a loss, instead of leftover tickets being used up for nothing and small batches of one or two tickets winning nothing.
 ****Unfinished. Make a quest reroll check that a replacement quest exists before taking your money, and stop it offering a quest tier you already finished or a second quest for a stat that already has one.
 ****Unfinished. Make winnings from the slot machine and blackjack count toward your money earned statistic, achievements, and quests.
-****Unfinished. Stop the store charging for baking speed you cannot use once your baking speed is at its maximum.
 ****Unfinished. Add a short getting started section to the top of the readme that teaches a new player the first few minutes of the game.
 ****Unfinished. Reorganize the readme so it goes welcome, getting started, keyboard commands, game features, modding, and conclusion, and move the note on currency into the modding section.
 ****Unfinished. Add the missing keys to the readme's keyboard commands, covering menu keys, dialog keys, and the Alt shortcuts for buttons, and explain that F3 searches inside a menu but mutes the events buffer on the game screen.
@@ -21,6 +20,7 @@
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Stop the store charging for baking speed you cannot use once your baking speed is at its maximum.
 **Finished. Fix a bug where pressing Control L on a save slot that was never saved clears your baking slots and achievements and resets your experience, and save a new game once as soon as it starts.
 **Finished. Make the F and J production readouts include your prestige cookie bonus, so they report what you actually produce once you have bought that prestige upgrade.
 **Finished. Make the F and J production readouts say clearly how much each slot produces and how much you produce in total, and make J describe manual slots the same way F describes automated slots when even splitting is on.
