@@ -150,7 +150,7 @@ string apply_lottery_prize(lottery_prize_item@ prize)
     {
         /* A value prize rolls a money amount in cents and converts it to items at what one item is worth right now,
         so it is worth the same money at any stage of the game. */
-        double cents = floor(double(random(int(prize.min_amount), int(prize.max_amount))));
+        double cents = floor(random_amount(prize.min_amount, prize.max_amount));
         if (target == "coins")
             amount = cents;
         else
@@ -178,7 +178,7 @@ string apply_lottery_prize(lottery_prize_item@ prize)
         amount = floor(base * (pct / 100.0));
     }
     else
-        amount = floor(double(random(int(prize.min_amount), int(prize.max_amount))));
+        amount = floor(random_amount(prize.min_amount, prize.max_amount));
     if (amount <= 0) return "";
     if (target == "cookiespeed")
     {

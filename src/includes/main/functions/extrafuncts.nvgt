@@ -46,6 +46,21 @@ double buy_item(double level, double base_cost, double multiplier)
 {
     return safe_cap(base_cost * pow(multiplier, level));
 }
+double random_amount(double minVal, double maxVal)
+{
+    /* Rolls a whole number between minVal and maxVal inclusive, dropping fractions toward zero the way int() does.
+    random() only takes ints, and int() of a reward past about 2.1 billion overflows to a negative number, which
+    turned rank and event rewards into money losses past about rank 21 million. Small ranges still use random()
+    exactly as before; only rolls that would not fit in an int use random_float(), the engine's 0 to 1 value. */
+    if (minVal > maxVal) { double tmp = minVal; minVal = maxVal; maxVal = tmp; }
+    double lo = (minVal < 0) ? ceil(minVal) : floor(minVal);
+    double hi = (maxVal < 0) ? ceil(maxVal) : floor(maxVal);
+    if (lo >= -2000000000 && hi <= 2000000000) return double(random(int(lo), int(hi)));
+    double rolled = lo + floor(double(random_float()) * (hi - lo + 1));
+    if (rolled > hi) rolled = hi;
+    if (rolled < lo) rolled = lo;
+    return rolled;
+}
 double gain_cookiespeed(double amount)
 {
     /* Adds up to `amount` cookiespeed, never past COOKIESPEED_MAX, keeping clicktime in sync.

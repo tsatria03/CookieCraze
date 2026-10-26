@@ -33,6 +33,9 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 ## Release status
 - [Release status](project_release_status.md) — 7.1 IN PROGRESS (version.txt 7.1, minor block, 3 of 10 entries); 7.0 RELEASED 2026-10-01 (tag V7.00) and frozen; what 6.9 and 7.0 shipped.
 
+## Active plans (7.1)
+- [Rank burst plan](project_rank_burst_plan.md) — AGREED, not built: one shared rank-up function, milestones use the main-screen rule everywhere, every earned rank in one pass + [summary] message in ranks.table, rank 21M reward overflow + 2B int(rank) overflow + prestige history rank as double; 4 sections, docs last.
+
 ## Finished plans (7.0)
 - [Lottery value prizes plan](project_lottery_value_prizes_plan.md) — SHIPPED 7.0: item prizes defined by money value, converted at current prices (cookies via sell price, auto/manual via the basic store item's current price), money fallback; balance all four tiers to ~85% total; 5 sections, docs last; fixes exploit #5 properly.
 

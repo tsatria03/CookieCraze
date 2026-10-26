@@ -550,12 +550,12 @@ void lottery_buy_menu()
     for (uint i = 0; i < loadedTicketCategories.length(); i++)
     {
         lottery_ticket_category@ cat = loadedTicketCategories[i];
-        if (cat.hidden && int(rank) < cat.min_rank) continue;
+        if (cat.hidden && rank < cat.min_rank) continue;
         bool hasTickets = false;
         for (uint j = 0; j < loadedTickets.length(); j++)
         {
             if (loadedTickets[j].category_id != cat.id) continue;
-            if (loadedTickets[j].hidden && int(rank) < loadedTickets[j].min_rank) continue;
+            if (loadedTickets[j].hidden && rank < loadedTickets[j].min_rank) continue;
             hasTickets = true;
             break;
         }
@@ -574,7 +574,7 @@ void lottery_buy_menu()
         setupmenu(false);
         for (uint i = 0; i < visibleCats.length(); i++)
         {
-            bool locked = (int(rank) < visibleCats[i].min_rank);
+            bool locked = (rank < visibleCats[i].min_rank);
             if (locked)
             {
                 if (visibleCats[i].hidden || !show_locked_shops) continue;
@@ -589,9 +589,9 @@ void lottery_buy_menu()
                 for (uint j = 0; j < loadedTickets.length(); j++)
                 {
                     if (loadedTickets[j].category_id != visibleCats[i].id) continue;
-                    if (loadedTickets[j].hidden && int(rank) < loadedTickets[j].min_rank) continue;
+                    if (loadedTickets[j].hidden && rank < loadedTickets[j].min_rank) continue;
                     totalTickets++;
-                    if (int(rank) < loadedTickets[j].min_rank) continue;
+                    if (rank < loadedTickets[j].min_rank) continue;
                     if (lotteryMaxTickets > 0 && loadedTickets[j].owned >= lotteryMaxTickets) continue;
                     double cost = get_ticket_current_cost(loadedTickets[j]);
                     if (coins >= cost) affordableTickets++;
@@ -628,7 +628,7 @@ void lottery_buy_menu()
         for (uint i = 0; i < loadedTickets.length(); i++)
         {
             if (loadedTickets[i].category_id != cat.id) continue;
-            if (loadedTickets[i].hidden && int(rank) < loadedTickets[i].min_rank) continue;
+            if (loadedTickets[i].hidden && rank < loadedTickets[i].min_rank) continue;
             catTicketIndices.insert_last(int(i));
         }
         while (true)
@@ -637,7 +637,7 @@ void lottery_buy_menu()
             for (uint i = 0; i < catTicketIndices.length(); i++)
             {
                 lottery_ticket_item@ t = loadedTickets[catTicketIndices[i]];
-                bool locked = (int(rank) < t.min_rank);
+                bool locked = (rank < t.min_rank);
                 if (locked && !show_locked_shops) continue;
                 double cost = get_ticket_current_cost(@t);
                 string label = t.name + ", costs " + convert_to_currency(cost) + ".";
@@ -678,7 +678,7 @@ void lottery_buy_menu()
             int ticketIdx = catTicketIndices[ticketCatIdx];
             if (ticketIdx == -1) continue;
             lottery_ticket_item@ ticket = loadedTickets[ticketIdx];
-            if (int(rank) < ticket.min_rank)
+            if (rank < ticket.min_rank)
             {
                 pool.play_stationary("sounds/store/error.ogg", false);
                 dlgmessage_return("This ticket is locked. You need to reach rank " + string(ticket.min_rank) + " to buy it.");

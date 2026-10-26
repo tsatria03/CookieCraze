@@ -204,7 +204,7 @@ string apply_prestige_default_reward(int level)
     double minVal = eval_event_amount(prestigeDefaultReward.min_amount, double(level));
     double maxVal = eval_event_amount(prestigeDefaultReward.max_amount, double(level));
     if (minVal > maxVal) { double tmp = minVal; minVal = maxVal; maxVal = tmp; }
-    double amount = max(1.0, double(random(int(minVal), int(maxVal))));
+    double amount = max(1.0, random_amount(minVal, maxVal));
     amount = floor(amount);
     string target = prestigeDefaultReward.target;
     if (target == "cookies")          cookies += amount;

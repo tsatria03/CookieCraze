@@ -76,7 +76,7 @@ string apply_rank_reward(rank_reward_item@ item, double current_rank)
     double minVal = eval_event_amount(item.min_amount, current_rank);
     double maxVal = eval_event_amount(item.max_amount, current_rank);
     if (minVal > maxVal) { double tmp = minVal; minVal = maxVal; maxVal = tmp; }
-    double amount = double(random(int(minVal), int(maxVal)));
+    double amount = random_amount(minVal, maxVal);
     if (minVal >= 0 && maxVal >= 0 && amount < 1.0) amount = 1.0;
     amount = floor(amount);
     lastRewardAmount = amount;
@@ -140,6 +140,8 @@ void handle_rank_unlock(string unlock)
     else if (unlock == "combos")
         pool.play_stationary("sounds/misc/alert_big.ogg", false);
 }
+/* The only rank-up code: the main game loop and every minigame call this, so ranks behave the same everywhere.
+Rank is compared as a double throughout, since int(rank) overflows past about rank 2.1 billion. */
 void check_rank()
 {
 if (cookieXP >= xprequired)
@@ -156,7 +158,7 @@ if (cookieXP >= xprequired)
         to 900, and so on, always on a multiple of the largest power of ten at or below the current rank. */
         double rankstep = 1;
         while (rankstep * 10 <= rank) rankstep *= 10;
-        if (int(rank) % int(rankstep) == 0)
+        if (rank - rankstep * floor(rank / rankstep) == 0)
         {
             play_rank_sound(lastRewardAmount);
             if (!buffer_muted("ranks")) pool.play_stationary("sounds/misc/rankach" + random(1, 2) + ".ogg", false);
@@ -166,7 +168,7 @@ if (cookieXP >= xprequired)
     rank_reward_item[] matching;
     for (uint i = 0; i < rankRewards.length(); i++)
     {
-        if (rankRewards[i].rank == int(rank))
+        if (double(rankRewards[i].rank) == rank)
             matching.insert_last(rankRewards[i]);
     }
     if (matching.length() > 0)
@@ -176,7 +178,11 @@ if (cookieXP >= xprequired)
         play_rank_sound(lastRewardAmount);
         if (!buffer_muted("ranks")) pool.play_stationary("sounds/misc/rankach" + random(1, 2) + ".ogg", false);
         handle_rank_unlock(milestone.unlock);
-        speak_buffer(milestoneMsg, "critical");
+        // Milestones follow the main screen's rule everywhere, minigames included: spoken while baking mode is on, a dialog otherwise.
+        if (bakemode == 1)
+            speak_buffer(milestoneMsg, "critical");
+        else
+            dlg_buffer(milestoneMsg, "critical");
     }
 }
 }
