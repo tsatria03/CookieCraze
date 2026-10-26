@@ -406,7 +406,7 @@ Highest combo reached: the highest consecutive press count you have ever achieve
 
 Economy.
 
-Money earned: counts the total amount of money you have received across all sources, including selling cookies and rank rewards.
+Money earned: counts the total amount of money you have received across all sources, including selling cookies, rank rewards, and minigame winnings. For minigames played with money, only the profit on top of your bet counts, so a $1.00 bet that pays back $2.00 adds $1.00, and a push or a refunded bet adds nothing.
 Bundle upgrades purchased: counts every bundle shop transaction.
 Single upgrades purchased: counts every singles shop transaction, whether you buy one item or a full bulk purchase.
 

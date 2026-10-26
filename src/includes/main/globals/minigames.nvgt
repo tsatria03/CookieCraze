@@ -416,7 +416,7 @@ if (payout !is null)
         /* Return the bet taken up front plus the winnings, so the net gain is unchanged from before. */
         stat_slot_wins++;
         if (selectedBet == 0) cookies += betAmount + change;
-        else if (selectedBet == 1) coins += betAmount + change;
+        else if (selectedBet == 1) { coins += betAmount + change; stat_coins_earned += change; }
         else if (selectedBet == 2) autocookie += betAmount + change;
         else if (selectedBet == 3) gain_cookiespeed(betAmount + change);
         else if (selectedBet == 4) manulcookie += betAmount + change;
@@ -576,7 +576,7 @@ check_achievements(loadedAchievements, achievementsUnlocked);
             {
                 double winnings = floor(safe_cap(betAmount * jacksConfig.natural_multiplier));
                 if (selectedBet == 0) { cookies += betAmount + winnings; cookies = floor(safe_cap(cookies)); }
-                else if (selectedBet == 1) { coins += betAmount + winnings; coins = floor(safe_cap(coins)); }
+                else if (selectedBet == 1) { coins += betAmount + winnings; coins = floor(safe_cap(coins)); stat_coins_earned += winnings; }
                 else if (selectedBet == 2) { autocookie += betAmount + winnings; autocookie = floor(safe_cap(autocookie)); }
                 else if (selectedBet == 3) gain_cookiespeed(betAmount + winnings);
                 else if (selectedBet == 4) { manulcookie += betAmount + winnings; manulcookie = floor(safe_cap(manulcookie)); }
@@ -657,7 +657,7 @@ check_achievements(loadedAchievements, achievementsUnlocked);
                 on top of the returned bet, paying 3x and more than a natural blackjack. */
                 double winnings = floor(safe_cap(betAmount * max(0.0, jacksConfig.win_multiplier - 1.0)));
                 if (selectedBet == 0) { cookies += betAmount + winnings; cookies = floor(safe_cap(cookies)); }
-                else if (selectedBet == 1) { coins += betAmount + winnings; coins = floor(safe_cap(coins)); }
+                else if (selectedBet == 1) { coins += betAmount + winnings; coins = floor(safe_cap(coins)); stat_coins_earned += winnings; }
                 else if (selectedBet == 2) { autocookie += betAmount + winnings; autocookie = floor(safe_cap(autocookie)); }
                 else if (selectedBet == 3) gain_cookiespeed(betAmount + winnings);
                 else if (selectedBet == 4) { manulcookie += betAmount + winnings; manulcookie = floor(safe_cap(manulcookie)); }
@@ -991,7 +991,7 @@ void dicegame()
                 double winAmount = floor(safe_cap(betAmount * payout.multiplier * diceScale));
                 string amtStr = (selectedBet == 1 ? convert_to_currency(winAmount) : format_number(winAmount));
                 if (selectedBet == 0) { cookies += winAmount; cookies = floor(safe_cap(cookies)); }
-                else if (selectedBet == 1) { coins += winAmount; coins = floor(safe_cap(coins)); stat_coins_earned += winAmount; }
+                else if (selectedBet == 1) { coins += winAmount; coins = floor(safe_cap(coins)); stat_coins_earned += max(0.0, winAmount - betAmount); }
                 else if (selectedBet == 2) { autocookie += winAmount; autocookie = floor(safe_cap(autocookie)); }
                 else if (selectedBet == 3) gain_cookiespeed(winAmount);
                 else if (selectedBet == 4) { manulcookie += winAmount; manulcookie = floor(safe_cap(manulcookie)); }
@@ -1238,7 +1238,7 @@ void highlowgame()
                     if (highlowmode) speak_buffer("Correct, and you reached the maximum streak of " + streak + "!");
                     else dlg_buffer("Correct, and you reached the maximum streak of " + streak + "!");
                     if (selectedBet == 0) { cookies += pot; cookies = floor(safe_cap(cookies)); }
-                    else if (selectedBet == 1) { coins += pot; coins = floor(safe_cap(coins)); stat_coins_earned += pot; }
+                    else if (selectedBet == 1) { coins += pot; coins = floor(safe_cap(coins)); stat_coins_earned += max(0.0, pot - betAmount); }
                     else if (selectedBet == 2) { autocookie += pot; autocookie = floor(safe_cap(autocookie)); }
                     else if (selectedBet == 3) gain_cookiespeed(pot);
                     else if (selectedBet == 4) { manulcookie += pot; manulcookie = floor(safe_cap(manulcookie)); }
@@ -1302,7 +1302,7 @@ void highlowgame()
             }
             double pot = floor(safe_cap(betAmount * currentMultiplier));
             if (selectedBet == 0) { cookies += pot; cookies = floor(safe_cap(cookies)); }
-            else if (selectedBet == 1) { coins += pot; coins = floor(safe_cap(coins)); stat_coins_earned += pot; }
+            else if (selectedBet == 1) { coins += pot; coins = floor(safe_cap(coins)); stat_coins_earned += max(0.0, pot - betAmount); }
             else if (selectedBet == 2) { autocookie += pot; autocookie = floor(safe_cap(autocookie)); }
             else if (selectedBet == 3) gain_cookiespeed(pot);
             else if (selectedBet == 4) { manulcookie += pot; manulcookie = floor(safe_cap(manulcookie)); }
