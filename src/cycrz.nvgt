@@ -166,7 +166,8 @@ if (prestige)
         pool.play_stationary("sounds/misc/" + prestigeConfig.sound, false);
     dlgmessage_return(pmsg);
     bool rewardEarned = quests_reward_earned();
-    int rankReached = int(rank);
+    // Kept as a double like rank itself; int(rank) overflows past about rank 2.1 billion.
+    double rankReached = rank;
     int questsDoneThisRun = 0;
     int questsTotalThisRun = int(activeQuests.length());
     for (uint i = 0; i < activeQuests.length(); i++)

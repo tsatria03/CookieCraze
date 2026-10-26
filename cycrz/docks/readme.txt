@@ -44,8 +44,10 @@ Certain milestone ranks also award bonus stat boosts on top of the money reward,
 
 All rewards and unlock ranks are fully configurable in ranks.table.
 
-Regular rank rewards are announced non-interruptively in the background and stored in the ranks buffer. Milestone rank rewards go to the critical buffer.
-When baking mode is off, they show as a dismissible dialog so you don't miss them. When baking mode is on, they are delivered non-interruptively so they don't interrupt automated play.
+If a single big gain earns you several ranks at once, you reach all of them straight away, and every one of those ranks still pays its reward. Instead of announcing each rank, the game speaks one summary saying how many ranks you climbed, where you started and finished, and the total reward you earned. A single rank up is announced on its own, as usual.
+
+Regular rank rewards are announced non-interruptively in the background and stored in the ranks buffer. Milestone rank rewards go to the critical buffer, and each milestone you pass is announced after the rank announcement, in order.
+When baking mode is off, they show as a dismissible dialog so you don't miss them. When baking mode is on, they are delivered non-interruptively so they don't interrupt automated play. This works the same on the main game screen and inside the minigames.
 
 The bundle shop.
 
@@ -573,7 +575,7 @@ The word coins only appears in the config files themselves as a technical label,
 All of the configuration files are located in the data/config folder, and are split into three subfolders.
 Lines starting with a semicolon, hash, or double slash are treated as comments and ignored by the parser.
 
-Eight of the files, ranks.table, slots.table, prestige.table, quests.table, lottery.table, combos.table, highlow.table, and roulette.table, use section headers in square brackets such as [settings], [sounds], [default], [default_reward], [rewards], [payouts], [tiers], [quests], [prize:id], [deck], and [outcomes]. These are not cosmetic.
+Eight of the files, ranks.table, slots.table, prestige.table, quests.table, lottery.table, combos.table, highlow.table, and roulette.table, use section headers in square brackets such as [settings], [sounds], [default], [summary], [default_reward], [rewards], [payouts], [tiers], [quests], [prize:id], [deck], and [outcomes]. These are not cosmetic.
 The parser uses them to know which format to expect. Do not remove or rename these headers, or the parser will not be able to read the file correctly.
 Each functional header has a warning comment placed directly below it inside the file as a reminder. That comment is cosmetic and can be removed, but the header itself must stay exactly as written.
 
@@ -1391,6 +1393,19 @@ Default section.
 Format: target:min_amount:max_amount:unlock:message
 
 Defines the reward every rank receives automatically. Only one default line is allowed.
+
+Summary section.
+Format: message
+
+Optional. When one gain earns several ranks at once, every rank still gets its default reward, but this message is spoken once instead of the default message. Only the first line in the section is used.
+It is used only when the gain crosses at least one rank that would normally be announced, so a small gain between announced ranks stays silent as before.
+If the section is missing or has no message, the game announces the default message of the highest announced rank in the gain instead. Unlike the other headers, removing this one is safe.
+
+Use %name% as a placeholder for the player's name.
+Use %from% as a placeholder for the rank before the gain.
+Use %rank% as a placeholder for the rank reached.
+Use %ranks% as a placeholder for how many ranks were gained.
+Use %amount% as a placeholder for the total of every default reward in the gain. It is formatted as money when the default reward's target is coins, and as a plain number otherwise.
 
 Rewards section.
 Format: rank:target:min_amount:max_amount:unlock:message

@@ -265,7 +265,8 @@ if (sd.d.exists("prestigeHistoryCount"))
     {
         prestige_run entry;
         entry.level = sd.read_int("prestigeHistory_level_" + string(i));
-        entry.rank_reached = sd.read_int("prestigeHistory_rank_" + string(i));
+        // Read as a double; older saves stored it as an int, which the save dictionary converts on read.
+        entry.rank_reached = sd.read_double("prestigeHistory_rank_" + string(i));
         entry.reward = sd.read_string("prestigeHistory_reward_" + string(i));
         prestigeHistory.insert_last(entry);
     }

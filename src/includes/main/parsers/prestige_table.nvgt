@@ -17,7 +17,7 @@ class prestige_default_reward
 class prestige_run
 {
     int level;
-    int rank_reached;
+    double rank_reached;
     string reward;
 }
 double prestige_coin_multiplier = 0;
