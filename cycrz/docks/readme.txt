@@ -1475,6 +1475,7 @@ cookiespeed = the player's baking speed.
 
 min_amount and max_amount
 The range of values the reward can roll between. Supports the same rank operators as baker.event.
+When a single gain earns more than 1,000 ranks at once, the default reward is not rolled separately for every rank. Instead the game pays one total worked out from the middle of the min and max range across all of those ranks, which is exact for rewards that grow in a straight line with rank, such as 100*rank. Milestone rewards are still rolled normally.
 
 Setting both values to negative numbers causes the reward to deduct from the target stat instead of adding to it, making it a penalty. This is useful for difficulty modding where certain ranks should hurt rather than help.
 

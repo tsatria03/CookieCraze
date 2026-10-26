@@ -88,6 +88,14 @@ string apply_rank_reward(rank_reward_item@ item, double current_rank, bool build
     if (minVal >= 0 && maxVal >= 0 && amount < 1.0) amount = 1.0;
     amount = floor(amount);
     lastRewardAmount = amount;
+    amount = apply_rank_amount(item, amount);
+    // A big multi-rank gain applies thousands of rewards that are never spoken; skip building their messages.
+    if (!buildMessage) return "";
+    return format_rank_message(item, amount, current_rank);
+}
+// Gives an already decided reward amount to its target. Returns the amount applied, which is less for baking speed at its cap.
+double apply_rank_amount(rank_reward_item@ item, double amount)
+{
     if (item.target == "cookiespeed")
     {
         if (amount >= 0)
@@ -103,13 +111,47 @@ string apply_rank_reward(rank_reward_item@ item, double current_rank, bool build
     }
     else
         apply_amount_effect(item.target, amount, 1, false);
-    // A big multi-rank gain applies thousands of rewards that are never spoken; skip building their messages.
-    if (!buildMessage) return "";
+    return amount;
+}
+string format_rank_message(rank_reward_item@ item, double amount, double current_rank)
+{
     dictionary@ tokens = dictionary();
     tokens.set("amount", (item.target == "coins") ? convert_to_currency(amount) : format_number(amount));
     tokens.set("rank", format_number(current_rank));
     tokens.set("name", playername);
     return format_template(item.message, tokens);
+}
+// Experience needed to leave rank r: the same formula used everywhere ranks are set up, with the prestige rank discount.
+double rank_threshold(double r)
+{
+    double t = cookiemod * (r * (r * 4));
+    if (prestige_rank_discount > 0) t *= max(0.01, 1.0 - (prestige_rank_discount / 100.0));
+    return t;
+}
+/* The rank the current experience reaches, starting above startRank: the first rank whose threshold it has not met.
+Found straight from the threshold formula instead of stepping rank by rank, then nudged by a few steps for rounding.
+The nudges are capped, since past about 9 quadrillion adding 1 to a double no longer changes it. */
+double rank_for_current_xp(double startRank)
+{
+    double d = (prestige_rank_discount > 0) ? max(0.01, 1.0 - (prestige_rank_discount / 100.0)) : 1.0;
+    double target = floor(sqrt(cookieXP / (cookiemod * 4 * d)));
+    if (target <= startRank) target = startRank + 1;
+    for (int i = 0; i < 8 && rank_threshold(target) <= cookieXP; i++) target += 1;
+    for (int i = 0; i < 8 && target > startRank + 1 && rank_threshold(target - 1) > cookieXP; i++) target -= 1;
+    return target;
+}
+/* The average default reward per rank across ranks first to last, from evenly spaced samples. Exact for rewards that
+grow in a straight line, like the shipped 100 times rank, and for random ranges it uses the middle of the range. */
+double average_rank_reward(rank_reward_item@ item, double first, double last)
+{
+    int samples = 200;
+    double sum = 0;
+    for (int k = 0; k < samples; k++)
+    {
+        double r = first + (last - first) * double(k) / double(samples - 1);
+        sum += (eval_event_amount(item.min_amount, r) + eval_event_amount(item.max_amount, r)) / 2.0;
+    }
+    return sum / samples;
 }
 
 void play_rank_sound(double amount)
@@ -154,7 +196,11 @@ void handle_rank_unlock(string unlock)
 Rank is compared as a double throughout, since int(rank) overflows past about rank 2.1 billion.
 Every rank the current experience has earned lands in this one call, instead of one rank per frame, which let a
 huge gain trickle in for minutes. Each rank still pays its reward as it is crossed; the rank announcement and then
-each milestone's sounds and message follow once the loop is done. */
+each milestone's sounds and message follow once the loop is done.
+A gain of more than RANK_EXACT_LIMIT ranks takes a fast path instead. Late in the game one bake can earn hundreds of
+millions of ranks, and stepping through them froze the game, so the final rank comes straight from the threshold
+formula, the default reward is paid as one calculated total, and only the milestone ranks crossed are visited. */
+const double RANK_EXACT_LIMIT = 1000;
 void check_rank()
 {
 if (cookieXP < xprequired) return;
@@ -166,11 +212,59 @@ double announceAmount = 0;
 string[] milestoneMsgs;
 double[] milestoneAmounts;
 string[] milestoneUnlocks;
+double targetRank = rank_for_current_xp(fromRank);
+if (targetRank - fromRank > RANK_EXACT_LIMIT)
+{
+    rank = targetRank;
+    xprequired = rank_threshold(rank);
+    if (rankDefault.length() > 0)
+    {
+        rank_reward_item@ def = rankDefault[0];
+        double total = floor(average_rank_reward(def, fromRank + 1, targetRank) * (targetRank - fromRank));
+        lastRewardAmount = total;
+        totalReward = safe_cap(apply_rank_amount(def, total));
+        handle_rank_unlock(def.unlock);
+        // The highest thinned rank at or below the new rank; it was crossed if it is above where the gain started.
+        double rankstep = 1;
+        while (rankstep * 10 <= targetRank) rankstep *= 10;
+        double highestAnnounced = rankstep * floor(targetRank / rankstep);
+        if (highestAnnounced > fromRank)
+        {
+            anyAnnounced = true;
+            announceAmount = floor((eval_event_amount(def.min_amount, highestAnnounced) + eval_event_amount(def.max_amount, highestAnnounced)) / 2.0);
+            announceMsg = format_rank_message(def, announceAmount, highestAnnounced);
+        }
+    }
+    // Every milestone rank inside the gain, lowest first, each paying one of its rewards like the exact path does.
+    double[] milestoneRanks;
+    for (uint i = 0; i < rankRewards.length(); i++)
+    {
+        double mr = double(rankRewards[i].rank);
+        if (mr <= fromRank || mr > targetRank || milestoneRanks.find(mr) >= 0) continue;
+        uint pos = 0;
+        while (pos < milestoneRanks.length() && milestoneRanks[pos] < mr) pos++;
+        milestoneRanks.insert_at(pos, mr);
+    }
+    for (uint m = 0; m < milestoneRanks.length(); m++)
+    {
+        rank_reward_item[] matching;
+        for (uint i = 0; i < rankRewards.length(); i++)
+        {
+            if (double(rankRewards[i].rank) == milestoneRanks[m])
+                matching.insert_last(rankRewards[i]);
+        }
+        rank_reward_item@ milestone = matching[random(0, matching.length() - 1)];
+        milestoneMsgs.insert_last(apply_rank_reward(milestone, milestoneRanks[m]));
+        milestoneAmounts.insert_last(lastRewardAmount);
+        milestoneUnlocks.insert_last(milestone.unlock);
+    }
+}
+else
+{
 while (cookieXP >= xprequired)
 {
     rank += 1;
-    xprequired = (cookiemod * (rank * (rank * 4)));
-    if (prestige_rank_discount > 0) xprequired *= max(0.01, 1.0 - (prestige_rank_discount / 100.0));
+    xprequired = rank_threshold(rank);
     if (rankDefault.length() > 0)
     {
         /* Thin out the rank-up announcement and sounds as you climb: every rank up to 9, then every 10th up to 90,
@@ -203,6 +297,7 @@ while (cookieXP >= xprequired)
         milestoneAmounts.insert_last(lastRewardAmount);
         milestoneUnlocks.insert_last(milestone.unlock);
     }
+}
 }
 if (anyAnnounced)
 {

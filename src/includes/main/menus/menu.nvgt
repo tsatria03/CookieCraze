@@ -416,7 +416,7 @@ void lottery_scratch_menu()
         if (ownedTickets.length() == 0) return;
         setupmenu(false);
         for (uint i = 0; i < ownedTickets.length(); i++)
-            m.add_item(ownedTickets[i].name + " — " + string(ownedTickets[i].owned) + " owned", ownedTickets[i].id);
+            m.add_item(ownedTickets[i].name + " — " + format_number(ownedTickets[i].owned) + " owned", ownedTickets[i].id);
         m.add_item("Back", "back");
         m.intro_text = "Select a ticket tier to scratch.";
         int res = m.run(0, true);
@@ -434,7 +434,7 @@ void lottery_scratch_menu()
         {
             setupmenu(false);
             m.add_item("Scratch one", "one");
-            m.add_item("Scratch all (" + string(loadedTickets[ticketIdx].owned) + ")", "all");
+            m.add_item("Scratch all (" + format_number(loadedTickets[ticketIdx].owned) + ")", "all");
             m.add_item("Back", "back2");
             m.intro_text = ticket.name + ". Choose how many to scratch.";
             int sres = m.run(0, true);
