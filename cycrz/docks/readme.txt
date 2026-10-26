@@ -127,7 +127,7 @@ You can bake manually by pressing the bake button, or let auto-baking handle it 
 
 To sell cookies and earn money, enter the cookie store and choose the sell option. You will be prompted to type how many cookies you want to sell, with the maximum amount already filled in. Press enter to sell everything you have, or type a smaller number to sell only part of your supply.
 
-Each cookie sells for a configurable rate set in the game settings, defaulting to 50 cents. The more you bake before selling, the larger your payout.
+Each cookie sells for 50 cents by default. Modders can change the price in main.table. The more you bake before selling, the larger your payout.
 
 Baking mode is a toggle that activates automatic cookie production. To enable it, you need at least one auto cookie. Once active, cookies are baked automatically on a timed cycle without any input needed.
 
@@ -140,7 +140,7 @@ Ranking up.
 
 Reach new ranks by baking cookies. Each cookie you bake earns experience toward your next rank, and every rank rewards you with money while milestone ranks unlock new features.
 
-Your rank experience is tracked separately from the cookies you can spend, and it only ever goes up. Selling cookies, buying from the shops, or betting in minigames never lowers your rank progress, so you can spend freely without setting your ranking back. Two settings control the pace: the Cookie Rank Modifier sets how much experience each rank requires, and the Cookie Experience Modifier sets how much experience you earn per bake. Press R at any time to hear your current experience and how much more you need for the next rank.
+Your rank experience is tracked separately from the cookies you can spend, and it only ever goes up. Selling cookies, buying from the shops, or betting in minigames never lowers your rank progress, so you can spend freely without setting your ranking back. Two values in main.table control the pace: rank_modifier sets how much experience each rank requires, and experience_modifier sets how much experience you earn per bake. Both are meant for modders and are not in the game settings. Press R at any time to hear your current experience and how much more you need for the next rank.
 
 The money reward scales with your current rank, so higher ranks pay out more.
 Certain milestone ranks also award bonus stat boosts on top of the money reward, such as extra auto cookies or manual cookies.
@@ -215,6 +215,7 @@ While you play, the game fires random events that can affect your stats in unexp
 Events can give or take auto cookies, manual cookies, baking speed, and more.
 Some are percentage-based, and others are flat amounts.
 Events fire automatically during gameplay and are fully configurable in baker.event.
+Events are part of the challenge and cannot be switched off in the game settings. If their announcements get to be too much, press F3 to mute the events buffer: the events still happen, but you no longer hear them.
 
 Blackjack. Unlocked at rank 10.
 
@@ -356,7 +357,7 @@ Current rank: your current rank number.
 Current experience: how much baking experience you have earned toward ranking up. Experience only ever goes up as you bake and is separate from the cookies you spend.
 Experience needed for next rank: how much more experience you need to reach the next rank.
 Balance: how much money you currently have.
-Cookie sell price: the current price per cookie as set in the game settings.
+Cookie sell price: the current price per cookie, as set in main.table.
 Earnings per sell: how much money you would earn if you sold your entire current cookie stockpile right now. Updates live as your cookie count changes.
 Prestige level: how many times you have prestiged. Starts at 0 on a fresh save.
 Prestige points: how many prestige points you currently have available to spend in the prestige store.
@@ -639,6 +640,48 @@ Each achievement line then begins with its category alias as the first field. Th
 bundles.store uses one functional section header, [bundles], which marks where the bundle definitions begin.
 Aliases defined above it are always read regardless of position, but bundle lines are only read after the header appears.
 
+main.table is the one file whose section headers are only for organisation. Its settings are read wherever they appear, and every line, section, or even the whole file can be removed safely, since each value falls back to its default.
+
+main.table
+
+Location: data/config/tables/main.table
+
+Holds settings a normal player has no reason to change, along with the values every new run starts with. These used to be sliders in the game settings and are now only changed here. Every value is optional: if the file, a section, or a line is missing, or a value is not a plain number, the game uses the default listed below. Press Control L in game to reload the file after editing it.
+
+Money values in this file are written in dollars, so 0.5 is 50 cents and 1 is $1.00. Each is rounded to the nearest cent.
+
+Starting values section, [starting_values].
+What a new game or a prestige starts you with. Changes apply from your next new game or prestige.
+
+starting_cash = the money you start with, in dollars. Default 0.1, which is 10 cents. This is also the money the profile setup gives a new player.
+starting_autocookie = the auto cookies you start with. Default 0.
+starting_manualcookie = the manual cookies you start with. Default 1.
+
+Slots section, [slots].
+What automating a slot, an auto slot, and a manual slot cost at the start of a run, and how much more each one costs than the last. Base costs apply from your next new game or prestige; multipliers apply right away.
+
+automation_base_cost = the cost of automating your first slot, in dollars. Default 0.15.
+automation_cost_multiplier = how much each automation costs compared with the one before it. Default 1.01, meaning 1 percent more each time. Values below 1 are raised to 1.
+auto_slot_base_cost = the cost of your first auto slot, in dollars. Default 0.3.
+auto_slot_cost_multiplier = how much each auto slot costs compared with the one before it. Default 1.01.
+manual_slot_base_cost = the cost of your first manual slot, in dollars. Default 0.3.
+manual_slot_cost_multiplier = how much each manual slot costs compared with the one before it. Default 1.01.
+
+Ranks section, [ranks].
+
+rank_modifier = multiplies the experience every rank needs. Leaving rank r takes rank_modifier times 4 times r squared experience. Default 1. Must be above 0.
+experience_modifier = multiplies the experience each baked cookie gives you. Default 1. Must be above 0.
+
+Events section, [events].
+
+auto_event_chance = the percent of auto bakes on which a baker event can fire. Default 2, which is 1 bake in 50.
+manual_event_chance = the percent of bake button presses on which a baker event can fire. Default 2.
+0 turns that kind of event off completely, 100 lets an event fire on every bake, and decimals such as 0.5 are allowed. Each event's own chance in baker.event still applies on top. Values are kept between 0 and 100.
+
+Selling section, [selling].
+
+sell_price = how much each cookie sells for, in dollars. Default 0.5, which is 50 cents. The lowest is 0.01, one cent, and there is no highest. Lottery cookie prizes and stores that charge in cookies use this price too.
+
 baker.event
 
 Location: data/config/events/baker.event
@@ -707,7 +750,7 @@ The probability of this event firing when it is selected, from 1 to 100.
 100 means it always fires when chosen, and 50 means it fires roughly half the time.
 Set to 0 to effectively disable this event without removing it from the file.
 
-Note that this value works alongside the global event settings in the game settings, not instead of them. There are two master enable checkboxes, one for auto baking events and one for manual baking events. If either is disabled, no events fire for that baking mode at all regardless of this value. There are also two global chance sliders that apply on top of the per-event chance, so setting this to 100 does not guarantee the event fires if the global slider reduces the overall frequency.
+Note that this value works alongside the global event chances in main.table, not instead of them. auto_event_chance and manual_event_chance set the percent of bakes on which any event can fire at all, and this per-event chance applies on top of that, so setting this to 100 does not guarantee the event fires on every bake. Setting either global chance to 0 turns that kind of event off completely.
 
 description
 The message spoken to the player when this event fires.

@@ -8,6 +8,8 @@
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Remove the checkboxes that switched baker events off, since turning events off is effectively a cheat.
+**Finished. Move the slot cost multipliers, rank and experience modifiers, event chances, and cookie sell price out of the game settings into a new main.table file for modders, along with the values every new run starts with.
 **Finished. Make winnings from the slot machine and blackjack count toward your money earned statistic, achievements, and quests, and make every minigame count only the profit on top of your bet.
 **Finished. Make a quest reroll check that a replacement quest exists before taking your money, and stop it offering a quest tier you already finished or a second quest for a stat that already has one.
 **Finished. Fix scratch all in the cookie lottery so every ticket you scratch gets a real result, instead of leftover tickets counting as losses without being drawn and small batches of one or two tickets winning nothing.
