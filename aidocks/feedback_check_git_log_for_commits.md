@@ -11,4 +11,6 @@ The dev commits their own work between turns (often several commits you didn't m
 
 **Why:** Assuming uncommitted work or a particular HEAD when the dev has already committed leads to wrong advice and redundant questions. They manage their own commits.
 
+**When the dev says a section or fix "passed", "past", "works", "is good" or similar (dev, 2026-10-25):** run `git log` right away to see whether they've already committed it, and say so — don't ask whether to commit first. Their "passed" usually means tested AND committed.
+
 **How to apply:** Don't commit or push unless explicitly asked (see the global rules). When commit state matters, look it up rather than guessing. Related: [[feedback_stage_commits_before_big_changes]].

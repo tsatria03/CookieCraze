@@ -409,7 +409,7 @@ void mark_completed_quests()
     {
         if (activeQuests[i].infinite) continue;
         if (!activeQuests[i].advance) continue;
-        if (get_stat_value(activeQuests[i].stat) < activeQuests[i].threshold) continue;
+        if (quest_stat_progress(activeQuests[i].stat) < activeQuests[i].threshold) continue;
         if (!completedQuestIds.exists(activeQuests[i].id)) { completedQuestIds.set(activeQuests[i].id, true); stat_quests_completed++; }
     }
 }
@@ -420,7 +420,7 @@ void advance_endless_quests()
     for (uint i = 0; i < activeQuests.length(); i++)
     {
         if (!activeQuests[i].infinite) continue;
-        if (get_stat_value(activeQuests[i].stat) < activeQuests[i].threshold) continue;
+        if (quest_stat_progress(activeQuests[i].stat) < activeQuests[i].threshold) continue;
         double c = 0;
         if (questEndlessCounts.exists(activeQuests[i].id)) questEndlessCounts.get(activeQuests[i].id, c);
         questEndlessCounts.set(activeQuests[i].id, c + 1);
@@ -500,7 +500,7 @@ bool any_quest_complete()
 {
     for (uint i = 0; i < activeQuests.length(); i++)
     {
-        if (get_stat_value(activeQuests[i].stat) >= activeQuests[i].threshold) return true;
+        if (quest_stat_progress(activeQuests[i].stat) >= activeQuests[i].threshold) return true;
     }
     return false;
 }
@@ -509,7 +509,7 @@ bool all_quests_complete()
 {
     for (uint i = 0; i < activeQuests.length(); i++)
     {
-        if (get_stat_value(activeQuests[i].stat) < activeQuests[i].threshold) return false;
+        if (quest_stat_progress(activeQuests[i].stat) < activeQuests[i].threshold) return false;
     }
     return true;
 }
@@ -535,7 +535,7 @@ string format_quest_value(string stat, double val)
 
 string get_quest_progress(quest_item@ item)
 {
-    double current = get_stat_value(item.stat);
+    double current = quest_stat_progress(item.stat);
     if (item.use_percent)
     {
         double pct = (item.threshold > 0) ? (current / item.threshold) * 100.0 : 100.0;
@@ -585,7 +585,7 @@ string get_stat_display_name(string stat)
 
 string get_quest_detail(quest_item@ item)
 {
-    double current = get_stat_value(item.stat);
+    double current = quest_stat_progress(item.stat);
     bool complete = current >= item.threshold;
     double pct = (item.threshold > 0) ? (current / item.threshold) * 100.0 : 100.0;
     if (pct > 100.0) pct = 100.0;

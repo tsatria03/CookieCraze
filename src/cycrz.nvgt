@@ -172,7 +172,7 @@ if (prestige)
     int questsTotalThisRun = int(activeQuests.length());
     for (uint i = 0; i < activeQuests.length(); i++)
     {
-        if (get_stat_value(activeQuests[i].stat) >= activeQuests[i].threshold)
+        if (quest_stat_progress(activeQuests[i].stat) >= activeQuests[i].threshold)
             questsDoneThisRun++;
     }
     mark_completed_quests();

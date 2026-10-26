@@ -553,7 +553,7 @@ void show_baker_info()
     int completedQuests = 0;
     for (uint i = 0; i < activeQuests.length(); i++)
     {
-        if (get_stat_value(activeQuests[i].stat) >= activeQuests[i].threshold) completedQuests++;
+        if (quest_stat_progress(activeQuests[i].stat) >= activeQuests[i].threshold) completedQuests++;
     }
     string questRewardMode = "";
     if (questsConfig.require_all == 1) questRewardMode = "No reward is given, regardless of quest completion";

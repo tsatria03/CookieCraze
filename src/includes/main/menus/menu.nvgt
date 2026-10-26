@@ -2116,7 +2116,7 @@ void questsmenu()
         if (lastFilter == 2 && activeQuests[i].required) continue;
         if (lastFilter == 1 && !activeQuests[i].required) continue;
         if (!activeQuests[i].required) continue;
-        bool questDone = get_stat_value(activeQuests[i].stat) >= activeQuests[i].threshold;
+        bool questDone = quest_stat_progress(activeQuests[i].stat) >= activeQuests[i].threshold;
         string questLabel = activeQuests[i].name + (questDone ? ". Complete" : "");
         form.add_list_item(questList, questLabel, activeQuests[i].id, -1, true);
         questOrder.insert_last(activeQuests[i]);
@@ -2126,7 +2126,7 @@ void questsmenu()
         if (lastFilter == 1 && !activeQuests[i].required) continue;
         if (lastFilter == 2 && activeQuests[i].required) continue;
         if (activeQuests[i].required) continue;
-        bool questDone = get_stat_value(activeQuests[i].stat) >= activeQuests[i].threshold;
+        bool questDone = quest_stat_progress(activeQuests[i].stat) >= activeQuests[i].threshold;
         string questLabel = activeQuests[i].name + (questDone ? ". Complete" : "");
         form.add_list_item(questList, questLabel, activeQuests[i].id, -1, true);
         questOrder.insert_last(activeQuests[i]);
@@ -2184,7 +2184,7 @@ void questsmenu()
                 if (lastFilter == 2 && activeQuests[i].required) continue;
                 if (lastFilter == 1 && !activeQuests[i].required) continue;
                 if (!activeQuests[i].required) continue;
-                bool questDone = get_stat_value(activeQuests[i].stat) >= activeQuests[i].threshold;
+                bool questDone = quest_stat_progress(activeQuests[i].stat) >= activeQuests[i].threshold;
                 string questLabel = activeQuests[i].name + (questDone ? ". Complete" : "");
                 form.add_list_item(questList, questLabel, activeQuests[i].id, -1, true);
                 questOrder.insert_last(activeQuests[i]);
@@ -2194,7 +2194,7 @@ void questsmenu()
                 if (lastFilter == 1 && !activeQuests[i].required) continue;
                 if (lastFilter == 2 && activeQuests[i].required) continue;
                 if (activeQuests[i].required) continue;
-                bool questDone = get_stat_value(activeQuests[i].stat) >= activeQuests[i].threshold;
+                bool questDone = quest_stat_progress(activeQuests[i].stat) >= activeQuests[i].threshold;
                 string questLabel = activeQuests[i].name + (questDone ? ". Complete" : "");
                 form.add_list_item(questList, questLabel, activeQuests[i].id, -1, true);
                 questOrder.insert_last(activeQuests[i]);
@@ -2202,7 +2202,7 @@ void questsmenu()
             form.set_list_position(questList, 0);
             form.set_text(detailBox, questOrder.length() > 0 ? get_quest_detail(questOrder[0]) : "");
             bool showReroll = false;
-            bool firstComplete = questOrder.length() > 0 && get_stat_value(questOrder[0].stat) >= questOrder[0].threshold;
+            bool firstComplete = questOrder.length() > 0 && quest_stat_progress(questOrder[0].stat) >= questOrder[0].threshold;
             if (lastFilter == 2) showReroll = true;
             else if (lastFilter == 0 && questOrder.length() > 0 && !questOrder[0].required)
             {
@@ -2251,7 +2251,7 @@ void questsmenu()
         {
             form.set_text(detailBox, get_quest_detail(questOrder[curPos]));
             bool isRequired = questOrder[curPos].required;
-            bool isComplete = get_stat_value(questOrder[curPos].stat) >= questOrder[curPos].threshold;
+            bool isComplete = quest_stat_progress(questOrder[curPos].stat) >= questOrder[curPos].threshold;
             bool shouldShow = !isRequired && !(questsConfig.reroll_warning == 5 && isComplete);
             bool shouldShowPrev = !lastRequired && !(questsConfig.reroll_warning == 5 && lastComplete);
             if (lastFilter == 0 && shouldShow != shouldShowPrev)
@@ -2312,7 +2312,7 @@ void questsmenu()
                 questsmenu();
                 return;
             }
-            bool rerollQuestComplete = get_stat_value(questOrder[rerollPos].stat) >= questOrder[rerollPos].threshold;
+            bool rerollQuestComplete = quest_stat_progress(questOrder[rerollPos].stat) >= questOrder[rerollPos].threshold;
             int rwarn = questsConfig.reroll_warning;
             bool doConfirm = false;
             bool doBlock = false;

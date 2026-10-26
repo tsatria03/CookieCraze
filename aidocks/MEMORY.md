@@ -52,6 +52,9 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Code bugs](project_bugs_code.md) — save/load ordering, int overflow in reward rolls + prestige_points, recursive game loop/menus, missing stat increments, parser robustness, unchecked config loads, stale vendored deps, duplication hotspots. Re-verified against 7.0 on 2026-10-25 (only #2 fixed, #6/#14 partly; priority list at the top). Plus #26–#31 found 2026-10-25 (Scratch all drops leftover tickets, reroll charges before checking candidates, Ctrl+L on unsaved slot, Ctrl+L partial reload, Shift+M/C double-fire (NOT a bug, verified in engine source), int(rank) overflow).
 - [Build and docs bugs](project_bugs_build_docs.md) — site updater x.0 regex, tools.py deletes release first + import-time KeyError, hardcoded paths, gitignore gaps, installer mutex, readme inaccuracies/typos, two stale memory notes. Re-verified against 7.0 on 2026-10-25 (only #8 fixed, sounds now tracked) + #19: cycrz/lib was removed then restored (untracked by design); no Tolk.dll is intentional (excluded in C:\nvgt\config.properties).
 
+## Tooling gotchas
+- [Git Bash CRLF gotcha](project_gitbash_crlf_gotcha.md) — `sed -i` strips CR from CRLF files and `grep -c $'\r$'` miscounts; edit with the Edit tool, check endings with Python byte counts or the Grep tool.
+
 ## NVGT / AngelScript gotchas — these cause compile failures (game won't launch)
 - [AngelScript braceless if](project_angelscript_braceless_if.md) — a braceless if/else governs one statement; a second orphans the else → compile error.
 - [AngelScript reserved words](project_angelscript_reserved_words.md) — never name a variable `out` (or in/inout/shared/final/from…); reserved keyword → compile error.
