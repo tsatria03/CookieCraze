@@ -31,7 +31,10 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Design review 7.0](project_design_review_7_0.md) — 2026-10-25 evaluation, potential improvements only: runaway 1.01 economy (rank 90 in ~5 min), prestige spam, endless quests pre-done after prestige, minigames lack purpose, settings as cheats, readme onboarding + agreed readme reorganization and missing keys, small config gate/category issues; #8 store prices don't drop after losing auto/manual cookies (proposed: scale purchase count by share kept).
 
 ## Release status
-- [Release status](project_release_status.md) — 7.1 IN PROGRESS (version.txt 7.1, minor block FULL at 10 of 10 — next player-facing change opens a new block + version bump; ask the dev the number); 7.0 RELEASED 2026-10-01 (tag V7.00) and frozen; what 6.9 and 7.0 shipped.
+- [Release status](project_release_status.md) — 7.1 TAGGED V7.10 (2026-10-26) as a bookmark only, not released; next public release is 7.2 (ships 7.1 + 7.2); 7.1 block frozen, full 10/10; next player-facing change opens a new block + version bump (ask the dev, likely 7.2); 7.0 RELEASED 2026-10-01; what 6.9, 7.0 and 7.1 shipped.
+
+## Active plans (7.2)
+- [main.table plan](project_main_table_plan.md) — AGREED, not built: new data/config/tables/main.table with the 8 "cheat" sliders (slot cost multipliers, rank/XP modifiers, event one-in chances, sell price) + 6 starting values; sliders removed, no longer saved in gamesets.crz; prerequisite for the prestige-spam fix (min_rank 100); 3 sections, docs last.
 
 ## Finished plans (7.1), continued
 - [Quest baseline plan](project_quest_baseline_plan.md) — SHIPPED 7.1: prestige keeps all minigame stats for life; every count-stat quest measures from a run-start baseline (rank + the two record stats excluded); old-save rule; fixes exploit #8 + the readme prestige-stats line; 3 sections, docs last.
