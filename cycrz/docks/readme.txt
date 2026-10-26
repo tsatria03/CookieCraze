@@ -642,46 +642,6 @@ Aliases defined above it are always read regardless of position, but bundle line
 
 main.table is the one file whose section headers are only for organisation. Its settings are read wherever they appear, and every line, section, or even the whole file can be removed safely, since each value falls back to its default.
 
-main.table
-
-Location: data/config/tables/main.table
-
-Holds settings a normal player has no reason to change, along with the values every new run starts with. These used to be sliders in the game settings and are now only changed here. Every value is optional: if the file, a section, or a line is missing, or a value is not a plain number, the game uses the default listed below. Press Control L in game to reload the file after editing it.
-
-Money values in this file are written in dollars, so 0.5 is 50 cents and 1 is $1.00. Each is rounded to the nearest cent.
-
-Starting values section, [starting_values].
-What a new game or a prestige starts you with. Changes apply from your next new game or prestige.
-
-starting_cash = the money you start with, in dollars. Default 0.1, which is 10 cents. This is also the money the profile setup gives a new player.
-starting_autocookie = the auto cookies you start with. Default 0.
-starting_manualcookie = the manual cookies you start with. Default 1.
-
-Slots section, [slots].
-What automating a slot, an auto slot, and a manual slot cost at the start of a run, and how much more each one costs than the last. Base costs apply from your next new game or prestige; multipliers apply right away.
-
-automation_base_cost = the cost of automating your first slot, in dollars. Default 0.15.
-automation_cost_multiplier = how much each automation costs compared with the one before it. Default 1.01, meaning 1 percent more each time. Values below 1 are raised to 1.
-auto_slot_base_cost = the cost of your first auto slot, in dollars. Default 0.3.
-auto_slot_cost_multiplier = how much each auto slot costs compared with the one before it. Default 1.01.
-manual_slot_base_cost = the cost of your first manual slot, in dollars. Default 0.3.
-manual_slot_cost_multiplier = how much each manual slot costs compared with the one before it. Default 1.01.
-
-Ranks section, [ranks].
-
-rank_modifier = multiplies the experience every rank needs. Leaving rank r takes rank_modifier times 4 times r squared experience. Default 1. Must be above 0.
-experience_modifier = multiplies the experience each baked cookie gives you. Default 1. Must be above 0.
-
-Events section, [events].
-
-auto_event_chance = the percent of auto bakes on which a baker event can fire. Default 2, which is 1 bake in 50.
-manual_event_chance = the percent of bake button presses on which a baker event can fire. Default 2.
-0 turns that kind of event off completely, 100 lets an event fire on every bake, and decimals such as 0.5 are allowed. Each event's own chance in baker.event still applies on top. Values are kept between 0 and 100.
-
-Selling section, [selling].
-
-sell_price = how much each cookie sells for, in dollars. Default 0.5, which is 50 cents. The lowest is 0.01, one cent, and there is no highest. Lottery cookie prizes and stores that charge in cookies use this price too.
-
 baker.event
 
 Location: data/config/events/baker.event
@@ -950,6 +910,69 @@ The prize pool id from lottery.table that is used when a ticket of this tier is 
 
 description
 Shown when the player highlights this ticket in the buy menu.
+
+main.table
+
+Location: data/config/tables/main.table
+
+Defines settings a normal player has no reason to change, along with the values every new run starts with. These used to be sliders in the game settings. Every value is optional: if the file, a section, or a line is missing, or a value is not a plain number, the game uses that value's default. Press Control L in game to reload the file after editing it.
+Money values in this file are written in dollars, so 0.5 is 50 cents and 1 is $1.00, and each is rounded to the nearest cent.
+
+Starting values section.
+
+Changes in this section apply from your next new game or prestige.
+
+starting_cash
+The money you start with, in dollars. Defaults to 0.1, which is 10 cents. The profile setup gives a new player this amount too.
+
+starting_autocookie
+The number of auto cookies you start with. Defaults to 0.
+
+starting_manualcookie
+The number of manual cookies you start with. Defaults to 1.
+
+Slots section.
+
+Base costs apply from your next new game or prestige, while multipliers apply right away.
+
+automation_base_cost
+The cost of automating your first slot, in dollars. Defaults to 0.15.
+
+automation_cost_multiplier
+How much each automation costs compared with the one before it. Defaults to 1.01, which means 1 percent more each time. Values below 1 are raised to 1.
+
+auto_slot_base_cost
+The cost of your first auto slot, in dollars. Defaults to 0.3.
+
+auto_slot_cost_multiplier
+How much each auto slot costs compared with the one before it. Defaults to 1.01. Values below 1 are raised to 1.
+
+manual_slot_base_cost
+The cost of your first manual slot, in dollars. Defaults to 0.3.
+
+manual_slot_cost_multiplier
+How much each manual slot costs compared with the one before it. Defaults to 1.01. Values below 1 are raised to 1.
+
+Ranks section.
+
+rank_modifier
+Multiplies the experience every rank needs. Leaving rank r takes rank_modifier times 4 times r squared experience. Defaults to 1, and must be above 0.
+
+experience_modifier
+Multiplies the experience each baked cookie gives you. Defaults to 1, and must be above 0.
+
+Events section.
+
+auto_event_chance
+The percent of auto bakes on which a baker event can fire. Defaults to 2, which is 1 bake in 50. Set to 0 to turn these events off completely, or 100 to let one fire on every bake. Decimals such as 0.5 are allowed, and values are kept between 0 and 100. Each event's own chance in baker.event still applies on top of this.
+
+manual_event_chance
+The percent of bake button presses on which a baker event can fire. Defaults to 2, and works the same way as auto_event_chance.
+
+Selling section.
+
+sell_price
+How much each cookie sells for, in dollars. Defaults to 0.5, which is 50 cents. The lowest is 0.01, one cent, and there is no highest. Lottery cookie prizes and stores that charge in cookies use this price too.
 
 achievements.table
 
