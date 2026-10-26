@@ -1,6 +1,5 @@
 ####These are the things that need to be finished for future versions of the game.
 
-****Unfinished. Fix scratch all in the cookie lottery so every ticket you scratch is either paid out or counted as a loss, instead of leftover tickets being used up for nothing and small batches of one or two tickets winning nothing.
 ****Unfinished. Make a quest reroll check that a replacement quest exists before taking your money, and stop it offering a quest tier you already finished or a second quest for a stat that already has one.
 ****Unfinished. Make winnings from the slot machine and blackjack count toward your money earned statistic, achievements, and quests.
 ****Unfinished. Stop prestige from paying out large amounts of prestige points when you prestige over and over within a minute or so.
@@ -11,6 +10,7 @@
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Fix scratch all in the cookie lottery so every ticket you scratch gets a real result, instead of leftover tickets counting as losses without being drawn and small batches of one or two tickets winning nothing.
 **Finished. Correct the readme saying that prestige keeps all minigame stats, by making prestige keep every minigame stat for life.
 **Finished. Fix the endless quests for blackjack, the slot machine, the cookie lottery, and combos already being complete straight after you prestige, by making every quest count only what you do in the current run.
 **Finished. Add the missing keys to the readme's keyboard commands, covering menu keys, dialog keys, and the Alt shortcuts for buttons, and explain that F3 searches inside a menu but mutes the events buffer on the game screen.

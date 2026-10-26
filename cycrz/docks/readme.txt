@@ -253,7 +253,7 @@ The history persists across sessions and resets when starting a new game.
 Cookie lottery. Unlocked at rank 30.
 
 Intermediate. Involves scratch tickets and prize tiers, requires understanding odds and managing ticket spending.
-Scratch your tickets and reveal prizes ranging from money and cookies to stat boosts. You can scratch tickets one at a time or all at once from the lottery screen. When scratching one at a time, you can enable automatic reveal with the checkbox in the game so the result appears after a short random delay. When disabled, the result is held until you press enter or space. When scratching all at once, prizes are distributed by weight across the full batch and applied instantly, so the results are statistically equivalent to scratching each ticket individually but resolve without any delay regardless of how many tickets you have.
+Scratch your tickets and reveal prizes ranging from money and cookies to stat boosts. You can scratch tickets one at a time or all at once from the lottery screen. When scratching one at a time, you can enable automatic reveal with the checkbox in the game so the result appears after a short random delay. When disabled, the result is held until you press enter or space. When scratching all at once, prizes are distributed by weight across the full batch, and any tickets left over after sharing them out are each drawn like a single scratch, so every ticket gets a real result and the outcome is statistically equivalent to scratching each ticket individually. After one short pause, the whole batch resolves at once, no matter how many tickets you have.
 
 Dice roller. Unlocked at rank 40.
 

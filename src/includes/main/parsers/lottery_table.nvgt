@@ -272,10 +272,34 @@ void lottery_scratch_all(lottery_ticket_item@ ticket, int ticketIdx)
     // Keep reading keys during the pause, the same as a single scratch; the tickets are already used, so saving here is safe.
     mini_wait_async(random(1000, 2000), "lottery");
 
+    /* Each prize gets its weighted share of the batch, rounded down. The few tickets left over by the rounding are
+    then each drawn from the prize pool exactly like a single scratch, instead of all counting as losses, which made
+    batches of one or two tickets lose almost every time. */
+    double[] shares(prizes.length());
+    if (totalWeight > 0)
+    {
+        double assigned = 0;
+        for (uint i = 0; i < prizes.length(); i++)
+        {
+            shares[i] = floor(count * prizes[i].weight / totalWeight);
+            assigned += shares[i];
+        }
+        for (double left = count - assigned; left > 0; left--)
+        {
+            int roll = random(0, totalWeight - 1);
+            int cumulative = 0;
+            for (uint i = 0; i < prizes.length(); i++)
+            {
+                cumulative += prizes[i].weight;
+                if (roll < cumulative) { shares[i]++; break; }
+            }
+        }
+    }
+
     for (uint i = 0; i < prizes.length(); i++)
     {
         if (totalWeight <= 0) continue;
-        double share = floor(count * prizes[i].weight / totalWeight);
+        double share = shares[i];
         if (prizes[i].target == "none") { losses += share; continue; }
         if (share <= 0) continue;
         wins += share;
@@ -323,7 +347,7 @@ void lottery_scratch_all(lottery_ticket_item@ ticket, int ticketIdx)
         else if (paidTarget == "cookiespeed") totalCookiespeed += amount;
     }
 
-    // Remaining tickets lost to rounding go to losses
+    // Every ticket now has a result; only a prize pool with no weight at all leaves tickets unassigned, and those count as losses.
     losses += count - wins - losses;
 
     if (totalCoins > 0)       apply_amount_effect("coins", totalCoins, 1, false);
