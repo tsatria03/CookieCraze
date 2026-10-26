@@ -170,6 +170,7 @@ string slotStopSound3 = "slot_machine/stop3.ogg";
 rank_sound_item[] rankSounds;
 rank_reward_item[] rankDefault;
 rank_reward_item[] rankRewards;
+string rankSummaryMessage = "";
 
 jacks_config jacksConfig;
 

@@ -15,6 +15,14 @@
 
 coins:100*rank:100*rank:none:Congratulations! You've successfully made it to rank %rank%! You've earned %amount% for your achievement. Great work!
 
+[summary]
+
+; Optional. Spoken instead of the default message when one gain earns several ranks at once.
+; Tokens: %name%, %from% (rank before), %rank% (rank now), %ranks% (ranks gained), %amount% (total default reward).
+; Remove this section to announce the default message of the highest announced rank instead.
+
+Wow, %name%! You climbed %ranks% ranks, from rank %from% to rank %rank%! You've earned a total of %amount% for your achievements. Great work!
+
 [rewards]
 
 ; Required header — removing or renaming this will break the file.

@@ -16,6 +16,7 @@ class rank_reward_item
 
 void parse_ranks_table(string filepath, rank_sound_item[]@ sounds_out, rank_reward_item[]@ default_out, rank_reward_item[]@ rewards_out)
 {
+    rankSummaryMessage = "";
     file f;
     if (!f.open(filepath, "r"))
         return;
@@ -30,6 +31,13 @@ void parse_ranks_table(string filepath, rank_sound_item[]@ sounds_out, rank_rewa
         if (line == "[sounds]") { section = "sounds"; continue; }
         if (line == "[default]") { section = "default"; continue; }
         if (line == "[rewards]") { section = "rewards"; continue; }
+        if (line == "[summary]") { section = "summary"; continue; }
+        // Optional: the first line under [summary] is the message spoken when one gain earns several ranks at once.
+        if (section == "summary")
+        {
+            if (rankSummaryMessage == "") rankSummaryMessage = line;
+            continue;
+        }
         if (section == "sounds")
         {
             int colon = line.find(":");
@@ -71,7 +79,7 @@ void parse_ranks_table(string filepath, rank_sound_item[]@ sounds_out, rank_rewa
     f.close();
 }
 
-string apply_rank_reward(rank_reward_item@ item, double current_rank)
+string apply_rank_reward(rank_reward_item@ item, double current_rank, bool buildMessage = true)
 {
     double minVal = eval_event_amount(item.min_amount, current_rank);
     double maxVal = eval_event_amount(item.max_amount, current_rank);
@@ -95,6 +103,8 @@ string apply_rank_reward(rank_reward_item@ item, double current_rank)
     }
     else
         apply_amount_effect(item.target, amount, 1, false);
+    // A big multi-rank gain applies thousands of rewards that are never spoken; skip building their messages.
+    if (!buildMessage) return "";
     dictionary@ tokens = dictionary();
     tokens.set("amount", (item.target == "coins") ? convert_to_currency(amount) : format_number(amount));
     tokens.set("rank", format_number(current_rank));
@@ -141,28 +151,42 @@ void handle_rank_unlock(string unlock)
         pool.play_stationary("sounds/misc/alert_big.ogg", false);
 }
 /* The only rank-up code: the main game loop and every minigame call this, so ranks behave the same everywhere.
-Rank is compared as a double throughout, since int(rank) overflows past about rank 2.1 billion. */
+Rank is compared as a double throughout, since int(rank) overflows past about rank 2.1 billion.
+Every rank the current experience has earned lands in this one call, instead of one rank per frame, which let a
+huge gain trickle in for minutes. Each rank still pays its reward as it is crossed; the rank announcement and then
+each milestone's sounds and message follow once the loop is done. */
 void check_rank()
 {
-if (cookieXP >= xprequired)
+if (cookieXP < xprequired) return;
+double fromRank = rank;
+double totalReward = 0;
+bool anyAnnounced = false;
+string announceMsg = "";
+double announceAmount = 0;
+string[] milestoneMsgs;
+double[] milestoneAmounts;
+string[] milestoneUnlocks;
+while (cookieXP >= xprequired)
 {
     rank += 1;
     xprequired = (cookiemod * (rank * (rank * 4)));
     if (prestige_rank_discount > 0) xprequired *= max(0.01, 1.0 - (prestige_rank_discount / 100.0));
     if (rankDefault.length() > 0)
     {
-        string defaultMsg = apply_rank_reward(rankDefault[0], rank);
-        handle_rank_unlock(rankDefault[0].unlock);
-        /* Thin out the rank-up announcement and sounds as you climb so a large cookie gain that spans many
-        ranks at once does not spam them: fire every rank up to 9, then every 10th up to 90, every 100th up
-        to 900, and so on, always on a multiple of the largest power of ten at or below the current rank. */
+        /* Thin out the rank-up announcement and sounds as you climb: every rank up to 9, then every 10th up to 90,
+        every 100th up to 900, and so on, always on a multiple of the largest power of ten at or below the rank.
+        Only the highest such rank crossed in this call is announced, once, after the loop. */
         double rankstep = 1;
         while (rankstep * 10 <= rank) rankstep *= 10;
-        if (rank - rankstep * floor(rank / rankstep) == 0)
+        bool announced = (rank - rankstep * floor(rank / rankstep) == 0);
+        string defaultMsg = apply_rank_reward(rankDefault[0], rank, announced);
+        totalReward = safe_cap(totalReward + lastRewardAmount);
+        handle_rank_unlock(rankDefault[0].unlock);
+        if (announced)
         {
-            play_rank_sound(lastRewardAmount);
-            if (!buffer_muted("ranks")) pool.play_stationary("sounds/misc/rankach" + random(1, 2) + ".ogg", false);
-            speak_buffer(defaultMsg, "ranks");
+            anyAnnounced = true;
+            announceMsg = defaultMsg;
+            announceAmount = lastRewardAmount;
         }
     }
     rank_reward_item[] matching;
@@ -173,16 +197,42 @@ if (cookieXP >= xprequired)
     }
     if (matching.length() > 0)
     {
+        // The reward is paid now; its sounds and message wait until after the rank announcement, as before.
         rank_reward_item@ milestone = matching[random(0, matching.length() - 1)];
-        string milestoneMsg = apply_rank_reward(milestone, rank);
-        play_rank_sound(lastRewardAmount);
-        if (!buffer_muted("ranks")) pool.play_stationary("sounds/misc/rankach" + random(1, 2) + ".ogg", false);
-        handle_rank_unlock(milestone.unlock);
-        // Milestones follow the main screen's rule everywhere, minigames included: spoken while baking mode is on, a dialog otherwise.
-        if (bakemode == 1)
-            speak_buffer(milestoneMsg, "critical");
-        else
-            dlg_buffer(milestoneMsg, "critical");
+        milestoneMsgs.insert_last(apply_rank_reward(milestone, rank));
+        milestoneAmounts.insert_last(lastRewardAmount);
+        milestoneUnlocks.insert_last(milestone.unlock);
     }
+}
+if (anyAnnounced)
+{
+    double ranksGained = rank - fromRank;
+    /* Several ranks at once speak the [summary] message from ranks.table with the total reward, when the table
+    has one; otherwise, and for a single rank up, the highest announced rank's own default message is spoken. */
+    if (ranksGained > 1 && rankSummaryMessage != "")
+    {
+        dictionary@ tokens = dictionary();
+        tokens.set("name", playername);
+        tokens.set("from", format_number(fromRank));
+        tokens.set("rank", format_number(rank));
+        tokens.set("ranks", format_number(ranksGained));
+        tokens.set("amount", (rankDefault[0].target == "coins") ? convert_to_currency(totalReward) : format_number(totalReward));
+        announceMsg = format_template(rankSummaryMessage, tokens);
+        announceAmount = totalReward;
+    }
+    play_rank_sound(announceAmount);
+    if (!buffer_muted("ranks")) pool.play_stationary("sounds/misc/rankach" + random(1, 2) + ".ogg", false);
+    speak_buffer(announceMsg, "ranks");
+}
+// Every milestone crossed fires in order. They follow the main screen's rule everywhere, minigames included: spoken while baking mode is on, a dialog otherwise.
+for (uint i = 0; i < milestoneMsgs.length(); i++)
+{
+    play_rank_sound(milestoneAmounts[i]);
+    if (!buffer_muted("ranks")) pool.play_stationary("sounds/misc/rankach" + random(1, 2) + ".ogg", false);
+    handle_rank_unlock(milestoneUnlocks[i]);
+    if (bakemode == 1)
+        speak_buffer(milestoneMsgs[i], "critical");
+    else
+        dlg_buffer(milestoneMsgs[i], "critical");
 }
 }
