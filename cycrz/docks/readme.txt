@@ -535,6 +535,7 @@ Both boxes show a message when empty. The prestige history resets when starting 
 Before reaching the minimum rank the prestige button shows unlocked at rank X. Once unlocked, it shows no reward available or reward available depending on your quest completion status.
 
 If you want a different quest, arrow to it and press the reroll button. Rerolling replaces only that quest with a new random one of the same difficulty. The reroll button does not appear when a required quest is focused.
+A reroll follows the same rules as when quests are first handed out: it never gives you a quest tier you have already finished, or a second quest on a stat that one of your other active quests already tracks. If no quest fits those rules, you are told there is nothing to reroll into, and nothing is charged.
 Rerolling deducts a cost from a configurable stat, and the cost increases each time using compounding scaling. The reroll count resets at the start of each prestige cycle so costs go back to base. If you cannot afford a reroll, you are told right away, before any confirmation.
 The reroll_warning setting in quests.table controls whether you are asked to confirm a reroll, depending on whether the quest is complete, and whether completed quests can be rerolled at all. With the default setting, only completed quests ask before rerolling. See the configuration file reference for details.
 

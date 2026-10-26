@@ -2327,6 +2327,14 @@ void questsmenu()
                 questsmenu();
                 return;
             }
+            // Checked before the cost and any prompt, so the player is never asked to pay for a reroll that can't swap anything in.
+            if (!quest_can_reroll(questOrder[rerollPos].id))
+            {
+                dlgmessage_return("There are no other quests of this difficulty to reroll into right now.");
+                form.reset();
+                questsmenu();
+                return;
+            }
             /* Affordability is checked before any prompt so the player never confirms a reroll they can't pay for,
             and the reroll_warning mode alone decides whether a prompt appears (it used to ask a second time on every reroll). */
             double rerollConfirmCost = floor(questsConfig.reroll_base_cost * pow(questsConfig.reroll_multiplier, questRerollCount));

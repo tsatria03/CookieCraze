@@ -441,10 +441,50 @@ double total_endless_completions()
     return total;
 }
 
+/* Quests the active quest at questIndex could be rerolled into, using the same rules assign_quests uses to fill a
+slot: not required, the same escalated difficulty, not a tier you already finished, not already active, and not on a
+stat another active quest already tracks. The quest being replaced doesn't count, so its own stat is allowed. */
+quest_item[] reroll_candidates(int questIndex)
+{
+    quest_item[] candidates;
+    if (questIndex < 0 || questIndex >= int(activeQuests.length())) return candidates;
+    int targetDiff = activeQuests[questIndex].difficulty;
+    for (uint i = 0; i < loadedQuests.length(); i++)
+    {
+        if (loadedQuests[i].required) continue;
+        // Match on the escalated difficulty, the same way assign_quests picks quests for a slot.
+        if (endless_difficulty(loadedQuests[i]) != targetDiff) continue;
+        if (completedQuestIds.exists(loadedQuests[i].id) && loadedQuests[i].advance) continue;
+        bool blocked = false;
+        for (uint a = 0; a < activeQuests.length(); a++)
+        {
+            if (activeQuests[a].id == loadedQuests[i].id) { blocked = true; break; }
+            if (int(a) != questIndex && activeQuests[a].stat == loadedQuests[i].stat) { blocked = true; break; }
+        }
+        if (!blocked) candidates.insert_last(loadedQuests[i]);
+    }
+    return candidates;
+}
+// True when the active quest with this id has at least one quest it could be rerolled into.
+bool quest_can_reroll(string questId)
+{
+    for (uint i = 0; i < activeQuests.length(); i++)
+    {
+        if (activeQuests[i].id == questId) return reroll_candidates(int(i)).length() > 0;
+    }
+    return false;
+}
 void reroll_quest(int questIndex)
 {
     if (questIndex < 0 || questIndex >= int(activeQuests.length())) return;
     if (activeQuests[questIndex].required) return;
+    // Find the replacement before charging anything, so a reroll with nothing to swap in costs nothing.
+    quest_item[] candidates = reroll_candidates(questIndex);
+    if (candidates.length() == 0)
+    {
+        dlgmessage_return("There are no other quests of this difficulty to reroll into right now.");
+        return;
+    }
 
     double cost = floor(questsConfig.reroll_base_cost * pow(questsConfig.reroll_multiplier, questRerollCount));
     if (questsConfig.reroll_target == "coins")           { coins -= cost; stat_coins_spent += cost; }
@@ -456,31 +496,14 @@ void reroll_quest(int questIndex)
     stat_rerolls_performed++;
 
     string oldQuestName = activeQuests[questIndex].name;
-    int targetDiff = activeQuests[questIndex].difficulty;
-    quest_item[] candidates;
-    for (uint i = 0; i < loadedQuests.length(); i++)
-    {
-        if (loadedQuests[i].required) continue;
-        // Match on the escalated difficulty, the same way assign_quests picks quests for a slot.
-        if (endless_difficulty(loadedQuests[i]) != targetDiff) continue;
-        bool alreadyActive = false;
-        for (uint a = 0; a < activeQuests.length(); a++)
-        {
-            if (activeQuests[a].id == loadedQuests[i].id) { alreadyActive = true; break; }
-        }
-        if (!alreadyActive) candidates.insert_last(loadedQuests[i]);
-    }
-    if (candidates.length() > 0)
-    {
-        int idx = random(0, candidates.length() - 1);
-        activeQuests[questIndex] = candidates[idx];
-        /* The new quest is a fresh copy from the table, so fill its %threshold% and move an endless quest to its
-        current goal. Only this one is escalated, since the others already were and escalating is not repeatable. */
-        escalate_quest(activeQuests[questIndex]);
-    }
+    int idx = random(0, candidates.length() - 1);
+    activeQuests[questIndex] = candidates[idx];
+    /* The new quest is a fresh copy from the table, so fill its %threshold% and move an endless quest to its
+    current goal. Only this one is escalated, since the others already were and escalating is not repeatable. */
+    escalate_quest(activeQuests[questIndex]);
     reroll_history_entry rentry;
     rentry.old_name = oldQuestName;
-    rentry.new_name = (candidates.length() > 0) ? activeQuests[questIndex].name : oldQuestName;
+    rentry.new_name = activeQuests[questIndex].name;
     rentry.cost = cost;
     rentry.target = questsConfig.reroll_target;
     rerollHistory.insert_last(rentry);
