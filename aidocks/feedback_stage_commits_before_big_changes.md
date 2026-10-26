@@ -11,4 +11,6 @@ Before a large or risky stage, proactively flag a commit break point so the safe
 
 **Why:** It keeps the history reviewable and makes the risky change easy to revert without losing the good work around it. The dev commits their own work ([[feedback_check_git_log_for_commits]]) but appreciates being told when a natural break point has arrived.
 
+**Section builds (dev, 2026-10-26):** when the last test step of a build section passes, say plainly "all steps passed, commit now" (with a suggested message if useful) before starting the next section. Don't wait to be asked.
+
 **How to apply:** When you're about to start something big, say so and suggest committing what's done first — then proceed once they've had the chance.

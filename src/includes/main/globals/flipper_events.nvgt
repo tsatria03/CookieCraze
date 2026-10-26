@@ -1,8 +1,8 @@
 event_item[]@ parse_flipper_items(string filepath)
 {
     event_item[] items;
-    file f;
-    if (!f.open(filepath, "r"))
+    config_file f;
+    if (!f.open(filepath))
         return items;
     while (!f.eof)
     {

@@ -25,8 +25,8 @@ combos_config combosConfig;
 
 void parse_combos_table(string filepath, combos_config@ cfg)
 {
-    file f;
-    if (!f.open(filepath, "r"))
+    config_file f;
+    if (!f.open(filepath))
         return;
     cfg.tiers.resize(0);
     bool in_tiers = false;

@@ -33,6 +33,9 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 ## Release status
 - [Release status](project_release_status.md) — 7.2 IN PROGRESS (version.txt 7.2, 2 of 10 entries); 7.1 TAGGED V7.10 (2026-10-26) as a bookmark only, not released; next public release is 7.2 (ships 7.1 + 7.2); 7.1 block frozen, full 10/10; next player-facing change opens a new block + version bump (ask the dev, likely 7.2); 7.0 RELEASED 2026-10-01; what 6.9, 7.0 and 7.1 shipped.
 
+## Active plans (7.2)
+- [Config pack plan](project_config_pack_plan.md) — AGREED, not built: config moved to data/decompiled/config (loose, git) + data/compiled/config.crz (NVGT pack, gitignored); loose wins, pack is fallback; in-game export/import never delete; tools.py unchanged, dev deletes loose folder before compiling a release. GAME WON'T START until section 1 updates the paths.
+
 ## Finished plans (7.2)
 - [main.table plan](project_main_table_plan.md) — SHIPPED 7.2: new data/config/tables/main.table with the 8 "cheat" sliders (slot cost multipliers, rank/XP modifiers, event one-in chances, sell price) + 6 starting values; sliders and the two event on/off checkboxes removed, no longer saved in gamesets.crz; prerequisite for the prestige-spam fix (min_rank 100); 3 sections, docs last.
 

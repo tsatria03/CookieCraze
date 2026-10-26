@@ -23,8 +23,8 @@ class jacks_config
 
 void parse_jacks_table(string filepath, jacks_config@ cfg)
 {
-    file f;
-    if (!f.open(filepath, "r"))
+    config_file f;
+    if (!f.open(filepath))
         return;
     while (!f.eof)
     {

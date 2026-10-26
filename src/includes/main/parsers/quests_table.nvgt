@@ -96,8 +96,8 @@ double quest_stat_progress(string stat)
 void parse_quests_table(string filepath, quest_item[]@ quests_out)
 {
     quests_out.resize(0);
-    file f;
-    if (!f.open(filepath, "r"))
+    config_file f;
+    if (!f.open(filepath))
         return;
     string section = "";
     while (!f.eof)

@@ -37,8 +37,8 @@ roulette_config rouletteConfig;
 void parse_roulette_table(string filepath)
 {
     rouletteConfig.outcomes.resize(0);
-    file f;
-    if (!f.open(filepath, "r"))
+    config_file f;
+    if (!f.open(filepath))
         return;
     bool in_outcomes = false;
     while (!f.eof)

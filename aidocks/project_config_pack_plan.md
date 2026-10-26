@@ -1,0 +1,32 @@
+---
+name: project_config_pack_plan
+description: "PLAN (7.2, agreed 2026-10-26, not built): config files move to data/decompiled/config (loose, in git) with an NVGT pack data/compiled/config.crz (gitignored); every config read tries the loose file first, then the pack; in-game export (pack → loose) and import (loose → pack), never deleting anything — modelled on SimpleFighter's sounds. Game won't start until section 1 is built."
+metadata:
+  node_type: memory
+  type: project
+---
+
+# Config pack plan (7.2)
+
+Dev idea (2026-10-26), modelled on SimpleFighter's `sounds/decompiled` + `sounds/compiled/*.spack` (reference repo at `user/SimpleFighter-main`, `src/includes/main/functions/packfuncts.nvgt`). One section per turn, dev tests between sections ([[feedback_test_steps_one_at_a_time]]), docs last ([[feedback_docks_last]]). Re-locate code by symbol.
+
+**State when planned:** the dev already moved the 18 config files (content unchanged, CRLF) from `cycrz/data/config/{events,stores,tables}/` to `cycrz/data/decompiled/config/{events,stores,tables}/` and created an empty `cycrz/data/compiled/`. Git shows the old paths deleted and the new folder untracked. **The game cannot start until section 1 changes the paths** (baker.event missing → alert and exit).
+
+## Locked decisions
+
+- **Two forms of the config** (dev):
+  - Loose: `data/decompiled/config/<events|stores|tables>/<file>` — the editable source, committed to git.
+  - Pack: `data/compiled/config.crz`, an NVGT `pack`. Inside it, files keep the same relative names: `events/baker.event`, `tables/main.table`, …
+- **Read order (dev, like SimpleFighter sounds):** for each config file, use the loose file if it exists, otherwise read it from config.crz. A file in neither place behaves as a missing file does today (required files alert and exit; main.table falls back to defaults).
+- **Export / import, never delete (dev, like SimpleFighter's compile/decompile):** in game, export unpacks config.crz into `data/decompiled/config/…`; import packs every loose config file into config.crz (rebuild with `PACK_OPEN_MODE_CREATE`). Neither removes the loose folder or the pack. While loose files exist they win, so Control L picks up edits immediately.
+- **config.crz is gitignored** (dev, like SimpleFighter's `*.spack`/`*.map`). **tools.py is unchanged** (dev: SimpleFighter's releaser doesn't build packs) — it still copies the whole `data` folder.
+- **Release checklist (dev):** before compiling a release, run import to build config.crz, then **delete the loose `data/decompiled/config` folder** so players play from the pack; after the release, restore it with git (`git restore cycrz/data/decompiled`).
+- **Pack API (legacy fork, `Legacy-NVGT/src/pack.cpp`):** `open(path, PACK_OPEN_MODE_READ/CREATE/APPEND, memload)`, `add_file(disk, packname, allow_replace)`, `add_memory(packname, text, allow_replace)`, `delete_file`, `file_exists`, `list_files()`, `get_file_size`, `read_file(name, offset, size)` (string). `read_file` only works in READ mode. Contents are scrambled on disk with the pack identifier; use the engine default (CookieCraze sets no custom identifier).
+
+## Build sections
+
+**Section 1 BUILT and all 3 test steps PASSED (2026-10-26); told the dev to commit.** New `src/includes/main/functions/configfuncts.nvgt`: `CONFIG_LOOSE_DIR`, `CONFIG_PACK_PATH`, a global `pack_file configPack` kept open by `open_config_pack()` (close with `close_config_pack()`, needed before section 2 rebuilds the pack), `read_config_text(relativePath, &out text)`, and a `config_file` class (open/eof/read_line/close) that stands in for `file` — each of the 18 parsers only changed `file f;` → `config_file f;` and `f.open(filepath, "r")` → `f.open(filepath)`. Callers now pass relative paths (`"tables/ranks.table"`); startup alerts name `data/decompiled/config/…`. `.gitignore` has `cycrz/data/compiled/`.
+
+1. **Shared config reader + new paths.** One helper, e.g. `string[] read_config_lines(string relativePath)` (relativePath like `"tables/ranks.table"`): if `data/decompiled/config/<path>` exists, read it from disk; else read it from config.crz (opened in READ mode, kept open, reopened after an import); split into lines, stripping `\r`/`\n` like the parsers do; empty array if neither has it. Switch all config parsers (baker/flipper events, every `*_table.nvgt`, the four store parsers) from `file f; f.open(...)` loops to looping over these lines, and update every `"data/config/…"` path (≈35 sites incl. `cycrz.nvgt` startup, `reload_config`, stores parsed in menus, `lottery_unit_price`). Add `data/compiled/` (or `*.crz`) to `.gitignore`. Dev tests: game starts and plays normally from the loose files; Control L still reloads; rename one loose file → its required-file alert / fallback still behaves.
+2. **Export and import options** in the game. **Menu location (dev, 2026-10-26), based on SimpleFighter:** a new main-menu item "miscellaneous menu" between "game menu" and "settings menu". No pack tools submenu (dev changed it): the miscellaneous menu itself holds "compile data config" (import, loose → pack), "decompile data config" (export, pack → loose) and "back". Follow CookieCraze's own menu idiom (setupmenu, Escape/back speak "canceled" and call the parent menu again, as docksmenu does), not SimpleFighter's while(true) loops. Import: list loose files under `data/decompiled/config` (recursive), close the read pack, recreate config.crz with `add_file`, reopen for reading, report the count. Export: if config.crz is missing say so; if loose files already exist, ask Yes/No before overwriting ([[feedback_yes_no_menu_labels]]); extract each file with `read_file` and write it to disk, creating folders. Both speak "canceled" on No/Escape ([[feedback_menus_say_canceled]]). Dev tests: import → config.crz appears; move the loose folder away → the game plays from the pack; export restores the loose files exactly.
+3. **Docs.** Readme modding intro: where config lives now (both forms, loose wins), how export/import work, and that edits need the loose files. Update every `Location: data/config/…` line in the file references. Changelog 7.2 entry. Memory: [[project_path_conventions]], [[project_data_driven_config]], [[project_include_tree]] if a new file is added, and a release-checklist note in [[project_build_pipeline]].

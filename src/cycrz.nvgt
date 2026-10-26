@@ -19,57 +19,57 @@ create_buffer("events");
 create_buffer("general");
 create_buffer("misc");
 create_buffer("ranks");
-loadedEvents = parse_baker_events("data/config/events/baker.event");
+loadedEvents = parse_baker_events("events/baker.event");
 if (loadedEvents.length() == 0)
 {
-    alert("Error", "Could not load event data from data/config/events/baker.event. Please check the file and try again.");
+    alert("Error", "Could not load event data from data/decompiled/config/events/baker.event. Please check the file and try again.");
     exit();
 }
-loadedFlipperEvents = parse_flipper_items("data/config/events/flipper.event");
+loadedFlipperEvents = parse_flipper_items("events/flipper.event");
 if (loadedFlipperEvents.length() == 0)
 {
-    alert("Error", "Could not load flipper event data from data/config/events/flipper.event. Please check the file and try again.");
+    alert("Error", "Could not load flipper event data from data/decompiled/config/events/flipper.event. Please check the file and try again.");
     exit();
 }
-parse_slots_table("data/config/tables/slots.table", slotSymbols, slotPayouts, slotReels, slotMinBet, slotMaxBet, slotConfirmThreshold, slotConfirmUsePercent);
+parse_slots_table("tables/slots.table", slotSymbols, slotPayouts, slotReels, slotMinBet, slotMaxBet, slotConfirmThreshold, slotConfirmUsePercent);
 if (slotSymbols.length() == 0 || slotPayouts.length() == 0)
 {
-    alert("Error", "Could not load slot machine data from data/config/tables/slots.table. Please check the file and try again.");
+    alert("Error", "Could not load slot machine data from data/decompiled/config/tables/slots.table. Please check the file and try again.");
     exit();
 }
 if (int(slotSymbols.length()) < slotMinSymbols)
 {
-    alert("Error", "The min_symbols setting in data/config/tables/slots.table is " + string(slotMinSymbols) + ", but only " + string(slotSymbols.length()) + " symbols are defined. Please add more symbols or lower min_symbols and try again.");
+    alert("Error", "The min_symbols setting in data/decompiled/config/tables/slots.table is " + string(slotMinSymbols) + ", but only " + string(slotSymbols.length()) + " symbols are defined. Please add more symbols or lower min_symbols and try again.");
     exit();
 }
-parse_ranks_table("data/config/tables/ranks.table", rankSounds, rankDefault, rankRewards);
+parse_ranks_table("tables/ranks.table", rankSounds, rankDefault, rankRewards);
 if (rankSounds.length() == 0 || rankDefault.length() == 0)
 {
-    alert("Error", "Could not load rank reward data from data/config/tables/ranks.table. Please check the file and try again.");
+    alert("Error", "Could not load rank reward data from data/decompiled/config/tables/ranks.table. Please check the file and try again.");
     exit();
 }
-parse_jacks_table("data/config/tables/jacks.table", jacksConfig);
-parse_dice_table("data/config/tables/dice.table");
-parse_highlow_table("data/config/tables/highlow.table");
+parse_jacks_table("tables/jacks.table", jacksConfig);
+parse_dice_table("tables/dice.table");
+parse_highlow_table("tables/highlow.table");
 if (highlowConfig.deck.length() == 0)
 {
-    alert("Error", "Could not load higher or lower data from data/config/tables/highlow.table. Please check the file and try again.");
+    alert("Error", "Could not load higher or lower data from data/decompiled/config/tables/highlow.table. Please check the file and try again.");
     exit();
 }
-parse_roulette_table("data/config/tables/roulette.table");
+parse_roulette_table("tables/roulette.table");
 if (rouletteConfig.outcomes.length() == 0)
 {
-    alert("Error", "Could not load roulette data from data/config/tables/roulette.table. Please check the file and try again.");
+    alert("Error", "Could not load roulette data from data/decompiled/config/tables/roulette.table. Please check the file and try again.");
     exit();
 }
-parse_combos_table("data/config/tables/combos.table", combosConfig);
-parse_achievements("data/config/tables/achievements.table", loadedAchievements, loadedAchievementCategories);
-parse_prestige_table("data/config/tables/prestige.table");
-parse_quests_table("data/config/tables/quests.table", loadedQuests);
-parse_lottery_table("data/config/tables/lottery.table");
-parse_tickets_store("data/config/stores/tickets.store");
+parse_combos_table("tables/combos.table", combosConfig);
+parse_achievements("tables/achievements.table", loadedAchievements, loadedAchievementCategories);
+parse_prestige_table("tables/prestige.table");
+parse_quests_table("tables/quests.table", loadedQuests);
+parse_lottery_table("tables/lottery.table");
+parse_tickets_store("stores/tickets.store");
 // Optional: a missing or broken main.table just keeps every built-in default.
-parse_main_table("data/config/tables/main.table");
+parse_main_table("tables/main.table");
 assign_quests();
 readdata();
 readpreffs();

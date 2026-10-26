@@ -23,8 +23,8 @@ class prestige_store_item
 
 void parse_prestige_store(string filepath, prestige_store_item[]@ items_out, prestige_menu_def[]@ menus_out)
 {
-    file f;
-    if (!f.open(filepath, "r"))
+    config_file f;
+    if (!f.open(filepath))
         return;
     prestige_menu_def[] menuDefs;
     dictionary menuAliases;

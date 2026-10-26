@@ -58,8 +58,8 @@ really brings the default back. */
 void parse_main_table(string filepath)
 {
     reset_main_table_defaults();
-    file f;
-    if (!f.open(filepath, "r"))
+    config_file f;
+    if (!f.open(filepath))
         return;
     while (!f.eof)
     {

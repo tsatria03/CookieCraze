@@ -39,8 +39,8 @@ void parse_highlow_table(string filepath)
 {
     highlowConfig.deck.resize(0);
     highlowConfig.house_edge = 5.0;
-    file f;
-    if (!f.open(filepath, "r"))
+    config_file f;
+    if (!f.open(filepath))
         return;
     string section = "";
     while (!f.eof)

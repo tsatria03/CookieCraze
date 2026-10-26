@@ -772,7 +772,7 @@ void prestige_store_menu()
 {
     prestige_store_item[] items;
     prestige_menu_def[] menus;
-    parse_prestige_store("data/config/stores/prestige.store", items, menus);
+    parse_prestige_store("stores/prestige.store", items, menus);
     if (items.length() == 0)
     {
         dlgmessage_return("Error! Could not load the prestige store items.");
@@ -1029,7 +1029,7 @@ void bakermenu()
 {
     store_item[] items;
     store_menu[] menus;
-    parse_store("data/config/stores/singles.store", items, menus);
+    parse_store("stores/singles.store", items, menus);
     if (items.length() == 0)
     {
         dlgmessage_return("Error! Could not load the baking shop items.");
@@ -1496,8 +1496,8 @@ void bundlemenu()
     bundle_menu[] menus;
     store_item[] storeItems;
     store_menu[] storeMenus;
-    parse_bundles("data/config/stores/bundles.store", bundles, menus);
-    parse_store("data/config/stores/singles.store", storeItems, storeMenus);
+    parse_bundles("stores/bundles.store", bundles, menus);
+    parse_store("stores/singles.store", storeItems, storeMenus);
     setupmenu2();
     for (uint i = 0; i < menus.length(); i++)
     {

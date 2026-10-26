@@ -56,8 +56,8 @@ void parse_prestige_table(string filepath)
 {
     prestigeRewards.resize(0);
     prestigeDefaultRewardSet = false;
-    file f;
-    if (!f.open(filepath, "r"))
+    config_file f;
+    if (!f.open(filepath))
         return;
     string section = "";
     while (!f.eof)

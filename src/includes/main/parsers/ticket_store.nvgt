@@ -1,7 +1,7 @@
 void parse_tickets_store(string filepath)
 {
-    file f;
-    if (!f.open(filepath, "r")) return;
+    config_file f;
+    if (!f.open(filepath)) return;
     dictionary categoryNames;
     while (!f.eof)
     {

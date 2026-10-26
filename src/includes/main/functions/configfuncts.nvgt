@@ -1,0 +1,84 @@
+/* Config files live in two places: loose under data/decompiled/config, and packed in data/compiled/config.crz.
+A loose file always wins, so edits show up on the next Control L; the pack is only read when the loose file is missing.
+Paths passed in are relative to both, such as tables/ranks.table. */
+const string CONFIG_LOOSE_DIR = "data/decompiled/config/";
+const string CONFIG_PACK_PATH = "data/compiled/config.crz";
+pack_file configPack;
+bool configPackOpen = false;
+
+bool open_config_pack()
+{
+    if (configPackOpen)
+        return true;
+    if (!file_exists(CONFIG_PACK_PATH))
+        return false;
+    configPackOpen = configPack.open(CONFIG_PACK_PATH, PACK_OPEN_MODE_READ);
+    return configPackOpen;
+}
+
+void close_config_pack()
+{
+    if (configPackOpen)
+        configPack.close();
+    configPackOpen = false;
+}
+
+bool read_config_text(const string&in relativePath, string &out text)
+{
+    text = "";
+    string loosePath = CONFIG_LOOSE_DIR + relativePath;
+    if (file_exists(loosePath))
+    {
+        file f;
+        if (!f.open(loosePath, "rb"))
+            return false;
+        text = f.read();
+        f.close();
+        return true;
+    }
+    if (!open_config_pack() || !configPack.file_exists(relativePath))
+        return false;
+    text = configPack.read_file(relativePath, 0, configPack.get_file_size(relativePath));
+    return true;
+}
+
+// Stands in for file in the config parsers, with the same open, eof, read_line and close they already use.
+class config_file
+{
+    string[] lines;
+    uint position = 0;
+    bool eof = true;
+
+    bool open(const string&in relativePath)
+    {
+        string text;
+        lines.resize(0);
+        position = 0;
+        eof = true;
+        if (!read_config_text(relativePath, text))
+            return false;
+        lines = text.split("\n");
+        eof = lines.length() == 0;
+        return true;
+    }
+
+    string read_line()
+    {
+        if (position >= lines.length())
+        {
+            eof = true;
+            return "";
+        }
+        string line = lines[position];
+        position++;
+        eof = position >= lines.length();
+        return line;
+    }
+
+    void close()
+    {
+        lines.resize(0);
+        position = 0;
+        eof = true;
+    }
+}

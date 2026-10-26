@@ -24,8 +24,8 @@ class store_item
 
 void parse_store(string filepath, store_item[]@ items_out, store_menu[]@ menus_out)
 {
-    file f;
-    if (!f.open(filepath, "r"))
+    config_file f;
+    if (!f.open(filepath))
         return;
     store_menu[] menuDefs;
     dictionary menuAliases;

@@ -15,8 +15,8 @@ class event_item
 event_item[]@ parse_baker_events(string filepath)
 {
     event_item[] items;
-    file f;
-    if (!f.open(filepath, "r"))
+    config_file f;
+    if (!f.open(filepath))
         return items;
     while (!f.eof)
     {

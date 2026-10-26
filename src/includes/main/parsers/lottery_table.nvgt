@@ -43,8 +43,8 @@ dictionary lotteryPrizePools;
 void parse_lottery_table(string filepath)
 {
     lotteryPrizePools.delete_all();
-    file f;
-    if (!f.open(filepath, "r")) return;
+    config_file f;
+    if (!f.open(filepath)) return;
     string currentPool = "";
     lottery_prize_item[] currentPrizes;
     while (!f.eof)
@@ -116,7 +116,7 @@ double lottery_unit_price(string target)
     if (itemType == "") return 0;
     store_item[] items;
     store_menu[] menus;
-    parse_store("data/config/stores/singles.store", items, menus);
+    parse_store("stores/singles.store", items, menus);
     for (uint i = 0; i < items.length(); i++)
     {
         if (items[i].item_type != itemType || items[i].use_percent || items[i].amount <= 0) continue;

@@ -22,8 +22,8 @@ void parse_slots_table(string filepath, string[]@ symbols_out, payout_item[]@ pa
     slotStopSound1 = "slot_machine/stop1.ogg";
     slotStopSound2 = "slot_machine/stop2.ogg";
     slotStopSound3 = "slot_machine/stop3.ogg";
-    file f;
-    if (!f.open(filepath, "r"))
+    config_file f;
+    if (!f.open(filepath))
         return;
     bool in_payouts = false;
     while (!f.eof)

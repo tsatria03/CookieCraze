@@ -496,36 +496,36 @@ void play_coin_sound(double amount)
 void reload_config(bool force = false)
 {
     if (config_loaded && !force) return;
-    loadedEvents = parse_baker_events("data/config/events/baker.event");
-    loadedFlipperEvents = parse_flipper_items("data/config/events/flipper.event");
+    loadedEvents = parse_baker_events("events/baker.event");
+    loadedFlipperEvents = parse_flipper_items("events/flipper.event");
     slotSymbols.resize(0); slotPayouts.resize(0);
-    parse_slots_table("data/config/tables/slots.table", slotSymbols, slotPayouts, slotReels, slotMinBet, slotMaxBet, slotConfirmThreshold, slotConfirmUsePercent);
+    parse_slots_table("tables/slots.table", slotSymbols, slotPayouts, slotReels, slotMinBet, slotMaxBet, slotConfirmThreshold, slotConfirmUsePercent);
     rankSounds.resize(0); rankDefault.resize(0); rankRewards.resize(0);
-    parse_ranks_table("data/config/tables/ranks.table", rankSounds, rankDefault, rankRewards);
-    parse_jacks_table("data/config/tables/jacks.table", jacksConfig);
-    parse_dice_table("data/config/tables/dice.table");
-    parse_combos_table("data/config/tables/combos.table", combosConfig);
-    parse_lottery_table("data/config/tables/lottery.table");
+    parse_ranks_table("tables/ranks.table", rankSounds, rankDefault, rankRewards);
+    parse_jacks_table("tables/jacks.table", jacksConfig);
+    parse_dice_table("tables/dice.table");
+    parse_combos_table("tables/combos.table", combosConfig);
+    parse_lottery_table("tables/lottery.table");
     loadedAchievements.resize(0);
     loadedAchievementCategories.resize(0);
-    parse_achievements("data/config/tables/achievements.table", loadedAchievements, loadedAchievementCategories);
+    parse_achievements("tables/achievements.table", loadedAchievements, loadedAchievementCategories);
     // Keep the unlocked achievements readdata restored; only add any the fresh table now counts as met.
     init_achievements(loadedAchievements, achievementsUnlocked);
-    parse_prestige_table("data/config/tables/prestige.table");
+    parse_prestige_table("tables/prestige.table");
     /* Keep the active quests across the re-parse. Rolling a fresh set here made Control L a free reroll,
     since it runs right after readdata restored the saved quests. */
     string[] activeQuestIds;
     for (uint i = 0; i < activeQuests.length(); i++)
         activeQuestIds.insert_last(activeQuests[i].id);
     loadedQuests.resize(0);
-    parse_quests_table("data/config/tables/quests.table", loadedQuests);
+    parse_quests_table("tables/quests.table", loadedQuests);
     if (!restore_active_quests(activeQuestIds))
         assign_quests();
     apply_all_prestige_store_upgrades();
     /* main.table's multipliers, modifiers, event chances, and sell price apply at once; its starting values and
     start costs wait for the next new game or prestige. A changed rank_modifier moves the next rank's threshold,
     so it is worked out again here, after the prestige rank discount above. */
-    parse_main_table("data/config/tables/main.table");
+    parse_main_table("tables/main.table");
     xprequired = rank_threshold(rank);
     config_loaded = true;
 }
@@ -734,7 +734,7 @@ void apply_prestige_store_upgrade(string item_id)
 {
     prestige_store_item[] items;
     prestige_menu_def[] menus;
-    parse_prestige_store("data/config/stores/prestige.store", items, menus);
+    parse_prestige_store("stores/prestige.store", items, menus);
     for (uint i = 0; i < items.length(); i++)
     {
         if (items[i].item_id != item_id) continue;
@@ -752,7 +752,7 @@ void apply_all_prestige_store_upgrades()
     prestige_starting_manualcookie = 0;
     prestige_store_item[] items;
     prestige_menu_def[] menus;
-    parse_prestige_store("data/config/stores/prestige.store", items, menus);
+    parse_prestige_store("stores/prestige.store", items, menus);
     // One-time upgrades: each purchased id contributes its amount once.
     for (uint i = 0; i < prestigePurchased.length(); i++)
     {
@@ -782,7 +782,7 @@ bool all_standard_prestige_purchased()
 {
     prestige_store_item[] items;
     prestige_menu_def[] menus;
-    parse_prestige_store("data/config/stores/prestige.store", items, menus);
+    parse_prestige_store("stores/prestige.store", items, menus);
     for (uint i = 0; i < items.length(); i++)
     {
         if (items[i].infinite) continue;

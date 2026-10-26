@@ -17,8 +17,8 @@ class rank_reward_item
 void parse_ranks_table(string filepath, rank_sound_item[]@ sounds_out, rank_reward_item[]@ default_out, rank_reward_item[]@ rewards_out)
 {
     rankSummaryMessage = "";
-    file f;
-    if (!f.open(filepath, "r"))
+    config_file f;
+    if (!f.open(filepath))
         return;
     string section = "";
     while (!f.eof)

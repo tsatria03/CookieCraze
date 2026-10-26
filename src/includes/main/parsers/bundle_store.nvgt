@@ -26,8 +26,8 @@ class bundle_menu
 
 void parse_bundles(string filepath, bundle_item[]@ bundles_out, bundle_menu[]@ menus_out)
 {
-    file f;
-    if (!f.open(filepath, "r"))
+    config_file f;
+    if (!f.open(filepath))
         return;
     bool in_section = false;
     dictionary menuAliases;

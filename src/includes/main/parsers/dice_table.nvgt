@@ -31,8 +31,8 @@ void parse_dice_table(string filepath)
     diceConfig.modifiers.resize(0);
     diceConfig.payouts.resize(0);
     diceConfig.house_edge = 5.0;
-    file f;
-    if (!f.open(filepath, "r")) return;
+    config_file f;
+    if (!f.open(filepath)) return;
     while (!f.eof)
     {
         string line = f.read_line();

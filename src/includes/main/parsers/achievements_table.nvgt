@@ -23,8 +23,8 @@ class achievement_item
 void parse_achievements(string filepath, achievement_item[]@ items, achievement_category[]@ categories)
 {
     dictionary categoryAliases;
-    file f;
-    if (!f.open(filepath, "r"))
+    config_file f;
+    if (!f.open(filepath))
         return;
     while (!f.eof)
     {
