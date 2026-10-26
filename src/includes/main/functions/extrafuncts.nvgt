@@ -522,6 +522,11 @@ void reload_config(bool force = false)
     if (!restore_active_quests(activeQuestIds))
         assign_quests();
     apply_all_prestige_store_upgrades();
+    /* main.table's multipliers, modifiers, event chances, and sell price apply at once; its starting values and
+    start costs wait for the next new game or prestige. A changed rank_modifier moves the next rank's threshold,
+    so it is worked out again here, after the prestige rank discount above. */
+    parse_main_table("data/config/tables/main.table");
+    xprequired = rank_threshold(rank);
     config_loaded = true;
 }
 

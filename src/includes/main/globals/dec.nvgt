@@ -143,8 +143,9 @@ double stat_highest_combo_reached = 0;
 double stat_combos_started = 0;
 double stat_combos_broken = 0;
 
-int evchanse = 50;
-int evchanse2 = 50;
+// Percent of auto bakes and bake presses on which a baker event can fire; set from main.table.
+double evchanse = 2;
+double evchanse2 = 2;
 event_item[] loadedEvents;
 event_item[] loadedFlipperEvents;
 

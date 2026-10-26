@@ -68,6 +68,8 @@ parse_prestige_table("data/config/tables/prestige.table");
 parse_quests_table("data/config/tables/quests.table", loadedQuests);
 parse_lottery_table("data/config/tables/lottery.table");
 parse_tickets_store("data/config/stores/tickets.store");
+// Optional: a missing or broken main.table just keeps every built-in default.
+parse_main_table("data/config/tables/main.table");
 assign_quests();
 readdata();
 readpreffs();
@@ -116,8 +118,8 @@ playergender = 2;
 if (yes_no("Alright, let's confirm your profile info. Your character's first name is " + first_name + ". Your character's last name is " + last_name + ". Your character's gender is " + gender + ". Is this information correct?")) break;
 }
 {
-dlgmessage_return("Congratulations! You've successfully completed your profile setup. I'll give you " + convert_to_currency(10) + " to get you started on your way.");
-usercoins=10;
+dlgmessage_return("Congratulations! You've successfully completed your profile setup. I'll give you " + convert_to_currency(startingCoins) + " to get you started on your way.");
+usercoins=startingCoins;
 coins=usercoins;
 dlgplay("sounds/store/coin1.ogg");
 if (playergender == 0)
@@ -287,22 +289,23 @@ lastComboTierIndex=-1;
 stat_auto_slots_purchased=0;
 stat_manual_slots_purchased=0;
 stat_auto_slots_enabled=0;
-autocookie=0;
+// Starting values and slot start costs come from main.table ([starting_values] and [slots]).
+autocookie=startingAutocookie;
 autocookie_purchases=0;
 manulcookie_purchases=0;
 cookiespeed_purchases=0;
-coins=10;
+coins=startingCoins;
 cookies=0;
 cookieXP=0;
 cookiespeed=0;
-manulcookie=1;
+manulcookie=startingManualcookie;
 rank=1;
 bakemode=0;
 clicktime=1000;
-automationBaseCost=15;
-slotBaseCost=30;
+automationBaseCost=automationStartCost;
+slotBaseCost=slotStartCost;
 manualSlots=0;
-manualSlotBaseCost=30;
+manualSlotBaseCost=manualSlotStartCost;
 autobakeSlots=0;
 autobakeSlotEnabled.resize(0);
 baking_slots.resize(0);

@@ -34,7 +34,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Release status](project_release_status.md) — 7.1 TAGGED V7.10 (2026-10-26) as a bookmark only, not released; next public release is 7.2 (ships 7.1 + 7.2); 7.1 block frozen, full 10/10; next player-facing change opens a new block + version bump (ask the dev, likely 7.2); 7.0 RELEASED 2026-10-01; what 6.9, 7.0 and 7.1 shipped.
 
 ## Active plans (7.2)
-- [main.table plan](project_main_table_plan.md) — AGREED, not built: new data/config/tables/main.table with the 8 "cheat" sliders (slot cost multipliers, rank/XP modifiers, event one-in chances, sell price) + 6 starting values; sliders removed, no longer saved in gamesets.crz; prerequisite for the prestige-spam fix (min_rank 100); 3 sections, docs last.
+- [main.table plan](project_main_table_plan.md) — AGREED, not built: new data/config/tables/main.table with the 8 "cheat" sliders (slot cost multipliers, rank/XP modifiers, event one-in chances, sell price) + 6 starting values; sliders and the two event on/off checkboxes removed, no longer saved in gamesets.crz; prerequisite for the prestige-spam fix (min_rank 100); 3 sections, docs last.
 
 ## Finished plans (7.1), continued
 - [Quest baseline plan](project_quest_baseline_plan.md) — SHIPPED 7.1: prestige keeps all minigame stats for life; every count-stat quest measures from a run-start baseline (rank + the two record stats excluded); old-save rule; fixes exploit #8 + the readme prestige-stats line; 3 sections, docs last.
@@ -69,6 +69,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Confirm before implementing](feedback_confirm_before_implementing.md) — a design discussion or any `?` is a request for a plan, not a green light to edit; wait for explicit go-ahead.
 - [Plan features in memory first](feedback_plan_features_in_memory.md) — before coding any new feature, write the agreed plan (locked decisions + numbered build sections) into an aidocks/ memory file and index it; only then build, section by section.
 - [Flag todo prerequisites](feedback_flag_todo_prerequisites.md) — dev picks todo items at random; say up front if one needs another item or a decision first.
+- [Test steps one at a time](feedback_test_steps_one_at_a_time.md) — give testing steps one per message ("Step 1 of N"), wait for the result, then the next; never the whole list at once.
 - [Pause after each fix](feedback_pause_after_each_fix.md) — after a fix + its docs, end the turn with the summary for review; never start the next item (reading, analysis, or its question) in the same reply, even in a batch.
 - [Bug list format](feedback_bug_list_format.md) — when listing bugs, split player-facing vs code (internal/modder/build), group each by game section, one line per bug with its memory id.
 - [Ask one question at a time](feedback_ask_one_question_at_a_time.md) — surface ONE question per turn and wait; don't batch a numbered list.

@@ -146,9 +146,11 @@ void play_event_sounds(event_item@ item)
     }
 }
 
-void attempt_autobaker_event(int probability_chance)
+/* chance is the percent of bakes on which an event can fire (main.table auto_event_chance): 0 never, 100 every bake.
+random_float is 0 up to but not including 1, so 0 can never pass and 100 always does. The picked event's own
+chance from baker.event still applies first. */
+void attempt_autobaker_event(double chance)
 {
-    evchanse = probability_chance;
     if (loadedEvents.length() == 0) return;
     if (!playervents) return;
     event_item[] pool_auto;
@@ -163,7 +165,7 @@ void attempt_autobaker_event(int probability_chance)
     if (pool_auto.length() == 0) return;
     event_item@ item = pool_auto[random(0, pool_auto.length() - 1)];
     if (random(0, 100) > item.chance) return;
-    if (random(0, probability_chance) != 0) return;
+    if (double(random_float()) * 100.0 >= chance) return;
     string msg = apply_event(item);
     if (msg == "") return;
     stat_baker_events_fired++;
@@ -171,9 +173,9 @@ void attempt_autobaker_event(int probability_chance)
     speak_buffer(msg, "events");
 }
 
-void attempt_manebaker_event(int probability_chance)
+// Same as attempt_autobaker_event, for presses of the bake button (main.table manual_event_chance).
+void attempt_manebaker_event(double chance)
 {
-    evchanse2 = probability_chance;
     if (loadedEvents.length() == 0) return;
     if (!playervents2) return;
     event_item[] pool_manual;
@@ -188,7 +190,7 @@ void attempt_manebaker_event(int probability_chance)
     if (pool_manual.length() == 0) return;
     event_item@ item = pool_manual[random(0, pool_manual.length() - 1)];
     if (random(0, 100) > item.chance) return;
-    if (random(0, probability_chance) != 0) return;
+    if (double(random_float()) * 100.0 >= chance) return;
     string msg = apply_event(item);
     if (msg == "") return;
     stat_baker_events_fired++;

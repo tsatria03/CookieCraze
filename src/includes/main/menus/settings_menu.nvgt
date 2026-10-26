@@ -3,7 +3,8 @@ submenu restores it, so nothing changed there sticks without pressing Save. The 
 themselves after a name change or a cancelled reset, so they can't take the snapshot themselves. */
 double setsnap_automationMultiplier, setsnap_slotMultiplier, setsnap_manualSlotMultiplier;
 double setsnap_cookiemod, setsnap_cookieExpMod, setsnap_cookieSellPrice;
-int setsnap_evchanse, setsnap_evchanse2, setsnap_numberFormatMode;
+double setsnap_evchanse, setsnap_evchanse2;
+int setsnap_numberFormatMode;
 bool setsnap_introsfx, setsnap_logosfx, setsnap_exitsfx, setsnap_bakesfx, setsnap_savesfx, setsnap_speak_menu_position;
 bool setsnap_slotDistribution, setsnap_manualSlotDistribution, setsnap_show_locked_shops;
 bool setsnap_playervents, setsnap_playervents2;

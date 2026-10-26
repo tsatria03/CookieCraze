@@ -1,0 +1,95 @@
+/* main.table: settings a normal player has no reason to change, which used to be sliders in the game settings,
+plus the values a new run starts with. Every value has a built-in default equal to the shipped file, used whenever
+the file, a section, or a line is missing or invalid, so this file can never stop the game from starting. */
+double startingCoins = 10;
+double startingAutocookie = 0;
+double startingManualcookie = 1;
+/* What automating a slot, an auto slot, and a manual slot cost at the start of a run. Kept apart from
+automationBaseCost, slotBaseCost, and manualSlotBaseCost, which grow as you buy and are saved with each run. */
+double automationStartCost = 15;
+double slotStartCost = 30;
+double manualSlotStartCost = 30;
+
+void reset_main_table_defaults()
+{
+    startingCoins = 10;
+    startingAutocookie = 0;
+    startingManualcookie = 1;
+    automationStartCost = 15;
+    slotStartCost = 30;
+    manualSlotStartCost = 30;
+    automationMultiplier = 1.01;
+    slotMultiplier = 1.01;
+    manualSlotMultiplier = 1.01;
+    cookiemod = 1;
+    cookieExpMod = 1;
+    evchanse = 2;
+    evchanse2 = 2;
+    cookieSellPrice = 50;
+}
+
+// A value is used only if it is a plain number, such as 10, 1.01, or 0.5; anything else keeps the default.
+bool main_table_number(string text, double &out result)
+{
+    text = text.trim_whitespace();
+    if (text.length() == 0) return false;
+    bool hasDigit = false;
+    for (uint i = 0; i < text.length(); i++)
+    {
+        string c = text.substr(i, 1);
+        if (c >= "0" && c <= "9") hasDigit = true;
+        else if (c == "." || (c == "-" && i == 0)) continue;
+        else return false;
+    }
+    if (!hasDigit) return false;
+    result = string_to_number(text);
+    return true;
+}
+
+// Turns a dollar amount from main.table into the cents the game counts in, rounded to the nearest cent.
+double dollars_to_cents(double dollars)
+{
+    return round(dollars * 100.0, 0);
+}
+
+/* Sections ([starting_values], [slots], [ranks], [events], [selling]) only organise the file; a key is read
+wherever it appears. Every value is reset to its default first, so deleting a line and pressing Control L
+really brings the default back. */
+void parse_main_table(string filepath)
+{
+    reset_main_table_defaults();
+    file f;
+    if (!f.open(filepath, "r"))
+        return;
+    while (!f.eof)
+    {
+        string line = f.read_line();
+        while (line.length() > 0 && (line.substr(line.length() - 1) == "\n" || line.substr(line.length() - 1) == "\r"))
+            line = line.substr(0, line.length() - 1);
+        if (line.length() == 0 || line.substr(0, 2) == "//" || line.substr(0, 1) == "#" || line.substr(0, 1) == ";")
+            continue;
+        if (line.substr(0, 1) == "[") continue;
+        int eq = line.find("=");
+        if (eq <= 0) continue;
+        string key = line.substr(0, eq).trim_whitespace();
+        double v = 0;
+        if (!main_table_number(line.substr(eq + 1), v)) continue;
+        // Money values (starting_cash, the three base costs, and sell_price) are written in dollars, so 0.5 is 50 cents;
+        // the game counts money in cents, so they are converted with dollars_to_cents.
+        if (key == "starting_cash")                    startingCoins = max(0.0, dollars_to_cents(v));
+        else if (key == "starting_autocookie")         startingAutocookie = max(0.0, v);
+        else if (key == "starting_manualcookie")       startingManualcookie = max(0.0, v);
+        else if (key == "automation_base_cost")        automationStartCost = max(0.0, dollars_to_cents(v));
+        else if (key == "automation_cost_multiplier")  automationMultiplier = max(1.0, v);
+        else if (key == "auto_slot_base_cost")         slotStartCost = max(0.0, dollars_to_cents(v));
+        else if (key == "auto_slot_cost_multiplier")   slotMultiplier = max(1.0, v);
+        else if (key == "manual_slot_base_cost")       manualSlotStartCost = max(0.0, dollars_to_cents(v));
+        else if (key == "manual_slot_cost_multiplier") manualSlotMultiplier = max(1.0, v);
+        else if (key == "rank_modifier")               { if (v > 0) cookiemod = v; }
+        else if (key == "experience_modifier")         { if (v > 0) cookieExpMod = v; }
+        else if (key == "auto_event_chance")           evchanse = clamp(v, 0, 100);
+        else if (key == "manual_event_chance")         evchanse2 = clamp(v, 0, 100);
+        else if (key == "sell_price")                  cookieSellPrice = max(1.0, dollars_to_cents(v));
+    }
+    f.close();
+}

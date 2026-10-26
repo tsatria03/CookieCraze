@@ -1,0 +1,48 @@
+; Main settings for Cookie Craze. These are meant for modders; a normal player has no reason to change them.
+; Every value is optional. If this file, a section, or a line is missing, or a value is not a plain number,
+; the game uses the default shown here. Press Control L in game to reload this file after editing it.
+
+[starting_values]
+
+; What a new game or a prestige starts you with. Changes apply from your next new game or prestige.
+; starting_cash is in dollars, so 0.1 is 10 cents and 1 is $1.00.
+
+starting_cash=0.1
+starting_autocookie=0
+starting_manualcookie=1
+
+[slots]
+
+; What automating a slot, an auto slot, and a manual slot cost at the start of a run, in dollars (0.15 is 15 cents),
+; and how much each one costs more than the last, as a multiplier (1.01 means 1 percent more each).
+; Base costs apply from your next new game or prestige; multipliers apply right away.
+
+automation_base_cost=0.15
+automation_cost_multiplier=1.01
+auto_slot_base_cost=0.3
+auto_slot_cost_multiplier=1.01
+manual_slot_base_cost=0.3
+manual_slot_cost_multiplier=1.01
+
+[ranks]
+
+; rank_modifier multiplies the experience every rank needs: leaving rank r needs rank_modifier times 4 times r squared.
+; experience_modifier multiplies the experience each baked cookie gives you.
+
+rank_modifier=1
+experience_modifier=1
+
+[events]
+
+; The percent of bakes on which a baker event can fire, for auto baking and for pressing the bake button.
+; 0 turns those events off, 2 is 1 bake in 50, and 100 is every bake. Decimals such as 0.5 are allowed.
+; Each event's own chance in baker.event still applies on top of this.
+
+auto_event_chance=2
+manual_event_chance=2
+
+[selling]
+
+; How much each cookie sells for, in dollars, so 1 is $1.00 and 0.5 is 50 cents. The lowest is 0.01, one cent.
+
+sell_price=0.5

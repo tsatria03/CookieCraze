@@ -564,38 +564,8 @@ if (st.d.exists("show_locked_shops"))
 {
 show_locked_shops = st.read_bool("show_locked_shops");
 }
-if (st.d.exists("automationMultiplier"))
-{
-automationMultiplier = st.read_double("automationMultiplier");
-}
-if (st.d.exists("slotMultiplier"))
-{
-slotMultiplier = st.read_double("slotMultiplier");
-}
-if (st.d.exists("manualSlotMultiplier"))
-{
-manualSlotMultiplier = st.read_double("manualSlotMultiplier");
-}
-if(st.d.exists("cookiemod"))
-{
-cookiemod=st.read_double("cookiemod");
-}
-if(st.d.exists("cookieExpMod"))
-{
-cookieExpMod=st.read_double("cookieExpMod");
-}
-if(st.d.exists("cookieSellPrice"))
-{
-cookieSellPrice=st.read_double("cookieSellPrice");
-}
-if(st.d.exists("evchanse"))
-{
-evchanse=st.read_int("evchanse");
-}
-if(st.d.exists("evchanse2"))
-{
-evchanse2=st.read_int("evchanse2");
-}
+/* The slot cost multipliers, rank and experience modifiers, sell price, and event chances now come only from
+main.table. Older gamesets.crz files still hold them, but they are never read again. */
 }
 void reset_game_settings()
 {
@@ -618,14 +588,6 @@ show_locked_shops=true;
 numberFormatMode=0;
 slotDistribution=false;
 manualSlotDistribution=false;
-automationMultiplier=1.01;
-slotMultiplier=1.01;
-manualSlotMultiplier=1.01;
-cookiemod=1;
-cookieExpMod=1;
-cookieSellPrice=50;
-evchanse=50;
-evchanse2=50;
 if (file_exists(APPDATA_DIR + "preffs/gamesets.crz")) file_delete(APPDATA_DIR + "preffs/gamesets.crz");
 writepreffs();
 }
@@ -664,14 +626,6 @@ st.add("dicemode",dicemode);
 st.add("highlowmode",highlowmode);
 st.add("roulettemode",roulettemode);
 st.add("show_locked_shops", show_locked_shops);
-st.add("automationMultiplier", automationMultiplier);
-st.add("slotMultiplier", slotMultiplier);
-st.add("manualSlotMultiplier", manualSlotMultiplier);
-st.add("cookiemod",cookiemod);
-st.add("cookieExpMod",cookieExpMod);
-st.add("cookieSellPrice",cookieSellPrice);
-st.add("evchanse",evchanse);
-st.add("evchanse2",evchanse2);
 st.save();
 }
 void readpreffs2()
