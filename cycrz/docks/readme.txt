@@ -545,7 +545,7 @@ Prestige.
 Reset your progress and earn a permanent bonus that carries into every future run.
 
 The prestige option is available from the quests screen.
-Once you reach the minimum rank, pressing the prestige button opens a confirmation dialog explaining what resets and what carries over, and whether you will receive a reward based on your current quest completion status.
+Prestige unlocks at rank 100. Once you reach it, pressing the prestige button opens a confirmation dialog explaining what resets and what carries over, whether you will receive a reward based on your current quest completion status, and a warning if you have not completed any quests this run, since you would earn no prestige points.
 
 When you prestige, the following are reset: your money, cookies, rank, all upgrade purchases, baking slots, and baking and economy stats.
 The following are kept: your prestige level, all achievements and achievement progress, minigame unlocks, minigame stats, and preferences. Minigame stats for every minigame keep counting up as lifetime totals across all of your prestiges, while your quests count only what you do in each new run.
@@ -560,7 +560,7 @@ Spend prestige points on permanent upgrades that carry into every future run.
 
 The prestige store becomes available after your first prestige. A prestige store button appears in the quests screen directly below the prestige button once you have at least one completed prestige run.
 
-Prestige points are earned each time you prestige. The number awarded is the points_per_prestige setting in prestige.table multiplied by your total quest completions, counting every one-time quest you have ever finished plus every time you have completed an endless quest. This total carries across runs and keeps growing rather than resetting each prestige, so your payout increases the more quests you complete over your whole progression, and you still earn points on a run where you complete nothing new, as long as you have completed quests before. By default the points_per_prestige value also scales with your prestige level, so the deeper you prestige, the more each completion is worth.
+Prestige points are earned each time you prestige. The number awarded is the points_per_prestige setting in prestige.table multiplied by your total quest completions, counting every one-time quest you have ever finished plus every time you have completed an endless quest. This total carries across runs and keeps growing rather than resetting each prestige, so your payout increases the more quests you complete over your whole progression. However, you only earn points if at least one of your quests is complete when you prestige; a run where you complete nothing pays no points at all, and the prestige confirmation warns you before you go ahead. By default the points_per_prestige value also scales with your prestige level, so the deeper you prestige, the more each completion is worth.
 
 To check how many prestige points you have, open the prestige store. The store announces your current balance when it opens.
 
@@ -1630,10 +1630,10 @@ Defines the prestige system settings and milestone rewards.
 Settings section.
 
 min_rank
-The minimum rank the player must reach before prestige becomes available.
+The minimum rank the player must reach before prestige becomes available. The game ships with 100, so every feature is unlocked before your first prestige.
 
 points_per_prestige
-The base number of prestige points awarded per quest completion when the player prestiges. The total points earned is this value multiplied by the player's total quest completions, which counts every one-time quest ever finished plus every completion of an endless quest, accumulated across all runs rather than reset each prestige. Because this total carries over, the player can earn points even on a run where they complete no new quests. This setting supports the same rank scaling operators as ranks.table, evaluated against the player's prestige level, so values like 10*rank, 10/rank, 10+rank, and 10-rank are valid, with a plain number staying flat. A negative result is clamped to zero so the player never loses points.
+The base number of prestige points awarded per quest completion when the player prestiges. The total points earned is this value multiplied by the player's total quest completions, which counts every one-time quest ever finished plus every completion of an endless quest, accumulated across all runs rather than reset each prestige. Points are only awarded if at least one active quest is complete at the moment of prestige; a run with no completed quest earns nothing, however large the total is. This setting supports the same rank scaling operators as ranks.table, evaluated against the player's prestige level, so values like 10*rank, 10/rank, 10+rank, and 10-rank are valid, with a plain number staying flat. A negative result is clamped to zero so the player never loses points.
 
 sound
 The sound file to play when the player prestiges. Relative to sounds/misc/.

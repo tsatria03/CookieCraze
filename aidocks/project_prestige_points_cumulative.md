@@ -7,6 +7,8 @@ metadata:
   originSessionId: 6e820f7e-c923-43e9-bd1c-7c123f031f23
 ---
 
+**Changed in 7.2 (dev):** the amount is still the cumulative tally below, but points are now **only paid if at least one active quest is complete this run** (`questsDoneThisRun > 0` in `resetgame`), and `min_rank` is 100. So "you earn points even with zero new completions" is no longer true — see exploit #7 in [[project_bugs_exploits_balance]].
+
 Prestige-points payout is **cumulative across your whole progression, not per-run** — an important, non-obvious detail that the readme originally got wrong.
 
 ## The formula (cycrz.nvgt, resetgame(prestige) flow)

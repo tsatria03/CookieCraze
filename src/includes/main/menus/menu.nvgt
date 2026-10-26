@@ -2417,6 +2417,8 @@ void start_prestige()
         confirmText += " Warning: you have not met the quest requirement, so you will not receive any reward for this prestige.";
     else
         confirmText += " You have met the quest requirement and will receive your reward.";
+    if (!any_quest_complete())
+        confirmText += " You have not completed any quests this run, so you will not earn any prestige points either.";
     if (!yes_no(confirmText))
     {
         // Prestige is only started from the quests screen, so a cancel goes back there rather than to the main game screen.
