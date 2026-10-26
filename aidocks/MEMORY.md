@@ -31,7 +31,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Design review 7.0](project_design_review_7_0.md) — 2026-10-25 evaluation, potential improvements only: runaway 1.01 economy (rank 90 in ~5 min), prestige spam, endless quests pre-done after prestige, minigames lack purpose, settings as cheats, readme onboarding + agreed readme reorganization and missing keys, small config gate/category issues; #8 store prices don't drop after losing auto/manual cookies (proposed: scale purchase count by share kept).
 
 ## Release status
-- [Release status](project_release_status.md) — 7.1 IN PROGRESS (version.txt 7.1, minor block, 5 of 10 entries); 7.0 RELEASED 2026-10-01 (tag V7.00) and frozen; what 6.9 and 7.0 shipped.
+- [Release status](project_release_status.md) — 7.1 IN PROGRESS (version.txt 7.1, minor block, 6 of 10 entries); 7.0 RELEASED 2026-10-01 (tag V7.00) and frozen; what 6.9 and 7.0 shipped.
 
 ## Finished plans (7.1)
 - [Rank burst plan](project_rank_burst_plan.md) — SHIPPED 7.1: one shared rank-up function, milestones use the main-screen rule everywhere, every earned rank in one pass + [summary] message in ranks.table, rank 21M reward overflow + 2B int(rank) overflow + prestige history rank as double; 4 sections, docs last.

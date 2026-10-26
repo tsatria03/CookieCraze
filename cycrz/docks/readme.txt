@@ -8,11 +8,114 @@ Every rank you reach brings a reward, and milestones along the way unlock powerf
 
 Can you reach the highest rank and become the ultimate baker? Let's find out!
 
-A note on currency.
+Getting started
 
-Throughout the game, money is always displayed in dollars and cents. For example, 50 cents or $1.50.
-You will never see the word coins in any player-facing message. However, coins is the internal name used inside the configuration files to refer to the player's money.
-If you are editing config files, you must use the word coins exactly as written when the documentation says so. This does not affect how money appears in the game itself.
+The first time you play, the game asks for your character's first name, last name, and gender. You can change these later in the preferences.
+
+Starting a game.
+
+From the main menu, choose game menu, then new game, and pick an empty save slot. Your new game is saved as soon as it starts.
+
+Your first few minutes.
+
+You start with 10 cents and 1 manual cookie, so each press of the bake cookies button bakes one cookie. The bake cookies button is focused when the game screen opens, so just press enter or space, or press Alt B from anywhere on the screen.
+To earn money, open the cookie store with Alt S, choose sell cookies, and press enter to sell everything you have. Each cookie sells for 50 cents by default.
+In the cookie store, choose buy upgrades, then singles, then automatic baking items, and buy an auto cookie. It costs 10 cents, so you can afford one straight away.
+Once you have at least one auto cookie, turn on baking mode with Alt O. Your cookies now bake by themselves on a timer, even while you are not pressing anything, and you can keep pressing the bake cookies button at the same time for extra cookies on top.
+From there, keep selling and buying more auto cookies, manual cookies, and baking speed. Baking earns experience, and every rank you reach pays you money. Ranks 10 through 90 unlock the minigames and other features along the way.
+Press C to hear your cookies, M for your money, and R for your rank. Press control S to save, and escape when you want to quit.
+
+The keyboard commands section below lists every key, and the sections after it explain each feature in detail.
+
+Keyboard commands
+
+In game.
+
+Letter, F: Announces how many cookies your auto baking produces each bake. If you have automated slots, it tells you how much each slot produces and how much you produce in total. Your prestige cookie bonus is included.
+Letter, J: Announces how many cookies each press of the bake button produces. If you have manual slots, it tells you how much each slot produces and how much you produce in total. Your prestige cookie bonus is included, but combo multipliers are not.
+Letter, C: Announces your current cookie count.
+Letter, R: Announces your current rank, your current experience, and how much more experience is needed to reach the next rank.
+Letter, M: Announces how much money you currently have.
+Letter, A: Announces how many auto cookies you have.
+Letter, S: Announces your current baking speed and how long each bake takes.
+Letter, N: Announces how many manual cookies you have.
+Letter, L: Announces your current prestige level.
+Letter, P: Announces how many prestige points you have to spend in the prestige store.
+Control S: Saves your game progress.
+Control L: Reloads all configuration files and your save data without restarting the game, taking you back to your last save. Useful when editing config files. If there is no save to reload, only the configuration files are reloaded.
+Escape: Opens a prompt asking whether you want to quit.
+Alt plus F4: Exits the main game immediately without saving.
+
+In minigames.
+
+These keys work while any minigame is open, and they mean the same as on the main game screen.
+Letter, C: Announces your current cookie count.
+Letter, M: Announces how much money you currently have.
+Letter, A: Announces how many auto cookies you have.
+Letter, S: Announces your current baking speed and how long each bake takes.
+Letter, N: Announces how many manual cookies you have.
+Control S: Saves your game progress without leaving the minigame, so a round in progress carries on.
+Control L: Reloads all configuration files and your save data, then reopens the minigame you are in. If there is no save to reload, only the configuration files are reloaded.
+
+Buffers.
+
+Comma: Moves to the previous item in the focused buffer.
+Period: Moves to the next item in the focused buffer.
+Shift plus Comma: Jumps to the top of the focused buffer.
+Shift plus Period: Jumps to the bottom of the focused buffer.
+Left Bracket: Navigates to the previous buffer category. Announces the category name, item count, and current item.
+Right Bracket: Navigates to the next buffer category. Announces the category name, item count, and current item.
+Shift plus Left Bracket: Jumps to the first buffer category. Announces the category name, item count, and current item.
+Shift plus Right Bracket: Jumps to the last buffer category. Announces the category name, item count, and current item.
+Shift plus C: Copies the current buffer message to the clipboard.
+Shift plus M: Toggles mute or unmute on the focused buffer.
+F1: Toggles mute or unmute on the achievements buffer.
+F2: Toggles mute or unmute on the combos buffer.
+F3: Toggles mute or unmute on the events buffer.
+F4: Toggles mute or unmute on the ranks buffer.
+Shift plus Backslash: Exports the focused buffer to its log file in the logs folder, then clears that buffer. If the buffer is empty, nothing is exported.
+All of the buffer keys in this section, including the F1 through F4 mute keys, also work inside every minigame.
+
+Button shortcuts.
+
+Buttons can be pressed from anywhere on their screen by holding Alt and pressing their shortcut letter. On the main game screen these are:
+Alt plus B: Bakes cookies by hand.
+Alt plus S: Opens the cookie store.
+Alt plus O: Turns baking mode on or off.
+Alt plus A: Opens your achievements.
+Alt plus M: Opens the baking slots manager.
+Alt plus I: Opens the baker info screen.
+Alt plus G: Opens the minigames.
+Alt plus Q: Opens your quests.
+Alt plus T: Opens the statistics screen.
+Alt plus R: Opens the preferences.
+Other screens have their own shortcuts, such as Alt plus P for check the payouts on the slot machine.
+
+Forms.
+
+Tab: Moves focus forward through form controls.
+Shift plus Tab: Moves focus backward through form controls.
+Spacebar or Enter: Activates the focused button or opens a menu.
+
+Menus.
+
+Up and Down arrows: Move between items. Left and Right arrows do the same. Menus wrap around from the last item back to the first.
+Home: Jumps to the first item.
+End: Jumps to the last item.
+Any letter: Jumps to the next item starting with that letter. Press it again to move to the next match.
+F3: Searches the menu for a keyword. The box keeps your last search, so pressing F3 and then enter again finds the next match.
+Tab: Repeats the menu's title.
+Page Up and Page Down: Turn the menu music up or down. The volume is saved.
+Enter: Chooses the focused item.
+Escape: Closes the menu.
+Note that F3 only searches inside a menu. On the main game screen and in the minigames, F3 mutes or unmutes the events buffer instead.
+
+Dialogs.
+
+Enter, Spacebar, or A: Continues to the next part of the message, or closes it. Holding A skips through several messages quickly.
+Escape: Closes the message, skipping any parts that are left.
+Arrow keys: Repeat the message.
+C: Copies the message to the clipboard.
 
 Game features
 
@@ -509,61 +612,6 @@ Ranks holds regular rank up announcements.
 
 All of the named buffers, except for All and Critical, can be muted independently so they stop being spoken aloud while still logging messages for later review. Mute states are saved automatically the moment you toggle them and restored the next time you load your game, so you never need to re-mute buffers after restarting. The four buffers that play sound effects, achievements, combos, events, and ranks, can also be muted or unmuted instantly from the main game screen using the F1 through F4 keys, and muting one of them stops both its messages and its sound effects.
 You can also export the focused buffer to a log file at any time. Only the buffer you are currently on is exported, and it is cleared once the export succeeds. Each buffer has its own log file named after it, saved to the logs folder inside the game's AppData directory, and every export is added to the end of that file under the date rather than replacing what was there before.
-
-Keyboard commands
-
-In game.
-
-Letter, F: Announces how many cookies your auto baking produces each bake. If you have automated slots, it tells you how much each slot produces and how much you produce in total. Your prestige cookie bonus is included.
-Letter, J: Announces how many cookies each press of the bake button produces. If you have manual slots, it tells you how much each slot produces and how much you produce in total. Your prestige cookie bonus is included, but combo multipliers are not.
-Letter, C: Announces your current cookie count.
-Letter, R: Announces your current rank, your current experience, and how much more experience is needed to reach the next rank.
-Letter, M: Announces how much money you currently have.
-Letter, A: Announces how many auto cookies you have.
-Letter, S: Announces your current baking speed and how long each bake takes.
-Letter, N: Announces how many manual cookies you have.
-Letter, L: Announces your current prestige level.
-Letter, P: Announces how many prestige points you have to spend in the prestige store.
-Control S: Saves your game progress.
-Control L: Reloads all configuration files and your save data without restarting the game, taking you back to your last save. Useful when editing config files. If there is no save to reload, only the configuration files are reloaded.
-Escape: Opens a prompt asking whether you want to quit.
-Alt plus F4: Exits the main game immediately without saving.
-
-In minigames.
-
-These keys work while any minigame is open, and they mean the same as on the main game screen.
-Letter, C: Announces your current cookie count.
-Letter, M: Announces how much money you currently have.
-Letter, A: Announces how many auto cookies you have.
-Letter, S: Announces your current baking speed and how long each bake takes.
-Letter, N: Announces how many manual cookies you have.
-Control S: Saves your game progress without leaving the minigame, so a round in progress carries on.
-Control L: Reloads all configuration files and your save data, then reopens the minigame you are in. If there is no save to reload, only the configuration files are reloaded.
-
-Buffers.
-
-Comma: Moves to the previous item in the focused buffer.
-Period: Moves to the next item in the focused buffer.
-Shift plus Comma: Jumps to the top of the focused buffer.
-Shift plus Period: Jumps to the bottom of the focused buffer.
-Left Bracket: Navigates to the previous buffer category. Announces the category name, item count, and current item.
-Right Bracket: Navigates to the next buffer category. Announces the category name, item count, and current item.
-Shift plus Left Bracket: Jumps to the first buffer category. Announces the category name, item count, and current item.
-Shift plus Right Bracket: Jumps to the last buffer category. Announces the category name, item count, and current item.
-Shift plus C: Copies the current buffer message to the clipboard.
-Shift plus M: Toggles mute or unmute on the focused buffer.
-F1: Toggles mute or unmute on the achievements buffer.
-F2: Toggles mute or unmute on the combos buffer.
-F3: Toggles mute or unmute on the events buffer.
-F4: Toggles mute or unmute on the ranks buffer.
-Shift plus Backslash: Exports the focused buffer to its log file in the logs folder, then clears that buffer. If the buffer is empty, nothing is exported.
-All of the buffer keys in this section, including the F1 through F4 mute keys, also work inside every minigame.
-
-Forms and menus.
-
-Tab: Moves focus forward through form controls.
-Shift plus Tab: Moves focus backward through form controls.
-Spacebar or Enter: Activates the focused button or opens a menu.
 
 Configuration files for modders
 

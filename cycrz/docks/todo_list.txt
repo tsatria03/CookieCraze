@@ -3,9 +3,6 @@
 ****Unfinished. Fix scratch all in the cookie lottery so every ticket you scratch is either paid out or counted as a loss, instead of leftover tickets being used up for nothing and small batches of one or two tickets winning nothing.
 ****Unfinished. Make a quest reroll check that a replacement quest exists before taking your money, and stop it offering a quest tier you already finished or a second quest for a stat that already has one.
 ****Unfinished. Make winnings from the slot machine and blackjack count toward your money earned statistic, achievements, and quests.
-****Unfinished. Add a short getting started section to the top of the readme that teaches a new player the first few minutes of the game.
-****Unfinished. Reorganize the readme so it goes welcome, getting started, keyboard commands, game features, modding, and conclusion, and move the note on currency into the modding section.
-****Unfinished. Add the missing keys to the readme's keyboard commands, covering menu keys, dialog keys, and the Alt shortcuts for buttons, and explain that F3 searches inside a menu but mutes the events buffer on the game screen.
 ****Unfinished. Fix the endless quests for blackjack, the slot machine, the cookie lottery, and combos already being complete straight after you prestige.
 ****Unfinished. Correct the readme saying that prestige keeps all minigame stats, since it resets some of them.
 ****Unfinished. Stop prestige from paying out large amounts of prestige points when you prestige over and over within a minute or so.
@@ -16,6 +13,9 @@
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Add the missing keys to the readme's keyboard commands, covering menu keys, dialog keys, and the Alt shortcuts for buttons, and explain that F3 searches inside a menu but mutes the events buffer on the game screen.
+**Finished. Reorganize the readme so it goes welcome, getting started, keyboard commands, game features, modding, and conclusion, and move the note on currency into the modding section.
+**Finished. Add a short getting started section to the top of the readme that teaches a new player the first few minutes of the game.
 **Finished. Fix rank up announcements and milestone rank rewards stopping once you pass about rank 2 billion.
 **Finished. Make a huge gain of experience award every rank it earns straight away, instead of one rank at a time, and announce it with one summary message from ranks.table saying how many ranks you climbed and the total reward you earned.
 **Finished. Make milestone rank rewards announce the same way every time, instead of sometimes appearing in a dialog and sometimes only being spoken.
