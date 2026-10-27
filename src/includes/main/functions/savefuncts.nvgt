@@ -517,6 +517,10 @@ if(st.d.exists("comborepeats"))
 {
 comborepeats=st.read_bool("comborepeats");
 }
+if(st.d.exists("sessionresults"))
+{
+sessionresults=st.read_bool("sessionresults");
+}
 if(st.d.exists("introsfx"))
 {
 introsfx=st.read_bool("introsfx");
@@ -585,6 +589,7 @@ void reset_game_settings()
 bakesfx=true;
 exitsfx=true;
 comborepeats=true;
+sessionresults=true;
 introsfx=true;
 logosfx=true;
 savesfx=true;
@@ -622,6 +627,7 @@ void writepreffs()
 st.add("bakesfx",bakesfx);
 st.add("exitsfx",exitsfx);
 st.add("comborepeats",comborepeats);
+st.add("sessionresults",sessionresults);
 st.add("introsfx",introsfx);
 st.add("logosfx",logosfx);
 st.add("savesfx",savesfx);

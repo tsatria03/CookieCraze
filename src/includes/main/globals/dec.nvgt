@@ -3,6 +3,7 @@ const string APPDATA_DIR = DIRECTORY_APPDATA + "tsatria03/CookieCraze/";
 bool bakesfx = true;
 bool exitsfx = true;
 bool comborepeats = true;
+bool sessionresults = true;
 bool flipmode = true;
 bool highlowmode = true;
 bool ingame = false;

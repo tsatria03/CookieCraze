@@ -226,3 +226,16 @@ void show_lifetime_statistics()
     show_statistics_screen("Lifetime statistics", build_statistics_text(false), "lifetime_statistics.txt");
     infomenu();
 }
+
+/* The session results screen shown when you quit to the main menu, unless the setting is off: an opening line, the
+session statistics, and a sign-off, on the same screen as the other statistics so Copy and Export work the same way.
+saved is false when quitting without saving, so the player knows anything since their last save was not kept. */
+void show_session_results(bool saved)
+{
+    if (!sessionresults) return;
+    string txt = "Here are your results for this session, " + playername + ".\r\n";
+    if (!saved) txt += "You quit without saving, so anything since your last save was not kept.\r\n";
+    txt += "\r\n" + build_statistics_text(true) + "\r\n";
+    txt += "Thanks for baking! See you next time.\r\n";
+    show_statistics_screen("Session results", txt, "session_statistics.txt");
+}
