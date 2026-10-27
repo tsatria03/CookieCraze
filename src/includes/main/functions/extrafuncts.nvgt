@@ -262,6 +262,18 @@ string format_number(double num, bool basic=false, bool scientific=false, bool s
         return round(value,2) + suffix_short[tier];
 }
 
+/* Store prices follow how many auto or manual cookies you bought, so losing some lowers that purchase count by the
+same share you lost: lose half and the count halves. target is 1 for auto cookies and 2 for manual cookies, matching
+the store's targets. Gains never raise the count, and the count keeps its fraction so a tiny loss only moves the price
+a tiny amount instead of knocking off a whole purchase. */
+void scale_purchases_after_loss(int target, double before, double after)
+{
+    if (before <= 0 || after >= before) return;
+    double share = max(0.0, after) / before;
+    if (target == 1) autocookie_purchases *= share;
+    else if (target == 2) manulcookie_purchases *= share;
+}
+
 double apply_amount_effect(string target, double amount, int polarity, bool use_percent)
 {
     double base = 0;
@@ -286,8 +298,16 @@ double apply_amount_effect(string target, double amount, int polarity, bool use_
         actual = min(actual, base);
         if (target == "coins")           coins -= actual;
         else if (target == "cookies")    cookies -= actual;
-        else if (target == "autocookie")  autocookie = max(0, autocookie - actual);
-        else if (target == "manulcookie") manulcookie = max(0, manulcookie - actual);
+        else if (target == "autocookie")
+        {
+            autocookie = max(0, autocookie - actual);
+            scale_purchases_after_loss(1, base, autocookie);
+        }
+        else if (target == "manulcookie")
+        {
+            manulcookie = max(0, manulcookie - actual);
+            scale_purchases_after_loss(2, base, manulcookie);
+        }
     }
     return actual;
 }

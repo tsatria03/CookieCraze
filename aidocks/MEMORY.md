@@ -96,3 +96,4 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Don't flag indentation](feedback_dont_flag_indentation.md) — AngelScript ignores indentation; don't flag whitespace or reformat.
 - [No CRLF normalization](feedback_no_crlf_normalization.md) — don't run a manual normalizer; preserve each file's ending on edit; .gitattributes + git handle it.
 - [Update build/version.txt](feedback_update_build_version_txt.md) — version.txt is the single source of truth; never hand-edit the generated version.nvgt.
+- [Store prices after losses plan](project_loss_price_plan.md) — AGREED 7.2, not built: proportional scaling of autocookie/manulcookie_purchases on loss (events, quest reroll, minigame bet losses only at round end); gains never raise; 3 sections. Also notes the negative rank reward bug.

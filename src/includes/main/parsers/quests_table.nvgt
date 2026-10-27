@@ -489,8 +489,18 @@ void reroll_quest(int questIndex)
     double cost = floor(questsConfig.reroll_base_cost * pow(questsConfig.reroll_multiplier, questRerollCount));
     if (questsConfig.reroll_target == "coins")           { coins -= cost; stat_coins_spent += cost; }
     else if (questsConfig.reroll_target == "cookies")    cookies -= cost;
-    else if (questsConfig.reroll_target == "autocookie")  autocookie -= cost;
-    else if (questsConfig.reroll_target == "manulcookie") manulcookie -= cost;
+    else if (questsConfig.reroll_target == "autocookie")
+    {
+        double before = autocookie;
+        autocookie -= cost;
+        scale_purchases_after_loss(1, before, autocookie);
+    }
+    else if (questsConfig.reroll_target == "manulcookie")
+    {
+        double before = manulcookie;
+        manulcookie -= cost;
+        scale_purchases_after_loss(2, before, manulcookie);
+    }
     else if (questsConfig.reroll_target == "cookiespeed") { cookiespeed -= cost; clicktime += cost; }
     questRerollCount++;
     stat_rerolls_performed++;
