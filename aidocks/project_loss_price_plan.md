@@ -31,7 +31,9 @@ Not losses: rank rewards, lottery prizes, achievements (all gains, polarity 1). 
 
 ## Build sections
 
-**Section 1 BUILT and all 3 steps PASSED (2026-10-26; loss event lowered the price, gain event left it at 27 cents, a 20 auto cookie reroll dropped it to 22 cents); told the dev to commit.** `scale_purchases_after_loss(target, before, after)` sits right above `apply_amount_effect` in extrafuncts.nvgt; called from its polarity-2 autocookie/manulcookie branches (before = `base`) and from both reroll_target branches in `reroll_quest` (quests_table.nvgt).
+**Section 1 BUILT and all 3 steps PASSED (2026-10-26; loss event lowered the price, gain event left it at 27 cents, a 20 auto cookie reroll dropped it to 22 cents); told the dev to commit.** Committed 6f504a9.
+
+**Section 2 BUILT and all 6 steps PASSED (2026-10-27: a loss in slots, blackjack, dice, higher or lower and roulette each lowered the price; a win left it unchanged); told the dev to commit.** `bet_lost_purchases(selectedBet, lost)` above `apply_amount_effect` (before = current + lost, after = current; ignores lost <= 0; selectedBet 2 → target 1, 4 → target 2). Called after a round settles, 10 sites in minigames.nvgt: slots loss; blackjack bust + lose (betAmount) and push (betAmount - returned); dice loss (betAmount) and win (betAmount - winAmount, covers sub-1x payouts); higher or lower wrong guess (betAmount) and both bank paths (betAmount - pot); roulette (totalStake - totalReturn). `scale_purchases_after_loss(target, before, after)` sits right above `apply_amount_effect` in extrafuncts.nvgt; called from its polarity-2 autocookie/manulcookie branches (before = `base`) and from both reroll_target branches in `reroll_quest` (quests_table.nvgt).
 
 1. Helper `scale_purchases_after_loss(int target, double before, double after)` (target 1 auto, 2 manual) + hook it into `apply_amount_effect` and the quest reroll. Test: force a loss event (main.table auto_event_chance 100), compare a store price before/after.
 2. Minigame bet losses in the 5 games. Test one game per step.

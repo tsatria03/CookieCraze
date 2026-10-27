@@ -410,6 +410,7 @@ if (payout !is null)
     {
         /* The bet was already taken when the spin started, so a loss has nothing left to deduct. */
         stat_slot_losses++;
+        bet_lost_purchases(selectedBet, betAmount);
     }
     else
     {
@@ -611,6 +612,7 @@ check_achievements(loadedAchievements, achievementsUnlocked);
             if (p_points > 21)
             {
                 stat_jack_losses++;
+                bet_lost_purchases(selectedBet, betAmount);
                 pool.play_stationary("sounds/minigames/" + resolve_sound(jacksConfig.lose_sound), false);
                 string msg = jacksConfig.bust_message;
                 int ph = msg.find("%score%");
@@ -678,6 +680,7 @@ check_achievements(loadedAchievements, achievementsUnlocked);
             else if (outcome == -1)
             {
                 stat_jack_losses++;
+                bet_lost_purchases(selectedBet, betAmount);
                 pool.play_stationary("sounds/minigames/" + resolve_sound(jacksConfig.lose_sound), false);
                 string msg = jacksConfig.lose_message;
                 int ph = msg.find("%score%");
@@ -695,6 +698,7 @@ check_achievements(loadedAchievements, achievementsUnlocked);
                 else if (selectedBet == 2) { autocookie += returned; autocookie = floor(safe_cap(autocookie)); }
                 else if (selectedBet == 3) gain_cookiespeed(returned);
                 else if (selectedBet == 4) { manulcookie += returned; manulcookie = floor(safe_cap(manulcookie)); }
+                bet_lost_purchases(selectedBet, betAmount - returned);
                 pool.play_stationary("sounds/minigames/" + resolve_sound(jacksConfig.push_sound), false);
                 string msg = jacksConfig.push_message;
                 int ph = msg.find("%score%");
@@ -976,6 +980,7 @@ void dicegame()
             if (payout.multiplier <= 0)
             {
                 stat_dice_losses++;
+                bet_lost_purchases(selectedBet, betAmount);
                 string msg = payout.message;
                 int ph = msg.find("%roll%");
                 while (ph != -1) { msg = msg.substr(0, ph) + string(total) + msg.substr(ph + 6); ph = msg.find("%roll%"); }
@@ -995,6 +1000,7 @@ void dicegame()
                 else if (selectedBet == 2) { autocookie += winAmount; autocookie = floor(safe_cap(autocookie)); }
                 else if (selectedBet == 3) gain_cookiespeed(winAmount);
                 else if (selectedBet == 4) { manulcookie += winAmount; manulcookie = floor(safe_cap(manulcookie)); }
+                bet_lost_purchases(selectedBet, betAmount - winAmount);
                 string msg = payout.message;
                 int ph = msg.find("%roll%");
                 while (ph != -1) { msg = msg.substr(0, ph) + string(total) + msg.substr(ph + 6); ph = msg.find("%roll%"); }
@@ -1242,6 +1248,7 @@ void highlowgame()
                     else if (selectedBet == 2) { autocookie += pot; autocookie = floor(safe_cap(autocookie)); }
                     else if (selectedBet == 3) gain_cookiespeed(pot);
                     else if (selectedBet == 4) { manulcookie += pot; manulcookie = floor(safe_cap(manulcookie)); }
+                    bet_lost_purchases(selectedBet, betAmount - pot);
                     stat_highlow_wins++;
                     pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.win_sound), false);
                     string vmsg = highlow_fill(highlowConfig.win_message, "%streak%", string(streak));
@@ -1268,6 +1275,7 @@ void highlowgame()
             else
             {
                 stat_highlow_losses++;
+                bet_lost_purchases(selectedBet, betAmount);
                 int brokenStreak = streak;
                 pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.wrong_sound), false);
                 double lostPot = floor(safe_cap(betAmount * currentMultiplier));
@@ -1306,6 +1314,7 @@ void highlowgame()
             else if (selectedBet == 2) { autocookie += pot; autocookie = floor(safe_cap(autocookie)); }
             else if (selectedBet == 3) gain_cookiespeed(pot);
             else if (selectedBet == 4) { manulcookie += pot; manulcookie = floor(safe_cap(manulcookie)); }
+            bet_lost_purchases(selectedBet, betAmount - pot);
             stat_highlow_wins++;
             pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.win_sound), false);
             string potStr = (selectedBet == 1) ? convert_to_currency(pot) : format_number(pot);
@@ -1539,6 +1548,7 @@ void roulettegame()
             else if (selectedBet == 2) { autocookie += totalReturn; autocookie = floor(safe_cap(autocookie)); }
             else if (selectedBet == 3) gain_cookiespeed(totalReturn);
             else if (selectedBet == 4) { manulcookie += totalReturn; manulcookie = floor(safe_cap(manulcookie)); }
+            bet_lost_purchases(selectedBet, totalStake - totalReturn);
             double net = totalReturn - totalStake;
             stat_roulette_straight_hits += straightHits;
             if (net > 0)
