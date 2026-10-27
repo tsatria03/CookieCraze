@@ -290,6 +290,7 @@ comboCount=0;
 preComboCount=0;
 preComboTarget=2;
 lastComboTierIndex=-1;
+comboRepeatsFired=0;
 stat_auto_slots_purchased=0;
 stat_manual_slots_purchased=0;
 stat_auto_slots_enabled=0;

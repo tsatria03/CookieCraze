@@ -12,6 +12,7 @@ stop_sound=combos/stop.ogg
 
 start_message=Combo started! Keep pressing to build it up.
 stop_message=Combo broke at %combo% %press%! Keep pressing to build it back up.
+repeat_message=%combo% click combo! Still going at %multiplier%x per press!
 
 [tiers]
 

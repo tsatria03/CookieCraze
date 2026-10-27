@@ -331,6 +331,8 @@ Advanced. Demands consistent timing, significant progression in manual upgrades,
 
 The combo multiplier applies to both your base manual cookies and your manual slots, so higher slot counts make each combo tier even more rewarding.
 
+Once your combo passes the last tier, the tier sounds start again from the first one, keeping the same spacing, so with the standard tiers the first tier's sound returns at 250 presses, the second at 275, and so on for as long as the combo lasts. Each one comes with a short message giving your combo count. Your multiplier stays at the last tier's value, so these repeats are milestones only and do not raise your output. If you would rather not hear them, turn off the enable repeating combo tier announcements past the last tier option in the game settings. F2 still mutes every combo sound and message.
+
 All combo settings are fully configurable in combos.table, including the activation threshold, time window range, tier thresholds, multipliers, sounds, and messages. The combo system can also be disabled entirely from that file.
 
 Baker info.
@@ -1135,10 +1137,14 @@ The message spoken when the combo activates after reaching the start_at threshol
 stop_message
 The message spoken when the combo breaks. Use %combo% as a placeholder for the count reached before breaking, and %hits% for the correctly pluralized word hit or hits.
 
+repeat_message
+Optional. The message spoken each time a tier sound repeats after the combo has passed the last tier. Use %combo% as a placeholder for the current combo count and %multiplier% for the active multiplier, which stays at the last tier's value. Remove the line to make the repeats play their sounds only. Players can also turn repeats off entirely in the game settings.
+
 Tiers section.
 Format: count:multiplier:sound:message
 
 Defines combo milestone tiers. Each tier fires once when the combo count first reaches its threshold.
+After the last tier, the tier sounds repeat in order, but not their messages or multipliers. The repeats keep the table's spacing: one cycle runs from the first tier's count to the last tier's, plus the gap between the last two tiers, so tiers at 50, 75, and so on up to 225 repeat every 200 presses, starting with the first tier again at 250. A table with a single tier repeats it every count presses.
 
 count
 The number of consecutive presses required to reach this tier.

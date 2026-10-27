@@ -2,6 +2,7 @@ const string APPDATA_DIR = DIRECTORY_APPDATA + "tsatria03/CookieCraze/";
 
 bool bakesfx = true;
 bool exitsfx = true;
+bool comborepeats = true;
 bool flipmode = true;
 bool highlowmode = true;
 bool ingame = false;
@@ -232,6 +233,8 @@ int preComboCount = 0;
 int preComboTarget = 2;
 int comboWindow = 3000;
 int lastComboTierIndex = -1;
+// How many repeat milestones past the last combo tier this combo has passed.
+int comboRepeatsFired = 0;
 file dockfile, dockver, logfile;
 audio_form form;
 custom_menu m;

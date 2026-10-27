@@ -1,6 +1,6 @@
 ---
 name: project_combo_repeat_plan
-description: "PLAN (7.2, agreed 2026-10-27, not built): past the last combo tier, the tier sounds cycle again (same spacing) with an optional repeat_message from combos.table; multiplier stays at the last tier's value; a game-settings checkbox (on by default) turns repeat announcements off. 2 sections."
+description: "SHIPPED 7.2 (both sections built, all 4 steps passed, 2026-10-27): past the last combo tier, the tier sounds cycle again (same spacing) with an optional repeat_message from combos.table; multiplier stays at the last tier's value; a game-settings checkbox (on by default) turns repeat announcements off. 2 sections."
 metadata:
   node_type: memory
   type: project
@@ -30,6 +30,8 @@ Dev idea (2026-10-27), discussed over several turns before recording. Combos tod
 - Parser: `combos_config` gains `string repeat_message`, reset each parse, read by key in [settings].
 
 ## Build sections
+
+**Section 1 BUILT and all 4 steps PASSED (2026-10-27); test edits restored. Section 2 docs DONE: readme combos player paragraph, combos.table repeat_message + tiers spacing text, changelog 7.2 entry 7 of 10, todo Finished line. Dev commits both sections together.** combos_table.nvgt: `repeat_message` field (cleared each parse), `combo_repeat_period()`, `combo_repeat_count(n)`. dec.nvgt: `bool comborepeats = true;` after exitsfx, `int comboRepeatsFired = 0;` after lastComboTierIndex. game.nvgt: an `else if` after the tier-fire block replays the cycled tier sound + repeat_message once the last tier is passed; `comboRepeatsFired = 0` beside both `lastComboTierIndex = -1` resets (combo break in game.nvgt, new game in cycrz.nvgt). Setting wired like exitsfx (snapshot/restore, checkbox after exit sound, read-back, preffs key `comborepeats`, reset default true). combos.table: `repeat_message=…` after stop_message. **Test edit in place:** combos.table tiers 5..40 step 5 (normally 50..225 step 25) and start_count=2 (normally 25) — restore when testing ends.
 
 1. **Code + table + setting.** Parser field, repeat logic in game.nvgt, the setting end to end, `repeat_message` line in combos.table (after `stop_message`). Tests (edit config yourself — [[feedback_edit_config_for_tests]]): a long combo past 225 hears tier 1's sound + repeat message at 250, tier 2's at 275, multiplier still 16x; untick the setting → silent past 225; delete repeat_message → sound only; F2 mute → nothing.
 2. **Docs.** Readme: combos player section (repeats, multiplier holds), game settings list (new checkbox), combos.table reference (`repeat_message`, how repeats space out). Changelog 7.2 entry (7 of 10). Todo: add Unfinished item when starting / Finished at the end. Memory.

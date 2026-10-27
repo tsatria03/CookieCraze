@@ -18,6 +18,8 @@ class combos_config
     string start_sound = "combos/start.ogg";
     string stop_sound = "combos/stop.ogg";
     string stop_message = "Combo broken at %combo% press! Keep pressing to build it back up.";
+    // Spoken with each repeated tier sound past the last tier; empty makes the repeats sound only.
+    string repeat_message = "";
     array<combo_tier_item> tiers;
 }
 
@@ -28,6 +30,8 @@ void parse_combos_table(string filepath, combos_config@ cfg)
     config_file f;
     if (!f.open(filepath))
         return;
+    // Cleared each parse so deleting the line and pressing Control L really removes the message.
+    cfg.repeat_message = "";
     cfg.tiers.resize(0);
     bool in_tiers = false;
     while (!f.eof)
@@ -98,6 +102,7 @@ void parse_combos_table(string filepath, combos_config@ cfg)
         else if (key == "start_sound") cfg.start_sound = val;
         else if (key == "stop_sound") cfg.stop_sound = val;
         else if (key == "stop_message") cfg.stop_message = val;
+        else if (key == "repeat_message") cfg.repeat_message = val;
     }
     f.close();
 }
@@ -111,6 +116,27 @@ double get_combo_multiplier(int combo_count)
             multiplier = combosConfig.tiers[i].multiplier;
     }
     return multiplier;
+}
+
+/* Past the last tier, the tiers come round again as sound milestones, spaced the way the table spaces them. One
+cycle runs from the first tier to the last plus the final gap, so with tiers every 25 clicks from 50 to 225 the
+cycle is 200 clicks and tier 1 comes back at 250, tier 2 at 275, and tier 1 again at 450. The multiplier is not
+part of this; it stays at the last tier's value. */
+int combo_repeat_period()
+{
+    int n = int(combosConfig.tiers.length());
+    if (n == 0) return 0;
+    if (n == 1) return combosConfig.tiers[0].count;
+    return (combosConfig.tiers[n - 1].count - combosConfig.tiers[0].count) + (combosConfig.tiers[n - 1].count - combosConfig.tiers[n - 2].count);
+}
+
+// The combo count where repeat number repeatNumber (counting from 1) fires.
+int combo_repeat_count(int repeatNumber)
+{
+    int n = int(combosConfig.tiers.length());
+    int cycle = (repeatNumber - 1) / n + 1;
+    int tier = (repeatNumber - 1) % n;
+    return combosConfig.tiers[tier].count + cycle * combo_repeat_period();
 }
 
 int get_combo_tier_index(int combo_count)

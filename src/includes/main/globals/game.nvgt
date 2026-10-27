@@ -170,6 +170,22 @@ else if(manulcookie>=1)
                 if (tier.sound != "" && !buffer_muted("combos")) pool.play_stationary("sounds/" + tier.sound, false);
                 if (tier.message != "") speak_buffer(format_combo_message(tier.message, comboCount, comboMult), "combos");
             }
+            else if (comborepeats && tierIdx == int(combosConfig.tiers.length()) - 1 && combo_repeat_period() > 0)
+            {
+                // Past the last tier: replay the tier sounds in their cycle, with the table's optional repeat message.
+                int repeatTier = -1;
+                while (combo_repeat_count(comboRepeatsFired + 1) <= comboCount)
+                {
+                    comboRepeatsFired++;
+                    repeatTier = (comboRepeatsFired - 1) % int(combosConfig.tiers.length());
+                }
+                if (repeatTier >= 0)
+                {
+                    combo_tier_item@ rtier = combosConfig.tiers[repeatTier];
+                    if (rtier.sound != "" && !buffer_muted("combos")) pool.play_stationary("sounds/" + rtier.sound, false);
+                    if (combosConfig.repeat_message != "") speak_buffer(format_combo_message(combosConfig.repeat_message, comboCount, comboMult), "combos");
+                }
+            }
         }
     }
     cookies += manualGain;
@@ -245,6 +261,7 @@ if (combosConfig.enabled && rank >= combosConfig.enabled_rank && comboCount > 0 
     string breakMsg = format_combo_message(combosConfig.stop_message, comboCount, get_combo_multiplier(comboCount));
     comboCount = 0;
     lastComboTierIndex = -1;
+    comboRepeatsFired = 0;
     stat_combos_broken++;
     if (combosConfig.stop_sound != "" && !buffer_muted("combos")) pool.play_stationary("sounds/" + combosConfig.stop_sound, false);
     speak_buffer(breakMsg, "combos");

@@ -2,7 +2,7 @@
 submenu restores it, so nothing changed there sticks without pressing Save. The submenus re-enter
 themselves after a name change or a cancelled reset, so they can't take the snapshot themselves. */
 int setsnap_numberFormatMode;
-bool setsnap_introsfx, setsnap_logosfx, setsnap_exitsfx, setsnap_bakesfx, setsnap_savesfx, setsnap_speak_menu_position;
+bool setsnap_introsfx, setsnap_logosfx, setsnap_exitsfx, setsnap_comborepeats, setsnap_bakesfx, setsnap_savesfx, setsnap_speak_menu_position;
 bool setsnap_slotDistribution, setsnap_manualSlotDistribution, setsnap_show_locked_shops;
 double setsnap_ambvolume, setsnap_musvolume, setsnap_storambvolume, setsnap_stormusvolume;
 string setsnap_ambtype, setsnap_mustype;
@@ -15,6 +15,7 @@ setsnap_numberFormatMode = numberFormatMode;
 setsnap_introsfx = introsfx;
 setsnap_logosfx = logosfx;
 setsnap_exitsfx = exitsfx;
+setsnap_comborepeats = comborepeats;
 setsnap_bakesfx = bakesfx;
 setsnap_savesfx = savesfx;
 setsnap_speak_menu_position = speak_menu_position;
@@ -28,6 +29,7 @@ numberFormatMode = setsnap_numberFormatMode;
 introsfx = setsnap_introsfx;
 logosfx = setsnap_logosfx;
 exitsfx = setsnap_exitsfx;
+comborepeats = setsnap_comborepeats;
 bakesfx = setsnap_bakesfx;
 savesfx = setsnap_savesfx;
 speak_menu_position = setsnap_speak_menu_position;
@@ -134,6 +136,7 @@ void gamsetsmenu()
 int logoSFX = form.create_checkbox("Enable playing the logo sound upon launching the game.", logosfx);
 int introSFX = form.create_checkbox("Enable playing the intro sound upon starting the game.", introsfx);
 int exitSFX = form.create_checkbox("Enable playing the exit sound upon exiting the game.", exitsfx);
+int comboRepeatToggle = form.create_checkbox("Enable repeating combo tier announcements past the last tier.", comborepeats);
 int menuPositionToggle = form.create_checkbox("Enable speaking the position of each item in menus.", speak_menu_position);
 int saveSFX = form.create_checkbox("Enable save sound effects when reloading and saving the game.", savesfx);
 int bakeSFX = form.create_checkbox("Enable auto bake sound effects when baking cookies.", bakesfx);
@@ -160,6 +163,7 @@ numberFormatMode = form.get_list_position(numberFormatList);
 introsfx = form.is_checked(introSFX);
 logosfx = form.is_checked(logoSFX);
 exitsfx = form.is_checked(exitSFX);
+comborepeats = form.is_checked(comboRepeatToggle);
 bakesfx = form.is_checked(bakeSFX);
 savesfx = form.is_checked(saveSFX);
 speak_menu_position = form.is_checked(menuPositionToggle);

@@ -7,6 +7,7 @@
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Make the combo tier sounds repeat after the last tier with a short message, keeping the multiplier at the last tier's value, with a game settings option to turn the repeats off.
 **Finished. Make negative rank rewards in ranks.table take money, cookies, auto cookies, or manual cookies away as the readme describes, instead of giving you 1.
 **Finished. Make store prices for auto and manual cookies go back down when you lose some of them by any means, such as events, the cookie flipper, or minigame bets, so that replacing what you lost costs about what you paid before.
 **Finished. Stop prestige from paying out large amounts of prestige points when you prestige over and over within a minute or so, by raising the prestige rank to 100 and paying points only when a quest is complete.
