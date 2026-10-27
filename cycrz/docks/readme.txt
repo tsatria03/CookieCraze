@@ -624,7 +624,9 @@ Inside the configuration files, the word coins is the internal identifier for th
 It does not mean the game will display the word coins to the player. All money values are shown in dollars and cents in-game, such as 50 cents or $1.50.
 The word coins only appears in the config files themselves as a technical label, never in any message the player reads or hears.
 
-All of the configuration files are located in the data/config folder, and are split into three subfolders.
+All of the configuration files are located in the data/decompiled/config folder, and are split into three subfolders.
+The game can also read them from a single packed file, data/compiled/config.crz. For each file, the game uses the copy in data/decompiled/config if there is one, and only reads the packed copy when it is missing, so your edits to the loose files always take effect. A copy of the game may come with only config.crz, in which case decompile it first to get files you can edit.
+To manage the packed file, choose miscellaneous menu from the main menu. Compile data config packs every file in data/decompiled/config into config.crz, replacing what was in it before. Decompile data config writes every file in config.crz back out to data/decompiled/config, and if config files are already there, it warns you that any that are also in the pack will be overwritten. Both ask before doing anything, never delete any files, and reload the configuration files when they finish.
 Lines starting with a semicolon, hash, or double slash are treated as comments and ignored by the parser.
 
 Eight of the files, ranks.table, slots.table, prestige.table, quests.table, lottery.table, combos.table, highlow.table, and roulette.table, use section headers in square brackets such as [settings], [sounds], [default], [summary], [default_reward], [rewards], [payouts], [tiers], [quests], [prize:id], [deck], and [outcomes]. These are not cosmetic.
@@ -644,7 +646,7 @@ main.table is the one file whose section headers are only for organisation. Its 
 
 baker.event
 
-Location: data/config/events/baker.event
+Location: data/decompiled/config/events/baker.event
 
 Defines random events that fire during normal gameplay.
 
@@ -729,7 +731,7 @@ For flat events, %actual% and %amount% show the same value, so only %amount% is 
 
 flipper.event
 
-Location: data/config/events/flipper.event
+Location: data/decompiled/config/events/flipper.event
 
 Defines events triggered by the cookie flipper minigame. Uses the same format as baker.event, except there is no baking_type field since flipper events are always shown as dialogs.
 All fields work exactly the same as baker.event. Refer to the baker.event section above for full field descriptions.
@@ -738,7 +740,7 @@ Format: event_name:sound:polarity:target:min_amount:max_amount:use_percent:chanc
 
 bundles.store
 
-Location: data/config/stores/bundles.store
+Location: data/decompiled/config/stores/bundles.store
 
 Defines the bundle shop categories and bundles.
 
@@ -775,7 +777,7 @@ A short description of what this bundle contains, shown to the player in the bun
 
 singles.store
 
-Location: data/config/stores/singles.store
+Location: data/decompiled/config/stores/singles.store
 
 Defines the singles shop categories and upgrade items.
 
@@ -859,7 +861,7 @@ The text shown when the player hovers over this item in the shop. Use %item_coun
 
 tickets.store
 
-Location: data/config/stores/tickets.store
+Location: data/decompiled/config/stores/tickets.store
 
 Defines the global lottery settings, ticket categories, and individual ticket tiers available in the lottery shop.
 
@@ -913,7 +915,7 @@ Shown when the player highlights this ticket in the buy menu.
 
 main.table
 
-Location: data/config/tables/main.table
+Location: data/decompiled/config/tables/main.table
 
 Defines settings a normal player has no reason to change, along with the values every new run starts with. These used to be sliders in the game settings. Every value is optional: if the file, a section, or a line is missing, or a value is not a plain number, the game uses that value's default. Press Control L in game to reload the file after editing it.
 Money values in this file are written in dollars, so 0.5 is 50 cents and 1 is $1.00, and each is rounded to the nearest cent.
@@ -976,7 +978,7 @@ How much each cookie sells for, in dollars. Defaults to 0.5, which is 50 cents. 
 
 achievements.table
 
-Location: data/config/tables/achievements.table
+Location: data/decompiled/config/tables/achievements.table
 
 Defines all achievements in the game and the categories they are grouped under.
 
@@ -1099,7 +1101,7 @@ Optional. The sentence spoken when the reward is granted, appended after the ach
 
 combos.table
 
-Location: data/config/tables/combos.table
+Location: data/decompiled/config/tables/combos.table
 
 Defines all settings for the manual baking combo system.
 
@@ -1151,7 +1153,7 @@ The message spoken when this tier is first reached. Use %combo% as a placeholder
 
 dice.table
 
-Location: data/config/tables/dice.table
+Location: data/decompiled/config/tables/dice.table
 
 Defines all dice roller settings including dice types, modifier options, payout tiers, bet limits, sounds, and outcome messages.
 
@@ -1218,7 +1220,7 @@ Message placeholders.
 
 highlow.table
 
-Location: data/config/tables/highlow.table
+Location: data/decompiled/config/tables/highlow.table
 
 Defines all higher or lower settings including the deck, house edge, tie handling, ace ranking, bet limits, sounds, and messages.
 
@@ -1306,7 +1308,7 @@ Message placeholders.
 
 roulette.table
 
-Location: data/config/tables/roulette.table
+Location: data/decompiled/config/tables/roulette.table
 
 Defines all roulette settings including the bet types and their odds, the pocket count, the spin timing, bet limits, sounds, and messages.
 
@@ -1405,7 +1407,7 @@ The message spoken as the wheel begins spinning is fixed in the game and is not 
 
 jacks.table
 
-Location: data/config/tables/jacks.table
+Location: data/decompiled/config/tables/jacks.table
 
 Defines all blackjack settings including payouts, bet limits, sounds, and outcome messages.
 
@@ -1493,7 +1495,7 @@ Message spoken on a tie.
 
 ranks.table
 
-Location: data/config/tables/ranks.table
+Location: data/decompiled/config/tables/ranks.table
 
 Defines rank rewards, milestone unlocks, and the sounds that play when rewards are given.
 
@@ -1568,7 +1570,7 @@ Use %name% as a placeholder for the player's name.
 
 slots.table
 
-Location: data/config/tables/slots.table
+Location: data/decompiled/config/tables/slots.table
 
 Defines the slot machine symbols, reel count, bet limits, action sounds, and payout tiers.
 
@@ -1646,7 +1648,7 @@ The text spoken to the player when this outcome fires.
 
 prestige.table
 
-Location: data/config/tables/prestige.table
+Location: data/decompiled/config/tables/prestige.table
 
 Defines the prestige system settings and milestone rewards.
 
@@ -1718,7 +1720,7 @@ Use %level% as a placeholder and it will be replaced with the current prestige l
 
 prestige.store
 
-Location: data/config/stores/prestige.store
+Location: data/decompiled/config/stores/prestige.store
 
 Defines the prestige store categories and upgrades purchasable with prestige points.
 
@@ -1772,7 +1774,7 @@ The text shown when the player highlights this item in the prestige store.
 
 quests.table
 
-Location: data/config/tables/quests.table
+Location: data/decompiled/config/tables/quests.table
 
 Defines all available quests and the reroll system settings.
 
@@ -1946,7 +1948,7 @@ Keep the description focused on what the quest is asking, and let the game handl
 
 lottery.table
 
-Location: data/config/tables/lottery.table
+Location: data/decompiled/config/tables/lottery.table
 
 Defines all prize pools used when a ticket is scratched.
 

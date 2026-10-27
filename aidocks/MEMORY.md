@@ -6,7 +6,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Game vision](project_game_vision.md) — audio idle/incremental cookie clicker: bake → sell → upgrade → rank up → automate → prestige, with rank-gated minigames; the load-bearing systems.
 - [Coins currency](project_coins_currency.md) — internal money identifier is `coins` (config only); all player-facing text shows dollars/cents; don't rename or surface "coins".
 - [Message buffers](project_message_buffers.md) — categorized message-buffer system (achievements/combos/critical/events/general/…), each mutable + exportable (per-buffer only, by design — no export-all key), for non-interruptive announcements.
-- [Data-driven config](project_data_driven_config.md) — cycrz/data/config/ (events/stores/tables) is plain-text modder-tunable; parsers in main/parsers/ load it; docks/readme.txt is the format reference.
+- [Data-driven config](project_data_driven_config.md) — cycrz/data/decompiled/config/ (events/stores/tables; config.crz pack fallback via config_file) is plain-text modder-tunable; parsers in main/parsers/ load it; docks/readme.txt is the format reference.
 - [Path conventions](project_path_conventions.md) — src/ (code) + cycrz/ (assets+launcher) + build/ + releases/ split; the cwd=cycrz/ trick; no #pragma asset (tools.py copies assets).
 - [Include tree](project_include_tree.md) — src/includes/ = version.nvgt + main/{deps,functions,globals,menus,parsers}; wildcard glob aggregation; vendored stdlib helpers incl. dget + rotation.
 - [Build pipeline](project_build_pipeline.md) — cycrz.py launcher + build/tools.py (commit tools + compile→package→release→website), version mirroring, tools.ini + ~/.game_tools/tools.ini config; cycrz/lib/ ships BASS + screen-reader DLLs.
@@ -34,7 +34,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Release status](project_release_status.md) — 7.2 IN PROGRESS (version.txt 7.2, 2 of 10 entries); 7.1 TAGGED V7.10 (2026-10-26) as a bookmark only, not released; next public release is 7.2 (ships 7.1 + 7.2); 7.1 block frozen, full 10/10; next player-facing change opens a new block + version bump (ask the dev, likely 7.2); 7.0 RELEASED 2026-10-01; what 6.9, 7.0 and 7.1 shipped.
 
 ## Active plans (7.2)
-- [Config pack plan](project_config_pack_plan.md) — AGREED, not built: config moved to data/decompiled/config (loose, git) + data/compiled/config.crz (NVGT pack, gitignored); loose wins, pack is fallback; in-game export/import never delete; tools.py unchanged, dev deletes loose folder before compiling a release. GAME WON'T START until section 1 updates the paths.
+- [Config pack plan](project_config_pack_plan.md) — SHIPPED 7.2 (3 sections done): config moved to data/decompiled/config (loose, git) + data/compiled/config.crz (NVGT pack, gitignored); loose wins, pack is fallback; in-game export/import never delete; tools.py unchanged, dev deletes loose folder before compiling a release; miscellaneous menu has compile/decompile data config.
 
 ## Finished plans (7.2)
 - [main.table plan](project_main_table_plan.md) — SHIPPED 7.2: new data/config/tables/main.table with the 8 "cheat" sliders (slot cost multipliers, rank/XP modifiers, event one-in chances, sell price) + 6 starting values; sliders and the two event on/off checkboxes removed, no longer saved in gamesets.crz; prerequisite for the prestige-spam fix (min_rank 100); 3 sections, docs last.

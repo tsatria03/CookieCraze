@@ -10,7 +10,7 @@ metadata:
 Entry `src/cycrz.nvgt` does `#include"includes/includes.nvgt"`. `src/includes/` holds `includes.nvgt` (aggregator) and `version.nvgt` at the top level; everything else lives under **`main/`**:
 
 - **`main/deps/`** — vendored stdlib/helper scripts + shared UI: `bgt_compat`, `instance`, `keyhook`, `sound_pool`, `rotation`, `dget`, `form`, `speech`, `custom_menu`, `dlg`, `input_forms`, `buffer`, `savedata`, `virtual_dialogs`.
-- **`main/functions/`** — `extrafuncts`, `savefuncts`.
+- **`main/functions/`** — `configfuncts` (7.2 config reader + pack compile/decompile), `extrafuncts`, `savefuncts`.
 - **`main/globals/`** — `dec` (globals), `game`, `minigames`, `baker_events`, `flipper_events`.
 - **`main/menus/`** — `menu`.
 - **`main/parsers/`** — the data-driven loaders: `ranks_table`, `single_store`, `bundle_store`, `ticket_store`, `prestige_table`, `prestige_store`, `achievements_table`, `quests_table`, `combos_table`, `slots_table`, `jacks_table` (blackjack), `dice_table`, `lottery_table` (see [[project_data_driven_config]]).

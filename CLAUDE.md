@@ -15,7 +15,7 @@ Core loop: bake cookies → sell for money → buy upgrades → rank up → unlo
 ## Layout — code and assets are split
 
 - **`src/`** — code only. Entry `src/cycrz.nvgt`, plus `src/includes/` (`includes.nvgt`, `version.nvgt`, and the `main/` subtree).
-- **`cycrz/`** — runtime assets + launcher: `cycrz/cycrz.py`, `cycrz/data/config/`, `cycrz/docks/`, `cycrz/sounds/`.
+- **`cycrz/`** — runtime assets + launcher: `cycrz/cycrz.py`, `cycrz/data/decompiled/config/` (+ packed `cycrz/data/compiled/config.crz`), `cycrz/docks/`, `cycrz/sounds/`.
 - **`build/`** — build/release pipeline (`tools.py` via `tools.bat`; `tools.ini`; `version.txt`). **`releases/`** — compiled output (gitignored).
 - **`aidocks/`** — this project's memory folder (committed). "Memory" always means this folder.
 
@@ -33,7 +33,7 @@ No test suite or linter. The game launches via `cycrz/cycrz.py` (runs `src/cycrz
 - **Message buffers** (categorized, mutable/exportable announcement system) → **[[project_message_buffers]]**.
 - **Audio / sounds** (sound_pool + HRTF, the `cycrz/sounds/` layout) → **[[project_audio_model]]**.
 - **Save data** (AppData `tsatria03/CookieCraze/` logs/preffs/saves; multiple slots) → **[[project_save_data_layout]]**.
-- **Config / modding** (the `cycrz/data/config/` tables/stores/events + `main/parsers/`) → **[[project_data_driven_config]]**; watch the currency key **[[project_coins_currency]]**.
+- **Config / modding** (the `cycrz/data/decompiled/config/` tables/stores/events, their `config.crz` pack, + `main/parsers/`) → **[[project_data_driven_config]]**; watch the currency key **[[project_coins_currency]]**.
 - **Repo hygiene** (`.gitattributes` CRLF enforcement, gitignore) → **[[project_repo_hygiene]]**.
 - **Player-facing docs** — `cycrz/docks/` (`changelog.txt` is the source of truth for what shipped; `readme.txt` doubles as the modding reference). Rules: **[[feedback_changelog_rules]]**, **[[feedback_dock_line_length_1024]]**.
 

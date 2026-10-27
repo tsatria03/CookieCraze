@@ -17,4 +17,6 @@ No test suite or linter. Running and building are scripted but manual; **the dev
 - **release:** `gh release create`, attaching archive + installer.
 - **website:** `site_updater.ps1` updates the github.io page and writes the site's `version.txt`. The page is `misc/tsatria03.github.io/projects/games/CookieCraze/index.html` (sibling of the `games/` folder); it shows only the release-tag form `V<version>0` (e.g. V6.80) in its headings and download/release URLs, which `tools.py` builds as `f"V{version}0"`.
 
+**Release checklist for the config pack (dev, 2026-10-26, 7.2+):** tools.py does not build `config.crz`, it just copies the whole `cycrz/data` folder. Before compiling a release: in game, main menu → miscellaneous menu → compile data config; then delete the loose `cycrz/data/decompiled/config` folder so the bundle ships only the pack; compile; afterwards `git restore cycrz/data/decompiled` to get the loose files back. Skipping the delete still works (loose wins) but ships editable plain files instead of the pack. [[project_config_pack_plan]].
+
 **Config:** per-repo `build/tools.ini` (`[game]` name/password/nvgt_file, `[installer]` iss/app_id/app_url/exe_name, `[site]` html/repo/path); shared tool paths (`nvgt`, `sevenzip`, `gh`, `iscc`) in `~/.game_tools/tools.ini`. Version source of truth is `build/version.txt` ([[feedback_update_build_version_txt]]).

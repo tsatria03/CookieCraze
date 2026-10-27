@@ -10,7 +10,7 @@ metadata:
 CookieCraze separates code from runtime assets into top-level folders (the SimpleFighter layout). Note the naming quirk: the repo folder is **CookieCraze**, but the source file and asset folder are **`cycrz`** (and the README titles it "CookyCraze").
 
 - **`src/`** — code only. Entry `src/cycrz.nvgt`, plus `src/includes/` (`includes.nvgt`, `version.nvgt`, and the `main/` subtree — see [[project_include_tree]]). No assets here.
-- **`cycrz/`** — runtime assets + the launcher: `cycrz/cycrz.py`, `cycrz/data/config/`, `cycrz/docks/`, `cycrz/sounds/`.
+- **`cycrz/`** — runtime assets + the launcher: `cycrz/cycrz.py`, `cycrz/data/decompiled/config/` (loose config, in git) and `cycrz/data/compiled/config.crz` (its pack, gitignored; 7.2, [[project_config_pack_plan]]), `cycrz/docks/`, `cycrz/sounds/`.
 - **`build/`** — the build/release pipeline (`tools.py`, `tools.ini`, `version.txt`) — see [[project_build_pipeline]].
 - **`releases/`** — compiled output + archives (gitignored).
 
