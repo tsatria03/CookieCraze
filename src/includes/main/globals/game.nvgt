@@ -158,6 +158,7 @@ else if(manulcookie>=1)
         {
             comboCount++;
             if (comboCount > stat_highest_combo_reached) stat_highest_combo_reached = comboCount;
+            if (comboCount > sessionHighestCombo) sessionHighestCombo = comboCount;
             comboWindow = random(combosConfig.combo_window_min, combosConfig.combo_window_max);
             combotimer.restart();
             double comboMult = get_combo_multiplier(comboCount);

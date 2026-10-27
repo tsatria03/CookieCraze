@@ -202,6 +202,15 @@ if (sd.d.exists("completedQuestCount"))
     }
 }
 if (sd.d.exists("stat_cookies_baked")) stat_cookies_baked = sd.read_double("stat_cookies_baked");
+// Lifetime banks for the stats prestige resets, and time played; older saves have neither and start them at 0.
+lifetimeBank.delete_all();
+for (uint i = 0; i < RUN_STATS.length(); i++)
+{
+    if (sd.d.exists("lifetime_bank_" + RUN_STATS[i])) lifetimeBank.set(RUN_STATS[i], sd.read_double("lifetime_bank_" + RUN_STATS[i]));
+}
+stat_time_played = 0;
+if (sd.d.exists("stat_time_played")) stat_time_played = sd.read_double("stat_time_played");
+playClockMark = playClock.elapsed;
 if (sd.d.exists("stat_manual_bakes_performed")) stat_manual_bakes_performed = sd.read_double("stat_manual_bakes_performed");
 if (sd.d.exists("stat_auto_bakes_performed")) stat_auto_bakes_performed = sd.read_double("stat_auto_bakes_performed");
 if (sd.d.exists("stat_coins_earned")) stat_coins_earned = sd.read_double("stat_coins_earned");
@@ -344,6 +353,7 @@ init_achievements(loadedAchievements, achievementsUnlocked);
 }
 void writedata()
 {
+update_time_played();
 sd.add("autocookie",autocookie);
 sd.add("coins",coins);
 sd.add("cookies",cookies);
@@ -412,6 +422,13 @@ for (uint i = 0; i < questBaselineKeys.length(); i++)
     sd.add("questBaselineValue_" + string(i), qbval);
 }
 sd.add("stat_cookies_baked", stat_cookies_baked);
+sd.add("stat_time_played", stat_time_played);
+for (uint i = 0; i < RUN_STATS.length(); i++)
+{
+    double banked = 0;
+    lifetimeBank.get(RUN_STATS[i], banked);
+    sd.add("lifetime_bank_" + RUN_STATS[i], banked);
+}
 sd.add("cookieXP", cookieXP);
 sd.add("stat_manual_bakes_performed", stat_manual_bakes_performed);
 sd.add("stat_auto_bakes_performed", stat_auto_bakes_performed);

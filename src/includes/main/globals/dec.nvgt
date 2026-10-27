@@ -108,6 +108,7 @@ double stat_coins_earned = 0;
 double stat_coins_spent = 0;
 double stat_cookie_flips = 0;
 double stat_cookies_baked = 0;
+double stat_time_played = 0;
 double stat_dice_losses = 0;
 double stat_dice_rolls = 0;
 double stat_dice_wins = 0;

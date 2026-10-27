@@ -272,10 +272,16 @@ else
     stat_combos_broken=0;
     apply_all_prestige_store_upgrades();
     reset_game_state();
+    // reset_game_state just banked the old game's run; a new game starts its lifetime totals and time played from zero.
+    lifetimeBank.delete_all();
+    stat_time_played = 0;
+    playClockMark = playClock.elapsed;
 }
 }
 void reset_game_state()
 {
+// Add this run's values to the lifetime banks before they are zeroed below.
+bank_run_stats();
 stat_cookies_baked=0;
 stat_manual_bakes_performed=0;
 stat_auto_bakes_performed=0;

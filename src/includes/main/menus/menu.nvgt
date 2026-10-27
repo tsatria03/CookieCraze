@@ -226,6 +226,7 @@ ambslot=ambpool.play_stationary_extended("sounds/ambience/"+ambtype+".ogg", true
 mustrackslot=muspool.play_stationary_extended("sounds/ambience/"+mustype+".ogg", true,0,0,musvolume,muspitch,false);
 ingame=true;
 readdata();
+start_session_stats();
 clickergame();
 }
 else
@@ -291,6 +292,7 @@ ingame=true;
 resetgame();
 // Save the fresh game straight away, so the slot really is erased as the prompt says, and Control L or the load menu finds this game instead of the old one.
 writedata();
+start_session_stats();
 clickergame();
 }
 }
@@ -307,6 +309,7 @@ ingame=true;
 resetgame();
 // Save the fresh game straight away, so the slot really is erased as the prompt says, and Control L or the load menu finds this game instead of the old one.
 writedata();
+start_session_stats();
 clickergame();
 }
 }

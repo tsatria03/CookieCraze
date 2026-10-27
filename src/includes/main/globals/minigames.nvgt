@@ -1235,6 +1235,7 @@ void highlowgame()
                 if (streak == 1) currentMultiplier = (1.0 - highlowConfig.house_edge / 100.0) * guessStep;
                 else currentMultiplier *= guessStep;
                 if (double(streak) > stat_highlow_highest_streak) stat_highlow_highest_streak = streak;
+                if (double(streak) > sessionHighestStreak) sessionHighestStreak = streak;
                 curName = nextName;
                 curVal = nextVal;
                 pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.correct_sound), false);
