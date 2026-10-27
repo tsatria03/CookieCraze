@@ -446,7 +446,8 @@ void infomenu()
 {
     setupmenu(false);
     m.add_item("Achievement statistics", "achstats");
-    m.add_item("Baker statistics", "statistics");
+    m.add_item("Session statistics", "sessionstats");
+    m.add_item("Lifetime statistics", "lifetimestats");
     m.add_item("Back", "back");
     m.intro_text = "Statistics menu. What would you like to view?";
     int mres = m.run(0, true);
@@ -457,8 +458,10 @@ void infomenu()
         clickergame();
         return;
     }
-    if (sel == "statistics")
-        show_baker_statistics();
+    if (sel == "sessionstats")
+        show_session_statistics();
+    else if (sel == "lifetimestats")
+        show_lifetime_statistics();
     else if (sel == "achstats")
         show_achievement_statistics(loadedAchievements, achievementsUnlocked, loadedAchievementCategories);
 }

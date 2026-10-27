@@ -614,98 +614,6 @@ void show_baker_info()
     }
 }
 
-void show_baker_statistics()
-{
-    string txt = "";
-    txt += "Baking\r\n";
-    txt += "Auto bakes performed: " + format_number(stat_auto_bakes_performed) + "\r\n";
-    txt += "Manual bakes performed: " + format_number(stat_manual_bakes_performed) + "\r\n";
-    txt += "\r\n";
-    txt += "Baking slots manager\r\n";
-    txt += "Auto slots purchased: " + format_number(stat_auto_slots_purchased) + "\r\n";
-    txt += "Auto slots enabled: " + format_number(stat_auto_slots_enabled) + "\r\n";
-    double idleSlots = double(baking_slots.length()) - double(autobakeSlots);
-    txt += "Auto slots idle: " + format_number(idleSlots) + "\r\n";
-    txt += "Manual slots purchased: " + format_number(stat_manual_slots_purchased) + "\r\n";
-    txt += "\r\n";
-    txt += "Combos\r\n";
-    txt += "Combos started: " + format_number(stat_combos_started) + "\r\n";
-    txt += "Combos broken: " + format_number(stat_combos_broken) + "\r\n";
-    txt += "Highest combo reached: " + format_number(stat_highest_combo_reached) + "\r\n";
-    txt += "\r\n";
-    txt += "Economy\r\n";
-    txt += "Money earned: " + convert_to_currency(stat_coins_earned) + "\r\n";
-    txt += "Money spent: " + convert_to_currency(stat_coins_spent) + "\r\n";
-    txt += "Bundle upgrades purchased: " + format_number(stat_bundles_purchased) + "\r\n";
-    txt += "Single upgrades purchased: " + format_number(stat_singles_purchased) + "\r\n";
-    txt += "\r\n";
-    txt += "Baker events\r\n";
-    txt += "Baker events fired: " + format_number(stat_baker_events_fired) + "\r\n";
-    txt += "\r\n";
-    txt += "Flipper events\r\n";
-    txt += "Flipper events fired: " + format_number(stat_flipper_events_fired) + "\r\n";
-    txt += "\r\n";
-    txt += "Cookie flipper\r\n";
-    txt += "Flipper flips: " + format_number(stat_flipper_flips) + "\r\n";
-    txt += "Cookie flips: " + format_number(stat_cookie_flips) + "\r\n";
-    txt += "Penny flips: " + format_number(stat_penny_flips) + "\r\n";
-    txt += "\r\n";
-    txt += "Dice roller\r\n";
-    txt += "Rolls: " + format_number(stat_dice_rolls) + "\r\n";
-    txt += "Wins: " + format_number(stat_dice_wins) + "\r\n";
-    txt += "Losses: " + format_number(stat_dice_losses) + "\r\n";
-    txt += "\r\n";
-    txt += "Higher or lower\r\n";
-    txt += "Games played: " + format_number(stat_highlow_games) + "\r\n";
-    txt += "Wins: " + format_number(stat_highlow_wins) + "\r\n";
-    txt += "Losses: " + format_number(stat_highlow_losses) + "\r\n";
-    txt += "Highest streak: " + format_number(stat_highlow_highest_streak) + "\r\n";
-    txt += "\r\n";
-    txt += "Roulette\r\n";
-    txt += "Spins: " + format_number(stat_roulette_games) + "\r\n";
-    txt += "Wins: " + format_number(stat_roulette_wins) + "\r\n";
-    txt += "Losses: " + format_number(stat_roulette_losses) + "\r\n";
-    txt += "Straight hits: " + format_number(stat_roulette_straight_hits) + "\r\n";
-    txt += "Break-evens: " + format_number(stat_roulette_breaks) + "\r\n";
-    txt += "\r\n";
-    txt += "Blackjack\r\n";
-    txt += "Hands played: " + format_number(stat_jack_hands) + "\r\n";
-    txt += "Wins: " + format_number(stat_jack_wins) + "\r\n";
-    txt += "Losses: " + format_number(stat_jack_losses) + "\r\n";
-    txt += "Pushes: " + format_number(stat_jack_pushes) + "\r\n";
-    txt += "\r\n";
-    txt += "Slot machine\r\n";
-    txt += "Total spins: " + format_number(stat_slot_spins) + "\r\n";
-    txt += "Wins: " + format_number(stat_slot_wins) + "\r\n";
-    txt += "Losses: " + format_number(stat_slot_losses) + "\r\n";
-    txt += "\r\n";
-    txt += "Lottery\r\n";
-    txt += "Tickets bought: " + format_number(stat_lottery_tickets_bought) + "\r\n";
-    txt += "Tickets scratched: " + format_number(stat_lottery_tickets_scratched) + "\r\n";
-    txt += "Wins: " + format_number(stat_lottery_wins) + "\r\n";
-    txt += "Losses: " + format_number(stat_lottery_losses) + "\r\n";
-    txt += "\r\n";
-    txt += "Quests\r\n";
-    txt += "Quests completed: " + format_number(stat_quests_completed) + "\r\n";
-    txt += "Rerolls performed: " + format_number(stat_rerolls_performed) + "\r\n";
-    form.reset();
-    form.create_window("Baker statistics", false);
-    int statsbox = form.create_input_box("Statistics", txt, read_only:true, multiline:true);
-    int statsclose = form.create_button("&Close", false, true);
-    form.focus(statsbox);
-    while (true)
-    {
-        wait(5);
-        form.monitor();
-        if (form.is_pressed(statsclose) || key_pressed(KEY_ESCAPE))
-        {
-            form.reset();
-            infomenu();
-            return;
-        }
-    }
-}
-
 void show_prestige_history()
 {
     string txt = "";
@@ -944,22 +852,8 @@ void show_achievement_statistics(achievement_item[]@ achievements, dictionary@ u
             txt += achievements[i].name + ", incomplete. " + curStr + " of " + threshStr + " " + label + ".\r\n";
         }
     }
-    form.reset();
-    form.create_window("Achievement statistics", false);
-    int statsbox = form.create_input_box("Achievement statistics", txt, read_only:true, multiline:true);
-    int statsclose = form.create_button("&Close", false, true);
-    form.focus(statsbox);
-    while (true)
-    {
-        wait(5);
-        form.monitor();
-        if (form.is_pressed(statsclose) || key_pressed(KEY_ESCAPE))
-        {
-            form.reset();
-            infomenu();
-            return;
-        }
-    }
+    show_statistics_screen("Achievement statistics", txt, "achievement_statistics.txt");
+    infomenu();
 }
 
 void set_save_slot(int slot)

@@ -59,3 +59,170 @@ void update_time_played()
     stat_time_played = safe_cap(stat_time_played + (now - playClockMark));
     playClockMark = now;
 }
+
+// A play time such as 1 hour, 4 minutes, 9 seconds; hours only appear once there is at least one.
+string format_play_time(double ms)
+{
+    double totalSeconds = floor(max(0.0, ms) / 1000.0);
+    double hours = floor(totalSeconds / 3600.0);
+    double minutes = floor((totalSeconds - hours * 3600.0) / 60.0);
+    double seconds = totalSeconds - hours * 3600.0 - minutes * 60.0;
+    string result = "";
+    if (hours > 0) result += format_number(hours) + (hours == 1 ? " hour, " : " hours, ");
+    result += format_number(minutes) + (minutes == 1 ? " minute, " : " minutes, ");
+    result += format_number(seconds) + (seconds == 1 ? " second" : " seconds");
+    return result;
+}
+
+double stat_for_view(string stat, bool session)
+{
+    return session ? session_stat_value(stat) : lifetime_stat_value(stat);
+}
+
+/* The text of the session or lifetime statistics screen. Both list the same stats in the same sections; the session
+one counts only since this save was loaded, and leaves out auto slots idle, which is how many slots sit idle right
+now rather than something you did. */
+string build_statistics_text(bool session)
+{
+    string txt = "";
+    if (session)
+        txt += "Time played this session: " + format_play_time(sessionClock.elapsed) + "\r\n";
+    else
+    {
+        update_time_played();
+        txt += "Time played: " + format_play_time(stat_time_played) + "\r\n";
+    }
+    txt += "\r\n";
+    txt += "Baking\r\n";
+    txt += "Cookies baked: " + format_number(stat_for_view(STAT_COOKIES_BAKED, session)) + "\r\n";
+    txt += "Auto bakes performed: " + format_number(stat_for_view(STAT_AUTO_BAKES_PERFORMED, session)) + "\r\n";
+    txt += "Manual bakes performed: " + format_number(stat_for_view(STAT_MANUAL_BAKES_PERFORMED, session)) + "\r\n";
+    txt += "\r\n";
+    txt += "Baking slots manager\r\n";
+    txt += "Auto slots purchased: " + format_number(stat_for_view(STAT_AUTO_SLOTS_PURCHASED, session)) + "\r\n";
+    txt += "Auto slots enabled: " + format_number(stat_for_view(STAT_AUTO_SLOTS_ENABLED, session)) + "\r\n";
+    if (!session)
+        txt += "Auto slots idle: " + format_number(double(baking_slots.length()) - double(autobakeSlots)) + "\r\n";
+    txt += "Manual slots purchased: " + format_number(stat_for_view(STAT_MANUAL_SLOTS_PURCHASED, session)) + "\r\n";
+    txt += "\r\n";
+    txt += "Combos\r\n";
+    txt += "Combos started: " + format_number(stat_for_view(STAT_COMBOS_STARTED, session)) + "\r\n";
+    txt += "Combos broken: " + format_number(stat_for_view(STAT_COMBOS_BROKEN, session)) + "\r\n";
+    txt += "Highest combo reached: " + format_number(stat_for_view(STAT_HIGHEST_COMBO_REACHED, session)) + "\r\n";
+    txt += "\r\n";
+    txt += "Economy\r\n";
+    txt += "Money earned: " + convert_to_currency(stat_for_view(STAT_COINS_EARNED, session)) + "\r\n";
+    txt += "Money spent: " + convert_to_currency(stat_for_view(STAT_COINS_SPENT, session)) + "\r\n";
+    txt += "Bundle upgrades purchased: " + format_number(stat_for_view(STAT_BUNDLES_PURCHASED, session)) + "\r\n";
+    txt += "Single upgrades purchased: " + format_number(stat_for_view(STAT_SINGLES_PURCHASED, session)) + "\r\n";
+    txt += "\r\n";
+    txt += "Baker events\r\n";
+    txt += "Baker events fired: " + format_number(stat_for_view(STAT_BAKER_EVENTS_FIRED, session)) + "\r\n";
+    txt += "\r\n";
+    txt += "Flipper events\r\n";
+    txt += "Flipper events fired: " + format_number(stat_for_view(STAT_FLIPPER_EVENTS_FIRED, session)) + "\r\n";
+    txt += "\r\n";
+    txt += "Cookie flipper\r\n";
+    txt += "Flipper flips: " + format_number(stat_for_view(STAT_FLIPPER_FLIPS, session)) + "\r\n";
+    txt += "Cookie flips: " + format_number(stat_for_view(STAT_COOKY_FLIPS, session)) + "\r\n";
+    txt += "Penny flips: " + format_number(stat_for_view(STAT_PENNY_FLIPS, session)) + "\r\n";
+    txt += "\r\n";
+    txt += "Dice roller\r\n";
+    txt += "Rolls: " + format_number(stat_for_view(STAT_DICE_ROLLS, session)) + "\r\n";
+    txt += "Wins: " + format_number(stat_for_view(STAT_DICE_WINS, session)) + "\r\n";
+    txt += "Losses: " + format_number(stat_for_view(STAT_DICE_LOSSES, session)) + "\r\n";
+    txt += "\r\n";
+    txt += "Higher or lower\r\n";
+    txt += "Games played: " + format_number(stat_for_view(STAT_HIGHLOW_GAMES, session)) + "\r\n";
+    txt += "Wins: " + format_number(stat_for_view(STAT_HIGHLOW_WINS, session)) + "\r\n";
+    txt += "Losses: " + format_number(stat_for_view(STAT_HIGHLOW_LOSSES, session)) + "\r\n";
+    txt += "Highest streak: " + format_number(stat_for_view(STAT_HIGHLOW_HIGHEST_STREAK, session)) + "\r\n";
+    txt += "\r\n";
+    txt += "Roulette\r\n";
+    txt += "Spins: " + format_number(stat_for_view(STAT_ROULETTE_GAMES, session)) + "\r\n";
+    txt += "Wins: " + format_number(stat_for_view(STAT_ROULETTE_WINS, session)) + "\r\n";
+    txt += "Losses: " + format_number(stat_for_view(STAT_ROULETTE_LOSSES, session)) + "\r\n";
+    txt += "Straight hits: " + format_number(stat_for_view(STAT_ROULETTE_STRAIGHT_HITS, session)) + "\r\n";
+    txt += "Break-evens: " + format_number(stat_for_view(STAT_ROULETTE_BREAKS, session)) + "\r\n";
+    txt += "\r\n";
+    txt += "Blackjack\r\n";
+    txt += "Hands played: " + format_number(stat_for_view(STAT_BLACKJACK_HANDS, session)) + "\r\n";
+    txt += "Wins: " + format_number(stat_for_view(STAT_BLACKJACK_WINS, session)) + "\r\n";
+    txt += "Losses: " + format_number(stat_for_view(STAT_BLACKJACK_LOSSES, session)) + "\r\n";
+    txt += "Pushes: " + format_number(stat_for_view(STAT_BLACKJACK_PUSHES, session)) + "\r\n";
+    txt += "\r\n";
+    txt += "Slot machine\r\n";
+    txt += "Total spins: " + format_number(stat_for_view(STAT_SLOT_SPINS, session)) + "\r\n";
+    txt += "Wins: " + format_number(stat_for_view(STAT_SLOT_WINS, session)) + "\r\n";
+    txt += "Losses: " + format_number(stat_for_view(STAT_SLOT_LOSSES, session)) + "\r\n";
+    txt += "\r\n";
+    txt += "Lottery\r\n";
+    txt += "Tickets bought: " + format_number(stat_for_view(STAT_LOTTERY_TICKETS_BOUGHT, session)) + "\r\n";
+    txt += "Tickets scratched: " + format_number(stat_for_view(STAT_LOTTERY_TICKETS_SCRATCHED, session)) + "\r\n";
+    txt += "Wins: " + format_number(stat_for_view(STAT_LOTTERY_WINS, session)) + "\r\n";
+    txt += "Losses: " + format_number(stat_for_view(STAT_LOTTERY_LOSSES, session)) + "\r\n";
+    txt += "\r\n";
+    txt += "Quests\r\n";
+    txt += "Quests completed: " + format_number(stat_for_view(STAT_QUESTS_COMPLETED, session)) + "\r\n";
+    txt += "Rerolls performed: " + format_number(stat_for_view(STAT_REROLLS_PERFORMED, session)) + "\r\n";
+    return txt;
+}
+
+// Writes a statistics screen to its own file in the stats folder in AppData, replacing the last export.
+bool export_statistics(string fileName, string title, string txt)
+{
+    string statsdir = APPDATA_DIR + "stats";
+    if (!directory_exists(statsdir)) directory_create(statsdir);
+    file f;
+    if (!f.open(statsdir + "/" + fileName, "wb")) return false;
+    f.write(title + "\r\nExported on " + DATE_MONTH + "/" + DATE_DAY + "/" + DATE_YEAR + "\r\n\r\n" + txt);
+    f.close();
+    return true;
+}
+
+/* The screen every statistics view shares: the text in a read-only box, then Copy, Export, and Close. It returns
+when closed, so each caller decides where to go next. */
+void show_statistics_screen(string title, string txt, string exportFile)
+{
+    form.reset();
+    form.create_window(title, false);
+    int statsbox = form.create_input_box(title, txt, read_only:true, multiline:true);
+    int statscopy = form.create_button("Co&py");
+    int statsexport = form.create_button("&Export");
+    int statsclose = form.create_button("&Close", false, true);
+    form.focus(statsbox);
+    while (true)
+    {
+        wait(5);
+        form.monitor();
+        if (form.is_pressed(statscopy))
+        {
+            clipboard_copy_text(title + "\r\n\r\n" + txt);
+            speak(title + " copied to clipboard.");
+        }
+        if (form.is_pressed(statsexport))
+        {
+            if (export_statistics(exportFile, title, txt))
+                speak(title + " have been exported to stats/" + exportFile + ".");
+            else
+                speak("Error! " + title + " could not be exported.");
+        }
+        if (form.is_pressed(statsclose) || key_pressed(KEY_ESCAPE))
+        {
+            form.reset();
+            return;
+        }
+    }
+}
+
+void show_session_statistics()
+{
+    show_statistics_screen("Session statistics", build_statistics_text(true), "session_statistics.txt");
+    infomenu();
+}
+
+void show_lifetime_statistics()
+{
+    show_statistics_screen("Lifetime statistics", build_statistics_text(false), "lifetime_statistics.txt");
+    infomenu();
+}
