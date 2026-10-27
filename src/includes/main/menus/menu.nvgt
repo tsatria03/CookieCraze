@@ -3,6 +3,7 @@ void mainmenu()
 setupmenu();
 m.add_item("documentation menu", "dm");
 m.add_item("game menu", "gm");
+m.add_item("miscellaneous menu", "mm");
 m.add_item("settings menu", "sm");
 m.add_item("restart game", "rt");
 m.add_item("exit game", "ex");
@@ -23,6 +24,10 @@ if (main == "gm")
 {
 gamemenu();
 }
+if (main == "mm")
+{
+miscmenu();
+}
 if (main == "sm")
 {
 speak("loading");
@@ -40,6 +45,68 @@ if (main == "ex")
 speak("exiting");
 m.fade_music();
 exit();
+}
+}
+void miscmenu()
+{
+setupmenu();
+m.add_item("compile data config", "cdc");
+m.add_item("decompile data config", "ddc");
+m.add_item("back", "back");
+m.intro_text = "Miscellaneous menu.";
+int mres=m.run();
+string miscm = m.get_item_id(mres);
+if(mres==-1)
+{
+speak("canceled");
+mainmenu();
+}
+if (miscm == "cdc")
+{
+string[] names = list_loose_config_files();
+if (names.length() == 0)
+dlgmessage_return("There are no config files in data/decompiled/config to compile.");
+else if (yes_no("Are you sure you want to compile your data config? This will replace data/compiled/config.crz with the " + string(names.length()) + " files in data/decompiled/config.", false, true))
+{
+int added = compile_config_pack(names);
+if (added < 0)
+dlgmessage_return("Error! Could not create data/compiled/config.crz.");
+else
+{
+reload_config(true);
+dlgmessage_return("Compiled " + string(added) + " config files into data/compiled/config.crz.");
+}
+}
+miscmenu();
+}
+if (miscm == "ddc")
+{
+if (!file_exists(CONFIG_PACK_PATH))
+dlgmessage_return("There is no data/compiled/config.crz to decompile.");
+else
+{
+// Loose files win over the pack, so overwriting them can change the game; the question says so when any exist.
+string question = "Are you sure you want to decompile your data config? This will write the files in data/compiled/config.crz to data/decompiled/config.";
+if (list_loose_config_files().length() > 0)
+question += " Config files already exist there, and any that are also in the pack will be overwritten.";
+if (yes_no(question, false, true))
+{
+int written = decompile_config_pack();
+if (written < 0)
+dlgmessage_return("Error! Could not open data/compiled/config.crz.");
+else
+{
+reload_config(true);
+dlgmessage_return("Decompiled " + string(written) + " config files into data/decompiled/config.");
+}
+}
+}
+miscmenu();
+}
+if (miscm == "back")
+{
+speak("canceled");
+mainmenu();
 }
 }
 void docksmenu()

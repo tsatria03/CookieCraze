@@ -82,3 +82,55 @@ class config_file
         eof = true;
     }
 }
+
+// Every loose config file by its pack name, such as events/baker.event, from each folder inside data/decompiled/config.
+string[] list_loose_config_files()
+{
+    string[] names;
+    string[]@ folders = find_directories(CONFIG_LOOSE_DIR + "*");
+    for (uint i = 0; i < folders.length(); i++)
+    {
+        string[]@ folderFiles = find_files(CONFIG_LOOSE_DIR + folders[i] + "/*");
+        for (uint j = 0; j < folderFiles.length(); j++)
+            names.insert_last(folders[i] + "/" + folderFiles[j]);
+    }
+    return names;
+}
+
+/* Rebuilds config.crz from scratch out of the given loose files and returns how many went in, or -1 if the pack
+could not be created. The read pack is closed first so its file can be rewritten; the next config read reopens it. */
+int compile_config_pack(string[]@ names)
+{
+    close_config_pack();
+    directory_create("data/compiled");
+    pack_file p;
+    if (!p.open(CONFIG_PACK_PATH, PACK_OPEN_MODE_CREATE))
+        return -1;
+    int added = 0;
+    for (uint i = 0; i < names.length(); i++)
+    {
+        if (p.add_file(CONFIG_LOOSE_DIR + names[i], names[i], true))
+            added++;
+    }
+    p.close();
+    return added;
+}
+
+// Writes every file in config.crz out to data/decompiled/config and returns how many were written, or -1 if there is no pack.
+int decompile_config_pack()
+{
+    if (!open_config_pack())
+        return -1;
+    string[]@ names = configPack.list_files();
+    int written = 0;
+    for (uint i = 0; i < names.length(); i++)
+    {
+        string outPath = CONFIG_LOOSE_DIR + names[i];
+        int slash = outPath.rfind("/");
+        if (slash > 0)
+            directory_create(outPath.substr(0, slash));
+        if (configPack.extract_file(names[i], outPath))
+            written++;
+    }
+    return written;
+}
