@@ -1,6 +1,6 @@
 ---
 name: project_session_stats_plan
-description: "AGREED (7.2, 2026-10-27, not built): session vs lifetime statistics modelled on ToyMania's player-facing design — Statistics menu gains Session/Lifetime screens, copy to clipboard, export to file; exit results dialog with a settings toggle. Replaces the old session summary todo item. No clear option."
+description: "SHIPPED 7.2 (all 4 sections built and tested, 2026-10-27): session vs lifetime statistics modelled on ToyMania's player-facing design — Statistics menu gains Session/Lifetime screens, copy to clipboard, export to file; exit results dialog with a settings toggle. Replaces the old session summary todo item. No clear option."
 metadata:
   node_type: memory
   type: project
@@ -40,7 +40,7 @@ Found before building: `reset_game_state` (prestige AND new game) zeroes 11 stat
 
 ## Build sections (proposed)
 
-**Section 1 BUILT and all 3 steps PASSED (2026-10-27: play + save, quit/relaunch/load + Control L, prestige or new game); told the dev to commit.** Committed f9f460b.
+**Section 1 BUILT and all 3 steps PASSED (2026-10-27: play + save, quit/relaunch/load + Control L, prestige or new game); told the dev to commit.** Committed f9f460b. Section 2 committed 66b7588, section 3 e575478. **Section 4 docs DONE (2026-10-27):** readme statistics section rewritten (Session and lifetime statistics, time played, session bests, Copy/Export + stats files, Session results incl. Alt+F4 + setting; Alt plus T now opens the statistics menu; achievement note no longer says "lifetime"), changelog 7.2 entries 8 and 9 of 10 (results on top, statistics below), todo Finished.
 
 **Section 3 BUILT, self-reviewed, and all 3 steps PASSED (2026-10-27: save-and-quit results, quit-without-saving results + Alt+F4 skips them, setting turns them off); told the dev to commit.** statfuncts.nvgt: `show_session_results(bool saved)` (returns if `sessionresults` is off; opening line with playername, a "You quit without saving, so anything since your last save was not kept." line when not saved, the session text, sign-off "Thanks for baking! See you next time." (dev: no name in the sign-off; Alt+F4 must NOT show results); uses `show_statistics_screen("Session results", …, "session_statistics.txt")`). game.nvgt quit confirmation: called in "quit_no_save" (false) and "quit_save" (true, after writedata) right after the sounds are destroyed, before the exit speech/sound. Alt+F4 quick exit deliberately not covered. Setting `sessionresults` wired like comborepeats; checkbox "Enable showing session results upon exiting the game." right after the combo repeat one.
 

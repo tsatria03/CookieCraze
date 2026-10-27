@@ -87,7 +87,7 @@ Alt plus M: Opens the baking slots manager.
 Alt plus I: Opens the baker info screen.
 Alt plus G: Opens the minigames.
 Alt plus Q: Opens your quests.
-Alt plus T: Opens the statistics screen.
+Alt plus T: Opens the statistics menu.
 Alt plus R: Opens the preferences.
 Other screens have their own shortcuts, such as Alt plus P for check the payouts on the slot machine.
 
@@ -374,19 +374,22 @@ Quests completed: how many of your active quests are currently complete.
 
 Statistics menu.
 
-Access the baker statistics screen and achievement statistics screen from the Statistics button in the main game interface.
+Access the session statistics, lifetime statistics, and achievement statistics screens from the Statistics button in the main game interface.
 
-Baker statistics.
+Session and lifetime statistics.
 
-View a summary of everything you have done in your current playthrough. Open it from the Statistics menu.
+The session statistics screen shows what you have done since you loaded your game or started a new one. The lifetime statistics screen shows your totals across everything you have done on this save, including every run before your latest prestige. Open either one from the Statistics menu. Both list the same stats in the same sections.
 
 Most stats shown here are tracked stats, meaning they are running totals that only ever go up and are saved with your game. A few are live stats, meaning they are calculated fresh from the current game state each time you open the screen and can go up or down. Live stats are noted individually where they appear.
 
-The statistics screen is divided into thirteen sections.
+Both screens begin with how long you have played. On the session screen this is the time since you loaded your game. On the lifetime screen it is your total time played on this save, counted up to your last save, so like every other stat, time since your last save is not kept if you quit without saving.
+On the session screen, highest combo reached and highest streak are your best this session, and auto slots idle is left out, since it describes your bakery right now rather than something you did.
+
+The statistics are divided into thirteen sections.
 
 Baking.
 
-Cookies baked: counts the total number of cookies you have produced across all sources during the current run. This running total never decreases when you sell cookies, though it starts again from zero when you prestige, along with your other baking and economy stats. Your cookie stockpile shown in the main game reflects only what you currently hold, while this stat reflects everything you have baked this run. Achievements that track cookies baked use this total, so they can unlock well before your stockpile reaches the same number.
+Cookies baked: counts the total number of cookies you have produced across all sources. This running total never decreases when you sell cookies. Your cookie stockpile shown in the main game reflects only what you currently hold, while this stat reflects everything you have baked. On the lifetime screen it keeps growing across prestiges, along with your other baking and economy stats. Achievements and quests that track these stats still count only your current run, starting again from zero when you prestige, so they can unlock well before your stockpile reaches the same number but measure each run on its own.
 
 Auto bakes performed: counts every time the auto baker fires a cycle.
 Manual bakes performed: counts every time you press the bake button manually.
@@ -476,13 +479,19 @@ Rerolls performed: counts every time you have rerolled a quest.
 
 All stats are saved with your game data and persist between sessions.
 
+Every statistics screen, including achievement statistics, has copy and export buttons before the close button. Press alt plus P to copy the whole screen to your clipboard, or alt plus E to export it to a text file. Each screen has its own file in the stats folder inside the game's AppData directory: achievement_statistics.txt, session_statistics.txt, and lifetime_statistics.txt. Each export replaces that screen's previous file, so it always holds your latest numbers.
+
 Achievement statistics.
 
 View your progress toward every achievement grouped by category. Open it from the Statistics menu.
 
 Each category lists complete achievements first showing your current stat value, followed by incomplete ones showing your current value against the required threshold.
-Keep in mind that achievement thresholds compare against lifetime tracked stats, not your current stockpile. For example, a cookies baked achievement unlocks based on how many cookies you have ever produced, not how many you currently hold. Selling cookies does not reduce your progress toward baking achievements.
+Keep in mind that achievement thresholds compare against your tracked stats, not your current stockpile. For example, a cookies baked achievement unlocks based on how many cookies you have ever produced, not how many you currently hold. Selling cookies does not reduce your progress toward baking achievements.
 This screen is read only and does not require any input to navigate.
+
+Session results.
+
+When you press escape on the main game screen and choose to quit, with or without saving, a session results screen shows everything you did during that session, the same as the session statistics screen, with copy, export, and close buttons. If you quit without saving, it reminds you that anything since your last save was not kept. Closing it takes you back to the main menu. Pressing alt plus F4 still leaves straight away without it. You can turn the screen off with the enable showing session results upon exiting the game option in the game settings, which is on by default.
 
 Prestige history.
 
