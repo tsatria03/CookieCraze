@@ -154,7 +154,7 @@ double slotMinBet = 1.0;
 int slotManagerUnlockRank = 50;
 int slotReels = 5;
 double slotHouseEdge = 5.0;
-int slotMinSymbols = 10;
+int slotMinSymbols = 6;
 string[] slotSymbols;
 payout_item[] slotPayouts;
 string slotBetSound1 = "slot_machine/bet1.ogg";

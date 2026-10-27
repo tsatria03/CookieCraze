@@ -192,7 +192,10 @@ void slotsgame()
     form.add_list_item(betChoice, "Manual Cookies");
 string[] symbols = slotSymbols;
     int symbolChoices = form.create_list("Choose the s&ymbols to use:", symbols.length(), true, false);
-    bool[] symbolToggles(symbols.length(), true);
+    // Only the first min_symbols in the table's order start checked, the fewest a spin needs.
+    bool[] symbolToggles(symbols.length(), false);
+    for (uint i = 0; i < symbols.length() && int(i) < slotMinSymbols; i++)
+        symbolToggles[i] = true;
     for (uint i = 0; i < symbols.length(); i++)
 {
         form.add_list_item(symbolChoices, symbols[i], symbols[i], -1, symbolToggles[i]);

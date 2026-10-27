@@ -1,6 +1,6 @@
 ---
 name: project_slots_scaled_payouts_plan
-description: "SHIPPED 6.9 (2026-09-30, dev-tested): scale slot machine payouts by how many symbols are checked so every symbol count has the same house edge — few symbols = frequent small wins, all symbols = rare big wins. Fixes the +18% exploit at the 10-symbol minimum and the -65% default. Adds house_edge + min_symbols config, %amount%/%multiplier% message tokens, a check-payouts button, and full readme docs for how symbols work."
+description: "(7.2 update: min_symbols is now 6 and only the first min_symbols start checked — [[project_slots_min_symbols_plan]].) SHIPPED 6.9 (2026-09-30, dev-tested): scale slot machine payouts by how many symbols are checked so every symbol count has the same house edge — few symbols = frequent small wins, all symbols = rare big wins. Fixes the +18% exploit at the 10-symbol minimum and the -65% default. Adds house_edge + min_symbols config, %amount%/%multiplier% message tokens, a check-payouts button, and full readme docs for how symbols work."
 metadata:
   node_type: memory
   type: project

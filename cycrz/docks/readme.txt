@@ -301,7 +301,7 @@ Advanced. Multiple reels, payout combinations, and bet management make it more c
 Spin the reels and match symbols to win multiples of your bet.
 
 Like the other minigames, you choose which item to bet and how much. When betting money, you enter the amount as a dollar value, for example type 1 to bet $1.00 or 0.50 to bet 50 cents. All other items are entered as whole numbers.
-Before spinning, you choose which symbols can land on the reels from a checklist, and every symbol starts checked. You must keep at least 10 symbols checked to spin. The fewer symbols you check, the more often the reels match, so wins come often but pay less, while checking more symbols makes matches rare but pays far more for each one. Payouts adjust automatically to however many symbols you check, so no choice is better or worse on average, and you are simply choosing how risky each spin feels.
+Before spinning, you choose which symbols can land on the reels from a checklist. The first 6 symbols start checked, which is the fewest you can spin with, and you can check more whenever you like. The fewer symbols you check, the more often the reels match, so wins come often but pay less, while checking more symbols makes matches rare but pays far more for each one. Payouts adjust automatically to however many symbols you check, so no choice is better or worse on average, and you are simply choosing how risky each spin feels.
 Your winnings depend on the largest group of matching symbols, from a pair up to every reel matching. Press the check the payouts button, or alt plus p, to hear your chance of losing and what each match pays for the symbols you currently have checked. Each win tells you exactly how much you won and how many times your bet that is.
 The symbols, the minimum number you must check, the house edge, the relative payout for each match, the reel count, sounds, and bet limits are all configurable in slots.table.
 
@@ -1578,7 +1578,7 @@ Defines the slot machine symbols, reel count, bet limits, action sounds, and pay
 symbols
 Format: symbols=order:name, name, name, ...
 
-A comma separated list of symbol names for the slot machine reels. You must define at least as many symbols as min_symbols, which defaults to 10. There is no upper limit. More symbols make matches rarer and each win larger, while the average return stays at the house edge.
+A comma separated list of symbol names for the slot machine reels. You must define at least as many symbols as min_symbols, which defaults to 6. There is no upper limit. More symbols make matches rarer and each win larger, while the average return stays at the house edge.
 
 The list can begin with an optional ordering prefix followed by a colon, which controls how the symbols are sorted when the game loads. Use asc for alphabetical order, dsc for reverse alphabetical order, or none to keep the exact order you wrote them in. For example, symbols=asc:cherry, apple, bell is listed in game as apple, bell, cherry. If you omit the prefix entirely, the list is kept as written, the same as none.
 
@@ -1611,7 +1611,7 @@ The percentage of each bet the slot machine keeps on average, which defaults to 
 If too few symbols are checked for the reel count to reach the house edge, the spin is refused and the player is asked to check more symbols. This can only happen with many reels and very few symbols.
 
 min_symbols
-The fewest symbols a player must keep checked before spinning, which defaults to 10. It cannot be lower than 2, and it must not be higher than the number of symbols defined, or the game shows an error at startup explaining the mismatch.
+The fewest symbols a player must keep checked before spinning, which defaults to 6. It also sets how many symbols start checked: the first min_symbols symbols, in the order the symbols setting puts them in. It cannot be lower than 2, and it must not be higher than the number of symbols defined, or the game shows an error at startup explaining the mismatch. With the default 5 reels and house edge of 5, a value below 6 lets players check too few symbols for the payouts to balance, and those spins are refused.
 
 bet_sound1
 bet_sound2

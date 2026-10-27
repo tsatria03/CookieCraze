@@ -13,7 +13,7 @@ void parse_slots_table(string filepath, string[]@ symbols_out, payout_item[]@ pa
     confirm_threshold_out = 0.0;
     confirm_use_percent_out = false;
     slotHouseEdge = 5.0;
-    slotMinSymbols = 10;
+    slotMinSymbols = 6;
     slotBetSound1 = "slot_machine/bet1.ogg";
     slotBetSound2 = "slot_machine/bet2.ogg";
     slotBetSound3 = "slot_machine/bet3.ogg";
