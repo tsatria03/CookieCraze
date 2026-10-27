@@ -190,6 +190,7 @@ Baking speed reduces the time between each bake. The interval starts at 1000 mil
 
 Upgrades are organized into categories, with higher categories requiring a minimum rank to access.
 Costs scale up the more you buy, so plan your purchases carefully.
+Auto cookie and manual cookie prices are set by how many of them you have bought, not how many you own, so the ones you get for free from events, prizes, or rank rewards never make them more expensive. When you lose some, through a baker or cookie flipper event, a minigame bet you lose, or a quest reroll paid in them, their prices drop by the same share you lost. Losing half your auto cookies brings their price back to what it was when you had bought half as many, so replacing what you lost costs about what you paid for it.
 Each category announces which currency it uses before you enter it, so you always know whether to spend coins or cookies.
 By default, locked items and categories are shown in the shop with their required rank displayed. You can hide them entirely by disabling the show locked items option in the game settings.
 

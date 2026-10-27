@@ -1,6 +1,6 @@
 ---
 name: project_loss_price_plan
-description: "PLAN (7.2, agreed 2026-10-26, not built): store prices drop when you lose auto/manual cookies — design review #8. Proportional: a loss scales autocookie_purchases / manulcookie_purchases by after/before; free gains never raise them; minigame bets count only when a round ends as a loss. 3 sections."
+description: "SHIPPED 7.2 (all 3 sections built and tested, 2026-10-27): store prices drop when you lose auto/manual cookies — design review #8. Proportional: a loss scales autocookie_purchases / manulcookie_purchases by after/before; free gains never raise them; minigame bets count only when a round ends as a loss. 3 sections."
 metadata:
   node_type: memory
   type: project
@@ -37,4 +37,4 @@ Not losses: rank rewards, lottery prizes, achievements (all gains, polarity 1). 
 
 1. Helper `scale_purchases_after_loss(int target, double before, double after)` (target 1 auto, 2 manual) + hook it into `apply_amount_effect` and the quest reroll. Test: force a loss event (main.table auto_event_chance 100), compare a store price before/after.
 2. Minigame bet losses in the 5 games. Test one game per step.
-3. Docs: readme store pricing note, changelog 7.2 entry (would be 4 of 10), todo line 3 → Finished.
+3. **DONE 2026-10-27:** readme note after "Costs scale up the more you buy" in the singles shop section; changelog 7.2 entry 4 of 10 ("Made it so store prices…"); todo item moved to the top of Finished. Original: Docs: readme store pricing note, changelog 7.2 entry (would be 4 of 10), todo line 3 → Finished.
