@@ -2,7 +2,7 @@
 
 ****Unfinished. Add a temporary boosts shop where you spend cookies or coins on timed power-ups, such as double production for 60 seconds, an auto-bake burst, or an extended combo window.
 ****Unfinished. Add an auto-buyer that automatically purchases the cheapest upgrade you can afford on a timer, extending automation from baking into spending. Unlocked at a late rank and toggleable in the settings.
-****Unfinished. Add a session summary shown when you exit that reports what you did this session, such as cookies baked, money earned, and ranks gained, built from stats the game already tracks.
+****Unfinished. Add separate session and lifetime statistics screens, give them and the achievement statistics screen copy and export buttons, and show a session results screen when you exit the game, which a game settings option can turn off.
 ****Unfinished. Add a double or nothing minigame where you stake one item on a coin flip that doubles your pot on a win and loses it all on a loss, then choose after each win to cash out or let the whole pot ride on another flip.
 
 ##These are the things that are already finished from earlier versions of the game.
