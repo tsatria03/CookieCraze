@@ -98,3 +98,4 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Update build/version.txt](feedback_update_build_version_txt.md) — version.txt is the single source of truth; never hand-edit the generated version.nvgt.
 - [Store prices after losses plan](project_loss_price_plan.md) — SHIPPED 7.2: proportional scaling of autocookie/manulcookie_purchases on loss (events, quest reroll, minigame bet losses only at round end); gains never raise; 3 sections. Also notes the negative rank reward bug.
 - [Slots min_symbols 6 plan](project_slots_min_symbols_plan.md) — SHIPPED 7.2: min_symbols 10→6 (set when built; dev reverted the early edit), checklist starts with 6 checked; 3 open questions; readme line ~303.
+- [Edit config for tests](feedback_edit_config_for_tests.md) — make temporary events/stores/tables edits for test steps yourself (CRLF-safe), revert as soon as the dev says the step passed.

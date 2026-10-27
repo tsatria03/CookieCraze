@@ -17,6 +17,7 @@ class rank_reward_item
 void parse_ranks_table(string filepath, rank_sound_item[]@ sounds_out, rank_reward_item[]@ default_out, rank_reward_item[]@ rewards_out)
 {
     rankSummaryMessage = "";
+    rankSummaryLossMessage = "";
     config_file f;
     if (!f.open(filepath))
         return;
@@ -32,10 +33,12 @@ void parse_ranks_table(string filepath, rank_sound_item[]@ sounds_out, rank_rewa
         if (line == "[default]") { section = "default"; continue; }
         if (line == "[rewards]") { section = "rewards"; continue; }
         if (line == "[summary]") { section = "summary"; continue; }
-        // Optional: the first line under [summary] is the message spoken when one gain earns several ranks at once.
+        /* Optional: the first line under [summary] is the message spoken when one gain earns several ranks at once,
+        and an optional second line replaces it when the rewards add up to a loss, so penalties are not read as earnings. */
         if (section == "summary")
         {
             if (rankSummaryMessage == "") rankSummaryMessage = line;
+            else if (rankSummaryLossMessage == "") rankSummaryLossMessage = line;
             continue;
         }
         if (section == "sounds")
@@ -87,8 +90,10 @@ string apply_rank_reward(rank_reward_item@ item, double current_rank, bool build
     double amount = random_amount(minVal, maxVal);
     if (minVal >= 0 && maxVal >= 0 && amount < 1.0) amount = 1.0;
     amount = floor(amount);
-    lastRewardAmount = amount;
+    lastRewardRolled = amount;
     amount = apply_rank_amount(item, amount);
+    // What was really given or taken, so summaries match a penalty capped by what the player had, or speed capped at its limit.
+    lastRewardAmount = amount;
     // A big multi-rank gain applies thousands of rewards that are never spoken; skip building their messages.
     if (!buildMessage) return "";
     return format_rank_message(item, amount, current_rank);
@@ -109,6 +114,10 @@ double apply_rank_amount(rank_reward_item@ item, double amount)
             cookiespeed = floor(cookiespeed);
         }
     }
+    /* A negative amount is a penalty. It goes through the same loss path as events, so it never takes more than the
+    player has and lowers auto and manual cookie store prices; passing it as a gain turned every penalty into a gain of 1. */
+    else if (amount < 0)
+        amount = -apply_amount_effect(item.target, -amount, 2, false);
     else
         apply_amount_effect(item.target, amount, 1, false);
     return amount;
@@ -116,7 +125,9 @@ double apply_rank_amount(rank_reward_item@ item, double amount)
 string format_rank_message(rank_reward_item@ item, double amount, double current_rank)
 {
     dictionary@ tokens = dictionary();
-    tokens.set("amount", (item.target == "coins") ? convert_to_currency(amount) : format_number(amount));
+    // A penalty reads as its size, so a message such as You lost %amount% does not say minus.
+    double shown = abs(amount);
+    tokens.set("amount", (item.target == "coins") ? convert_to_currency(shown) : format_number(shown));
     tokens.set("rank", format_number(current_rank));
     tokens.set("name", playername);
     return format_template(item.message, tokens);
@@ -206,6 +217,8 @@ void check_rank()
 if (cookieXP < xprequired) return;
 double fromRank = rank;
 double totalReward = 0;
+// What the default rewards rolled before applying, so a penalty that found nothing left to take still reads as a loss.
+double rolledReward = 0;
 bool anyAnnounced = false;
 string announceMsg = "";
 double announceAmount = 0;
@@ -222,7 +235,9 @@ if (targetRank - fromRank > RANK_EXACT_LIMIT)
         rank_reward_item@ def = rankDefault[0];
         double total = floor(average_rank_reward(def, fromRank + 1, targetRank) * (targetRank - fromRank));
         lastRewardAmount = total;
-        totalReward = safe_cap(apply_rank_amount(def, total));
+        rolledReward = total;
+        // Signed, so a default penalty totals as a loss instead of being clamped to zero.
+        totalReward = clamp(apply_rank_amount(def, total), -1e308, 1e308);
         handle_rank_unlock(def.unlock);
         // The highest thinned rank at or below the new rank; it was crossed if it is above where the gain started.
         double rankstep = 1;
@@ -274,7 +289,8 @@ while (cookieXP >= xprequired)
         while (rankstep * 10 <= rank) rankstep *= 10;
         bool announced = (rank - rankstep * floor(rank / rankstep) == 0);
         string defaultMsg = apply_rank_reward(rankDefault[0], rank, announced);
-        totalReward = safe_cap(totalReward + lastRewardAmount);
+        totalReward = clamp(totalReward + lastRewardAmount, -1e308, 1e308);
+        rolledReward = clamp(rolledReward + lastRewardRolled, -1e308, 1e308);
         handle_rank_unlock(rankDefault[0].unlock);
         if (announced)
         {
@@ -311,8 +327,12 @@ if (anyAnnounced)
         tokens.set("from", format_number(fromRank));
         tokens.set("rank", format_number(rank));
         tokens.set("ranks", format_number(ranksGained));
-        tokens.set("amount", (rankDefault[0].target == "coins") ? convert_to_currency(totalReward) : format_number(totalReward));
-        announceMsg = format_template(rankSummaryMessage, tokens);
+        // Read as a size like the single-rank message, so a penalty summary does not say minus.
+        double shownTotal = abs(totalReward);
+        tokens.set("amount", (rankDefault[0].target == "coins") ? convert_to_currency(shownTotal) : format_number(shownTotal));
+        bool summaryLoss = totalReward < 0 || (totalReward == 0 && rolledReward < 0);
+        string summaryTemplate = (summaryLoss && rankSummaryLossMessage != "") ? rankSummaryLossMessage : rankSummaryMessage;
+        announceMsg = format_template(summaryTemplate, tokens);
         announceAmount = totalReward;
     }
     play_rank_sound(announceAmount);

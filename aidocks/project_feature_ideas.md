@@ -142,3 +142,7 @@ Concrete edits when building:
 - **Hardcoded minigame gates in `menu.nvgt`** ("rank X or higher" checks): move the **slot machine** check `50 → 60`, and add a new `rank < 50` check for higher or lower.
 
 **Why bundle it with the build, not now:** doing the shift standalone would (because gates re-derive on launch) **temporarily re-lock the slot machine for existing saves at rank 50–59, the slot manager at 60–69, and combos at 70–79** until they rank up, and leave rank 50 with no new unlock until the minigame ships. Shipping the shift together with the rank-50 unlock avoids that.
+
+## Double or nothing minigame (idea, dev 2026-10-27, not designed)
+
+Todo `****Unfinished.` item added 2026-10-27. Concept: stake one item on a coin flip; a win doubles the pot, a loss loses it all; after each win, cash out or let the whole pot ride. Nothing decided yet. Before building, follow [[project_minigame_build_guide]]: discuss and write a blueprint first (config table fields such as win chance / house edge, max rides, sounds; unlock rank and the alphabetized-panel rank ladder ripple; auto-reveal setting; stats, achievements, quests). Losing a bet of auto/manual cookies must call `bet_lost_purchases` ([[project_loss_price_plan]]).

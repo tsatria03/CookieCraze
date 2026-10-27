@@ -1517,7 +1517,7 @@ Defines the reward every rank receives automatically. Only one default line is a
 Summary section.
 Format: message
 
-Optional. When one gain earns several ranks at once, every rank still gets its default reward, but this message is spoken once instead of the default message. Only the first line in the section is used.
+Optional. When one gain earns several ranks at once, every rank still gets its default reward, but this message is spoken once instead of the default message. The first line in the section is the normal message. An optional second line is spoken instead when the default rewards in the gain are penalties that add up to a loss, even if the player had nothing left to take. Without a second line, the first is used for losses too, and any further lines are ignored.
 It is used only when the gain crosses at least one rank that would normally be announced, so a small gain between announced ranks stays silent as before.
 If the section is missing or has no message, the game announces the default message of the highest announced rank in the gain instead. Unlike the other headers, removing this one is safe.
 
@@ -1525,7 +1525,7 @@ Use %name% as a placeholder for the player's name.
 Use %from% as a placeholder for the rank before the gain.
 Use %rank% as a placeholder for the rank reached.
 Use %ranks% as a placeholder for how many ranks were gained.
-Use %amount% as a placeholder for the total of every default reward in the gain. It is formatted as money when the default reward's target is coins, and as a plain number otherwise.
+Use %amount% as a placeholder for the total of every default reward in the gain. It is formatted as money when the default reward's target is coins, and as a plain number otherwise. For penalties it is the total actually taken, read without a minus sign.
 
 Rewards section.
 Format: rank:target:min_amount:max_amount:unlock:message
@@ -1547,7 +1547,7 @@ min_amount and max_amount
 The range of values the reward can roll between. Supports the same rank operators as baker.event.
 When a single gain earns more than 1,000 ranks at once, the default reward is not rolled separately for every rank. Instead the game pays one total worked out from the middle of the min and max range across all of those ranks, which is exact for rewards that grow in a straight line with rank, such as 100*rank. Milestone rewards are still rolled normally.
 
-Setting both values to negative numbers causes the reward to deduct from the target stat instead of adding to it, making it a penalty. This is useful for difficulty modding where certain ranks should hurt rather than help.
+Setting both values to negative numbers causes the reward to deduct from the target stat instead of adding to it, making it a penalty. This is useful for difficulty modding where certain ranks should hurt rather than help. A penalty never takes more than the player has, and %amount% in its message is the amount actually taken, read without a minus sign, so a message such as You lost %amount% reads naturally. A penalty to auto or manual cookies also lowers their store prices, the same as any other loss.
 
 unlock
 An optional feature to unlock at this rank. Use none for no unlock.
