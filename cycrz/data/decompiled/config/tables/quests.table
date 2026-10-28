@@ -133,6 +133,42 @@ win_lottery_75:Win 75 lottery tickets:lottery_wins:75:false:false:true:3:Win %th
 win_lottery_150:Win 150 lottery tickets:lottery_wins:150:false:false:true:4:Win %threshold% scratch tickets.
 win_lottery_300:Win 300 lottery tickets:lottery_wins:300:false:false:true:5:Win %threshold% scratch tickets.
 
+; Double or nothing games played
+
+play_don_endless:Play %threshold% rounds of double or nothing:don_games:10:false:false:false:1:1.25:true:1:Play %threshold% rounds of double or nothing. Each time you finish it and prestige, it returns at a higher goal.
+
+; Double or nothing wins
+
+win_don_5:Bank 5 double or nothing games:don_wins:5:false:false:true:1:Bank your winnings %threshold% times in double or nothing.
+win_don_25:Bank 25 double or nothing games:don_wins:25:false:false:true:2:Bank your winnings %threshold% times in double or nothing.
+win_don_75:Bank 75 double or nothing games:don_wins:75:false:false:true:3:Bank your winnings %threshold% times in double or nothing.
+win_don_150:Bank 150 double or nothing games:don_wins:150:false:false:true:4:Bank your winnings %threshold% times in double or nothing.
+win_don_300:Bank 300 double or nothing games:don_wins:300:false:false:true:5:Bank your winnings %threshold% times in double or nothing.
+
+; Double or nothing correct calls
+
+call_don_10:Make 10 correct calls:don_correct_calls:10:false:false:true:1:Make %threshold% correct calls in double or nothing.
+call_don_50:Make 50 correct calls:don_correct_calls:50:false:false:true:2:Make %threshold% correct calls in double or nothing.
+call_don_150:Make 150 correct calls:don_correct_calls:150:false:false:true:3:Make %threshold% correct calls in double or nothing.
+call_don_300:Make 300 correct calls:don_correct_calls:300:false:false:true:4:Make %threshold% correct calls in double or nothing.
+call_don_600:Make 600 correct calls:don_correct_calls:600:false:false:true:5:Make %threshold% correct calls in double or nothing.
+
+; Double or nothing suit hits
+
+suit_don_1:Win a suit call:don_suit_hits:1:false:false:true:1:Win a suit call in double or nothing.
+suit_don_5:Win 5 suit calls:don_suit_hits:5:false:false:true:2:Win %threshold% suit calls in double or nothing.
+suit_don_10:Win 10 suit calls:don_suit_hits:10:false:false:true:3:Win %threshold% suit calls in double or nothing.
+suit_don_25:Win 25 suit calls:don_suit_hits:25:false:false:true:4:Win %threshold% suit calls in double or nothing.
+suit_don_50:Win 50 suit calls:don_suit_hits:50:false:false:true:5:Win %threshold% suit calls in double or nothing.
+
+; Double or nothing highest ride
+
+ride_don_3:Win 3 calls in a row:don_highest_ride:3:false:false:true:1:Win %threshold% calls in a row in one round of double or nothing.
+ride_don_5:Win 5 calls in a row:don_highest_ride:5:false:false:true:2:Win %threshold% calls in a row in one round of double or nothing.
+ride_don_7:Win 7 calls in a row:don_highest_ride:7:false:false:true:3:Win %threshold% calls in a row in one round of double or nothing.
+ride_don_10:Win 10 calls in a row:don_highest_ride:10:false:false:true:4:Win %threshold% calls in a row in one round of double or nothing.
+ride_don_12:Win 12 calls in a row:don_highest_ride:12:false:false:true:5:Win %threshold% calls in a row in one round of double or nothing.
+
 ; Higher or lower games played
 
 play_highlow_endless:Play %threshold% rounds of higher or lower:highlow_games:10:false:false:false:1:1.25:true:1:Play %threshold% rounds of higher or lower. Each time you finish it and prestige, it returns at a higher goal.

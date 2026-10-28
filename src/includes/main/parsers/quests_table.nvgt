@@ -600,6 +600,11 @@ string get_stat_display_name(string stat)
     else if (stat == STAT_LOTTERY_TICKETS_BOUGHT)    return "lottery tickets bought";
     else if (stat == STAT_LOTTERY_TICKETS_SCRATCHED) return "lottery tickets scratched";
     else if (stat == STAT_LOTTERY_WINS)              return "lottery wins";
+    else if (stat == STAT_DON_GAMES)                 return "double or nothing games";
+    else if (stat == STAT_DON_WINS)                  return "double or nothing wins";
+    else if (stat == STAT_DON_CORRECT_CALLS)         return "double or nothing correct calls";
+    else if (stat == STAT_DON_SUIT_HITS)             return "double or nothing suit hits";
+    else if (stat == STAT_DON_HIGHEST_RIDE)          return "double or nothing highest ride";
     else if (stat == STAT_HIGHLOW_GAMES)             return "higher or lower games";
     else if (stat == STAT_HIGHLOW_WINS)              return "higher or lower wins";
     else if (stat == STAT_HIGHLOW_HIGHEST_STREAK)    return "higher or lower highest streak";
