@@ -50,6 +50,12 @@ if (rankSounds.length() == 0 || rankDefault.length() == 0)
 }
 parse_jacks_table("tables/jacks.table", jacksConfig);
 parse_dice_table("tables/dice.table");
+parse_don_table("tables/doublenot.table");
+if (donConfig.suits.length() == 0)
+{
+    alert("Error", "Could not load double or nothing data from data/decompiled/config/tables/doublenot.table. Please check the file and try again.");
+    exit();
+}
 parse_highlow_table("tables/highlow.table");
 if (highlowConfig.deck.length() == 0)
 {

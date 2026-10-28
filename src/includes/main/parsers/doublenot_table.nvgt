@@ -1,0 +1,106 @@
+class don_suit
+{
+    string name;
+    string color;
+}
+
+class don_config
+{
+    double min_bet = 1.0;
+    double max_bet = 0.0;
+    double confirm_threshold = 0.0;
+    bool confirm_use_percent = false;
+    // Jokers match no color and no suit, so they lose every call; they are the house edge.
+    int jokers = 2;
+    int max_rides = 0;
+    double color_payout = 2.0;
+    double suit_payout = 4.0;
+    string deal_sound = "double_or_nothing/deal.ogg";
+    string flip_sound = "double_or_nothing/flip(1,2).ogg";
+    string color_win_sound = "double_or_nothing/color_win.ogg";
+    string suit_win_sound = "double_or_nothing/suit_win.ogg";
+    string lose_sound = "double_or_nothing/lose.ogg";
+    string joker_sound = "double_or_nothing/joker.ogg";
+    string bank_sound = "double_or_nothing/bank.ogg";
+    string start_message = "Your bet of %bet% %item% is on the table. Call a color or a suit.";
+    string win_message = "The %card%, a %color% card. You called it, and your pot is now %pot% %item%. Call again or bank your earnings.";
+    string lose_message = "The %card%, a %color% card. Your call was wrong, and you lost the pot of %pot% %item%.";
+    string joker_message = "A joker! The house wins, and you lost the pot of %pot% %item%.";
+    string bank_message = "You banked %pot% %item% after %rides% winning calls.";
+    string limit_message = "You reached the limit of %rides% winning calls, so your pot of %pot% %item% was banked for you.";
+    don_suit[] suits;
+    // Every color named in [suits], once each, in the order they first appear; these become the color calls.
+    string[] colors;
+}
+
+don_config donConfig;
+
+void parse_don_table(string filepath)
+{
+    donConfig.suits.resize(0);
+    donConfig.colors.resize(0);
+    config_file f;
+    if (!f.open(filepath))
+        return;
+    string section = "";
+    while (!f.eof)
+    {
+        string line = f.read_line();
+        while (line.length() > 0 && (line.substr(line.length() - 1) == "\n" || line.substr(line.length() - 1) == "\r"))
+            line = line.substr(0, line.length() - 1);
+        if (line.length() == 0 || line.substr(0, 2) == "//" || line.substr(0, 1) == "#" || line.substr(0, 1) == ";")
+            continue;
+        if (line == "[suits]") { section = "suits"; continue; }
+        int eq = line.find("=");
+        if (eq != -1)
+        {
+            string key = line.substr(0, eq);
+            string val = line.substr(eq + 1);
+            if (key == "min_bet") donConfig.min_bet = max(1.0, string_to_number(val));
+            else if (key == "max_bet") donConfig.max_bet = max(0.0, string_to_number(val));
+            else if (key == "confirm_threshold")
+            {
+                int colon = val.find(":");
+                if (colon != -1)
+                {
+                    donConfig.confirm_threshold = max(0.0, string_to_number(val.substr(0, colon)));
+                    donConfig.confirm_use_percent = (val.substr(colon + 1) == "true");
+                }
+                else
+                    donConfig.confirm_threshold = max(0.0, string_to_number(val));
+            }
+            else if (key == "jokers") donConfig.jokers = max(0, string_to_int(val));
+            else if (key == "max_rides") donConfig.max_rides = max(0, string_to_int(val));
+            // A payout below 1 would make a correct call shrink the pot.
+            else if (key == "color_payout") donConfig.color_payout = max(1.0, string_to_number(val));
+            else if (key == "suit_payout") donConfig.suit_payout = max(1.0, string_to_number(val));
+            else if (key == "deal_sound") donConfig.deal_sound = val;
+            else if (key == "flip_sound") donConfig.flip_sound = val;
+            else if (key == "color_win_sound") donConfig.color_win_sound = val;
+            else if (key == "suit_win_sound") donConfig.suit_win_sound = val;
+            else if (key == "lose_sound") donConfig.lose_sound = val;
+            else if (key == "joker_sound") donConfig.joker_sound = val;
+            else if (key == "bank_sound") donConfig.bank_sound = val;
+            else if (key == "start_message") donConfig.start_message = val;
+            else if (key == "win_message") donConfig.win_message = val;
+            else if (key == "lose_message") donConfig.lose_message = val;
+            else if (key == "joker_message") donConfig.joker_message = val;
+            else if (key == "bank_message") donConfig.bank_message = val;
+            else if (key == "limit_message") donConfig.limit_message = val;
+            continue;
+        }
+        if (section == "suits")
+        {
+            int colon = line.find(":");
+            if (colon == -1) continue;
+            don_suit s;
+            s.name = line.substr(0, colon);
+            s.color = line.substr(colon + 1);
+            if (s.name.length() == 0 || s.color.length() == 0) continue;
+            donConfig.suits.insert_last(s);
+            if (donConfig.colors.find(s.color) < 0)
+                donConfig.colors.insert_last(s.color);
+        }
+    }
+    f.close();
+}

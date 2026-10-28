@@ -536,6 +536,12 @@ void reload_config(bool force = false)
     parse_dice_table("tables/dice.table");
     /* Same checks as at launch: a table that loads nothing would leave its minigame with no deck or wheel to play,
     so a broken edit closes the game here just as it would on startup. */
+    parse_don_table("tables/doublenot.table");
+    if (donConfig.suits.length() == 0)
+    {
+        alert("Error", "Could not load double or nothing data from data/decompiled/config/tables/doublenot.table. Please check the file and try again.");
+        exit();
+    }
     parse_highlow_table("tables/highlow.table");
     if (highlowConfig.deck.length() == 0)
     {
