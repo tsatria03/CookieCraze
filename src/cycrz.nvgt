@@ -256,6 +256,13 @@ else
     stat_dice_rolls=0;
     stat_dice_wins=0;
     stat_dice_losses=0;
+    stat_don_games=0;
+    stat_don_wins=0;
+    stat_don_losses=0;
+    stat_don_correct_calls=0;
+    stat_don_suit_hits=0;
+    stat_don_jokers=0;
+    stat_don_highest_ride=0;
     stat_highlow_games=0;
     stat_highlow_wins=0;
     stat_highlow_losses=0;

@@ -116,6 +116,13 @@ double get_stat_value(string stat)
     if (stat == STAT_DICE_ROLLS) return stat_dice_rolls;
     if (stat == STAT_DICE_WINS) return stat_dice_wins;
     if (stat == STAT_DICE_LOSSES) return stat_dice_losses;
+    if (stat == STAT_DON_GAMES) return stat_don_games;
+    if (stat == STAT_DON_WINS) return stat_don_wins;
+    if (stat == STAT_DON_LOSSES) return stat_don_losses;
+    if (stat == STAT_DON_CORRECT_CALLS) return stat_don_correct_calls;
+    if (stat == STAT_DON_SUIT_HITS) return stat_don_suit_hits;
+    if (stat == STAT_DON_JOKERS) return stat_don_jokers;
+    if (stat == STAT_DON_HIGHEST_RIDE) return stat_don_highest_ride;
     if (stat == STAT_SLOT_SPINS) return stat_slot_spins;
     if (stat == STAT_SLOT_WINS) return stat_slot_wins;
     if (stat == STAT_SLOT_LOSSES) return stat_slot_losses;

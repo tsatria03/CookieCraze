@@ -225,6 +225,13 @@ if (sd.d.exists("stat_penny_flips")) stat_penny_flips = sd.read_double("stat_pen
 if (sd.d.exists("stat_dice_rolls")) stat_dice_rolls = sd.read_double("stat_dice_rolls");
 if (sd.d.exists("stat_dice_wins")) stat_dice_wins = sd.read_double("stat_dice_wins");
 if (sd.d.exists("stat_dice_losses")) stat_dice_losses = sd.read_double("stat_dice_losses");
+if (sd.d.exists("stat_don_games")) stat_don_games = sd.read_double("stat_don_games");
+if (sd.d.exists("stat_don_wins")) stat_don_wins = sd.read_double("stat_don_wins");
+if (sd.d.exists("stat_don_losses")) stat_don_losses = sd.read_double("stat_don_losses");
+if (sd.d.exists("stat_don_correct_calls")) stat_don_correct_calls = sd.read_double("stat_don_correct_calls");
+if (sd.d.exists("stat_don_suit_hits")) stat_don_suit_hits = sd.read_double("stat_don_suit_hits");
+if (sd.d.exists("stat_don_jokers")) stat_don_jokers = sd.read_double("stat_don_jokers");
+if (sd.d.exists("stat_don_highest_ride")) stat_don_highest_ride = sd.read_double("stat_don_highest_ride");
 if (sd.d.exists("stat_highlow_games")) stat_highlow_games = sd.read_double("stat_highlow_games");
 if (sd.d.exists("stat_highlow_wins")) stat_highlow_wins = sd.read_double("stat_highlow_wins");
 if (sd.d.exists("stat_highlow_losses")) stat_highlow_losses = sd.read_double("stat_highlow_losses");
@@ -444,6 +451,13 @@ sd.add("stat_penny_flips", stat_penny_flips);
 sd.add("stat_dice_rolls", stat_dice_rolls);
 sd.add("stat_dice_wins", stat_dice_wins);
 sd.add("stat_dice_losses", stat_dice_losses);
+sd.add("stat_don_games", stat_don_games);
+sd.add("stat_don_wins", stat_don_wins);
+sd.add("stat_don_losses", stat_don_losses);
+sd.add("stat_don_correct_calls", stat_don_correct_calls);
+sd.add("stat_don_suit_hits", stat_don_suit_hits);
+sd.add("stat_don_jokers", stat_don_jokers);
+sd.add("stat_don_highest_ride", stat_don_highest_ride);
 sd.add("stat_highlow_games", stat_highlow_games);
 sd.add("stat_highlow_wins", stat_highlow_wins);
 sd.add("stat_highlow_losses", stat_highlow_losses);
@@ -561,6 +575,10 @@ if(st.d.exists("dicemode"))
 {
 dicemode=st.read_bool("dicemode");
 }
+if(st.d.exists("donmode"))
+{
+donmode=st.read_bool("donmode");
+}
 if(st.d.exists("highlowmode"))
 {
 highlowmode=st.read_bool("highlowmode");
@@ -628,6 +646,7 @@ st.add("jackmode",jackmode);
 st.add("lotterymode",lotterymode);
 st.add("flipmode",flipmode);
 st.add("dicemode",dicemode);
+st.add("donmode",donmode);
 st.add("highlowmode",highlowmode);
 st.add("roulettemode",roulettemode);
 st.add("show_locked_shops", show_locked_shops);
