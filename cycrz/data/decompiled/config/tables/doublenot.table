@@ -20,10 +20,10 @@ spades:black
 ; Sounds
 
 deal_sound=double_or_nothing/deal.ogg
-flip_sound=double_or_nothing/flip(1,2).ogg
+draw_sound=double_or_nothing/draw(1,2).ogg
 color_win_sound=double_or_nothing/color_win.ogg
 suit_win_sound=double_or_nothing/suit_win.ogg
-lose_sound=double_or_nothing/lose.ogg
+wrong_sound=double_or_nothing/lose.ogg
 joker_sound=double_or_nothing/joker.ogg
 bank_sound=double_or_nothing/bank.ogg
 
@@ -33,5 +33,5 @@ start_message=Your bet of %bet% %item% is on the table. Call a color or a suit.
 win_message=The %card%, a %color% card. You called it, and your pot is now %pot% %item%. Call again or bank your earnings.
 lose_message=The %card%, a %color% card. Your call was wrong, and you lost the pot of %pot% %item%.
 joker_message=A joker! The house wins, and you lost the pot of %pot% %item%.
-bank_message=You banked %pot% %item% after %rides% winning calls.
-limit_message=You reached the limit of %rides% winning calls, so your pot of %pot% %item% was banked for you.
+bank_message=You banked %pot% %item% after %calls%.
+limit_message=The %card%, a %color% card. You reached the limit of %calls%, so your pot of %pot% %item% was banked for you.
