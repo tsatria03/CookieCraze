@@ -534,6 +534,20 @@ void reload_config(bool force = false)
     parse_ranks_table("tables/ranks.table", rankSounds, rankDefault, rankRewards);
     parse_jacks_table("tables/jacks.table", jacksConfig);
     parse_dice_table("tables/dice.table");
+    /* Same checks as at launch: a table that loads nothing would leave its minigame with no deck or wheel to play,
+    so a broken edit closes the game here just as it would on startup. */
+    parse_highlow_table("tables/highlow.table");
+    if (highlowConfig.deck.length() == 0)
+    {
+        alert("Error", "Could not load higher or lower data from data/decompiled/config/tables/highlow.table. Please check the file and try again.");
+        exit();
+    }
+    parse_roulette_table("tables/roulette.table");
+    if (rouletteConfig.outcomes.length() == 0)
+    {
+        alert("Error", "Could not load roulette data from data/decompiled/config/tables/roulette.table. Please check the file and try again.");
+        exit();
+    }
     parse_combos_table("tables/combos.table", combosConfig);
     parse_lottery_table("tables/lottery.table");
     loadedAchievements.resize(0);
