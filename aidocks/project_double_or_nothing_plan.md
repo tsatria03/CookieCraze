@@ -1,0 +1,47 @@
+---
+name: project_double_or_nothing_plan
+description: "7.3 blueprint AGREED (7 sections, not built) (started 2026-10-28): double or nothing minigame at rank 50 as a red-or-black card gamble with an optional suit call (4x), bank between rounds; decisions so far + open topics. Follow project_minigame_build_guide."
+metadata:
+  node_type: memory
+  type: project
+---
+
+# Double or nothing minigame (7.3) — blueprint in discussion
+
+First 7.3 feature before boosts ([[project_boosts_plan]]). Build per [[project_minigame_build_guide]]. Ladder after it: dice 40, **double or nothing 50**, higher or lower 60, roulette 70, slot machine 80, baking slots manager 90, combos 100, prestige 110 (boosts later take 100 → combos 110, prestige 120).
+
+## Decided (dev, 2026-10-28)
+
+- **Mechanic: red or black with a suit option** (the slot-machine "gamble feature"), NOT a coin flip — the dev doesn't want another coin flipper (cookie flipper exists), and higher or lower already compares card values. Each round a face-down card is drawn; you call a colour (≈1 in 2, pot ×2) or a suit (≈1 in 4, pot ×4); a wrong call loses the whole pot; after each win, bank or let the whole pot ride on another call.
+- **House edge: jokers (option A), 2 by default** (dev, 2026-10-28). Deck = 52 cards + `jokers=2` in the table (modder-tunable, 0 = fair). A joker is neither colour nor suit, so it loses every call; payouts stay exactly ×2 (colour) and ×4 (suit); edge = jokers/(52+jokers) = 3.7% for both calls (3 jokers = 5.5%). No house_edge field — the jokers are the edge.
+- Bets in the usual 5 items; lost auto/manual cookies call `bet_lost_purchases`; payouts `floor(safe_cap(...))`; minigame money earned counts profit only.
+
+- **Flow + sounds approved (dev, 2026-10-28):** Deal (deal sound, bet taken) → call buttons Red, Black, Hearts, Diamonds, Clubs, Spades (+ Bank earnings after a win) → flip sound → win (card named + new pot; colour_win / suit_win sound), wrong (lose sound, pot lost), joker (joker sound, "A joker! The house wins", pot lost) → call again or bank (bank sound). Folder `sounds/minigames/double_or_nothing/`: deal.ogg, flip1.ogg + flip2.ogg (`flip(1,2).ogg`), color_win.ogg, suit_win.ogg, lose.ogg, joker.ogg, bank.ogg (8 files), each a table setting. **The dev is still finding the sounds — reference them as placeholders** (table points at the paths; files arrive later; check a missing file plays silently rather than erroring).
+
+- **Table draft APPROVED (dev, 2026-10-28)** — `double_or_nothing.table`: Settings min_bet=1, max_bet=0, confirm_threshold=1000:false, jokers=2, max_rides=0, color_payout=2, suit_payout=4; required `[suits]` header with `hearts:red`, `diamonds:red`, `clubs:black`, `spades:black` (colours named become the colour buttons, suits the suit buttons, each suit gets cards two..ace automatically; no ranks section); Sounds deal_sound, flip_sound=double_or_nothing/flip(1,2).ogg, color_win_sound, suit_win_sound, lose_sound, joker_sound, bank_sound; Messages (approved wording; American "color" spelling to match roulette and the readme, which never use "colour"):
+  - start_message=Your bet of %bet% %item% is on the table. Call a color or a suit.
+  - win_message=The %card%, a %color% card. You called it, and your pot is now %pot% %item%. Call again or bank your earnings.
+  - lose_message=The %card%, a %color% card. Your call was wrong, and you lost the pot of %pot% %item%.
+  - joker_message=A joker! The house wins, and you lost the pot of %pot% %item%.
+  - bank_message=You banked %pot% %item% after %rides% winning calls.
+  - limit_message=You reached the limit of %rides% winning calls, so your pot of %pot% %item% was banked for you.
+  On a lose/joker, %pot% is the current pot (just the bet on the first call).
+- **Betting like the other games (dev asked, 2026-10-28):** you type a bet amount; only that bet is at risk and becomes the starting pot; doubling/quadrupling applies to the pot, never to your whole balance.
+
+## Open topics (one per turn)
+
+1. ~~House edge~~ — decided: 2 jokers.
+2. ~~Deck draw~~ — decided (dev, 2026-10-28): **fresh full 54-card deck every call** (with replacement, like real gamble features); no dealt-through deck, so no card counting and the joker edge stays exact. **Limits decided (dev, 2026-10-28): `max_rides=0` in the table (0 = no limit, like highlow max_streak); when set and reached, the pot is banked automatically with a limit message.** Was: limits (max rides / max pot), deck draw with or without replacement.
+3. ~~Sounds and what you hear~~ — approved.
+4. ~~Messages + table layout~~ — approved.
+5. ~~Auto-reveal setting~~ — approved (dev, 2026-10-28): checkbox "automatic card revealing" on the game screen and in game settings after higher or lower's; on by default; saved in preffs; on = speak_buffer, off = dlg_buffer; covers win, wrong, joker, bank and limit messages.
+6. **Stats APPROVED (dev, 2026-10-28)**, 7 stats: don_games (rounds dealt), don_wins (rounds banked incl. limit auto-bank), don_losses (wrong call or joker), don_correct_calls (every winning call), don_suit_hits (correct suit calls; signature), don_jokers (rounds ended by a joker; also losses), don_highest_ride (best correct calls in one round — a best: NOT in SESSION_STATS/quest baselines, gets a session best var like sessionHighestStreak). Statistics screen section "Double or nothing" after Dice roller, before Higher or lower (unlock order); readme section count 13 → 14. New-game reset only; prestige keeps them. **Achievements + quests APPROVED (dev, 2026-10-28):** category "Double or nothing", ids prefixed `dn_`, 58 achievements — games 1,5,10,25,50,100,250,500,1000,2000,5000; wins 1,5,10,25,50,100,250,500,1000,5000; losses 1,5,10,25,50,100,250,500,1000; correct calls 1,10,25,50,100,250,500,1000,2500,5000; suit hits 1,5,10,25,50,100,250; jokers 1,5,10,25,50,100; highest ride 3,5,7,10,12. 21 quests — games: one endless quest (10, growth 1.25, like play_highlow_endless); wins 5/25/75/150/300 (tiers 1–5); correct calls 10/50/150/300/600; suit hits 1/5/10/25/50; highest ride 3/5/7/10/12; no joker quests (losses). Names/descriptions/flavor written at build.
+7. reload_config: include its table (yes, per the 7.3 reload fixes).
+8. Build sections — APPROVED (dev, 2026-10-28), merged to 6 then achievements/quests split → 7 sections, so every code section has test steps ([[feedback_flag_sections_without_tests]]):
+   1. **Table + parser** (steps: launches; emptied [suits] errors at launch and on Control L): `double_or_nothing.table` (approved draft, sounds as placeholders); `parsers/double_or_nothing_table.nvgt` (`donConfig`, `parse_don_table`); call + empty-[suits] guard in cycrz.nvgt main() and in `reload_config`.
+   2. **State & stats** (steps: new "Double or nothing" block on session/lifetime screens, all zeros; saves/loads): `donmode` bool + 7 STAT_ consts/doubles (dec.nvgt); readdata/writedata + preffs; cycrz.nvgt new-game reset; SESSION_STATS (6 counts) + session best for highest ride; quest_baseline_stats (6 counts); block in build_statistics_text after Dice roller.
+   3. **The game + menu + ladder shift** (steps: unlock at 50, play every path, other unlocks moved): `donGame()` + input in minigames.nvgt (highlowgame is the model); panel button after dice roller with `rank<50`; menu.nvgt gates highlow 50→60, roulette 60→70, slots 70→80; ranks.table new 50 line + highlow 60, roulette 70, slots 80, slotmanager 90, combos 100; combos.table enabled=true:100; prestige.table min_rank=110; handle_rank_unlock + minigame_input cases. Flag re-locks for saves at ranks 50–109.
+   4. **Settings** checkbox after higher or lower's + reset_game_settings default.
+   5. **Achievements (58)** (steps: earn a few, check the category) — category + lines in achievements.table, `get_stat_value` mapping for all 7 stats (quests also read it).
+   6. **Quests (21)** (steps: a quest counts progress) — lines in quests.table + `get_stat_display_name` labels. Achievements and quests are ALWAYS separate sections (dev, 2026-10-28).
+   7. **Docs (no test steps):** changelog (game incl. setting + ladder shift, achievements, quests → 7.3 block 6 of 10), readme (minigame blurb, later rank headers shifted, statistics 14 sections, config reference, prestige/combos rank mentions), todo → Finished, memory.

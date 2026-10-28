@@ -73,6 +73,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Plan features in memory first](feedback_plan_features_in_memory.md) — before coding any new feature, write the agreed plan (locked decisions + numbered build sections) into an aidocks/ memory file and index it; only then build, section by section.
 - [Flag todo prerequisites](feedback_flag_todo_prerequisites.md) — dev picks todo items at random; say up front if one needs another item or a decision first.
 - [Test steps one at a time](feedback_test_steps_one_at_a_time.md) — give testing steps one per message ("Step 1 of N"), wait for the result, then the next; never the whole list at once.
+- [Flag sections without tests](feedback_flag_sections_without_tests.md) — say plainly when a build section has no testing steps (plan and summary), and offer to merge it into a testable neighbour.
 - [Pause after each fix](feedback_pause_after_each_fix.md) — after a fix + its docs, end the turn with the summary for review; never start the next item (reading, analysis, or its question) in the same reply, even in a batch.
 - [Bug list format](feedback_bug_list_format.md) — when listing bugs, split player-facing vs code (internal/modder/build), group each by game section, one line per bug with its memory id.
 - [Ask one question at a time](feedback_ask_one_question_at_a_time.md) — surface ONE question per turn and wait; don't batch a numbered list.
@@ -102,4 +103,5 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Combo repeat plan](project_combo_repeat_plan.md) — SHIPPED 7.2: past the last tier the tier sounds cycle (same spacing) + optional repeat_message; multiplier holds at 16x; settings checkbox (on, after exit sound) turns repeat announcements off; 2 sections.
 - [Settings vs tables](feedback_settings_vs_tables.md) — main.table numbers only; player-taste on/off goes in game settings, design switches stay in tables, cheats are removed.
 - [Session stats plan](project_session_stats_plan.md) — SHIPPED 7.2: Session/Lifetime statistics screens; Copy/Export/Close on those + achievement stats (exports replace stats/*_statistics.txt in AppData); exit results screen + settings toggle; snapshot-and-diff; 4 sections.
+- [Double or nothing plan](project_double_or_nothing_plan.md) — 7.3 blueprint AGREED, not built: rank 50 red-or-black card gamble with a suit call (4x), 2 jokers as the edge, bank between rounds; 7 sections (achievements and quests separate), docs last.
 - [Boosts plan](project_boosts_plan.md) — AGREED for 7.3, not built (6 sections): buy boosts in the cookie store (inventory), buy boost slots + activate like auto slots, no free slots; references surveyed; open questions listed.
