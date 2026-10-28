@@ -48,12 +48,13 @@ Alt plus F4: Exits the main game immediately without saving.
 
 In minigames.
 
-These keys work while any minigame is open, and they mean the same as on the main game screen.
+These keys work while any minigame is open. C, M, A, S, and N mean the same as on the main game screen.
 Letter, C: Announces your current cookie count.
 Letter, M: Announces how much money you currently have.
 Letter, A: Announces how many auto cookies you have.
 Letter, S: Announces your current baking speed and how long each bake takes.
 Letter, N: Announces how many manual cookies you have.
+Letter, B: In the minigames that take a bet, announces your bet. In blackjack, the slot machine, the dice roller, and roulette, it tells you the last bet you placed, or that you have not placed one yet, and roulette also gives the number of bet types and your total stake. In higher or lower it tells you your streak, pot, and the card showing, and in double or nothing your pot and winning calls. It works at any time, even while cards are being dealt, the reels or wheel are spinning, or the dice are rolling.
 Control S: Saves your game progress without leaving the minigame, so a round in progress carries on.
 Control L: Reloads all configuration files and your save data, then reopens the minigame you are in. If there is no save to reload, only the configuration files are reloaded.
 
