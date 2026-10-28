@@ -6,6 +6,8 @@ metadata:
   type: project
 ---
 
+**MOVED TO 7.4 (dev, 2026-10-28)** — not 7.3. Its own changelog block; the ladder shift gets its own entry.
+
 # Boosts (in discussion)
 
 Todo item: "Add a temporary boosts shop where you spend cookies or coins on timed power-ups…". Discussed 2026-10-27.
@@ -43,7 +45,7 @@ Todo item: "Add a temporary boosts shop where you spend cookies or coins on time
 3j. **Cost multiplier 1.01 for every boost (dev, 2026-10-27)**, matching every line in singles.store (109 items, all 1.01) and tickets.store (all 1.01). **Base costs (dev approved 12 of 13, 2026-10-27; sized to rank-90 economy — singles user items cost ~0.5–1M cookies at rank 75, 5–10M at rank 100):** cookies — Oven sale 1,000,000; Helping hands 1,000,000; Cheap circuits 1,200,000; Combo focus 1,500,000; Turbo bake 2,000,000; Busy hands 2,500,000; Oven overdrive 3,000,000. Money (written in cents) — Clearance rack $250,000 (25000000); Bargain hunter $300,000 (30000000); Market rush $400,000 (40000000); Rank rush $500,000 (50000000); Cookie frenzy $750,000 (75000000). **Cash jar decided (dev, 2026-10-27):** effect `money_per_second` always means a percent of your auto earnings (auto cookies per second × current sell price), paid every second — default **10 percent**, base cost **$350,000 (35000000)**. The 2-cents-a-second idea is dropped. use_percent is NOT reused (elsewhere it means a percent of what you currently hold, which would compound). **So the boost line drops `use_percent`:** `menu:boost_id:effect:base_cost:cost_multiplier:amount:duration:min_rank:hidden:description`.
 3k. **main.table boost prices (dev, 2026-10-27), in [slots], written in DOLLARS like the rest of main.table:** `boost_slot_base_cost=30` ($30.00 to add a slot), `boost_slot_cost_multiplier=1.01`, `boost_activation_base_cost=15` ($15.00 to activate), `boost_activation_cost_multiplier=1.01` (dev changed from $100,000 / $25,000 — mirrors auto slot $0.30 / automation $0.15, ×100). Reset at prestige / new game like automation.
 4. Price model (fixed like tickets vs scaled to current production), boost duration, stacking, prestige reset of slots/inventory, config file (boosts.store).
-5. ~~Version~~ — **decided (dev, 2026-10-27): 7.3.** So the ladder shift (boost slot manager 90, combos 100, prestige 110) also lands in 7.3; the 7.2 prestige changelog entry keeps saying rank 100.
+5. ~~Version~~ — **decided (dev, 2026-10-27): 7.3.** So the ladder shift also lands in 7.3 — **superseded: after double or nothing (shipped 2026-10-28) it is boost slot manager 100, combos 100→110, prestige 110→120**; the 7.2 prestige changelog entry keeps saying rank 100.
 
 ## Screen wording (dev approved, 2026-10-27)
 
@@ -59,4 +61,4 @@ Todo item: "Add a temporary boosts shop where you spend cookies or coins on time
 3. **Store:** cookie store "buy boosts" (locked below 100 like tickets), category → boost list with price, bulk buy at the proper geometric sum, max_boosts.
 4. **Boost slot manager:** main-screen "Boost slot ma&nager" (Alt+N) after Baking slots manager, rank 100; Add / Activate / End menus as worded above; B key readout.
 5. **Rank ladder:** boost unlock at 100 (ranks.table line + handle_rank_unlock), combos 90→110, prestige 100→120; baking slots manager 80→90 and the minigames after dice move up 10 when double or nothing lands at 50.
-6. **Docs:** readme (store, slot manager, keys B/F5/Alt+N, boosts.store + main.table references, ladder ranks), 7.3 changelog, todo Finished, memory.
+6. **Docs:** readme (store, slot manager, keys B/F5/Alt+N, boosts.store + main.table references, ladder ranks), 7.3 changelog, todo Finished, memory. **The ladder shift (boost slot manager 100, combos 100→110, prestige 110→120, plus any same-rank clash in ranks.table) gets its OWN changelog entry, separate from the boosts entry (dev, 2026-10-28)** — like double or nothing's; check the 7.3 block has room (7 of 10 after double or nothing).

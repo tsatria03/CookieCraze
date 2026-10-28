@@ -833,6 +833,22 @@ string get_stat_progress_label(string stat)
     if (stat == STAT_AUTO_SLOTS_IDLE) return "auto slots idle";
     if (stat == STAT_QUESTS_COMPLETED) return "quests completed";
     if (stat == STAT_REROLLS_PERFORMED) return "rerolls performed";
+    if (stat == STAT_COMBOS_STARTED) return "combos started";
+    if (stat == STAT_COMBOS_BROKEN) return "combos broken";
+    if (stat == STAT_HIGHEST_COMBO_REACHED) return "highest combo reached";
+    if (stat == STAT_HIGHLOW_GAMES) return "games played";
+    if (stat == STAT_HIGHLOW_WINS) return "wins";
+    if (stat == STAT_HIGHLOW_LOSSES) return "losses";
+    if (stat == STAT_HIGHLOW_HIGHEST_STREAK) return "highest streak";
+    if (stat == STAT_LOTTERY_TICKETS_BOUGHT) return "tickets bought";
+    if (stat == STAT_LOTTERY_TICKETS_SCRATCHED) return "tickets scratched";
+    if (stat == STAT_LOTTERY_WINS) return "wins";
+    if (stat == STAT_LOTTERY_LOSSES) return "losses";
+    if (stat == STAT_ROULETTE_GAMES) return "spins";
+    if (stat == STAT_ROULETTE_WINS) return "wins";
+    if (stat == STAT_ROULETTE_LOSSES) return "losses";
+    if (stat == STAT_ROULETTE_STRAIGHT_HITS) return "straight hits";
+    if (stat == STAT_ROULETTE_BREAKS) return "break-evens";
     return stat;
 }
 

@@ -203,7 +203,7 @@ win_roulette_300:Win 300 roulette spins:roulette_wins:300:false:false:true:5:Win
 
 ; Roulette straight hits
 
-straight_roulette_1:Land 1 straight-up number bet:roulette_straight_hits:1:false:false:true:1:Land %threshold% straight-up single number bets in roulette.
+straight_roulette_1:Land 1 straight-up number bet:roulette_straight_hits:1:false:false:true:1:Land a straight-up single number bet in roulette.
 straight_roulette_5:Land 5 straight-up number bets:roulette_straight_hits:5:false:false:true:2:Land %threshold% straight-up single number bets in roulette.
 straight_roulette_10:Land 10 straight-up number bets:roulette_straight_hits:10:false:false:true:3:Land %threshold% straight-up single number bets in roulette.
 straight_roulette_25:Land 25 straight-up number bets:roulette_straight_hits:25:false:false:true:4:Land %threshold% straight-up single number bets in roulette.
@@ -211,7 +211,7 @@ straight_roulette_50:Land 50 straight-up number bets:roulette_straight_hits:50:f
 
 ; Roulette break-evens
 
-break_roulette_1:Break even 1 time in roulette:roulette_breaks:1:false:false:true:1:Break even on %threshold% spins of roulette.
+break_roulette_1:Break even 1 time in roulette:roulette_breaks:1:false:false:true:1:Break even on a spin of roulette.
 break_roulette_5:Break even 5 times in roulette:roulette_breaks:5:false:false:true:2:Break even on %threshold% spins of roulette.
 break_roulette_10:Break even 10 times in roulette:roulette_breaks:10:false:false:true:3:Break even on %threshold% spins of roulette.
 break_roulette_25:Break even 25 times in roulette:roulette_breaks:25:false:false:true:4:Break even on %threshold% spins of roulette.
