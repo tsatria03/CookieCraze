@@ -1,8 +1,9 @@
 ####These are the things that need to be finished for future versions of the game.
 
 ****Unfinished. Add a temporary boosts shop where you spend cookies or coins on timed power-ups, such as double production for 60 seconds, an auto-bake burst, or an extended combo window.
-****Unfinished. Add an auto-buyer that automatically purchases the cheapest upgrade you can afford on a timer, extending automation from baking into spending. Unlocked at a late rank and toggleable in the settings.
 ****Unfinished. Add a double or nothing minigame where you stake one item on a coin flip that doubles your pot on a win and loses it all on a loss, then choose after each win to cash out or let the whole pot ride on another flip.
+****Unfinished. Review the two game settings that evenly distribute cookie production across automated and manual slots, which can only make slots produce nothing extra, and decide whether to keep, move, or remove them.
+****Unfinished. Fix the ticket shop charging the same price for every ticket when you buy several at once, which makes buying in bulk cheaper than buying the same tickets one at a time, since each ticket you hold raises the price of the next.
 
 ##These are the things that are already finished from earlier versions of the game.
 

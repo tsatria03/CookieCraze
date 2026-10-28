@@ -21,7 +21,7 @@ Brainstormed 2026-08-23, right after 6.3 shipped. **Most are unbuilt** — this 
 ## New content
 
 - **6th minigame: higher or lower** — ✅ **SHIPPED in 6.4** (unlocks at rank 50). Detailed spec + build record below; more minigame ideas in the candidates section that follows.
-- **Auto-buyer automation** — late-game unlock that auto-purchases the cheapest affordable upgrade on a timer (the classic idle "manager"); extends automation from baking into spending. Rank-gated, toggleable. *Medium.*
+- **Auto-buyer automation — DROPPED (dev, 2026-10-27): removed from the todo list, no longer wanted; don't suggest it again.** Was: late-game unlock that auto-purchases the cheapest affordable upgrade on a timer (the classic idle "manager"); extends automation from baking into spending. Rank-gated, toggleable. *Medium.*
 - **Temporary boosts shop** — spend cookies/coins on timed power-ups (2x production 60s, auto-bake burst, combo-window extension); adds active decisions to the idle loop; reuses store/config machinery. *Low-medium.*
 
 ## Future minigame candidates (7th minigame and beyond)
@@ -132,8 +132,8 @@ Higher-or-lower-specific wiring beyond the clone:
 - Settings persistence for the auto toggles is the `flipmode`/`jackmode`/`lotterymode`/`dicemode`/`slotmode`/`orderedSyms` pattern (all default true, saved in the game-settings file).
 
 **Unlock rank arrangement (decided, NOT yet applied — do it as part of the build, not standalone).** Higher or lower unlocks at **rank 50**. **Rationale:** the minigames panel is **alphabetized**, so "Higher or lower" (H) sorts before "Slot machine" (S) and must unlock at an *earlier* rank than slots, otherwise unlock order wouldn't match the panel order. So slots and everything after it each shift up 10.
-- Current `ranks.table` ladder: 10 blackjack, 20 flipper, 30 lottery, 40 dice, **50 slots, 60 slot manager, 70 combos**.
-- New ladder: 10 blackjack, 20 flipper, 30 lottery, 40 dice, **50 higher or lower, 60 slots, 70 slot manager, 80 combos**.
+- Current `ranks.table` ladder: 10 blackjack, 20 flipper, 30 lottery, 40 dice, **50 slots, 60 baking slots manager, 70 combos**.
+- New ladder: 10 blackjack, 20 flipper, 30 lottery, 40 dice, **50 higher or lower, 60 slots, 70 baking slots manager, 80 combos**.
 
 Concrete edits when building:
 - `ranks.table`: change the slots line to rank 60, the slotmanager line to rank 70, the combos line to rank 80, and add a rank-50 `higherlower` unlock line (same format as the others).
@@ -141,8 +141,10 @@ Concrete edits when building:
 - Slot-manager gate needs no code change: `slotManagerUnlockRank` auto-derives from the ranks.table slotmanager line (`ranks_table.nvgt`).
 - **Hardcoded minigame gates in `menu.nvgt`** ("rank X or higher" checks): move the **slot machine** check `50 → 60`, and add a new `rank < 50` check for higher or lower.
 
-**Why bundle it with the build, not now:** doing the shift standalone would (because gates re-derive on launch) **temporarily re-lock the slot machine for existing saves at rank 50–59, the slot manager at 60–69, and combos at 70–79** until they rank up, and leave rank 50 with no new unlock until the minigame ships. Shipping the shift together with the rank-50 unlock avoids that.
+**Why bundle it with the build, not now:** doing the shift standalone would (because gates re-derive on launch) **temporarily re-lock the slot machine for existing saves at rank 50–59, the baking slots manager at 60–69, and combos at 70–79** until they rank up, and leave rank 50 with no new unlock until the minigame ships. Shipping the shift together with the rank-50 unlock avoids that.
 
 ## Double or nothing minigame (idea, dev 2026-10-27, not designed)
 
-Todo `****Unfinished.` item added 2026-10-27. Concept: stake one item on a coin flip; a win doubles the pot, a loss loses it all; after each win, cash out or let the whole pot ride. Nothing decided yet. Before building, follow [[project_minigame_build_guide]]: discuss and write a blueprint first (config table fields such as win chance / house edge, max rides, sounds; unlock rank and the alphabetized-panel rank ladder ripple; auto-reveal setting; stats, achievements, quests). Losing a bet of auto/manual cookies must call `bet_lost_purchases` ([[project_loss_price_plan]]).
+**First feature of 7.3 (dev, 2026-10-27)**, built before boosts so the ladder shift is in place: after it, baking slots manager 90, combos 100, prestige 110; boosts then take 100.
+
+Todo `****Unfinished.` item added 2026-10-27. Concept: stake one item on a coin flip; a win doubles the pot, a loss loses it all; after each win, cash out or let the whole pot ride. Nothing decided yet. Before building, follow [[project_minigame_build_guide]]: discuss and write a blueprint first (config table fields such as win chance / house edge, max rides, sounds; unlock rank and the alphabetized-panel rank ladder ripple; auto-reveal setting; stats, achievements, quests). Losing a bet of auto/manual cookies must call `bet_lost_purchases` ([[project_loss_price_plan]]). **Rank ladder (discussed 2026-10-27):** alphabetically it sits after the dice roller (40), so it would unlock at 50 and push higher or lower 60, roulette 70, slot machine 80, baking slots manager 90, combos 100. **Dev: prestige then moves up to rank 110** (prestige.table `min_rank`, currently 100) so prestige still unlocks after every feature — **Superseded (dev, 2026-10-27): the planned 7.3 ladder with boosts and double or nothing is double or nothing 50, higher or lower 60, roulette 70, slot machine 80, baking slots manager 90, boost slot manager 100, combos 110, prestige 120**; update the readme/changelog mentions of rank 100 and flag the re-lock for existing saves between old and new ranks. Recommended timing: 7.3, as its headline (7.2 has one changelog slot left).

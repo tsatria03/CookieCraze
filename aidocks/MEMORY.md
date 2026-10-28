@@ -23,7 +23,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Number overflow cap](project_number_overflow_cap.md) — shipped 6.3: stop `Inf`/`$inf` by clamping the growing balances + `stat_*` totals to 1e308 (via `floor(safe_cap(x))` normalizers, a loop clamp, and capped display locals), not just cost formulas.
 
 ## How-to guides
-- [Minigame build guide](project_minigame_build_guide.md) — repeatable steps to add a new minigame: blueprint first, plan sections, code one section per turn and wait for commit, docks last; full file/function wiring map.
+- [Minigame build guide](project_minigame_build_guide.md) — repeatable steps to add a new minigame: blueprint first, plan sections, code one section per turn and wait for commit, docks last; full file/function wiring map. Every new minigame shifts later unlocks up 10 ranks (incl. baking slots manager, combos); prestige is always last.
 
 ## Ideas / backlog
 - [Feature ideas](project_feature_ideas.md) — 6.4+ wish list (offline progress, golden-cookie bonus, daily streak, auto-buyer, boosts shop, QoL) + future-minigame candidates (mines, video poker, keno, audio Simon). Higher or lower + number-format shipped in 6.4; achievement rewards + roulette shipped in 6.5, roulette's rank-shift + tweaks changelogged in 6.6 (all roulette sounds delivered); rest unbuilt.
@@ -102,3 +102,4 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Combo repeat plan](project_combo_repeat_plan.md) — SHIPPED 7.2: past the last tier the tier sounds cycle (same spacing) + optional repeat_message; multiplier holds at 16x; settings checkbox (on, after exit sound) turns repeat announcements off; 2 sections.
 - [Settings vs tables](feedback_settings_vs_tables.md) — main.table numbers only; player-taste on/off goes in game settings, design switches stay in tables, cheats are removed.
 - [Session stats plan](project_session_stats_plan.md) — SHIPPED 7.2: Session/Lifetime statistics screens; Copy/Export/Close on those + achievement stats (exports replace stats/*_statistics.txt in AppData); exit results screen + settings toggle; snapshot-and-diff; 4 sections.
+- [Boosts plan](project_boosts_plan.md) — AGREED for 7.3, not built (6 sections): buy boosts in the cookie store (inventory), buy boost slots + activate like auto slots, no free slots; references surveyed; open questions listed.
