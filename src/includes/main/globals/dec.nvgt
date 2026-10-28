@@ -47,8 +47,6 @@ double manulcookie_purchases = 0;
 double slotBaseCost = 30;
 double slotMultiplier = 1.01;
 
-bool manualSlotDistribution = false;
-bool slotDistribution = false;
 int autobakeSlots = 0;
 int manualSlots = 0;
 array<bool> autobakeSlotEnabled;

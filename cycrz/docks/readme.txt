@@ -134,7 +134,7 @@ Baking mode is a toggle that activates automatic cookie production. To enable it
 You can still press the bake button manually while baking mode is running to get an extra boost on top of the automatic output. Baking mode turns off automatically if your auto cookie count drops to zero.
 
 If you have no baking slots yet, auto baking uses your full auto cookie value directly.
-Once you purchase and enable slots through the baking slots manager, production is routed through them instead, giving you finer control over how cookies are distributed.
+Once you purchase and enable slots through the baking slots manager, production is routed through them instead, and every slot bakes your full auto or manual cookies, so each one you add multiplies your production.
 
 Ranking up.
 
@@ -320,7 +320,7 @@ There are two types of slots.
 Auto slots bake cookies passively without any input, scaling with your auto cookie stat.
 Manual slots multiply the output of each bake press, scaling with your manual cookie stat.
 
-Two game settings change how slots work: evenly distributing cookie production across automated slots, and the same for manual slots. With a setting off, every slot of that type produces your full auto or manual cookies, so 10 slots produce 10 times as much. With it on, your cookies are shared out between the slots instead, so your total stays the same as having no slots. Slots never store or protect your auto and manual cookies; if those drop to zero, every slot produces zero.
+Every slot produces your full auto or manual cookies, so 10 automated slots produce 10 times as much as your auto cookies alone, and 10 manual slots make each press produce 10 times your manual cookies. Slots never store or protect your auto and manual cookies; if those drop to zero, every slot produces zero.
 
 You can purchase additional slots of either type. A new auto slot does nothing until you pay to automate it in the slot automation menu, and automating a slot is permanent. Manual slots start working as soon as you buy them. Slots and automation cannot be sold back once purchased.
 Both submenus are locked behind a rank requirement, defaulting to rank 80.

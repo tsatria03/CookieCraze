@@ -541,14 +541,6 @@ if(st.d.exists("numberFormatMode"))
 {
 numberFormatMode=st.read_int("numberFormatMode");
 }
-if (st.d.exists("slotDistribution"))
-{
-slotDistribution = st.read_bool("slotDistribution");
-}
-if (st.d.exists("manualSlotDistribution"))
-{
-manualSlotDistribution = st.read_bool("manualSlotDistribution");
-}
 if(st.d.exists("slotmode"))
 {
 slotmode=st.read_bool("slotmode");
@@ -603,8 +595,6 @@ roulettemode=true;
 slotmode=true;
 show_locked_shops=true;
 numberFormatMode=0;
-slotDistribution=false;
-manualSlotDistribution=false;
 if (file_exists(APPDATA_DIR + "preffs/gamesets.crz")) file_delete(APPDATA_DIR + "preffs/gamesets.crz");
 writepreffs();
 }
@@ -633,8 +623,6 @@ st.add("logosfx",logosfx);
 st.add("savesfx",savesfx);
 st.add("speak_menu_position",speak_menu_position);
 st.add("numberFormatMode",numberFormatMode);
-st.add("slotDistribution",slotDistribution);
-st.add("manualSlotDistribution",manualSlotDistribution);
 st.add("slotmode",slotmode);
 st.add("jackmode",jackmode);
 st.add("lotterymode",lotterymode);

@@ -3,7 +3,7 @@ submenu restores it, so nothing changed there sticks without pressing Save. The 
 themselves after a name change or a cancelled reset, so they can't take the snapshot themselves. */
 int setsnap_numberFormatMode;
 bool setsnap_introsfx, setsnap_logosfx, setsnap_exitsfx, setsnap_comborepeats, setsnap_sessionresults, setsnap_bakesfx, setsnap_savesfx, setsnap_speak_menu_position;
-bool setsnap_slotDistribution, setsnap_manualSlotDistribution, setsnap_show_locked_shops;
+bool setsnap_show_locked_shops;
 double setsnap_ambvolume, setsnap_musvolume, setsnap_storambvolume, setsnap_stormusvolume;
 string setsnap_ambtype, setsnap_mustype;
 int setsnap_ambienceIndex, setsnap_musicIndex;
@@ -20,8 +20,6 @@ setsnap_sessionresults = sessionresults;
 setsnap_bakesfx = bakesfx;
 setsnap_savesfx = savesfx;
 setsnap_speak_menu_position = speak_menu_position;
-setsnap_slotDistribution = slotDistribution;
-setsnap_manualSlotDistribution = manualSlotDistribution;
 setsnap_show_locked_shops = show_locked_shops;
 }
 void restore_game_settings()
@@ -35,8 +33,6 @@ sessionresults = setsnap_sessionresults;
 bakesfx = setsnap_bakesfx;
 savesfx = setsnap_savesfx;
 speak_menu_position = setsnap_speak_menu_position;
-slotDistribution = setsnap_slotDistribution;
-manualSlotDistribution = setsnap_manualSlotDistribution;
 show_locked_shops = setsnap_show_locked_shops;
 }
 void snapshot_sound_settings()
@@ -145,8 +141,6 @@ int saveSFX = form.create_checkbox("Enable save sound effects when reloading and
 int bakeSFX = form.create_checkbox("Enable auto bake sound effects when baking cookies.", bakesfx);
 /* The event on/off checkboxes and the cost multiplier, rank, experience, event chance, and sell price sliders were
 removed: switching events off or changing those values was effectively a cheat. They now live in main.table for modders. */
-int bakeSplitToggle = form.create_checkbox("Enable evenly distributing cookie production across automated slots.", slotDistribution);
-int manualBakeSplitToggle = form.create_checkbox("Enable evenly distributing cookie production across manual slots.", manualSlotDistribution);
 int showLockedToggle = form.create_checkbox("Enable showing locked items and menus in the shop list.", show_locked_shops);
 int numberFormatList = form.create_list("Number format", 4);
 form.add_list_item(numberFormatList, "Raw. Example, 5,230.");
@@ -171,8 +165,6 @@ sessionresults = form.is_checked(sessionResultsToggle);
 bakesfx = form.is_checked(bakeSFX);
 savesfx = form.is_checked(saveSFX);
 speak_menu_position = form.is_checked(menuPositionToggle);
-slotDistribution = form.is_checked(bakeSplitToggle);
-manualSlotDistribution = form.is_checked(manualBakeSplitToggle);
 show_locked_shops = form.is_checked(showLockedToggle);
         if (form.is_pressed(restsets))
         {

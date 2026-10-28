@@ -121,13 +121,9 @@ speak_buffer("You need at least 1 manual cookie to start baking cookies.", "gene
 else if(manulcookie>=1)
 {
     double manualGain = 0;
+    // Each manual slot adds your full manual cookies to every press.
     if (manualSlots > 0)
-    {
-        if (manualSlotDistribution)
-            manualGain = manulcookie;
-        else
-            manualGain = manulcookie * manualSlots;
-    }
+        manualGain = manulcookie * manualSlots;
     else
         manualGain = manulcookie;
     if (prestige_cookie_multiplier > 0) manualGain *= 1.0 + (prestige_cookie_multiplier / 100.0);
@@ -225,11 +221,8 @@ if(clicktimer.elapsed>=clicktime)
 double autoGain = 0;
 if (autobakeSlots > 0)
 {
+// Every automated slot bakes your full auto cookies.
 double perSlot = autocookie;
-if (slotDistribution && autobakeSlots > 0)
-{
-    perSlot = autocookie / autobakeSlots;
-}
         for (uint i = 0; i < autobakeSlotEnabled.length(); i++)
 {
             if (autobakeSlotEnabled[i])
@@ -401,15 +394,14 @@ if (key_pressed(KEY_F))
             slotCount++;
     }
     /* Mirrors the auto bake in the main loop, prestige cookie bonus included, and names both numbers:
-    what each automated slot makes and what you make in total. With even splitting on, the slots share
-    your auto cookies, so the total stays the same and only the per slot share changes. */
+    what each automated slot makes and what you make in total. */
     double bonus = (prestige_cookie_multiplier > 0) ? 1.0 + (prestige_cookie_multiplier / 100.0) : 1.0;
     string period = "per second";
     if (clicktime != 1000) period = "every " + clicktime + " milliseconds";
     if (slotCount > 0)
     {
-        double cookiesPerSlot = (slotDistribution ? autocookie / slotCount : autocookie) * bonus;
-        double totalCookies = (slotDistribution ? autocookie : autocookie * slotCount) * bonus;
+        double cookiesPerSlot = autocookie * bonus;
+        double totalCookies = autocookie * slotCount * bonus;
         string slotWord = (slotCount == 1) ? "slot" : "slots";
         string perSlotWord = (cookiesPerSlot == 1) ? "cookie" : "cookies";
         string totalWord = (totalCookies == 1) ? "cookie" : "cookies";
@@ -434,8 +426,8 @@ if(key_pressed(KEY_J))
     double bonus = (prestige_cookie_multiplier > 0) ? 1.0 + (prestige_cookie_multiplier / 100.0) : 1.0;
     if (manualSlots > 0)
     {
-        double perSlot = (manualSlotDistribution ? manulcookie / manualSlots : manulcookie) * bonus;
-        double totalManual = (manualSlotDistribution ? manulcookie : manulcookie * manualSlots) * bonus;
+        double perSlot = manulcookie * bonus;
+        double totalManual = manulcookie * manualSlots * bonus;
         string perSlotWord = (perSlot == 1) ? "cookie" : "cookies";
         string totalWord = (totalManual == 1) ? "cookie" : "cookies";
         string slotWord = (manualSlots == 1) ? "slot" : "slots";
