@@ -1060,21 +1060,12 @@ string don_calls(int rides)
     return string(rides) + (rides == 1 ? " winning call" : " winning calls");
 }
 
-// An amount as it is spoken: dollars and cents for currency, a plain number otherwise.
-string don_amount(int selectedBet, double amount)
-{
-    return (selectedBet == 1) ? convert_to_currency(amount) : format_number(amount);
-}
-
 /* Pays a banked pot into the item that was bet. Money earned counts only the profit over the bet. A banked pot is
 never smaller than the bet, since payouts are at least 1, so there is no loss for bet_lost_purchases to scale. */
 void don_bank(int selectedBet, double betAmount, double pot)
 {
-    if (selectedBet == 0) { cookies += pot; cookies = floor(safe_cap(cookies)); }
-    else if (selectedBet == 1) { coins += pot; coins = floor(safe_cap(coins)); stat_coins_earned += max(0.0, pot - betAmount); }
-    else if (selectedBet == 2) { autocookie += pot; autocookie = floor(safe_cap(autocookie)); }
-    else if (selectedBet == 3) gain_cookiespeed(pot);
-    else if (selectedBet == 4) { manulcookie += pot; manulcookie = floor(safe_cap(manulcookie)); }
+    pay_bet(selectedBet, pot);
+    if (selectedBet == 1) stat_coins_earned += max(0.0, pot - betAmount);
     stat_don_wins++;
 }
 
@@ -1083,11 +1074,7 @@ void dongame()
     form.reset();
     form.create_window("Double or Nothing", false);
     int betChoice = form.create_list("Choose an &item to bet:", 5);
-    form.add_list_item(betChoice, "Cookies");
-    form.add_list_item(betChoice, "Currency");
-    form.add_list_item(betChoice, "Auto Cookies");
-    form.add_list_item(betChoice, "Auto Cookie Speeds");
-    form.add_list_item(betChoice, "Manual Cookies");
+    bet_add_items(betChoice);
     int betInput = form.create_input_box("Enter your &bet amount:", "", "", 0, false, false, false);
     int donAuto = form.create_checkbox("automatic card revealing", donmode);
     int dealButton = form.create_button("&Deal", true);
@@ -1111,14 +1098,7 @@ void dongame()
     {
         wait(5);
         form.monitor();
-        if (autocookie <= 0) { bakemode = 0; autocookie = 0; }
-        if (coins <= 0) coins = 0;
-        if (cookies <= 0) cookies = 0;
-        if (cookiespeed <= 0) cookiespeed = 0;
-        if (cookiespeed > COOKIESPEED_MAX) cookiespeed = COOKIESPEED_MAX;
-        if (manulcookie <= 0) manulcookie = 0;
-        if (clicktime <= 50) clicktime = 50;
-        if (clicktime >= 1000) clicktime = 1000;
+        bet_clamp_balances();
         if (form.get_current_focus() != betInput)
             don_game_input();
         if (key_pressed(KEY_ESCAPE))
@@ -1141,7 +1121,7 @@ void dongame()
             if (!in_round)
                 speak_buffer("You are not in a round, so place a bet and deal to begin.");
             else
-                speak_buffer("Your pot is " + don_amount(selectedBet, pot) + (betItemName != "" ? " " + betItemName : "") + " after " + rides + (rides == 1 ? " winning call." : " winning calls."));
+                speak_buffer("Your pot is " + bet_amount_text(selectedBet, pot) + (betItemName != "" ? " " + betItemName : "") + " after " + rides + (rides == 1 ? " winning call." : " winning calls."));
         }
         if (form.is_pressed(dealButton))
         {
@@ -1151,61 +1131,18 @@ void dongame()
                 continue;
             }
             selectedBet = form.get_list_position(betChoice);
-            string betStr = form.get_text(betInput);
-            double betNum = floor(selectedBet == 1 ? string_to_number(betStr) * 100.0 : string_to_number(betStr));
-            if (betNum <= 0)
-            {
-                pool.play_stationary("sounds/misc/gamefail.ogg", false);
-                dlg_buffer("Error! Please enter a valid bet amount.");
-                continue;
-            }
-            if (betNum < donConfig.min_bet)
-            {
-                pool.play_stationary("sounds/misc/gamefail.ogg", false);
-                dlg_buffer("Error! The minimum bet is " + don_amount(selectedBet, donConfig.min_bet) + ".");
-                continue;
-            }
-            if (donConfig.max_bet > 0 && betNum > donConfig.max_bet)
-            {
-                pool.play_stationary("sounds/misc/gamefail.ogg", false);
-                dlg_buffer("Your bet has been capped at the maximum of " + don_amount(selectedBet, donConfig.max_bet) + ".");
-                betNum = donConfig.max_bet;
-            }
-            if (selectedBet == 0) betNum = min(betNum, floor(cookies));
-            else if (selectedBet == 1) betNum = min(betNum, floor(coins));
-            else if (selectedBet == 2) betNum = min(betNum, floor(autocookie));
-            else if (selectedBet == 3) betNum = min(betNum, floor(cookiespeed));
-            else if (selectedBet == 4) betNum = min(betNum, floor(manulcookie));
-            if (betNum <= 0)
-            {
-                pool.play_stationary("sounds/misc/gamefail.ogg", false);
-                dlg_buffer("Error! You don't have enough of that item to bet!");
-                continue;
-            }
-            if (donConfig.confirm_threshold > 0)
-            {
-                double statTotal = (selectedBet == 0 ? floor(cookies) : (selectedBet == 1 ? floor(coins) : (selectedBet == 2 ? floor(autocookie) : (selectedBet == 3 ? floor(cookiespeed) : floor(manulcookie)))));
-                double effectiveThreshold = donConfig.confirm_use_percent ? (statTotal * (donConfig.confirm_threshold / 100.0)) : donConfig.confirm_threshold;
-                if (betNum >= effectiveThreshold)
-                {
-                    string betItemName2 = (selectedBet == 0 ? "cookies" : (selectedBet == 1 ? "currency" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies"))));
-                    if (!yes_no("Are you sure you want to bet " + (selectedBet == 1 ? convert_to_currency(betNum) : format_number(betNum) + " " + betItemName2) + "?", true))
-                        continue;
-                }
-            }
+            double betNum = read_bet(selectedBet, form.get_text(betInput), donConfig.min_bet, donConfig.max_bet);
+            if (betNum <= 0) continue;
+            if (!confirm_bet(selectedBet, betNum, donConfig.confirm_threshold, donConfig.confirm_use_percent)) continue;
             betAmount = betNum;
-            betItemName = (selectedBet == 0 ? "cookies" : (selectedBet == 1 ? "" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies"))));
-            if (selectedBet == 0) { cookies -= betAmount; cookies = floor(safe_cap(cookies)); }
-            else if (selectedBet == 1) { coins -= betAmount; coins = floor(safe_cap(coins)); }
-            else if (selectedBet == 2) { autocookie -= betAmount; autocookie = floor(safe_cap(autocookie)); }
-            else if (selectedBet == 3) { cookiespeed -= betAmount; clicktime += betAmount; cookiespeed = floor(safe_cap(cookiespeed)); }
-            else if (selectedBet == 4) { manulcookie -= betAmount; manulcookie = floor(safe_cap(manulcookie)); }
+            betItemName = bet_item_name(selectedBet);
+            take_bet(selectedBet, betAmount);
             in_round = true;
             rides = 0;
             pot = betAmount;
             stat_don_games++;
             pool.play_stationary("sounds/minigames/" + resolve_sound(donConfig.deal_sound), false);
-            string smsg = highlow_fill(donConfig.start_message, "%bet%", don_amount(selectedBet, betAmount));
+            string smsg = highlow_fill(donConfig.start_message, "%bet%", bet_amount_text(selectedBet, betAmount));
             smsg = highlow_fill(smsg, "%item%", betItemName);
             if (donmode) speak_buffer(smsg);
             else dlg_buffer(smsg);
@@ -1240,7 +1177,7 @@ void dongame()
                 stat_don_jokers++;
                 bet_lost_purchases(selectedBet, betAmount);
                 pool.play_stationary("sounds/minigames/" + resolve_sound(donConfig.joker_sound), false);
-                string jmsg = highlow_fill(donConfig.joker_message, "%pot%", don_amount(selectedBet, pot));
+                string jmsg = highlow_fill(donConfig.joker_message, "%pot%", bet_amount_text(selectedBet, pot));
                 jmsg = highlow_fill(jmsg, "%item%", betItemName);
                 if (donmode) speak_buffer(jmsg);
                 else dlg_buffer(jmsg);
@@ -1260,7 +1197,7 @@ void dongame()
                 pool.play_stationary("sounds/minigames/" + resolve_sound(donConfig.wrong_sound), false);
                 string lmsg = highlow_fill(donConfig.lose_message, "%card%", cardName);
                 lmsg = highlow_fill(lmsg, "%color%", cardColor);
-                lmsg = highlow_fill(lmsg, "%pot%", don_amount(selectedBet, pot));
+                lmsg = highlow_fill(lmsg, "%pot%", bet_amount_text(selectedBet, pot));
                 lmsg = highlow_fill(lmsg, "%item%", betItemName);
                 if (donmode) speak_buffer(lmsg);
                 else dlg_buffer(lmsg);
@@ -1287,7 +1224,7 @@ void dongame()
                 xmsg = highlow_fill(xmsg, "%rides%", string(rides));
                 xmsg = highlow_fill(xmsg, "%card%", cardName);
                 xmsg = highlow_fill(xmsg, "%color%", cardColor);
-                xmsg = highlow_fill(xmsg, "%pot%", don_amount(selectedBet, pot));
+                xmsg = highlow_fill(xmsg, "%pot%", bet_amount_text(selectedBet, pot));
                 xmsg = highlow_fill(xmsg, "%item%", betItemName);
                 if (donmode) speak_buffer(xmsg);
                 else dlg_buffer(xmsg);
@@ -1300,7 +1237,7 @@ void dongame()
             }
             string wmsg = highlow_fill(donConfig.win_message, "%card%", cardName);
             wmsg = highlow_fill(wmsg, "%color%", cardColor);
-            wmsg = highlow_fill(wmsg, "%pot%", don_amount(selectedBet, pot));
+            wmsg = highlow_fill(wmsg, "%pot%", bet_amount_text(selectedBet, pot));
             wmsg = highlow_fill(wmsg, "%item%", betItemName);
             if (donmode) speak_buffer(wmsg);
             else dlg_buffer(wmsg);
@@ -1319,7 +1256,7 @@ void dongame()
             }
             don_bank(selectedBet, betAmount, pot);
             pool.play_stationary("sounds/minigames/" + resolve_sound(donConfig.bank_sound), false);
-            string bmsg = highlow_fill(donConfig.bank_message, "%pot%", don_amount(selectedBet, pot));
+            string bmsg = highlow_fill(donConfig.bank_message, "%pot%", bet_amount_text(selectedBet, pot));
             bmsg = highlow_fill(bmsg, "%calls%", don_calls(rides));
             bmsg = highlow_fill(bmsg, "%rides%", string(rides));
             bmsg = highlow_fill(bmsg, "%item%", betItemName);
