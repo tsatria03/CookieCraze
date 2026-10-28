@@ -1,10 +1,12 @@
 ---
 name: project_release_status
-description: "Release status: RELEASE TIMING UNDECIDED (dev, 2026-10-28) - don't assume which version is the next public release; ask the dev. V7.0 (2026-10-01) is the latest public release; V7.10 and V7.20 are bookmark tags only. 7.3 in progress (block 9 of 10; boosts moved to 7.4). Lists what each version shipped."
+description: "Release status: 7.3 TAGGED V7.30 (2026-10-28, commit 49a692a) — closed, block frozen 10/10. Tags = dev done with that version; releasing is separate and only when the dev judges it stable (e.g. after 7.5) — never assume or suggest a release. V7.0 is the latest public release. Next work is 7.4 (boosts); the next player-facing change opens New in 7.4. and bumps build/version.txt to 7.4."
 metadata:
   node_type: memory
   type: project
 ---
+
+**7.3 TAGGED V7.30 (dev, 2026-10-28, commit 49a692a) — CLOSED.** Treat the 7.3 changelog block as frozen (full, 10 of 10). Shipped in 7.3: spreading settings removed; Control L reloads highlow/roulette tables and tickets.store; double or nothing minigame + its achievements + quests; the unlock-ladder shift (own entry); achievement statistics labels; roulette tier-1 quest wording; group A minigame reminders spoken. **Next: 7.4 — boosts ([[project_boosts_plan]]).** The next player-facing change opens `New in 7.4.` at the top of the changelog and bumps build/version.txt to 7.4 in the same turn. Still open from the bug review: the code/build backlog in the bug memories (code #29 turned out already fixed — marked 2026-10-28, no 7.4 change needed). **7.4 OPENED (2026-10-28):** version.txt = 7.4; `New in 7.4.` block, minor (cap 10), **2 of 10** — scratch ticket counts load fix (code #5) on top, prestige points overflow fix (code #10). Also done pre-7.4, no changelog: code #23 ffalse typo, code #24 keyhook deleted.
 
 **RELEASE TIMING UNDECIDED (dev, 2026-10-28):** the dev isn't certain when the next public release will be. Don't say or plan that 7.3 (or any version) is the next release, and don't suggest releasing - ask the dev if it matters. Earlier notes below that say "the next public release is 7.3" (or 7.2) are superseded. What is certain: V7.0 is the latest public release; V7.10 and V7.20 are bookmark tags, not releases; whenever a release happens it ships every changelog block since 7.0.
 

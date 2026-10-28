@@ -1047,7 +1047,7 @@ void prestige_store_category_menu(prestige_store_item[]@ items, string chosenMen
                 qty -= 1;
                 totalCost = prestige_endless_cost(items[i], owned, qty);
             }
-            prestige_points -= int(totalCost);
+            prestige_points -= totalCost;
             prestigeEndlessCounts.set(items[i].item_id, owned + qty);
             apply_all_prestige_store_upgrades();
             pool.play_stationary("sounds/store/buy" + random(1, 4) + ".ogg", false);
@@ -1062,9 +1062,9 @@ void prestige_store_category_menu(prestige_store_item[]@ items, string chosenMen
         if (prestige_points < items[i].cost)
         {
             pool.play_stationary("sounds/store/error.ogg", false);
-            int shortage = items[i].cost - prestige_points;
+            double shortage = items[i].cost - prestige_points;
             string shortWord = (shortage == 1) ? "point" : "points";
-            dlgmessage_return("Error! You can't afford this upgrade. You need " + string(shortage) + " more prestige " + shortWord + ".");
+            dlgmessage_return("Error! You can't afford this upgrade. You need " + format_number(shortage) + " more prestige " + shortWord + ".");
             prestige_store_category_menu(items, chosenMenu);
             return;
         }

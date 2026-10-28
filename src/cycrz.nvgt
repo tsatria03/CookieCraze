@@ -189,10 +189,10 @@ if (prestige)
     if (perQuestPoints < 0) perQuestPoints = 0;
     /* Points still grow with your lifetime quest tally, but only pay out if you completed at least one quest this run.
     Without that, the tally paid out on every prestige, so prestiging again and again at the minimum rank farmed points. */
-    int pointsEarned = 0;
+    double pointsEarned = 0;
     if (questsDoneThisRun > 0)
-        pointsEarned = int(floor(perQuestPoints * (double(completedQuestIds.get_size()) + total_endless_completions())));
-    prestige_points += pointsEarned;
+        pointsEarned = floor(safe_cap(perQuestPoints * (double(completedQuestIds.get_size()) + total_endless_completions())));
+    prestige_points = floor(safe_cap(prestige_points + pointsEarned));
     reset_game_state();
     string rewardSummary = "";
     if (rewardEarned)

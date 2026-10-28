@@ -26,7 +26,8 @@ double prestige_rank_discount = 0;
 double prestige_starting_autocookie = 0;
 double prestige_starting_coins = 0;
 double prestige_starting_manualcookie = 0;
-int prestige_points = 0;
+// A double like money and cookies, since endless quests keep raising the payout past what an int can hold.
+double prestige_points = 0;
 int prestigeLevel = 0;
 string[] prestigePurchased;
 // Purchase count per infinite (endless) prestige upgrade, keyed by item_id. One-time upgrades stay in prestigePurchased above.

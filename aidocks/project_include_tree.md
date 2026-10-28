@@ -9,7 +9,7 @@ metadata:
 
 Entry `src/cycrz.nvgt` does `#include"includes/includes.nvgt"`. `src/includes/` holds `includes.nvgt` (aggregator) and `version.nvgt` at the top level; everything else lives under **`main/`**:
 
-- **`main/deps/`** — vendored stdlib/helper scripts + shared UI: `bgt_compat`, `instance`, `keyhook`, `sound_pool`, `rotation`, `dget`, `form`, `speech`, `custom_menu`, `dlg`, `input_forms`, `buffer`, `savedata`, `virtual_dialogs`.
+- **`main/deps/`** — vendored stdlib/helper scripts + shared UI: `bgt_compat`, `instance`, `sound_pool`, `rotation`, `dget`, `form`, `speech`, `custom_menu`, `dlg`, `input_forms`, `buffer`, `savedata`, `virtual_dialogs`. (`keyhook` was deleted in 7.4, 2026-10-28 — it was unused.)
 - **`main/functions/`** — `configfuncts` (7.2 config reader + pack compile/decompile), `extrafuncts`, `savefuncts`.
 - **`main/globals/`** — `dec` (globals), `game`, `minigames`, `baker_events`, `flipper_events`.
 - **`main/menus/`** — `menu`.

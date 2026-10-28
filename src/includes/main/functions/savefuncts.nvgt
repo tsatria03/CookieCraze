@@ -126,7 +126,7 @@ else
     autobakeSlotEnabled.resize(0);
 } 
 if (sd.d.exists("prestigeLevel")) prestigeLevel = sd.read_int("prestigeLevel");
-if (sd.d.exists("prestige_points")) prestige_points = sd.read_int("prestige_points");
+if (sd.d.exists("prestige_points")) prestige_points = sd.read_double("prestige_points");
 if (sd.d.exists("prestigePurchasedCount"))
 {
     int pcount = sd.read_int("prestigePurchasedCount");
@@ -277,13 +277,17 @@ if (sd.d.exists("questBaselineCount"))
 }
 else
     migrate_quest_baselines();
+/* Every ticket starts at none owned, so a ticket this save never held, such as one newly added to tickets.store, does
+not keep the count from whichever save was loaded before. Counts are read as doubles, the type they are saved in,
+since an int can't hold a count past about 2.1 billion. */
+for (uint j = 0; j < loadedTickets.length(); j++) loadedTickets[j].owned = 0;
 if (sd.d.exists("lotteryTicketCount"))
 {
     int ltcount = sd.read_int("lotteryTicketCount");
     for (int i = 0; i < ltcount; i++)
     {
         string ltid = sd.read_string("lotteryTicket_id_" + string(i));
-        int ltowned = sd.read_int("lotteryTicket_owned_" + string(i));
+        double ltowned = sd.read_double("lotteryTicket_owned_" + string(i));
         for (uint j = 0; j < loadedTickets.length(); j++)
         {
             if (loadedTickets[j].id == ltid) { loadedTickets[j].owned = ltowned; break; }

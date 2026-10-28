@@ -68,7 +68,7 @@ void stop_speech() {
 	tts.stop();
 }
 
-string tts_dump_config(tts_voice@ v, bool save_screen_reader_setting = ffalse) {
+string tts_dump_config(tts_voice@ v, bool save_screen_reader_setting = false) {
 	string o;
 	if (v.voice < 0) return "default";
 	else o = v.get_voice_name(v.voice) + "||";
