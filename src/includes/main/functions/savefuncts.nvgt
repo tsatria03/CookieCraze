@@ -27,6 +27,9 @@ return prefix + "_" + string(m);
 
 void readdata()
 {
+/* Start from a new game's defaults, then load. Loading only overwrites what the save contains, so anything a save lacks,
+such as a stat added after it was last saved, used to keep the previous save's value, or unsaved progress on Control L. */
+resetgame();
 sd.load();
 if(sd.d.exists("autocookie"))
 {
@@ -172,22 +175,13 @@ if (sd.d.exists("questEndlessCount"))
     }
 }
 if (sd.d.exists("questRerollCount")) questRerollCount = sd.read_int("questRerollCount");
-if (sd.d.exists("activeQuestCount"))
-{
-    int qcount = sd.read_int("activeQuestCount");
-    string[] savedQuestIds;
-    for (int i = 0; i < qcount; i++)
-    {
-        string qkey = "activeQuest_" + string(i);
-        if (sd.d.exists(qkey)) savedQuestIds.insert_last(sd.read_string(qkey));
-    }
-    if (!restore_active_quests(savedQuestIds))
-        assign_quests();
-}
+/* Completed quests are read before the active ones, so if a saved quest can no longer be restored, the quests handed
+out in its place already know which tiers you have finished. */
 if (sd.d.exists("completedQuestCount"))
 {
     int ccount = sd.read_int("completedQuestCount");
     completedQuestIds.delete_all();
+    unknownCompletedQuestIds.resize(0);
     for (int i = 0; i < ccount; i++)
     {
         string ckey = "completedQuest_" + string(i);
@@ -199,7 +193,21 @@ if (sd.d.exists("completedQuestCount"))
             if (loadedQuests[j].id == qid) { exists = true; break; }
         }
         if (exists) completedQuestIds.set(qid, true);
+        // Kept aside rather than dropped, so a quest missing from quests.table today keeps its completion if it returns.
+        else unknownCompletedQuestIds.insert_last(qid);
     }
+}
+if (sd.d.exists("activeQuestCount"))
+{
+    int qcount = sd.read_int("activeQuestCount");
+    string[] savedQuestIds;
+    for (int i = 0; i < qcount; i++)
+    {
+        string qkey = "activeQuest_" + string(i);
+        if (sd.d.exists(qkey)) savedQuestIds.insert_last(sd.read_string(qkey));
+    }
+    if (!restore_active_quests(savedQuestIds))
+        assign_quests();
 }
 if (sd.d.exists("stat_cookies_baked")) stat_cookies_baked = sd.read_double("stat_cookies_baked");
 // Lifetime banks for the stats prestige resets, and time played; older saves have neither and start them at 0.
@@ -407,6 +415,9 @@ sd.add("activeQuestCount", int(activeQuests.length()));
 for (uint i = 0; i < activeQuests.length(); i++)
     sd.add("activeQuest_" + string(i), activeQuests[i].id);
 string[] completedKeys = completedQuestIds.get_keys();
+// Completions for quests not in quests.table right now are written back too, so they are never lost.
+for (uint i = 0; i < unknownCompletedQuestIds.length(); i++)
+    completedKeys.insert_last(unknownCompletedQuestIds[i]);
 sd.add("completedQuestCount", int(completedKeys.length()));
 for (uint i = 0; i < completedKeys.length(); i++)
     sd.add("completedQuest_" + string(i), completedKeys[i]);

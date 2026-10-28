@@ -38,6 +38,8 @@ quests_config questsConfig;
 quest_item[] loadedQuests;
 quest_item[] activeQuests;
 dictionary completedQuestIds;
+// Completed quest ids from the save that quests.table does not have right now; saved back unchanged.
+string[] unknownCompletedQuestIds;
 dictionary questEndlessCounts;
 int questRerollCount = 0;
 /* Each stat's value at the start of the current run. Prestige keeps minigame and other lifetime stats, so a quest

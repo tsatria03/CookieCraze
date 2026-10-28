@@ -19,6 +19,12 @@ key=enckey;
 //the function to load the saved data into the dictionary.
 void load()
 {
+// Ported from the engine's own savedata.nvgt: a missing file loads as empty data instead of reading nothing.
+		if (!file_exists(fn))
+		{
+			d.clear();
+			return;
+		}
 file f;
 //fn is our previously declared filename string, so use that.
 f.open(fn,"rb");
@@ -47,6 +53,8 @@ if (key=="")
 f.write(serialize(d));
 else
 f.write(string_encrypt(serialize(d),key));
+// Also from the engine's version: close the file as soon as it is written, rather than whenever f is cleaned up.
+f.close();
 }
 //overloaded function of add to add a boolion.
 void add(string name, bool value)
