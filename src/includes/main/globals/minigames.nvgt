@@ -180,16 +180,24 @@ if (form.is_pressed(flip))
 
 void flipgame_input() { minigame_input("flipper"); }
 
+/* The bet and item of the last slot machine spin that actually happened, for the B key. They live outside slotsgame so
+minigame_input can answer B during the spin's own waits as well as between spins. A spin stopped by an error never
+changes them. */
+double slotLastBet = 0;
+int slotLastItem = 0;
+
+void speak_slot_bet()
+{
+    if (slotLastBet <= 0) speak_buffer("You have not placed a bet yet.");
+    else speak_buffer("Your current bet is " + bet_amount_with_item(slotLastItem, slotLastBet) + ".");
+}
+
 void slotsgame()
 {
     form.reset();
     form.create_window("Slot Machine", false);
     int betChoice = form.create_list("Choose an &item to bet:", 5);
-    form.add_list_item(betChoice, "Cookies");
-    form.add_list_item(betChoice, "Currency");
-    form.add_list_item(betChoice, "Auto Cookies");
-    form.add_list_item(betChoice, "Auto Cookie Speeds");
-    form.add_list_item(betChoice, "Manual Cookies");
+    bet_add_items(betChoice);
 string[] symbols = slotSymbols;
     int symbolChoices = form.create_list("Choose the s&ymbols to use:", symbols.length(), true, false);
     // Only the first min_symbols in the table's order start checked, the fewest a spin needs.
@@ -213,39 +221,7 @@ string[] reelResults(slotReels, "");
     {
         wait(5);
         form.monitor();
-if(autocookie<=0)
-{
-bakemode=0;
-autocookie=0;
-}
-if(coins<=0)
-{
-coins=0;
-}
-if(cookies<=0)
-{
-cookies=0;
-}
-if(cookiespeed<=0)
-{
-cookiespeed=0;
-}
-if(cookiespeed>COOKIESPEED_MAX)
-{
-cookiespeed=COOKIESPEED_MAX;
-}
-if(manulcookie<=0)
-{
-manulcookie=0;
-}
-if(clicktime<=50)
-{
-clicktime=50;
-}
-if(clicktime>=1000)
-{
-clicktime=1000;
-}
+        bet_clamp_balances();
 if(form.get_current_focus()!=betInput)
 {
 slots_game_input();
@@ -271,33 +247,9 @@ check_achievements(loadedAchievements, achievementsUnlocked);
         if (form.is_pressed(spinButton))
         {
             selectedBet = form.get_list_position(betChoice);
-string betStr = form.get_text(betInput);
-betAmount = floor(selectedBet == 1 ? string_to_number(betStr) * 100.0 : string_to_number(betStr));
-    if (betAmount <= 0)
-    {
-        dlg_buffer("Invalid bet amount. Please enter a valid number!");
-        form.focus(spinButton);
-        continue;
-    }
-            if (betAmount < slotMinBet)
-            {
-                dlg_buffer("Error! The minimum bet is " + (selectedBet == 1 ? convert_to_currency(slotMinBet) : format_number(slotMinBet)) + ".");
-                form.focus(spinButton);
-                continue;
-            }
-            if (slotMaxBet > 0 && betAmount > slotMaxBet)
-            {
-                dlg_buffer("Your bet has been capped at the maximum of " + (selectedBet == 1 ? convert_to_currency(slotMaxBet) : format_number(slotMaxBet)) + ".");
-                betAmount = slotMaxBet;
-            }
-            if (selectedBet == 0) betAmount = min(betAmount, floor(cookies));
-            else if (selectedBet == 1) betAmount = min(betAmount, floor(coins));
-            else if (selectedBet == 2) betAmount = min(betAmount, floor(autocookie));
-            else if (selectedBet == 3) betAmount = min(betAmount, floor(cookiespeed));
-            else if (selectedBet == 4) betAmount = min(betAmount, floor(manulcookie));
+            betAmount = read_bet(selectedBet, form.get_text(betInput), slotMinBet, slotMaxBet);
             if (betAmount <= 0)
             {
-                dlg_buffer("You don't have enough of that item to bet!");
                 form.focus(spinButton);
                 continue;
             }
@@ -311,7 +263,7 @@ betAmount = floor(selectedBet == 1 ? string_to_number(betStr) * 100.0 : string_t
             }
             if (int(activeSymbols.length()) < slotMinSymbols)
 {
-                dlg_buffer("You must select at least " + slotMinSymbols + " symbols in order to spin!");
+                bet_fail("You must select at least " + slotMinSymbols + " symbols in order to spin!");
                 form.focus(spinButton);
                 continue;
             }
@@ -320,38 +272,23 @@ betAmount = floor(selectedBet == 1 ? string_to_number(betStr) * 100.0 : string_t
             double payScale = slot_payout_scale(int(activeSymbols.length()));
             if (payScale < 0)
             {
-                dlg_buffer("With " + slotReels + " reels, please check more symbols so the payouts can be balanced.");
+                bet_fail("With " + slotReels + " reels, please check more symbols so the payouts can be balanced.");
                 form.focus(spinButton);
                 continue;
             }
-if (slotConfirmThreshold > 0)
-{
-    double statTotal = (selectedBet == 0 ? floor(cookies) : (selectedBet == 1 ? floor(coins) : (selectedBet == 2 ? floor(autocookie) : (selectedBet == 3 ? floor(cookiespeed) : floor(manulcookie)))));
-    double effectiveThreshold = slotConfirmUsePercent ? (statTotal * (slotConfirmThreshold / 100.0)) : slotConfirmThreshold;
-    if (betAmount >= effectiveThreshold)
-    {
-        string betItemName2 = (selectedBet == 0 ? "cookies" : (selectedBet == 1 ? "currency" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies"))));
-        if (!yes_no("Are you sure you want to bet " + (selectedBet == 1 ? convert_to_currency(betAmount) : format_number(betAmount) + " " + betItemName2) + "?", true))
-        {
-            form.focus(spinButton);
-            continue;
-        }
-    }
-}
+            if (!confirm_bet(selectedBet, betAmount, slotConfirmThreshold, slotConfirmUsePercent))
+            {
+                form.focus(spinButton);
+                continue;
+            }
 pool.destroy_sound(machineslot);
 pool.play_stationary("sounds/minigames/" + resolve_sound(slotBetSound1), false);
-if(selectedBet==0) speak_buffer("You placed a bet of " + format_number(betAmount) + " cookies.");
-if(selectedBet==1) speak_buffer("You placed a bet of " + convert_to_currency(betAmount) + ".");
-if(selectedBet==2) speak_buffer("You placed a bet of " + format_number(betAmount) + " auto cookies.");
-if(selectedBet==3) speak_buffer("You placed a bet of " + format_number(betAmount) + " auto cookie speeds.");
-if(selectedBet==4) speak_buffer("You placed a bet of " + format_number(betAmount) + " manual cookies.");
+speak_buffer("You placed a bet of " + bet_amount_with_item(selectedBet, betAmount) + ".");
 /* Take the bet up front like the other minigames, before any wait that reads keys.
 Settling a loss only after the reels were announced let a save or reload during the wait dodge it. */
-if (selectedBet == 0) { cookies -= betAmount; cookies = floor(safe_cap(cookies)); }
-else if (selectedBet == 1) { coins -= betAmount; coins = floor(safe_cap(coins)); }
-else if (selectedBet == 2) { autocookie -= betAmount; autocookie = floor(safe_cap(autocookie)); }
-else if (selectedBet == 3) { cookiespeed -= betAmount; clicktime += betAmount; cookiespeed = floor(safe_cap(cookiespeed)); }
-else if (selectedBet == 4) { manulcookie -= betAmount; manulcookie = floor(safe_cap(manulcookie)); }
+take_bet(selectedBet, betAmount);
+slotLastBet = betAmount;
+slotLastItem = selectedBet;
 mini_wait_async(1000, "slots");
 pool.play_stationary("sounds/minigames/" + resolve_sound(slotBetSound2), false);
 mini_wait_async(random(600, 800), "slots");
@@ -403,9 +340,8 @@ if (payout !is null)
     if (payout.sound != "" && payout.sound != "none")
         pool.play_stationary("sounds/minigames/" + payout.sound, false);
     double change = floor(safe_cap(betAmount * payout.multiplier * payScale));
-    string slotItemName = (selectedBet == 0 ? "cookies" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies")));
     string payMsg = payout.message;
-    payMsg = string_replace(payMsg, "%amount%", (selectedBet == 1 ? convert_to_currency(change) : format_number(change) + " " + slotItemName), true);
+    payMsg = string_replace(payMsg, "%amount%", bet_amount_with_item(selectedBet, change), true);
     payMsg = string_replace(payMsg, "%multiplier%", string(round(payout.multiplier * payScale, 2)), true);
     dlg_buffer(payMsg);
     form.focus(spinButton);
@@ -419,11 +355,8 @@ if (payout !is null)
     {
         /* Return the bet taken up front plus the winnings, so the net gain is unchanged from before. */
         stat_slot_wins++;
-        if (selectedBet == 0) cookies += betAmount + change;
-        else if (selectedBet == 1) { coins += betAmount + change; stat_coins_earned += change; }
-        else if (selectedBet == 2) autocookie += betAmount + change;
-        else if (selectedBet == 3) gain_cookiespeed(betAmount + change);
-        else if (selectedBet == 4) manulcookie += betAmount + change;
+        pay_bet(selectedBet, betAmount + change);
+        if (selectedBet == 1) stat_coins_earned += change;
     }
     cookies = floor(safe_cap(cookies));
     coins = floor(safe_cap(coins));
@@ -434,11 +367,7 @@ if (payout !is null)
 else
 {
     /* No payout row matched this spin, so hand the bet back rather than keep it silently. */
-    if (selectedBet == 0) cookies += betAmount;
-    else if (selectedBet == 1) coins += betAmount;
-    else if (selectedBet == 2) autocookie += betAmount;
-    else if (selectedBet == 3) gain_cookiespeed(betAmount);
-    else if (selectedBet == 4) manulcookie += betAmount;
+    pay_bet(selectedBet, betAmount);
     cookies = floor(safe_cap(cookies));
     coins = floor(safe_cap(coins));
     autocookie = floor(safe_cap(autocookie));
@@ -457,11 +386,7 @@ void jackgame()
     form.reset();
     form.create_window("Blackjack", false);
     int betChoice = form.create_list("Choose an &item to bet:", 5);
-    form.add_list_item(betChoice, "Cookies");
-    form.add_list_item(betChoice, "Currency");
-    form.add_list_item(betChoice, "Auto Cookies");
-    form.add_list_item(betChoice, "Auto Cookie Speeds");
-    form.add_list_item(betChoice, "Manual Cookies");
+    bet_add_items(betChoice);
     int betInput = form.create_input_box("Enter your &bet amount:", "", "", 0, false, false, false);
     int jackAuto = form.create_checkbox("automatic card drawing", jackmode);
     int dealButton = form.create_button("&Deal", true);
@@ -479,14 +404,7 @@ void jackgame()
     {
         wait(5);
         form.monitor();
-        if(autocookie<=0) { bakemode=0; autocookie=0; }
-        if(coins<=0) coins=0;
-        if(cookies<=0) cookies=0;
-        if(cookiespeed<=0) cookiespeed=0;
-        if(cookiespeed>COOKIESPEED_MAX) cookiespeed=COOKIESPEED_MAX;
-        if(manulcookie<=0) manulcookie=0;
-        if(clicktime<=50) clicktime=50;
-        if(clicktime>=1000) clicktime=1000;
+        bet_clamp_balances();
         if (form.get_current_focus() != betInput)
             jack_game_input();
         if (key_pressed(KEY_ESCAPE))
@@ -505,7 +423,7 @@ check_achievements(loadedAchievements, achievementsUnlocked);
         bool jackModeNew = form.is_checked(jackAuto);
         if (jackModeNew != jackmode) { jackmode = jackModeNew; writepreffs(); }
         if (key_pressed(KEY_B))
-            speak_buffer("Your current bet is " + (selectedBet == 1 ? convert_to_currency(betAmount) : format_number(betAmount) + (betItemName != "" ? " " + betItemName : "")) + ".");
+            speak_buffer("Your current bet is " + bet_amount_with_item(selectedBet, betAmount) + ".");
         if (form.is_pressed(dealButton))
         {
             if (in_round)
@@ -514,60 +432,17 @@ check_achievements(loadedAchievements, achievementsUnlocked);
                 continue;
             }
             selectedBet = form.get_list_position(betChoice);
-            string betStr = form.get_text(betInput);
-            double betNum = floor(selectedBet == 1 ? string_to_number(betStr) * 100.0 : string_to_number(betStr));
-            if (betNum <= 0)
-            {
-                pool.play_stationary("sounds/misc/gamefail.ogg", false);
-                dlg_buffer("Error! Please enter a valid bet amount.");
-                continue;
-            }
-            if (betNum < jacksConfig.min_bet)
-            {
-                pool.play_stationary("sounds/misc/gamefail.ogg", false);
-                dlg_buffer("Error! The minimum bet is " + (selectedBet == 1 ? convert_to_currency(jacksConfig.min_bet) : format_number(jacksConfig.min_bet)) + ".");
-                continue;
-            }
-            if (jacksConfig.max_bet > 0 && betNum > jacksConfig.max_bet)
-            {
-                pool.play_stationary("sounds/misc/gamefail.ogg", false);
-                dlg_buffer("Your bet has been capped at the maximum of " + (selectedBet == 1 ? convert_to_currency(jacksConfig.max_bet) : format_number(jacksConfig.max_bet)) + ".");
-                betNum = jacksConfig.max_bet;
-            }
-            if (selectedBet == 0) betNum = min(betNum, floor(cookies));
-            else if (selectedBet == 1) betNum = min(betNum, floor(coins));
-            else if (selectedBet == 2) betNum = min(betNum, floor(autocookie));
-            else if (selectedBet == 3) betNum = min(betNum, floor(cookiespeed));
-            else if (selectedBet == 4) betNum = min(betNum, floor(manulcookie));
-            if (betNum <= 0)
-            {
-                pool.play_stationary("sounds/misc/gamefail.ogg", false);
-                dlg_buffer("Error! You don't have enough of that item to bet!");
-                continue;
-            }
-            if (jacksConfig.confirm_threshold > 0)
-            {
-                double statTotal2 = (selectedBet == 0 ? floor(cookies) : (selectedBet == 1 ? floor(coins) : (selectedBet == 2 ? floor(autocookie) : (selectedBet == 3 ? floor(cookiespeed) : floor(manulcookie)))));
-                double effectiveThreshold2 = jacksConfig.confirm_use_percent ? (statTotal2 * (jacksConfig.confirm_threshold / 100.0)) : jacksConfig.confirm_threshold;
-                if (betNum >= effectiveThreshold2)
-                {
-                    string betItemName2 = (selectedBet == 0 ? "cookies" : (selectedBet == 1 ? "currency" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies"))));
-                    if (!yes_no("Are you sure you want to bet " + (selectedBet == 1 ? convert_to_currency(betNum) : format_number(betNum) + " " + betItemName2) + "?", true))
-                        continue;
-                }
-            }
+            double betNum = read_bet(selectedBet, form.get_text(betInput), jacksConfig.min_bet, jacksConfig.max_bet);
+            if (betNum <= 0) continue;
+            if (!confirm_bet(selectedBet, betNum, jacksConfig.confirm_threshold, jacksConfig.confirm_use_percent)) continue;
             betAmount = betNum;
-            if (selectedBet == 0) { cookies -= betAmount; cookies = floor(safe_cap(cookies)); }
-            else if (selectedBet == 1) { coins -= betAmount; coins = floor(safe_cap(coins)); }
-            else if (selectedBet == 2) { autocookie -= betAmount; autocookie = floor(safe_cap(autocookie)); }
-            else if (selectedBet == 3) { cookiespeed -= betAmount; clicktime += betAmount; cookiespeed = floor(safe_cap(cookiespeed)); }
-            else if (selectedBet == 4) { manulcookie -= betAmount; manulcookie = floor(safe_cap(manulcookie)); }
-            betItemName = (selectedBet == 0 ? "cookies" : (selectedBet == 1 ? "currency" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies"))));
+            take_bet(selectedBet, betAmount);
+            betItemName = bet_item_name(selectedBet);
             p_points = 0; d_points = 0;
             p_aces = 0; d_aces = 0;
             in_round = true;
             stat_jack_hands++;
-            string betDisplay = (selectedBet == 1) ? convert_to_currency(betAmount) : (format_number(betAmount) + " " + betItemName);
+            string betDisplay = bet_amount_with_item(selectedBet, betAmount);
             if (jackmode) speak_buffer("You bet " + betDisplay + ". Dealing.");
             else dlg_buffer("You bet " + betDisplay + ". Dealing. Press enter or space after each card.");
             if (jackmode) mini_wait_async(random(1000, 2000), "blackjack");
@@ -579,21 +454,18 @@ check_achievements(loadedAchievements, achievementsUnlocked);
             if (p_points == 21)
             {
                 double winnings = floor(safe_cap(betAmount * jacksConfig.natural_multiplier));
-                if (selectedBet == 0) { cookies += betAmount + winnings; cookies = floor(safe_cap(cookies)); }
-                else if (selectedBet == 1) { coins += betAmount + winnings; coins = floor(safe_cap(coins)); stat_coins_earned += winnings; }
-                else if (selectedBet == 2) { autocookie += betAmount + winnings; autocookie = floor(safe_cap(autocookie)); }
-                else if (selectedBet == 3) gain_cookiespeed(betAmount + winnings);
-                else if (selectedBet == 4) { manulcookie += betAmount + winnings; manulcookie = floor(safe_cap(manulcookie)); }
+                pay_bet(selectedBet, betAmount + winnings);
+                if (selectedBet == 1) stat_coins_earned += winnings;
                 stat_jack_wins++;
                 pool.play_stationary("sounds/minigames/" + resolve_sound(jacksConfig.win_sound), false);
                 string msg = jacksConfig.natural_message;
-                string betStr = (selectedBet == 1) ? convert_to_currency(betAmount) : format_number(betAmount);
-                string winStr = (selectedBet == 1) ? convert_to_currency(winnings) : format_number(winnings);
+                string betStr = bet_amount_text(selectedBet, betAmount);
+                string winStr = bet_amount_text(selectedBet, winnings);
                 int ph = msg.find("%win%");
                 while (ph != -1) { msg = msg.substr(0, ph) + winStr + msg.substr(ph + 5); ph = msg.find("%win%"); }
                 ph = msg.find("%bet%");
                 while (ph != -1) { msg = msg.substr(0, ph) + betStr + msg.substr(ph + 5); ph = msg.find("%bet%"); }
-                string itemStr = (selectedBet == 1) ? "" : betItemName;
+                string itemStr = betItemName;
                 ph = msg.find("%item%");
                 while (ph != -1) { int start = (itemStr == "" && ph > 0 && msg.substr(ph - 1, 1) == " ") ? ph - 1 : ph; msg = msg.substr(0, start) + itemStr + msg.substr(ph + 6); ph = msg.find("%item%"); }
                 dlg_buffer(msg);
@@ -661,21 +533,18 @@ check_achievements(loadedAchievements, achievementsUnlocked);
                 when the hand was dealt, so the winnings on top are bet * (multiplier - 1). It used to add bet * multiplier
                 on top of the returned bet, paying 3x and more than a natural blackjack. */
                 double winnings = floor(safe_cap(betAmount * max(0.0, jacksConfig.win_multiplier - 1.0)));
-                if (selectedBet == 0) { cookies += betAmount + winnings; cookies = floor(safe_cap(cookies)); }
-                else if (selectedBet == 1) { coins += betAmount + winnings; coins = floor(safe_cap(coins)); stat_coins_earned += winnings; }
-                else if (selectedBet == 2) { autocookie += betAmount + winnings; autocookie = floor(safe_cap(autocookie)); }
-                else if (selectedBet == 3) gain_cookiespeed(betAmount + winnings);
-                else if (selectedBet == 4) { manulcookie += betAmount + winnings; manulcookie = floor(safe_cap(manulcookie)); }
+                pay_bet(selectedBet, betAmount + winnings);
+                if (selectedBet == 1) stat_coins_earned += winnings;
                 pool.play_stationary("sounds/minigames/" + resolve_sound(jacksConfig.win_sound), false);
                 string msg = (d_points > 21 ? jacksConfig.dealer_bust_message : jacksConfig.win_message);
-                string winStr2 = (selectedBet == 1) ? convert_to_currency(winnings) : format_number(winnings);
+                string winStr2 = bet_amount_text(selectedBet, winnings);
                 int ph = msg.find("%score%");
                 while (ph != -1) { msg = msg.substr(0, ph) + string(p_points) + msg.substr(ph + 7); ph = msg.find("%score%"); }
                 ph = msg.find("%dealer%");
                 while (ph != -1) { msg = msg.substr(0, ph) + string(d_points) + msg.substr(ph + 8); ph = msg.find("%dealer%"); }
                 ph = msg.find("%win%");
                 while (ph != -1) { msg = msg.substr(0, ph) + winStr2 + msg.substr(ph + 5); ph = msg.find("%win%"); }
-                string itemStr2 = (selectedBet == 1) ? "" : betItemName;
+                string itemStr2 = betItemName;
                 ph = msg.find("%item%");
                 while (ph != -1) { int start = (itemStr2 == "" && ph > 0 && msg.substr(ph - 1, 1) == " ") ? ph - 1 : ph; msg = msg.substr(0, start) + itemStr2 + msg.substr(ph + 6); ph = msg.find("%item%"); }
                 dlg_buffer(msg);
@@ -696,11 +565,7 @@ check_achievements(loadedAchievements, achievementsUnlocked);
             {
                 stat_jack_pushes++;
                 double returned = floor(safe_cap(betAmount * jacksConfig.push_multiplier));
-                if (selectedBet == 0) { cookies += returned; cookies = floor(safe_cap(cookies)); }
-                else if (selectedBet == 1) { coins += returned; coins = floor(safe_cap(coins)); }
-                else if (selectedBet == 2) { autocookie += returned; autocookie = floor(safe_cap(autocookie)); }
-                else if (selectedBet == 3) gain_cookiespeed(returned);
-                else if (selectedBet == 4) { manulcookie += returned; manulcookie = floor(safe_cap(manulcookie)); }
+                pay_bet(selectedBet, returned);
                 bet_lost_purchases(selectedBet, betAmount - returned);
                 pool.play_stationary("sounds/minigames/" + resolve_sound(jacksConfig.push_sound), false);
                 string msg = jacksConfig.push_message;
