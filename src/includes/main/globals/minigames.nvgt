@@ -778,11 +778,7 @@ void dicegame()
     form.reset();
     form.create_window("Dice Roller", false);
     int betChoice = form.create_list("Choose an item to &bet:", 5, false, false);
-    form.add_list_item(betChoice, "Cookies");
-    form.add_list_item(betChoice, "Currency");
-    form.add_list_item(betChoice, "Auto Cookies");
-    form.add_list_item(betChoice, "Auto Cookie Speeds");
-    form.add_list_item(betChoice, "Manual Cookies");
+    bet_add_items(betChoice);
     uint typeCount = diceConfig.dice_types.length();
     int diceTypeList = form.create_list("Dice &Type:", typeCount, false, false);
     for (uint i = 0; i < typeCount; i++)
@@ -824,14 +820,7 @@ void dicegame()
     {
         wait(5);
         form.monitor();
-        if (autocookie <= 0) { bakemode = 0; autocookie = 0; }
-        if (coins <= 0) coins = 0;
-        if (cookies <= 0) cookies = 0;
-        if (cookiespeed <= 0) cookiespeed = 0;
-        if (cookiespeed > COOKIESPEED_MAX) cookiespeed = COOKIESPEED_MAX;
-        if (manulcookie <= 0) manulcookie = 0;
-        if (clicktime <= 50) clicktime = 50;
-        if (clicktime >= 1000) clicktime = 1000;
+        bet_clamp_balances();
         if (form.get_current_focus() != betInput && form.get_current_focus() != targetInput)
             dice_game_input();
         if (key_pressed(KEY_ESCAPE))
@@ -846,37 +835,8 @@ void dicegame()
         if (form.is_pressed(rollButton))
         {
             selectedBet = form.get_list_position(betChoice);
-            string betStr = form.get_text(betInput);
-            double betNum = floor(selectedBet == 1 ? string_to_number(betStr) * 100.0 : string_to_number(betStr));
-            if (betNum <= 0)
-            {
-                pool.play_stationary("sounds/misc/gamefail.ogg", false);
-                dlg_buffer("Error! Please enter a valid bet amount.");
-                continue;
-            }
-            if (betNum < diceConfig.min_bet)
-            {
-                pool.play_stationary("sounds/misc/gamefail.ogg", false);
-                dlg_buffer("Error! The minimum bet is " + (selectedBet == 1 ? convert_to_currency(diceConfig.min_bet) : format_number(diceConfig.min_bet)) + ".");
-                continue;
-            }
-            if (diceConfig.max_bet > 0 && betNum > diceConfig.max_bet)
-            {
-                pool.play_stationary("sounds/misc/gamefail.ogg", false);
-                dlg_buffer("Your bet has been capped at the maximum of " + (selectedBet == 1 ? convert_to_currency(diceConfig.max_bet) : format_number(diceConfig.max_bet)) + ".");
-                betNum = diceConfig.max_bet;
-            }
-            if (selectedBet == 0) betNum = min(betNum, floor(cookies));
-            else if (selectedBet == 1) betNum = min(betNum, floor(coins));
-            else if (selectedBet == 2) betNum = min(betNum, floor(autocookie));
-            else if (selectedBet == 3) betNum = min(betNum, floor(cookiespeed));
-            else if (selectedBet == 4) betNum = min(betNum, floor(manulcookie));
-            if (betNum <= 0)
-            {
-                pool.play_stationary("sounds/misc/gamefail.ogg", false);
-                dlg_buffer("Error! You don't have enough of that item to bet!");
-                continue;
-            }
+            double betNum = read_bet(selectedBet, form.get_text(betInput), diceConfig.min_bet, diceConfig.max_bet);
+            if (betNum <= 0) continue;
             string targetStr = form.get_text(targetInput);
             int target = string_to_int(targetStr);
             if (target < diceConfig.min_target)
@@ -916,24 +876,10 @@ void dicegame()
                 dlg_buffer("That target is too easy for these dice to pay out, so please choose a higher target.");
                 continue;
             }
-            if (diceConfig.confirm_threshold > 0)
-            {
-                double statTotal = (selectedBet == 0 ? floor(cookies) : (selectedBet == 1 ? floor(coins) : (selectedBet == 2 ? floor(autocookie) : (selectedBet == 3 ? floor(cookiespeed) : floor(manulcookie)))));
-                double effectiveThreshold = diceConfig.confirm_use_percent ? (statTotal * (diceConfig.confirm_threshold / 100.0)) : diceConfig.confirm_threshold;
-                if (betNum >= effectiveThreshold)
-                {
-                    string betItemName2 = (selectedBet == 0 ? "cookies" : (selectedBet == 1 ? "currency" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies"))));
-                    if (!yes_no("Are you sure you want to bet " + (selectedBet == 1 ? convert_to_currency(betNum) : format_number(betNum) + " " + betItemName2) + "?", true))
-                        continue;
-                }
-            }
+            if (!confirm_bet(selectedBet, betNum, diceConfig.confirm_threshold, diceConfig.confirm_use_percent)) continue;
             betAmount = betNum;
-            betItemName = (selectedBet == 0 ? "cookies" : (selectedBet == 1 ? "" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies"))));
-            if (selectedBet == 0) { cookies -= betAmount; cookies = floor(safe_cap(cookies)); }
-            else if (selectedBet == 1) { coins -= betAmount; coins = floor(safe_cap(coins)); }
-            else if (selectedBet == 2) { autocookie -= betAmount; autocookie = floor(safe_cap(autocookie)); }
-            else if (selectedBet == 3) { cookiespeed -= betAmount; clicktime += betAmount; cookiespeed = floor(safe_cap(cookiespeed)); }
-            else if (selectedBet == 4) { manulcookie -= betAmount; manulcookie = floor(safe_cap(manulcookie)); }
+            betItemName = bet_item_name(selectedBet);
+            take_bet(selectedBet, betAmount);
             pool.play_stationary("sounds/minigames/" + resolve_sound(diceConfig.shake_sound), false);
             if (dicemode)
                 mini_wait_async(random(1000, 2000), "dice");
@@ -962,11 +908,7 @@ void dicegame()
             built-in message, because refunding it would make every losing roll free. */
             if (payout is null && margin >= 0)
             {
-                if (selectedBet == 0) { cookies += betAmount; cookies = floor(safe_cap(cookies)); }
-                else if (selectedBet == 1) { coins += betAmount; coins = floor(safe_cap(coins)); }
-                else if (selectedBet == 2) { autocookie += betAmount; autocookie = floor(safe_cap(autocookie)); }
-                else if (selectedBet == 3) gain_cookiespeed(betAmount);
-                else if (selectedBet == 4) { manulcookie += betAmount; manulcookie = floor(safe_cap(manulcookie)); }
+                pay_bet(selectedBet, betAmount);
                 dlg_buffer(rollSummary + " No payout is set for that result in the dice table, so your bet was returned.");
                 continue;
             }
@@ -997,12 +939,9 @@ void dicegame()
             {
                 stat_dice_wins++;
                 double winAmount = floor(safe_cap(betAmount * payout.multiplier * diceScale));
-                string amtStr = (selectedBet == 1 ? convert_to_currency(winAmount) : format_number(winAmount));
-                if (selectedBet == 0) { cookies += winAmount; cookies = floor(safe_cap(cookies)); }
-                else if (selectedBet == 1) { coins += winAmount; coins = floor(safe_cap(coins)); stat_coins_earned += max(0.0, winAmount - betAmount); }
-                else if (selectedBet == 2) { autocookie += winAmount; autocookie = floor(safe_cap(autocookie)); }
-                else if (selectedBet == 3) gain_cookiespeed(winAmount);
-                else if (selectedBet == 4) { manulcookie += winAmount; manulcookie = floor(safe_cap(manulcookie)); }
+                string amtStr = bet_amount_text(selectedBet, winAmount);
+                pay_bet(selectedBet, winAmount);
+                if (selectedBet == 1) stat_coins_earned += max(0.0, winAmount - betAmount);
                 bet_lost_purchases(selectedBet, betAmount - winAmount);
                 string msg = payout.message;
                 int ph = msg.find("%roll%");
@@ -1298,11 +1237,7 @@ void highlowgame()
     form.reset();
     form.create_window("Higher or Lower", false);
     int betChoice = form.create_list("Choose an &item to bet:", 5);
-    form.add_list_item(betChoice, "Cookies");
-    form.add_list_item(betChoice, "Currency");
-    form.add_list_item(betChoice, "Auto Cookies");
-    form.add_list_item(betChoice, "Auto Cookie Speeds");
-    form.add_list_item(betChoice, "Manual Cookies");
+    bet_add_items(betChoice);
     int betInput = form.create_input_box("Enter your &bet amount:", "", "", 0, false, false, false);
     int highlowAuto = form.create_checkbox("automatic card revealing", highlowmode);
     int dealButton = form.create_button("&Deal", true);
@@ -1323,14 +1258,7 @@ void highlowgame()
     {
         wait(5);
         form.monitor();
-        if (autocookie <= 0) { bakemode = 0; autocookie = 0; }
-        if (coins <= 0) coins = 0;
-        if (cookies <= 0) cookies = 0;
-        if (cookiespeed <= 0) cookiespeed = 0;
-        if (cookiespeed > COOKIESPEED_MAX) cookiespeed = COOKIESPEED_MAX;
-        if (manulcookie <= 0) manulcookie = 0;
-        if (clicktime <= 50) clicktime = 50;
-        if (clicktime >= 1000) clicktime = 1000;
+        bet_clamp_balances();
         if (form.get_current_focus() != betInput)
             highlow_game_input();
         if (key_pressed(KEY_ESCAPE))
@@ -1355,7 +1283,7 @@ void highlowgame()
             else
             {
                 double potNow = floor(safe_cap(betAmount * currentMultiplier));
-                string potStr = (streak < 1) ? "nothing yet" : ((selectedBet == 1) ? convert_to_currency(potNow) : (format_number(potNow) + (betItemName != "" ? " " + betItemName : "")));
+                string potStr = (streak < 1) ? "nothing yet" : bet_amount_with_item(selectedBet, potNow);
                 speak_buffer("Your streak is " + streak + ", your pot is " + potStr + ", and the last card was the " + curName + ".");
             }
         }
@@ -1367,61 +1295,18 @@ void highlowgame()
                 continue;
             }
             selectedBet = form.get_list_position(betChoice);
-            string betStr = form.get_text(betInput);
-            double betNum = floor(selectedBet == 1 ? string_to_number(betStr) * 100.0 : string_to_number(betStr));
-            if (betNum <= 0)
-            {
-                pool.play_stationary("sounds/misc/gamefail.ogg", false);
-                dlg_buffer("Error! Please enter a valid bet amount.");
-                continue;
-            }
-            if (betNum < highlowConfig.min_bet)
-            {
-                pool.play_stationary("sounds/misc/gamefail.ogg", false);
-                dlg_buffer("Error! The minimum bet is " + (selectedBet == 1 ? convert_to_currency(highlowConfig.min_bet) : format_number(highlowConfig.min_bet)) + ".");
-                continue;
-            }
-            if (highlowConfig.max_bet > 0 && betNum > highlowConfig.max_bet)
-            {
-                pool.play_stationary("sounds/misc/gamefail.ogg", false);
-                dlg_buffer("Your bet has been capped at the maximum of " + (selectedBet == 1 ? convert_to_currency(highlowConfig.max_bet) : format_number(highlowConfig.max_bet)) + ".");
-                betNum = highlowConfig.max_bet;
-            }
-            if (selectedBet == 0) betNum = min(betNum, floor(cookies));
-            else if (selectedBet == 1) betNum = min(betNum, floor(coins));
-            else if (selectedBet == 2) betNum = min(betNum, floor(autocookie));
-            else if (selectedBet == 3) betNum = min(betNum, floor(cookiespeed));
-            else if (selectedBet == 4) betNum = min(betNum, floor(manulcookie));
-            if (betNum <= 0)
-            {
-                pool.play_stationary("sounds/misc/gamefail.ogg", false);
-                dlg_buffer("Error! You don't have enough of that item to bet!");
-                continue;
-            }
-            if (highlowConfig.confirm_threshold > 0)
-            {
-                double statTotal = (selectedBet == 0 ? floor(cookies) : (selectedBet == 1 ? floor(coins) : (selectedBet == 2 ? floor(autocookie) : (selectedBet == 3 ? floor(cookiespeed) : floor(manulcookie)))));
-                double effectiveThreshold = highlowConfig.confirm_use_percent ? (statTotal * (highlowConfig.confirm_threshold / 100.0)) : highlowConfig.confirm_threshold;
-                if (betNum >= effectiveThreshold)
-                {
-                    string betItemName2 = (selectedBet == 0 ? "cookies" : (selectedBet == 1 ? "currency" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies"))));
-                    if (!yes_no("Are you sure you want to bet " + (selectedBet == 1 ? convert_to_currency(betNum) : format_number(betNum) + " " + betItemName2) + "?", true))
-                        continue;
-                }
-            }
+            double betNum = read_bet(selectedBet, form.get_text(betInput), highlowConfig.min_bet, highlowConfig.max_bet);
+            if (betNum <= 0) continue;
+            if (!confirm_bet(selectedBet, betNum, highlowConfig.confirm_threshold, highlowConfig.confirm_use_percent)) continue;
             betAmount = betNum;
-            betItemName = (selectedBet == 0 ? "cookies" : (selectedBet == 1 ? "" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies"))));
-            if (selectedBet == 0) { cookies -= betAmount; cookies = floor(safe_cap(cookies)); }
-            else if (selectedBet == 1) { coins -= betAmount; coins = floor(safe_cap(coins)); }
-            else if (selectedBet == 2) { autocookie -= betAmount; autocookie = floor(safe_cap(autocookie)); }
-            else if (selectedBet == 3) { cookiespeed -= betAmount; clicktime += betAmount; cookiespeed = floor(safe_cap(cookiespeed)); }
-            else if (selectedBet == 4) { manulcookie -= betAmount; manulcookie = floor(safe_cap(manulcookie)); }
+            betItemName = bet_item_name(selectedBet);
+            take_bet(selectedBet, betAmount);
             in_round = true;
             streak = 0;
             currentMultiplier = 0;
             stat_highlow_games++;
             highlow_draw(curName, curVal);
-            string betDisplay = (selectedBet == 1) ? convert_to_currency(betAmount) : (format_number(betAmount) + " " + betItemName);
+            string betDisplay = bet_amount_with_item(selectedBet, betAmount);
             if (highlowmode) speak_buffer("You bet " + betDisplay + ", drawing your first card.");
             else dlg_buffer("You bet " + betDisplay + ", drawing your first card. Press enter or space to reveal.");
             pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.draw_sound), false);
@@ -1485,17 +1370,14 @@ void highlowgame()
                 pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.correct_sound), false);
                 if (streak >= highlowConfig.streak_sound_threshold && highlowConfig.streak_sound != "") pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.streak_sound), false);
                 double pot = floor(safe_cap(betAmount * currentMultiplier));
-                string potStr = (selectedBet == 1) ? convert_to_currency(pot) : format_number(pot);
+                string potStr = bet_amount_text(selectedBet, pot);
                 bool forced = (highlowConfig.max_streak > 0 && streak >= highlowConfig.max_streak);
                 if (forced)
                 {
                     if (highlowmode) speak_buffer("Correct, and you reached the maximum streak of " + streak + "!");
                     else dlg_buffer("Correct, and you reached the maximum streak of " + streak + "!");
-                    if (selectedBet == 0) { cookies += pot; cookies = floor(safe_cap(cookies)); }
-                    else if (selectedBet == 1) { coins += pot; coins = floor(safe_cap(coins)); stat_coins_earned += max(0.0, pot - betAmount); }
-                    else if (selectedBet == 2) { autocookie += pot; autocookie = floor(safe_cap(autocookie)); }
-                    else if (selectedBet == 3) gain_cookiespeed(pot);
-                    else if (selectedBet == 4) { manulcookie += pot; manulcookie = floor(safe_cap(manulcookie)); }
+                    pay_bet(selectedBet, pot);
+                    if (selectedBet == 1) stat_coins_earned += max(0.0, pot - betAmount);
                     bet_lost_purchases(selectedBet, betAmount - pot);
                     stat_highlow_wins++;
                     pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.win_sound), false);
@@ -1527,8 +1409,8 @@ void highlowgame()
                 int brokenStreak = streak;
                 pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.wrong_sound), false);
                 double lostPot = floor(safe_cap(betAmount * currentMultiplier));
-                string potStr = (selectedBet == 1) ? convert_to_currency(lostPot) : format_number(lostPot);
-                string betStr2 = (selectedBet == 1) ? convert_to_currency(betAmount) : format_number(betAmount);
+                string potStr = bet_amount_text(selectedBet, lostPot);
+                string betStr2 = bet_amount_text(selectedBet, betAmount);
                 string wmsg = (brokenStreak >= 1) ? highlowConfig.bust_message : highlowConfig.wrong_message;
                 wmsg = highlow_fill(wmsg, "%card%", nextName);
                 wmsg = highlow_fill(wmsg, "%streak%", string(brokenStreak));
@@ -1557,15 +1439,12 @@ void highlowgame()
                 continue;
             }
             double pot = floor(safe_cap(betAmount * currentMultiplier));
-            if (selectedBet == 0) { cookies += pot; cookies = floor(safe_cap(cookies)); }
-            else if (selectedBet == 1) { coins += pot; coins = floor(safe_cap(coins)); stat_coins_earned += max(0.0, pot - betAmount); }
-            else if (selectedBet == 2) { autocookie += pot; autocookie = floor(safe_cap(autocookie)); }
-            else if (selectedBet == 3) gain_cookiespeed(pot);
-            else if (selectedBet == 4) { manulcookie += pot; manulcookie = floor(safe_cap(manulcookie)); }
+            pay_bet(selectedBet, pot);
+            if (selectedBet == 1) stat_coins_earned += max(0.0, pot - betAmount);
             bet_lost_purchases(selectedBet, betAmount - pot);
             stat_highlow_wins++;
             pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.win_sound), false);
-            string potStr = (selectedBet == 1) ? convert_to_currency(pot) : format_number(pot);
+            string potStr = bet_amount_text(selectedBet, pot);
             string vmsg = highlow_fill(highlowConfig.win_message, "%streak%", string(streak));
             vmsg = highlow_fill(vmsg, "%payout%", potStr);
             vmsg = highlow_fill(vmsg, "%item%", betItemName);

@@ -33,7 +33,7 @@ bet_add_items(list), bet_clamp_balances(), bet_balance(item), bet_item_name(item
 ## Sections (proposed; one per turn, test, commit)
 
 1. Helpers + convert double or nothing (newest, cleanest) — tests: every bet error, confirm, a win and a loss. **BUILT 2026-10-28:** betfuncts.nvgt has bet_add_items, bet_clamp_balances, bet_balance, bet_item_name, bet_amount_text, bet_amount_with_item, bet_fail, read_bet(item,text,min,max,clampToBalance=true), confirm_bet(item,amount,threshold,usePercent,question=""), take_bet, pay_bet; dongame uses them, don_amount removed (→ bet_amount_text), don_bank uses pay_bet and keeps its own money-earned line. No behaviour change for double or nothing.
-2. Convert higher or lower and dice.
+2. Convert higher or lower and dice. **BUILT 2026-10-28** with scratchpad converter bet_conv.py (exact-text block matches, asserted counts): items, clamps, read_bet, confirm_bet, bet_item_name, take_bet, pay_bet (dice refund + win; highlow forced bank + bank, each keeps its own money-earned line), amount text → bet_amount_text / bet_amount_with_item. No behaviour change.
 3. Convert blackjack and slots.
 4. Convert roulette (total-stake path).
 5. Docs: changelog only if wording/sounds change for players.
