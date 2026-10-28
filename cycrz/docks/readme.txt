@@ -270,7 +270,20 @@ If the target you enter is mathematically impossible to reach with your current 
 
 You can roll manually, or enable automatic rolling with the checkbox in the game so the result appears after a short random delay. When disabled, the result is held until you press enter or space.
 
-Higher or lower. Unlocked at rank 50.
+Double or nothing. Unlocked at rank 50.
+
+Intermediate. Each round is one simple call after another, but deciding how far to push your luck is what makes it tense.
+Bet on the color or the suit of the next card, then let your whole pot ride on call after call, or bank it before the deck turns against you.
+
+Before playing, choose an item to bet and enter your bet amount. When betting money, you can enter the amount as a dollar value, for example type 1 to bet $1.00 or 0.50 to bet 50 cents. All other items are entered as whole numbers. Press deal to put your bet on the table, then make a call. Call red or black, and a correct call doubles your pot. Call one of the four suits, hearts, diamonds, clubs, or spades, and a correct call multiplies your pot by four. A wrong call loses your whole pot, not just your bet.
+
+Every call is drawn from a fresh deck of 52 cards and 2 jokers, so the odds never change from one call to the next. A joker matches no color and no suit, so whatever you called, the house takes the pot. The jokers are the house edge: every call loses a little under 4 percent on average, whether you call a color or a suit, so a suit call is riskier but no better or worse on average. After any correct call you can bank your earnings to keep the pot and end the round, or let it ride on another call. Press B during a round to hear your current pot and how many winning calls you have made.
+
+The suits and their colors, the number of jokers, the color and suit payouts, an optional limit on winning calls per round, sounds, messages, and bet limits are all configurable in doublenot.table. A configurable confirmation prompt can be set to appear when your bet reaches a certain threshold.
+
+You can reveal cards manually, or enable automatic card revealing with the checkbox in the game so each card appears after a short random delay. When disabled, each result is held until you press enter or space.
+
+Higher or lower. Unlocked at rank 60.
 
 Intermediate. Simple to guess but tense to play, since knowing when to stop matters as much as guessing right.
 Bet on whether the next card will be higher or lower, then build a streak and bank your winnings before a wrong guess breaks it.
@@ -283,7 +296,7 @@ The deck, house edge, tie rule, ace ranking, sounds, messages, and bet limits ar
 
 You can reveal cards manually, or enable automatic card revealing with the checkbox in the game so each card appears after a short random delay. When disabled, each result is held until you press enter or space.
 
-Roulette. Unlocked at rank 60.
+Roulette. Unlocked at rank 70.
 
 Advanced. The odds are familiar casino odds, but choosing and stacking several bets on one spin rewards a little planning.
 Stake one item across as many bet types as you like, then spin the wheel and see which of your bets pay out.
@@ -296,7 +309,7 @@ The bet types and their odds, the pocket count, the spin timing, sounds, message
 
 You can spin manually, or enable automatic wheel spinning with the checkbox in the game so the wheel runs its full animation and announces where it lands. When disabled, the animation is skipped and the result is held until you press enter or space.
 
-Slot machine. Unlocked at rank 70.
+Slot machine. Unlocked at rank 80.
 
 Advanced. Multiple reels, payout combinations, and bet management make it more complex than early minigames.
 Spin the reels and match symbols to win multiples of your bet.
@@ -310,7 +323,7 @@ A configurable confirmation prompt can be set to appear when your bet reaches a 
 
 Rank ups and achievement unlocks are checked and can fire while you are playing any of the minigames mentioned above.
 
-Baking slots manager. Unlocked at rank 80.
+Baking slots manager. Unlocked at rank 90.
 
 Advanced. Requires understanding the entire baking system deeply enough to configure and automate it effectively.
 Manage and configure your baking slots to balance automated and manual cookie production.
@@ -323,10 +336,10 @@ Manual slots multiply the output of each bake press, scaling with your manual co
 Every slot produces your full auto or manual cookies, so 10 automated slots produce 10 times as much as your auto cookies alone, and 10 manual slots make each press produce 10 times your manual cookies. Slots never store or protect your auto and manual cookies; if those drop to zero, every slot produces zero.
 
 You can purchase additional slots of either type. A new auto slot does nothing until you pay to automate it in the slot automation menu, and automating a slot is permanent. Manual slots start working as soon as you buy them. Slots and automation cannot be sold back once purchased.
-Both submenus are locked behind a rank requirement, defaulting to rank 80.
+Both submenus are locked behind a rank requirement, defaulting to rank 90.
 The slot manager menu itself is always accessible so you can see what is coming, but you cannot enter either submenu until you reach the required rank.
 
-Combos. Unlocked at rank 90.
+Combos. Unlocked at rank 100.
 
 Advanced. Demands consistent timing, significant progression in manual upgrades, and understanding of multiplier stacking to use effectively. Build a combo by pressing the bake button multiple times in quick succession. The combo does not activate immediately — you must reach a minimum number of consecutive presses within the time window before it kicks in. Once activated, a sound plays and a message announces that the combo has started. From that point, each press within the window increments your combo count and applies a multiplier to your manual cookie output. Reaching a combo tier plays a sound and announces the new multiplier. Missing the window at any point breaks your combo, plays a break sound, and resets everything back to zero.
 
@@ -384,9 +397,9 @@ The session statistics screen shows what you have done since you loaded your gam
 Most stats shown here are tracked stats, meaning they are running totals that only ever go up and are saved with your game. A few are live stats, meaning they are calculated fresh from the current game state each time you open the screen and can go up or down. Live stats are noted individually where they appear.
 
 Both screens begin with how long you have played. On the session screen this is the time since you loaded your game. On the lifetime screen it is your total time played on this save, counted up to your last save, so like every other stat, time since your last save is not kept if you quit without saving.
-On the session screen, highest combo reached and highest streak are your best this session, and auto slots idle is left out, since it describes your bakery right now rather than something you did.
+On the session screen, highest combo reached, highest streak, and highest ride are your best this session, and auto slots idle is left out, since it describes your bakery right now rather than something you did.
 
-The statistics are divided into thirteen sections.
+The statistics are divided into fourteen sections.
 
 Baking.
 
@@ -437,6 +450,16 @@ Dice roller.
 Total rolls: counts every dice roll.
 Wins: counts rolls where the total met or exceeded the target score.
 Losses: counts rolls where the total fell short of the target score.
+
+Double or nothing.
+
+Games played: counts every round where a bet was placed and dealt.
+Wins: counts rounds you banked, including rounds banked for you by the limit on winning calls.
+Losses: counts rounds that ended on a wrong call or a joker.
+Correct calls: counts every winning call, color or suit, so a round banked after three winning calls adds one win and three correct calls.
+Suit hits: counts winning suit calls, the riskier call that multiplies your pot by four.
+Jokers drawn: counts rounds that ended on a joker. These also count as losses.
+Highest ride: the most winning calls you have ever made in a single round. This is a lifetime personal best and only ever goes up.
 
 Higher or lower.
 
@@ -506,7 +529,7 @@ Achievements.
 
 Track your progress and earn recognition for milestones across every part of the game.
 
-There are many achievements spread across all tracked statistics, including baking, baking slots manager, economy, upgrades, bundles, events, blackjack, the cookie flipper, the cookie lottery, the dice roller, higher or lower, roulette, the slot machine, quests, and combos.
+There are many achievements spread across all tracked statistics, including baking, baking slots manager, economy, upgrades, bundles, events, blackjack, the cookie flipper, the cookie lottery, the dice roller, double or nothing, higher or lower, roulette, the slot machine, quests, and combos.
 Each achievement has a name, a description, and a hint that tells you what you need to do to unlock it.
 
 Achievements are shown in a dedicated menu accessible from the main game interface. The menu is organised into categories covering baking, economy, events, minigames, and more.
@@ -535,7 +558,7 @@ Rerolling a quest replaces only the currently focused quest with a new one of th
 
 Some quests are endless. Instead of a one-time goal, an endless quest escalates every time you complete it and prestige, returning the next cycle at a higher target, and it can never be permanently finished. Your rank quest is endless and always present, and several others, such as baking cookies, earning and spending money, buying upgrades, and playing each minigame, rotate through the random pool. Every endless quest you complete permanently increases the prestige points you earn on all future prestiges, so the deeper you push them the more each prestige pays out.
 
-Quest progress counts only what you do during the current run. Many stats, such as blackjack hands, dice rolls, and lottery tickets scratched, are kept as lifetime totals across every prestige, so a quest on one of them measures how far you have come since the run began rather than your lifetime total. That way no quest, endless or not, is already complete the moment it is assigned. Rank quests compare your current rank, and quests on your two personal bests, your highest combo and your longest higher or lower streak, compare your best ever.
+Quest progress counts only what you do during the current run. Many stats, such as blackjack hands, dice rolls, and lottery tickets scratched, are kept as lifetime totals across every prestige, so a quest on one of them measures how far you have come since the run began rather than your lifetime total. That way no quest, endless or not, is already complete the moment it is assigned. Rank quests compare your current rank, and quests on your three personal bests, your highest combo, your longest higher or lower streak, and your highest double or nothing ride, compare your best ever.
 
 To view your quests, press the Quests button in the main game interface.
 A Quest Category list at the top of the quests screen lets you narrow down the list. The options are All, Required, and Random, and the list updates immediately as you switch between them.
@@ -558,7 +581,7 @@ Prestige.
 Reset your progress and earn a permanent bonus that carries into every future run.
 
 The prestige option is available from the quests screen.
-Prestige unlocks at rank 100. Once you reach it, pressing the prestige button opens a confirmation dialog explaining what resets and what carries over, whether you will receive a reward based on your current quest completion status, and a warning if you have not completed any quests this run, since you would earn no prestige points.
+Prestige unlocks at rank 110. Once you reach it, pressing the prestige button opens a confirmation dialog explaining what resets and what carries over, whether you will receive a reward based on your current quest completion status, and a warning if you have not completed any quests this run, since you would earn no prestige points.
 
 When you prestige, the following are reset: your money, cookies, rank, all upgrade purchases, baking slots, and baking and economy stats.
 The following are kept: your prestige level, all achievements and achievement progress, minigame unlocks, minigame stats, and preferences. Minigame stats for every minigame keep counting up as lifetime totals across all of your prestiges, while your quests count only what you do in each new run.
@@ -642,7 +665,7 @@ The game can also read them from a single packed file, data/compiled/config.crz.
 To manage the packed file, choose miscellaneous menu from the main menu. Compile data config packs every file in data/decompiled/config into config.crz, replacing what was in it before. Decompile data config writes every file in config.crz back out to data/decompiled/config, and if config files are already there, it warns you that any that are also in the pack will be overwritten. Both ask before doing anything, never delete any files, and reload the configuration files when they finish.
 Lines starting with a semicolon, hash, or double slash are treated as comments and ignored by the parser.
 
-Eight of the files, ranks.table, slots.table, prestige.table, quests.table, lottery.table, combos.table, highlow.table, and roulette.table, use section headers in square brackets such as [settings], [sounds], [default], [summary], [default_reward], [rewards], [payouts], [tiers], [quests], [prize:id], [deck], and [outcomes]. These are not cosmetic.
+Nine of the files, ranks.table, slots.table, prestige.table, quests.table, lottery.table, combos.table, highlow.table, roulette.table, and doublenot.table, use section headers in square brackets such as [settings], [sounds], [default], [summary], [default_reward], [rewards], [payouts], [tiers], [quests], [prize:id], [deck], [outcomes], and [suits]. These are not cosmetic.
 The parser uses them to know which format to expect. Do not remove or rename these headers, or the parser will not be able to read the file correctly.
 Each functional header has a warning comment placed directly below it inside the file as a reminder. That comment is cosmetic and can be removed, but the header itself must stay exactly as written.
 
@@ -1043,6 +1066,14 @@ dice_rolls = total dice roller rolls.
 dice_wins = total dice rolls that met or exceeded the target.
 dice_losses = total dice rolls that fell short of the target.
 
+don_games = total double or nothing rounds played.
+don_wins = total double or nothing rounds banked, including rounds banked by the limit on winning calls.
+don_losses = total double or nothing rounds ended by a wrong call or a joker.
+don_correct_calls = total winning calls in double or nothing, color or suit.
+don_suit_hits = total winning suit calls in double or nothing.
+don_jokers = total double or nothing rounds ended by a joker.
+don_highest_ride = the most winning calls made in a single double or nothing round. A lifetime best that only ever goes up.
+
 slot_spins = total slot machine spins.
 slot_wins = total slot machine spins that returned a payout.
 slot_losses = total slot machine spins that returned nothing.
@@ -1233,6 +1264,96 @@ Message placeholders.
 %target% is replaced with the target score the player set.
 %margin% is replaced with how much the roll exceeded or fell short of the target.
 %amount% is replaced with the amount won.
+%item% is replaced with the name of the item bet, for example cookies or auto cookies.
+
+doublenot.table
+
+Location: data/decompiled/config/tables/doublenot.table
+
+Defines all double or nothing settings including the suits, jokers, payouts, the limit on winning calls, bet limits, sounds, and messages.
+
+min_bet
+The minimum amount of any item a player must bet per round. Set to 1 to allow any positive bet.
+
+max_bet
+The maximum amount of any item a player can bet per round. Set to 0 to allow unlimited bets.
+
+confirm_threshold
+Format: confirm_threshold=amount:use_percent
+
+Triggers a yes or no confirmation prompt when the bet meets or exceeds the threshold. Works the same way as in jacks.table and slots.table.
+
+jokers
+How many jokers are added to the deck, which defaults to 2. A joker matches no color and no suit, so drawing one loses the pot whatever was called. The jokers are the house edge: with 52 cards and the default 2 jokers, every call loses about 3.7 percent on average. Set it to 0 for a game that breaks even on average, or raise it for a harsher house.
+
+max_rides
+The most winning calls allowed in one round before the pot is automatically banked for you. Set to 0 for no limit.
+
+color_payout
+How many times the pot is multiplied by a correct color call, which defaults to 2. The minimum is 1.
+
+suit_payout
+How many times the pot is multiplied by a correct suit call, which defaults to 4. The minimum is 1.
+Changing either payout changes the house edge. With the default suits and jokers, a color call wins 26 times in 54 and a suit call 13 times in 54, so payouts of 2 and 4 make both calls lose the same small amount on average.
+
+Suits section.
+Format: name:color
+
+Defines the suits in the deck and their colors. Each suit gets the 13 cards from two to ace. Every suit becomes a suit call button, and every color named here becomes a color call button, in the order they first appear. At least one suit is required.
+
+name
+The spoken name of the suit, for example hearts.
+
+color
+The color of the suit, for example red. A call on a color wins on any suit of that color.
+
+deal_sound
+Sound to play when you deal and your bet goes on the table. Relative to sounds/minigames/.
+
+draw_sound
+Sound to play when a card is drawn after a call. Relative to sounds/minigames/. Supports random range syntax.
+
+color_win_sound
+Sound to play after a correct color call. Relative to sounds/minigames/.
+
+suit_win_sound
+Sound to play after a correct suit call. Relative to sounds/minigames/.
+
+wrong_sound
+Sound to play after a wrong call. Relative to sounds/minigames/.
+
+joker_sound
+Sound to play when a joker is drawn. Relative to sounds/minigames/.
+
+bank_sound
+Sound to play when you bank your earnings, or when the limit on winning calls banks them for you. Relative to sounds/minigames/.
+
+start_message
+The text spoken when you deal.
+
+win_message
+The text spoken after a correct call.
+
+lose_message
+The text spoken after a wrong call.
+
+joker_message
+The text spoken when a joker is drawn.
+
+bank_message
+The text spoken when you bank your earnings.
+
+limit_message
+The text spoken when the limit on winning calls banks your pot for you.
+
+Message placeholders.
+
+%card% is replaced with the name of the card drawn, for example queen of hearts.
+%color% is replaced with the color of the card drawn.
+%pot% is replaced with your pot: the new pot after a correct call, the pot you lost after a wrong call or a joker, or the amount banked.
+%bet% is replaced with the amount you bet. Used in start_message.
+%calls% is replaced with the number of winning calls this round together with the words winning call or winning calls, for example 1 winning call.
+%rides% is replaced with the number of winning calls this round on its own.
 %item% is replaced with the name of the item bet, for example cookies or auto cookies.
 
 highlow.table
@@ -1572,6 +1693,7 @@ blackjack = unlocks the blackjack minigame.
 flipper = unlocks the cookie flipper minigame.
 lottery = unlocks the cookie lottery and the ticket shop.
 dice = unlocks the dice roller minigame.
+don = unlocks the double or nothing minigame.
 highlow = unlocks the higher or lower minigame.
 roulette = unlocks the roulette minigame.
 slots = unlocks the slot machine minigame.
@@ -1875,6 +1997,14 @@ penny_flips = total penny flips only.
 dice_rolls = total dice roller rolls.
 dice_wins = total dice rolls that met or exceeded the target.
 dice_losses = total dice rolls that fell short of the target.
+
+don_games = total double or nothing rounds played.
+don_wins = total double or nothing rounds banked, including rounds banked by the limit on winning calls.
+don_losses = total double or nothing rounds ended by a wrong call or a joker.
+don_correct_calls = total winning calls in double or nothing, color or suit.
+don_suit_hits = total winning suit calls in double or nothing.
+don_jokers = total double or nothing rounds ended by a joker.
+don_highest_ride = the most winning calls made in a single double or nothing round. A lifetime best that only ever goes up.
 
 slot_spins = total slot machine spins.
 slot_wins = total slot machine wins.

@@ -1,12 +1,14 @@
 ---
 name: project_double_or_nothing_plan
-description: "7.3 blueprint AGREED (7 sections, not built) (started 2026-10-28): double or nothing minigame at rank 50 as a red-or-black card gamble with an optional suit call (4x), bank between rounds; decisions so far + open topics. Follow project_minigame_build_guide."
+description: "SHIPPED 7.3 (all 7 sections built, tested and documented, 2026-10-28) (started 2026-10-28): double or nothing minigame at rank 50 as a red-or-black card gamble with an optional suit call (4x), bank between rounds; decisions so far + open topics. Follow project_minigame_build_guide."
 metadata:
   node_type: memory
   type: project
 ---
 
-# Double or nothing minigame (7.3) — blueprint in discussion
+# Double or nothing minigame (7.3) — SHIPPED
+
+**Docs done 2026-10-28 (section 7):** readme blurb after dice roller (rank 50), later headers shifted (highlow 60, roulette 70, slots 80, slots manager 90 + its "defaulting to rank 90", combos 100, prestige 110), statistics 14 sections + block + session-best note, achievements list, quest personal-bests note, config "Nine of the files … [suits]", don_ stat keys in both key lists, `don` unlock value, full doublenot.table reference before highlow.table; changelog 7.3 entries 4–6 (quests, achievements, game incl. ladder shift + rank 150 bonus + re-lock note), todo → Finished ("It became a card game instead…").
 
 First 7.3 feature before boosts ([[project_boosts_plan]]). Build per [[project_minigame_build_guide]]. Ladder after it: dice 40, **double or nothing 50**, higher or lower 60, roulette 70, slot machine 80, baking slots manager 90, combos 100, prestige 110 (boosts later take 100 → combos 110, prestige 120).
 
