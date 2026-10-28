@@ -510,7 +510,7 @@ check_achievements(loadedAchievements, achievementsUnlocked);
         {
             if (in_round)
             {
-                dlg_buffer("You are already in a round. Hit or stand to continue.");
+                speak_buffer("You are already in a round. Hit or stand to continue.");
                 continue;
             }
             selectedBet = form.get_list_position(betChoice);
@@ -608,7 +608,7 @@ check_achievements(loadedAchievements, achievementsUnlocked);
         {
             if (!in_round)
             {
-                dlg_buffer("Please place a bet and deal first.");
+                speak_buffer("Please place a bet and deal first.");
                 continue;
             }
             jack_deal_card(true, p_points, p_aces, d_points, d_aces);
@@ -638,7 +638,7 @@ check_achievements(loadedAchievements, achievementsUnlocked);
         {
             if (!in_round)
             {
-                dlg_buffer("Please place a bet and deal first.");
+                speak_buffer("Please place a bet and deal first.");
                 continue;
             }
             string standIntro = autoStand ? "Twenty-one! You stand. Dealer's turn." : "You stand with " + p_points + ". Dealer's turn.";
@@ -1147,7 +1147,7 @@ void dongame()
         {
             if (in_round)
             {
-                dlg_buffer("You are already in a round. Make a call, or bank your earnings.");
+                speak_buffer("You are already in a round. Make a call, or bank your earnings.");
                 continue;
             }
             selectedBet = form.get_list_position(betChoice);
@@ -1222,7 +1222,7 @@ void dongame()
         {
             if (!in_round)
             {
-                dlg_buffer("Please place a bet and deal first.");
+                speak_buffer("Please place a bet and deal first.");
                 continue;
             }
             bool suitCall = (calledSuit >= 0);
@@ -1309,12 +1309,12 @@ void dongame()
         {
             if (!in_round)
             {
-                dlg_buffer("Please place a bet and deal first.");
+                speak_buffer("Please place a bet and deal first.");
                 continue;
             }
             if (rides < 1)
             {
-                dlg_buffer("You need at least one correct call before you can bank your earnings.");
+                speak_buffer("You need at least one correct call before you can bank your earnings.");
                 continue;
             }
             don_bank(selectedBet, betAmount, pot);
@@ -1426,7 +1426,7 @@ void highlowgame()
         {
             if (in_round)
             {
-                dlg_buffer("You are already in a round. Guess higher or lower, or bank your earnings.");
+                speak_buffer("You are already in a round. Guess higher or lower, or bank your earnings.");
                 continue;
             }
             selectedBet = form.get_list_position(betChoice);
@@ -1502,7 +1502,7 @@ void highlowgame()
         {
             if (!in_round)
             {
-                dlg_buffer("Please place a bet and deal first.");
+                speak_buffer("Please place a bet and deal first.");
                 continue;
             }
             // The odds of this guess, taken before the next card replaces the current one.
@@ -1611,12 +1611,12 @@ void highlowgame()
         {
             if (!in_round)
             {
-                dlg_buffer("Please place a bet and deal first.");
+                speak_buffer("Please place a bet and deal first.");
                 continue;
             }
             if (streak < 1)
             {
-                dlg_buffer("You need at least one correct guess before you can bank your earnings.");
+                speak_buffer("You need at least one correct guess before you can bank your earnings.");
                 continue;
             }
             double pot = floor(safe_cap(betAmount * currentMultiplier));

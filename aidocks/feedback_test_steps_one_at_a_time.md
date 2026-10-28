@@ -12,6 +12,8 @@ When a fix or section is ready to test, walk the dev through the testing steps *
 
 **Build → review → ask (dev, 2026-10-27, for every plan section from now on):** after building a section, review your own changes first (re-read the diff for compile-breakers, braceless-if traps, CRLF, missed wiring, wrong behaviour) and fix anything found; then send the summary including what the review checked/found, and **ASK whether the dev is ready for the first testing step** — do not send step 1 until they say so. Later steps still go one per message after each "passed".
 
+**One action per message, even inside a step (dev, 2026-10-28):** if a step involves several things to do or check, give ONLY the first action (plus what they should hear), wait for the result, then give the next action. Never put a numbered list of 3–5 actions in one step message. Number them as parts so progress is clear, e.g. "Step 1 of 3, part 1 of 4". Count parts when stating the section's step count where useful.
+
 **State the step count in every build summary (dev, 2026-10-28):** in each section's summary, before asking "ready for step 1?", say how many testing steps the section has (e.g. "This section has 3 testing steps."). Every section except docs; a docs section says it has none ([[feedback_flag_sections_without_tests]]).
 
 **Step 1 goes in its own message, apart from the build summary (dev, 2026-10-27).** After a build turn's summary ("what changed", Files changed, relaunch note), make a tool call (e.g. a memory/plan update) so the step lands as a separate message block, then send only the step text ("Step 1 of N: …"). Never tuck the step at the bottom of the explanation.
