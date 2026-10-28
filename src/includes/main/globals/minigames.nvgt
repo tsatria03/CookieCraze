@@ -180,18 +180,6 @@ if (form.is_pressed(flip))
 
 void flipgame_input() { minigame_input("flipper"); }
 
-/* The bet and item of the last slot machine spin that actually happened, for the B key. They live outside slotsgame so
-minigame_input can answer B during the spin's own waits as well as between spins. A spin stopped by an error never
-changes them. */
-double slotLastBet = 0;
-int slotLastItem = 0;
-
-void speak_slot_bet()
-{
-    if (slotLastBet <= 0) speak_buffer("You have not placed a bet yet.");
-    else speak_buffer("Your current bet is " + bet_amount_with_item(slotLastItem, slotLastBet) + ".");
-}
-
 void slotsgame()
 {
     form.reset();
@@ -217,11 +205,15 @@ form.set_disallowed_chars(betInput, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQ
 string[] reelResults(slotReels, "");
     int selectedBet = 0;
     double betAmount = 0;
+    // The bet and item of the last spin that actually happened, for the B key; a spin stopped by an error never changes them.
+    double lastBet = 0;
+    int lastItem = 0;
     while (true)
     {
         wait(5);
         form.monitor();
         bet_clamp_balances();
+        set_bet_status(last_bet_status(lastItem, lastBet));
 if(form.get_current_focus()!=betInput)
 {
 slots_game_input();
@@ -287,8 +279,9 @@ speak_buffer("You placed a bet of " + bet_amount_with_item(selectedBet, betAmoun
 /* Take the bet up front like the other minigames, before any wait that reads keys.
 Settling a loss only after the reels were announced let a save or reload during the wait dodge it. */
 take_bet(selectedBet, betAmount);
-slotLastBet = betAmount;
-slotLastItem = selectedBet;
+lastBet = betAmount;
+lastItem = selectedBet;
+set_bet_status(last_bet_status(lastItem, lastBet));
 mini_wait_async(1000, "slots");
 pool.play_stationary("sounds/minigames/" + resolve_sound(slotBetSound2), false);
 mini_wait_async(random(600, 800), "slots");
@@ -399,12 +392,16 @@ void jackgame()
     int selectedBet = 0;
     double betAmount = 0;
     string betItemName = "";
+    // The bet and item of the last hand actually dealt, for the B key.
+    double lastBet = 0;
+    int lastItem = 0;
     bool in_round = false;
     while (true)
     {
         wait(5);
         form.monitor();
         bet_clamp_balances();
+        set_bet_status(last_bet_status(lastItem, lastBet));
         if (form.get_current_focus() != betInput)
             jack_game_input();
         if (key_pressed(KEY_ESCAPE))
@@ -422,8 +419,6 @@ check_rank();
 check_achievements(loadedAchievements, achievementsUnlocked);
         bool jackModeNew = form.is_checked(jackAuto);
         if (jackModeNew != jackmode) { jackmode = jackModeNew; writepreffs(); }
-        if (key_pressed(KEY_B))
-            speak_buffer("Your current bet is " + bet_amount_with_item(selectedBet, betAmount) + ".");
         if (form.is_pressed(dealButton))
         {
             if (in_round)
@@ -437,6 +432,9 @@ check_achievements(loadedAchievements, achievementsUnlocked);
             if (!confirm_bet(selectedBet, betNum, jacksConfig.confirm_threshold, jacksConfig.confirm_use_percent)) continue;
             betAmount = betNum;
             take_bet(selectedBet, betAmount);
+            lastBet = betAmount;
+            lastItem = selectedBet;
+            set_bet_status(last_bet_status(lastItem, lastBet));
             betItemName = bet_item_name(selectedBet);
             p_points = 0; d_points = 0;
             p_aces = 0; d_aces = 0;
@@ -681,11 +679,15 @@ void dicegame()
     int selectedBet = 0;
     double betAmount = 0;
     string betItemName = "";
+    // The bet and item of the last roll actually made, for the B key.
+    double lastBet = 0;
+    int lastItem = 0;
     while (true)
     {
         wait(5);
         form.monitor();
         bet_clamp_balances();
+        set_bet_status(last_bet_status(lastItem, lastBet));
         if (form.get_current_focus() != betInput && form.get_current_focus() != targetInput)
             dice_game_input();
         if (key_pressed(KEY_ESCAPE))
@@ -745,6 +747,9 @@ void dicegame()
             betAmount = betNum;
             betItemName = bet_item_name(selectedBet);
             take_bet(selectedBet, betAmount);
+            lastBet = betAmount;
+            lastItem = selectedBet;
+            set_bet_status(last_bet_status(lastItem, lastBet));
             pool.play_stationary("sounds/minigames/" + resolve_sound(diceConfig.shake_sound), false);
             if (dicemode)
                 mini_wait_async(random(1000, 2000), "dice");
@@ -873,6 +878,13 @@ void don_bank(int selectedBet, double betAmount, double pot)
     stat_don_wins++;
 }
 
+// What B says in double or nothing: your pot and winning calls during a round.
+string don_status(bool in_round, int selectedBet, double pot, int rides)
+{
+    if (!in_round) return "You are not in a round, so place a bet and deal to begin.";
+    return "Your pot is " + bet_amount_with_item(selectedBet, pot) + " after " + don_calls(rides) + ".";
+}
+
 void dongame()
 {
     form.reset();
@@ -903,6 +915,7 @@ void dongame()
         wait(5);
         form.monitor();
         bet_clamp_balances();
+        set_bet_status(don_status(in_round, selectedBet, pot, rides));
         if (form.get_current_focus() != betInput)
             don_game_input();
         if (key_pressed(KEY_ESCAPE))
@@ -920,13 +933,6 @@ void dongame()
         check_achievements(loadedAchievements, achievementsUnlocked);
         bool donModeNew = form.is_checked(donAuto);
         if (donModeNew != donmode) { donmode = donModeNew; writepreffs(); }
-        if (key_pressed(KEY_B))
-        {
-            if (!in_round)
-                speak_buffer("You are not in a round, so place a bet and deal to begin.");
-            else
-                speak_buffer("Your pot is " + bet_amount_text(selectedBet, pot) + (betItemName != "" ? " " + betItemName : "") + " after " + rides + (rides == 1 ? " winning call." : " winning calls."));
-        }
         if (form.is_pressed(dealButton))
         {
             if (in_round)
@@ -1097,6 +1103,15 @@ string highlow_fill(string msg, string token, string value)
     return msg;
 }
 
+// What B says in higher or lower: your streak, pot and the card showing during a round.
+string highlow_status(bool in_round, int selectedBet, double betAmount, double currentMultiplier, int streak, string curName)
+{
+    if (!in_round) return "You are not in a round, so place a bet and deal to begin.";
+    double potNow = floor(safe_cap(betAmount * currentMultiplier));
+    string potStr = (streak < 1) ? "nothing yet" : bet_amount_with_item(selectedBet, potNow);
+    return "Your streak is " + streak + ", your pot is " + potStr + ", and the last card was the " + curName + ".";
+}
+
 void highlowgame()
 {
     form.reset();
@@ -1124,6 +1139,7 @@ void highlowgame()
         wait(5);
         form.monitor();
         bet_clamp_balances();
+        set_bet_status(highlow_status(in_round, selectedBet, betAmount, currentMultiplier, streak, curName));
         if (form.get_current_focus() != betInput)
             highlow_game_input();
         if (key_pressed(KEY_ESCAPE))
@@ -1141,17 +1157,6 @@ void highlowgame()
         check_achievements(loadedAchievements, achievementsUnlocked);
         bool highlowModeNew = form.is_checked(highlowAuto);
         if (highlowModeNew != highlowmode) { highlowmode = highlowModeNew; writepreffs(); }
-        if (key_pressed(KEY_B))
-        {
-            if (!in_round)
-                speak_buffer("You are not in a round, so place a bet and deal to begin.");
-            else
-            {
-                double potNow = floor(safe_cap(betAmount * currentMultiplier));
-                string potStr = (streak < 1) ? "nothing yet" : bet_amount_with_item(selectedBet, potNow);
-                speak_buffer("Your streak is " + streak + ", your pot is " + potStr + ", and the last card was the " + curName + ".");
-            }
-        }
         if (form.is_pressed(dealButton))
         {
             if (in_round)
@@ -1171,6 +1176,7 @@ void highlowgame()
             currentMultiplier = 0;
             stat_highlow_games++;
             highlow_draw(curName, curVal);
+            set_bet_status(highlow_status(in_round, selectedBet, betAmount, currentMultiplier, streak, curName));
             string betDisplay = bet_amount_with_item(selectedBet, betAmount);
             if (highlowmode) speak_buffer("You bet " + betDisplay + ", drawing your first card.");
             else dlg_buffer("You bet " + betDisplay + ", drawing your first card. Press enter or space to reveal.");
@@ -1388,16 +1394,20 @@ bool roulette_spin_wait(int milliseconds)
     return false;
 }
 
+// What B says in roulette: the amount on each bet type, and the total when there is more than one.
+string roulette_status(int item, double amount, int numBets)
+{
+    if (amount <= 0) return "You have not placed a bet yet.";
+    if (numBets <= 1) return "Your current bet is " + bet_amount_with_item(item, amount) + ".";
+    return "Your current bet is " + bet_amount_with_item(item, amount) + " on each of " + numBets + " bet types, " + bet_amount_with_item(item, amount * numBets) + " in total.";
+}
+
 void roulettegame()
 {
     form.reset();
     form.create_window("Roulette", false);
     int betChoice = form.create_list("Choose an &item to bet:", 5);
-    form.add_list_item(betChoice, "Cookies");
-    form.add_list_item(betChoice, "Currency");
-    form.add_list_item(betChoice, "Auto Cookies");
-    form.add_list_item(betChoice, "Auto Cookie Speeds");
-    form.add_list_item(betChoice, "Manual Cookies");
+    bet_add_items(betChoice);
     int outcomeChoices = form.create_list("Choose your bet &types:", rouletteConfig.outcomes.length(), true, false);
     for (uint i = 0; i < rouletteConfig.outcomes.length(); i++)
         form.add_list_item(outcomeChoices, rouletteConfig.outcomes[i].name, rouletteConfig.outcomes[i].name, -1, false);
@@ -1409,18 +1419,16 @@ void roulettegame()
     int selectedBet = 0;
     double betAmount = 0;
     string betItemName = "";
+    // The bet, item and number of bet types of the last spin actually made, for the B key.
+    double lastBet = 0;
+    int lastItem = 0;
+    int lastBets = 0;
     while (true)
     {
         wait(5);
         form.monitor();
-        if (autocookie <= 0) { bakemode = 0; autocookie = 0; }
-        if (coins <= 0) coins = 0;
-        if (cookies <= 0) cookies = 0;
-        if (cookiespeed <= 0) cookiespeed = 0;
-        if (cookiespeed > COOKIESPEED_MAX) cookiespeed = COOKIESPEED_MAX;
-        if (manulcookie <= 0) manulcookie = 0;
-        if (clicktime <= 50) clicktime = 50;
-        if (clicktime >= 1000) clicktime = 1000;
+        bet_clamp_balances();
+        set_bet_status(roulette_status(lastItem, lastBet, lastBets));
         if (form.get_current_focus() != betInput)
             roulette_game_input();
         if (key_pressed(KEY_ESCAPE))
@@ -1435,72 +1443,46 @@ void roulettegame()
         if (form.is_pressed(spinButton))
         {
             selectedBet = form.get_list_position(betChoice);
-            string betStr = form.get_text(betInput);
-            double betNum = floor(selectedBet == 1 ? string_to_number(betStr) * 100.0 : string_to_number(betStr));
+            // The balance is checked against the total stake below, so the amount on its own is not lowered to it.
+            double betNum = read_bet(selectedBet, form.get_text(betInput), rouletteConfig.min_bet, rouletteConfig.max_bet, false);
             if (betNum <= 0)
             {
-                pool.play_stationary("sounds/misc/gamefail.ogg", false);
-                dlg_buffer("Error! Please enter a valid bet amount.");
                 form.focus(spinButton);
                 continue;
-            }
-            if (betNum < rouletteConfig.min_bet)
-            {
-                pool.play_stationary("sounds/misc/gamefail.ogg", false);
-                dlg_buffer("Error! The minimum bet is " + (selectedBet == 1 ? convert_to_currency(rouletteConfig.min_bet) : format_number(rouletteConfig.min_bet)) + ".");
-                form.focus(spinButton);
-                continue;
-            }
-            if (rouletteConfig.max_bet > 0 && betNum > rouletteConfig.max_bet)
-            {
-                pool.play_stationary("sounds/misc/gamefail.ogg", false);
-                dlg_buffer("Your bet has been capped at the maximum of " + (selectedBet == 1 ? convert_to_currency(rouletteConfig.max_bet) : format_number(rouletteConfig.max_bet)) + ".");
-                betNum = rouletteConfig.max_bet;
             }
             uint[] activeOutcomes;
             for (uint i = 0; i < rouletteConfig.outcomes.length(); i++)
                 if (form.is_list_item_checked(outcomeChoices, i)) activeOutcomes.insert_last(i);
             if (activeOutcomes.length() == 0)
             {
-                pool.play_stationary("sounds/misc/gamefail.ogg", false);
-                dlg_buffer("You must select at least one bet type before spinning!");
+                bet_fail("You must select at least one bet type before spinning!");
                 form.focus(spinButton);
                 continue;
             }
             int numBets = int(activeOutcomes.length());
             double totalStake = betNum * numBets;
-            double balanceNow = (selectedBet == 0 ? floor(cookies) : (selectedBet == 1 ? floor(coins) : (selectedBet == 2 ? floor(autocookie) : (selectedBet == 3 ? floor(cookiespeed) : floor(manulcookie)))));
-            if (totalStake > balanceNow)
+            if (totalStake > bet_balance(selectedBet))
             {
-                pool.play_stationary("sounds/misc/gamefail.ogg", false);
-                dlg_buffer("Error! Staking that on all " + numBets + " bet types would cost " + (selectedBet == 1 ? convert_to_currency(totalStake) : format_number(totalStake)) + ", which is more than you have.");
+                bet_fail("Error! Staking that on all " + numBets + " bet types would cost " + bet_amount_text(selectedBet, totalStake) + ", which is more than you have.");
                 form.focus(spinButton);
                 continue;
             }
-            if (rouletteConfig.confirm_threshold > 0)
+            if (!confirm_bet(selectedBet, totalStake, rouletteConfig.confirm_threshold, rouletteConfig.confirm_use_percent, "Are you sure you want to stake a total of " + bet_amount_with_item(selectedBet, totalStake) + " across " + numBets + " bet types?"))
             {
-                double effectiveThreshold = rouletteConfig.confirm_use_percent ? (balanceNow * (rouletteConfig.confirm_threshold / 100.0)) : rouletteConfig.confirm_threshold;
-                if (totalStake >= effectiveThreshold)
-                {
-                    string betItemName2 = (selectedBet == 0 ? "cookies" : (selectedBet == 1 ? "currency" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies"))));
-                    if (!yes_no("Are you sure you want to stake a total of " + (selectedBet == 1 ? convert_to_currency(totalStake) : format_number(totalStake) + " " + betItemName2) + " across " + numBets + " bet types?", true))
-                    {
-                        form.focus(spinButton);
-                        continue;
-                    }
-                }
+                form.focus(spinButton);
+                continue;
             }
             betAmount = betNum;
-            betItemName = (selectedBet == 0 ? "cookies" : (selectedBet == 1 ? "" : (selectedBet == 2 ? "auto cookies" : (selectedBet == 3 ? "auto cookie speeds" : "manual cookies"))));
-            if (selectedBet == 0) { cookies -= totalStake; cookies = floor(safe_cap(cookies)); }
-            else if (selectedBet == 1) { coins -= totalStake; coins = floor(safe_cap(coins)); }
-            else if (selectedBet == 2) { autocookie -= totalStake; autocookie = floor(safe_cap(autocookie)); }
-            else if (selectedBet == 3) { cookiespeed -= totalStake; clicktime += totalStake; cookiespeed = floor(safe_cap(cookiespeed)); }
-            else if (selectedBet == 4) { manulcookie -= totalStake; manulcookie = floor(safe_cap(manulcookie)); }
+            betItemName = bet_item_name(selectedBet);
+            take_bet(selectedBet, totalStake);
+            lastBet = betAmount;
+            lastItem = selectedBet;
+            lastBets = numBets;
+            set_bet_status(roulette_status(lastItem, lastBet, lastBets));
             stat_roulette_games++;
             pool.play_stationary("sounds/minigames/" + resolve_sound(rouletteConfig.bet_sound), false);
-            string totalDisplay = (selectedBet == 1) ? convert_to_currency(totalStake) : (format_number(totalStake) + (betItemName != "" ? " " + betItemName : ""));
-            string perDisplay = (selectedBet == 1) ? convert_to_currency(betAmount) : format_number(betAmount);
+            string totalDisplay = bet_amount_with_item(selectedBet, totalStake);
+            string perDisplay = bet_amount_text(selectedBet, betAmount);
             speak_buffer("You staked " + perDisplay + " on each of " + numBets + " bet types, for a total of " + totalDisplay + ".");
             int winning = random(0, rouletteConfig.pocket_count - 1);
             if (roulettemode)
@@ -1535,11 +1517,7 @@ void roulettegame()
                     loserNames.insert_last(o.name);
             }
             totalReturn = safe_cap(totalReturn);
-            if (selectedBet == 0) { cookies += totalReturn; cookies = floor(safe_cap(cookies)); }
-            else if (selectedBet == 1) { coins += totalReturn; coins = floor(safe_cap(coins)); }
-            else if (selectedBet == 2) { autocookie += totalReturn; autocookie = floor(safe_cap(autocookie)); }
-            else if (selectedBet == 3) gain_cookiespeed(totalReturn);
-            else if (selectedBet == 4) { manulcookie += totalReturn; manulcookie = floor(safe_cap(manulcookie)); }
+            pay_bet(selectedBet, totalReturn);
             bet_lost_purchases(selectedBet, totalStake - totalReturn);
             double net = totalReturn - totalStake;
             stat_roulette_straight_hits += straightHits;
@@ -1556,8 +1534,8 @@ void roulettegame()
             double winningsTotal = totalReturn - (betAmount * double(winnerNames.length()));
             if (winningsTotal < 0) winningsTotal = 0;
             double netMag = (net < 0) ? -net : net;
-            string netStr = (selectedBet == 1) ? convert_to_currency(netMag) : format_number(netMag);
-            string winningsStr = (selectedBet == 1) ? convert_to_currency(winningsTotal) : format_number(winningsTotal);
+            string netStr = bet_amount_text(selectedBet, netMag);
+            string winningsStr = bet_amount_text(selectedBet, winningsTotal);
             string winnersList = roulette_join(winnerNames, ", ");
             string losersList = roulette_join(loserNames, ", ");
             string msg;

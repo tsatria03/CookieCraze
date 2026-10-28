@@ -129,3 +129,19 @@ void pay_bet(int item, double amount)
     else if (item == 3) gain_cookiespeed(amount);
     else if (item == 4) { manulcookie += amount; manulcookie = floor(safe_cap(manulcookie)); }
 }
+
+/* What the B key says in a betting minigame. Each of them keeps this current every frame, and again as soon as a bet is
+taken, so minigame_input can answer B between actions and during the timed waits alike. */
+string betStatus = "";
+
+void set_bet_status(string text)
+{
+    betStatus = text;
+}
+
+// The B key wording for games that only report the last bet placed.
+string last_bet_status(int item, double amount)
+{
+    if (amount <= 0) return "You have not placed a bet yet.";
+    return "Your current bet is " + bet_amount_with_item(item, amount) + ".";
+}
