@@ -10,6 +10,7 @@ blackjack=Blackjack
 slots=Slot machine
 flipper=Cookie flipper
 dice=Dice roller
+don=Double or nothing
 highlow=Higher or lower
 roulette=Roulette
 lottery=Cookie lottery
@@ -268,6 +269,67 @@ dice:dice_resilient:dice_losses:250:false:true:Resilient:Lose %threshold% dice r
 dice:dice_loss_veteran:dice_losses:500:false:true:Loss Veteran:Lose %threshold% dice rolls. You have seen the bad side of probability more than most.:Veterans of loss carry a particular kind of calm. You are developing it.
 dice:dice_loss_legend:dice_losses:1000:false:true:Loss Legend:Lose %threshold% dice rolls. At this point the losses are just part of the story.:Every legend has a chapter about losing. Yours has several.
 dice:dice_loss_eternal:dice_losses:2500:false:true:Loss Eternal:Lose %threshold% dice rolls. The dice have made their feelings about your targets very clear.:Some relationships are defined by conflict. You and the dice have one of those.
+
+; Double or nothing
+
+don:dn_first_deal:don_games:1:false:true:First Deal:Play double or nothing for the first time. One card, one call, and everything on the line.:Every gambler remembers the first time they let it ride.
+don:dn_table_curious:don_games:5:false:true:Table Curious:Play %threshold% rounds of double or nothing. The table is starting to feel familiar.:Curiosity sits you down. The pot keeps you there.
+don:dn_finding_your_feet:don_games:10:false:true:Finding Your Feet:Play %threshold% rounds of double or nothing. You are learning the rhythm of the call.:Ten rounds in, and red and black are starting to feel like old friends.
+don:dn_regular_caller:don_games:25:false:true:Regular Caller:Play %threshold% rounds of double or nothing. The dealer knows your face by now.:Regulars do not announce themselves. The deck already knows.
+don:dn_card_caller:don_games:50:false:true:Card Caller:Play %threshold% rounds of double or nothing. Calling the card has become second nature.:Fifty rounds teaches you how a card sounds before it turns.
+don:dn_table_devotee:don_games:100:false:true:Table Devotee:Play %threshold% rounds of double or nothing. Other bakers bake cookies. You call cards.:Devotion is a quiet thing. The deck has noticed yours.
+don:dn_table_veteran:don_games:250:false:true:Table Veteran:Play %threshold% rounds of double or nothing. You have seen every suit fall a hundred ways.:Veterans are not defined by winning. They are defined by still being at the table.
+don:dn_all_or_nothing:don_games:500:false:true:All or Nothing:Play %threshold% rounds of double or nothing. The next call lives in your head at all times.:When the turn of a card follows you out of the room, you have been at this a while.
+don:dn_table_legend:don_games:1000:false:true:Table Legend:Play %threshold% rounds of double or nothing. The deck turns over for you like it knows you.:Legends are made one call at a time. You have made many.
+don:dn_table_eternal:don_games:2000:false:true:Table Eternal:Play %threshold% rounds of double or nothing. Red, black, and every suit in between feel inevitable now.:At two thousand rounds, the next call never quite leaves your head.
+don:dn_table_singularity:don_games:5000:false:true:Table Singularity:Play %threshold% rounds of double or nothing. The table has achieved a state beyond comprehension.:Beyond a certain count, the call stops being a guess and becomes a habit.:coins:2000*rank:The deck has nothing left to hide from you, and pays out %amount%.
+don:dn_first_bank:don_wins:1:false:true:First Bank:Bank your winnings in double or nothing for the first time. A risk turned into something real.:The first time you walk away ahead, the game finally makes sense.
+don:dn_doubled_up:don_wins:5:false:true:Doubled Up:Bank your winnings in double or nothing %threshold% times. Your pots are starting to add up.:Doubling is easy. Keeping it is the trick.
+don:dn_knowing_when:don_wins:10:false:true:Knowing When:Bank your winnings in double or nothing %threshold% times. You are learning when to stop.:Knowing when to walk away is half the game. You are getting the hang of it.
+don:dn_pot_keeper:don_wins:25:false:true:Pot Keeper:Bank your winnings in double or nothing %threshold% times. The deck has been generous, and you have been wise.:Greed lets it ride. Wisdom banks it. You are choosing wisdom.
+don:dn_quit_while_ahead:don_wins:50:false:true:Quit While Ahead:Bank your winnings in double or nothing %threshold% times. You have a talent for leaving the table richer.:Some players never learn when to stop. You are not one of them.
+don:dn_steady_hands:don_wins:100:false:true:Steady Hands:Bank your winnings in double or nothing %threshold% times. The pot fears you almost as much as the jokers do.:At a hundred banks, walking away has become second nature.
+don:dn_fortune_doubler:don_wins:250:false:true:Fortune Doubler:Bank your winnings in double or nothing %threshold% times. Your nerve and your restraint are in perfect balance.:Fortunes are built on knowing when enough is enough.
+don:dn_vault_of_doubles:don_wins:500:false:true:Vault of Doubles:Bank your winnings in double or nothing %threshold% times. Whatever you win, you keep.:The best gamblers are the ones who know how to stop being gamblers.
+don:dn_double_legend:don_wins:1000:false:true:Double Legend:Bank your winnings in double or nothing %threshold% times. Other players study when you choose to walk away.:A thousand clean exits is not luck. It is discipline.
+don:dn_double_or_everything:don_wins:5000:false:true:Double or Everything:Bank your winnings in double or nothing %threshold% times. You have turned knowing when to stop into an art form.:At this height, walking away rich is simply what you do.:coins:2000*rank:The house has never seen anyone double up and leave this many times, and quietly slips you %amount% out of sheer respect.
+don:dn_nothing_after_all:don_losses:1:false:true:Nothing After All:Lose a round of double or nothing for the first time. The card had other plans.:Double or nothing. This time, it was nothing. First lesson learned.
+don:dn_wrong_color:don_losses:5:false:true:Wrong Color:Lose %threshold% rounds of double or nothing. The cards are not cooperating today.:Some days every card comes up the other color. It is not personal.
+don:dn_off_suit:don_losses:10:false:true:Off Suit:Lose %threshold% rounds of double or nothing. Red was black, and hearts were spades.:The card you needed was always the other one. Frustrating, that.
+don:dn_one_more_call:don_losses:25:false:true:One More Call:Lose %threshold% rounds of double or nothing. You keep reaching for one more call.:One more call is how every pot ends. You know this. You call anyway.
+don:dn_let_it_ride:don_losses:50:false:true:Let It Ride:Lose %threshold% rounds of double or nothing. Restraint has never been your strong suit.:The pot was right there. So was the exit. You chose the card.
+don:dn_chronic_rider:don_losses:100:false:true:Chronic Rider:Lose %threshold% rounds of double or nothing. You have a gift, and it is for greed.:Chronic things persist regardless of intention. You have noticed.
+don:dn_house_favorite:don_losses:250:false:true:House Favorite:Lose %threshold% rounds of double or nothing. The house has learned exactly how to disappoint you.:Every table has a favorite customer. The house is very fond of you.
+don:dn_pot_donor:don_losses:500:false:true:Pot Donor:Lose %threshold% rounds of double or nothing. You have handed more pots to the house than most players ever build.:Donors give generously. You give pots.
+don:dn_nothing_incarnate:don_losses:1000:false:true:Nothing Incarnate:Lose %threshold% rounds of double or nothing. You have transcended losing. You have become the nothing.:One more call, you said. A thousand times. The deck remembers each one.
+don:dn_called_it:don_correct_calls:1:false:true:Called It:Make your first correct call in double or nothing. The card came up just as you said.:One right call, and suddenly you believe you can read the deck.
+don:dn_good_eye:don_correct_calls:10:false:true:Good Eye:Make %threshold% correct calls in double or nothing. You are getting a feel for the turn.:Ten right calls. The cards seem to be listening.
+don:dn_sharp_caller:don_correct_calls:25:false:true:Sharp Caller:Make %threshold% correct calls in double or nothing. Red or black, you usually know.:Sharpness is mostly confidence. You have plenty of both.
+don:dn_card_whisperer:don_correct_calls:50:false:true:Card Whisperer:Make %threshold% correct calls in double or nothing. The deck seems to tell you its secrets.:Whispering to cards is not a skill. Somehow you have it anyway.
+don:dn_reading_the_turn:don_correct_calls:100:false:true:Reading the Turn:Make %threshold% correct calls in double or nothing. A hundred cards, called before they turned.:A hundred right calls is a habit, not a fluke.
+don:dn_sure_thing:don_correct_calls:250:false:true:Sure Thing:Make %threshold% correct calls in double or nothing. When you call it, it tends to happen.:There are no sure things at the table. You come close.
+don:dn_call_master:don_correct_calls:500:false:true:Call Master:Make %threshold% correct calls in double or nothing. The deck has stopped surprising you.:Mastery is just doing the right thing more often than not. You do it often.
+don:dn_oracle_of_the_deck:don_correct_calls:1000:false:true:Oracle of the Deck:Make %threshold% correct calls in double or nothing. Players ask you which color comes next.:An oracle does not need to be right every time. Just enough to be believed.
+don:dn_called_a_fortune:don_correct_calls:2500:false:true:Called a Fortune:Make %threshold% correct calls in double or nothing. Your calls have doubled more pots than anyone can count.:Every right call doubled something. You have doubled a great deal.
+don:dn_voice_of_the_deck:don_correct_calls:5000:false:true:Voice of the Deck:Make %threshold% correct calls in double or nothing. When you speak, the cards obey.:At this point the deck turns over just to hear you say what it is.
+don:dn_suited:don_suit_hits:1:false:true:Suited:Win a suit call in double or nothing for the first time. One suit in four, and you found it.:Calling the suit is greedy. Getting it right is glorious.
+don:dn_suit_savvy:don_suit_hits:5:false:true:Suit Savvy:Win %threshold% suit calls in double or nothing. You have a knack for the long shot.:Five times the deck showed exactly the suit you named.
+don:dn_four_times_over:don_suit_hits:10:false:true:Four Times Over:Win %threshold% suit calls in double or nothing. Each one quadrupled your pot.:Doubling is for the cautious. You prefer four times.
+don:dn_suit_hunter:don_suit_hits:25:false:true:Suit Hunter:Win %threshold% suit calls in double or nothing. You go looking for the big payout and find it.:Hunters are patient. Suit hunters are patient and greedy.
+don:dn_suit_specialist:don_suit_hits:50:false:true:Suit Specialist:Win %threshold% suit calls in double or nothing. Colors are for beginners.:Fifty quadrupled pots. The safe call barely interests you now.
+don:dn_suit_sovereign:don_suit_hits:100:false:true:Suit Sovereign:Win %threshold% suit calls in double or nothing. Hearts, diamonds, clubs, and spades answer to you.:A hundred suit calls landed. The deck is starting to take orders.
+don:dn_master_of_suits:don_suit_hits:250:false:true:Master of Suits:Win %threshold% suit calls in double or nothing. You call the suit the way others call a color.:Two hundred and fifty times four. The arithmetic of greed has never looked so good.
+don:dn_jokers_wild:don_jokers:1:false:true:Joker's Wild:Lose a round of double or nothing to a joker for the first time. The house always has a card up its sleeve.:Two jokers in the deck. One of them found you.
+don:dn_laughing_stock:don_jokers:5:false:true:Laughing Stock:Lose %threshold% rounds of double or nothing to a joker. The jokers seem to enjoy your company.:The joker always laughs last. Lately it laughs at you.
+don:dn_joker_magnet:don_jokers:10:false:true:Joker Magnet:Lose %threshold% rounds of double or nothing to a joker. They turn up whenever your pot is biggest.:Jokers have a sense of timing. Yours is the worst they know.
+don:dn_house_card:don_jokers:25:false:true:The House Card:Lose %threshold% rounds of double or nothing to a joker. You have met the house edge in person.:Every joker is the house reminding you who owns the table.
+don:dn_joker_collector:don_jokers:50:false:true:Joker Collector:Lose %threshold% rounds of double or nothing to a joker. You could build a deck out of them by now.:Collectors keep the rare ones. You keep meeting them.
+don:dn_court_jester:don_jokers:100:false:true:Court Jester:Lose %threshold% rounds of double or nothing to a joker. The jokers have made you one of their own.:A hundred jokers. At some point, you have to laugh along.
+don:dn_ride_three:don_highest_ride:3:false:true:Letting It Ride:Win %threshold% calls in a row in one round of double or nothing. The pot is starting to grow.:Three right calls without banking. The deck is paying attention now.
+don:dn_ride_five:don_highest_ride:5:false:true:Hot Streak:Win %threshold% calls in a row in one round of double or nothing. The cards are falling your way.:Five in a row is where nerve starts to matter more than luck.
+don:dn_ride_seven:don_highest_ride:7:false:true:Nerves of Iron:Win %threshold% calls in a row in one round of double or nothing. Every call is a risk, and you keep taking it.:Seven straight. The smart move is to bank. But you have not been making the smart move.
+don:dn_ride_ten:don_highest_ride:10:false:true:Double Down Daredevil:Win %threshold% calls in a row in one round of double or nothing. The pot is enormous and the temptation is worse.:Ten in a row. Almost no one gets here. Fewer still bank it.
+don:dn_ride_twelve:don_highest_ride:12:false:true:Untouchable Pot:Win %threshold% calls in a row in one round of double or nothing. The jokers have thrown everything at you and missed.:Twelve straight right calls. Somewhere, a statistician just sat down.
 
 ; Higher or lower
 

@@ -813,6 +813,13 @@ string get_stat_progress_label(string stat)
     if (stat == STAT_DICE_ROLLS) return "dice rolls";
     if (stat == STAT_DICE_WINS) return "dice wins";
     if (stat == STAT_DICE_LOSSES) return "dice losses";
+    if (stat == STAT_DON_GAMES) return "games played";
+    if (stat == STAT_DON_WINS) return "wins";
+    if (stat == STAT_DON_LOSSES) return "losses";
+    if (stat == STAT_DON_CORRECT_CALLS) return "correct calls";
+    if (stat == STAT_DON_SUIT_HITS) return "suit hits";
+    if (stat == STAT_DON_JOKERS) return "jokers drawn";
+    if (stat == STAT_DON_HIGHEST_RIDE) return "highest ride";
     if (stat == STAT_SLOT_SPINS) return "spins";
     if (stat == STAT_SLOT_WINS) return "wins";
     if (stat == STAT_SLOT_LOSSES) return "losses";
