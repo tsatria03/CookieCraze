@@ -724,11 +724,7 @@ void lottery_buy_menu()
                 }
                 else
                 {
-                    double canBuy = 0;
-                    if (lotteryMaxTickets > 0)
-                        canBuy = min(double(lotteryMaxTickets) - t.owned, floor(coins / cost));
-                    else
-                        canBuy = floor(coins / cost);
+                    double canBuy = get_ticket_max_buyable(@t);
                     label += " You can buy " + format_number(canBuy) + ".";
                 }
                 if (t.description != "") label += " Description: " + t.description;
@@ -764,11 +760,7 @@ void lottery_buy_menu()
                 continue;
             }
             double cost = get_ticket_current_cost(@ticket);
-            double maxCanBuy = 0;
-            if (lotteryMaxTickets > 0)
-                maxCanBuy = min(double(lotteryMaxTickets) - ticket.owned, floor(coins / cost));
-            else
-                maxCanBuy = floor(coins / cost);
+            double maxCanBuy = get_ticket_max_buyable(@ticket);
             vd.set_disallowed_chars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()[]{};:'\"\\|,.<>?/+-=`~_", false, "This character is not allowed.");
             string qInput = vd.input_box("", "How many " + ticket.name + "s would you like to buy? Press enter to buy the maximum amount.", string(maxCanBuy > 0 ? maxCanBuy : 1));
             double qty = string_to_number(qInput);
@@ -778,7 +770,7 @@ void lottery_buy_menu()
                 dlgmessage_return("Please enter a valid number to buy.");
                 continue;
             }
-            double totalCost = cost * qty;
+            double totalCost = get_ticket_bulk_cost(@ticket, qty);
             if (coins < totalCost)
             {
                 pool.play_stationary("sounds/store/error.ogg", false);

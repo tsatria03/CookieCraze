@@ -761,9 +761,9 @@ void lotterygame()
             for (uint i = 0; i < loadedTickets.length(); i++)
                 total += loadedTickets[i].owned;
             if (total == 0)
-                dlg_buffer("You don't have any tickets. Buy some from the shop!");
+                speak_buffer("You don't have any tickets. Buy some from the shop!");
             else
-                dlg_buffer("You have a total of " + format_number(total) + " " + (total == 1 ? "ticket" : "tickets") + " across all tiers.");
+                speak_buffer("You have a total of " + format_number(total) + " " + (total == 1 ? "ticket" : "tickets") + " across all tiers.");
             form.focus(inventoryBtn);
         }
     }

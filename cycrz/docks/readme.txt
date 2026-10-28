@@ -208,6 +208,7 @@ The ticket shop.
 
 Buy scratch tickets using your money. Tickets are sold in tiers, with higher tiers costing more but offering larger prizes and better odds at the top end. Each tier draws from its own prize pool defined in lottery.table, with prizes weighted so smaller wins are more common. On average a ticket pays back less than it costs, counting everything it can give you, so tickets are a gamble for the occasional big win rather than a way to grow your money.
 Cookie, auto cookie, and manual cookie prizes are sized by money value, so a prize gives as many items as its value would buy at current prices: plenty while items are cheap early on, and fewer later as they get more expensive. If a prize's value cannot buy even one item, you receive it as money instead.
+Each ticket you hold makes the next ticket of that tier cost a little more, and scratching tickets brings the price back down. Buying several at once costs exactly the same as buying them one at a time, and the number the shop says you can buy is how many you can really afford.
 By default, locked ticket tiers are shown with their required rank displayed. You can hide them entirely by disabling the show locked items option in the game settings.
 
 Random events.
@@ -911,7 +912,7 @@ cost
 The base cost in currency for the first ticket purchased.
 
 multiplier
-How much the cost scales with each ticket purchased. Uses the same compounding scaling as the singles shop. Set to 1.0 for a flat price.
+How much the cost scales with each ticket of this tier the player holds. Uses the same compounding scaling as the singles shop, so a bulk purchase costs the sum of each ticket's rising price, the same as buying them one at a time, and scratching tickets lowers the price again. Set to 1.0 for a flat price.
 
 rank
 The minimum rank required to buy this ticket. Set to 0 for no requirement.

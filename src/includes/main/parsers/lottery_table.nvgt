@@ -140,6 +140,23 @@ double get_ticket_current_cost(lottery_ticket_item@ ticket)
     return floor(safe_cap(ticket.base_cost * pow(ticket.cost_multiplier, ticket.owned)));
 }
 
+/* Each ticket you hold raises the price of the next, so qty tickets cost the sum of their rising prices, the same
+as buying them one at a time. Charging the next ticket's price for the whole batch made bulk buys cheaper. */
+double get_ticket_bulk_cost(lottery_ticket_item@ ticket, double qty)
+{
+    return floor(calc_total_upgrade_cost(ticket.owned, qty, ticket.base_cost, ticket.cost_multiplier));
+}
+
+// How many of this ticket your money buys at the rising price, within max_tickets.
+double get_ticket_max_buyable(lottery_ticket_item@ ticket)
+{
+    double n = calc_max_buyable(coins, ticket.owned, ticket.base_cost, ticket.cost_multiplier);
+    if (lotteryMaxTickets > 0) n = min(n, double(lotteryMaxTickets) - ticket.owned);
+    // The formula can round one ticket too high; step down until the batch is really affordable.
+    while (n > 0 && get_ticket_bulk_cost(ticket, n) > coins) n--;
+    return max(0.0, n);
+}
+
 string apply_lottery_prize(lottery_prize_item@ prize)
 {
     if (prize.target == "none") return "";
