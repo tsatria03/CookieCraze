@@ -550,6 +550,18 @@ void reload_config(bool force = false)
     }
     parse_combos_table("tables/combos.table", combosConfig);
     parse_lottery_table("tables/lottery.table");
+    /* Keep the tickets you hold across the re-parse. The parser starts every ticket at none owned, and readdata
+    has already restored them by this point, so they are noted by id first and put back on the same ids. */
+    dictionary ownedTickets;
+    for (uint i = 0; i < loadedTickets.length(); i++)
+        ownedTickets.set(loadedTickets[i].id, loadedTickets[i].owned);
+    parse_tickets_store("stores/tickets.store");
+    for (uint i = 0; i < loadedTickets.length(); i++)
+    {
+        double owned = 0;
+        if (ownedTickets.get(loadedTickets[i].id, owned))
+            loadedTickets[i].owned = owned;
+    }
     loadedAchievements.resize(0);
     loadedAchievementCategories.resize(0);
     parse_achievements("tables/achievements.table", loadedAchievements, loadedAchievementCategories);

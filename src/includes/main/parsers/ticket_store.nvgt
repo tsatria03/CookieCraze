@@ -1,5 +1,9 @@
 void parse_tickets_store(string filepath)
 {
+    // Start clean so Control L does not list every ticket twice; a missing max_tickets line means no limit.
+    loadedTicketCategories.resize(0);
+    loadedTickets.resize(0);
+    lotteryMaxTickets = 0;
     config_file f;
     if (!f.open(filepath)) return;
     dictionary categoryNames;
