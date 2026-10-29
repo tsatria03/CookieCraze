@@ -2,6 +2,8 @@
 
 max_boosts=0
 expire_message=Your %boost% boost has ended. Boost slot %slot% is now empty.
+expire_summary_message=%count% %boost% boosts have ended. %count% boost slots are now empty.
+expire_sound=boostcomp.ogg
 
 ; Categories
 

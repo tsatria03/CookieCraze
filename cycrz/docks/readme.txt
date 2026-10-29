@@ -370,7 +370,7 @@ Rank rush: every bake earns 10 percent more experience, for 45 minutes.
 
 To run a boost, open the boost slot manager from the main game screen, or press alt plus N. Add a slot buys boost slots, which cost $30.00 for the first one and a little more for each one after. Activate a slot lists your empty slots; choose one, then one of the boosts you hold, and pay a small activation fee, which also rises a little with every boost you start. When two or more slots are empty, activate all slots fills them all with copies of one boost you choose, and tells you if you ran out of copies before every slot was filled. End a slot lists your running boosts with their time left and stops one early, or all of them with end all slots, after asking you to confirm. An ended boost is not returned. The boost slot manager can always be opened, so you can see what is coming, but adding, activating, and ending slots are locked until rank 100.
 
-Running boosts count down in real time the whole time the game is open, on every screen and even when the game window is out of focus. They pause while the game is closed and carry on from where they were when you load your save. When a boost runs out, the boosts buffer tells you which boost ended and which slot is now empty; press F5 to mute it. Press B on the main game screen at any time to hear what is running. The F and J readouts include your running boosts.
+Running boosts count down in real time the whole time the game is open, on every screen and even when the game window is out of focus. They pause while the game is closed and carry on from where they were when you load your save. When a boost runs out, the boosts buffer tells you which boost ended and which slot is now empty; press F5 to mute it. A sound also plays when boosts run out, and goes quiet along with the messages when you mute the buffer. Several copies of one boost that run out together, such as a batch you started with activate all slots, share one line and one sound telling you how many ended. Boosts you end yourself in the boost slot manager are added to the boosts buffer too. Press B on the main game screen at any time to hear what is running. The F and J readouts include your running boosts.
 
 You can run the same boost in several slots at once, and copies multiply rather than add, so two 10 percent boosts give 21 percent and two 10 percent discounts leave 81 percent of the price. However many discounts you stack, a price never drops below 1 cent, or 1 cookie in a shop that charges cookies. Prestige and new games end every running boost and clear your boost slots and the boosts you hold, and the activation fee starts over; starting boost slots from the prestige store come back straight away. The prestige store can also make boosts stronger, longer, and cheaper to run. Every boost, its price, strength, length, and category, the run out message, and the most copies of one boost you can hold are configurable in boosts.store, and the boost slot and activation prices in main.table.
 
@@ -1009,6 +1009,12 @@ The most copies of any one boost you can hold. Set to 0 for no limit, which is t
 
 expire_message
 The text spoken into the boosts buffer when a running boost runs out. %boost% is replaced with the boost's name and %slot% with the boost slot number.
+
+expire_summary_message
+Optional. The text spoken instead when several copies of one boost run out at the same moment, so a batch started with activate all slots gives one line rather than one per slot. %count% is replaced with how many ended and %boost% with the boost's name. Remove this line to announce every boost that runs out with its own expire_message instead, the way ranks.table works without its summary section.
+
+expire_sound
+Optional. The sound played when boosts run out, relative to sounds/misc. It plays once for each moment boosts run out, however many ended together, and not when you end a boost yourself. It stays quiet while the boosts buffer is muted. Remove this line to play no sound.
 
 Categories.
 Format: alias=Name|min_rank|hidden|currency|description

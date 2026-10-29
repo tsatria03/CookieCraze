@@ -316,7 +316,10 @@ void end_boost_slots()
             if (!yes_no("Are you sure you want to end all " + format_number(running) + " running boosts? They will not be returned.")) continue;
             for (int i = 0; i < boostSlotCount; i++) { boostSlotIds[i] = ""; boostSlotLeft[i] = 0; }
             stat_boosts_ended += running;
-            speak("All " + format_number(running) + " running boosts have ended.");
+            // Spoken even when the boosts buffer is muted, since you just chose it, and kept in that buffer to read back later.
+            string allMsg = "All " + format_number(running) + " running boosts have ended.";
+            speak(allMsg);
+            add_buffer_item("boosts", allMsg, false);
             return;
         }
         int slot = string_to_int(sel.substr(4));
@@ -327,7 +330,9 @@ void end_boost_slots()
         boostSlotIds[slot] = "";
         boostSlotLeft[slot] = 0;
         stat_boosts_ended++;
-        speak("Your " + name + " boost in boost slot " + string(slot + 1) + " has ended.");
+        string endMsg = "Your " + name + " boost in boost slot " + string(slot + 1) + " has ended.";
+        speak(endMsg);
+        add_buffer_item("boosts", endMsg, false);
         return;
     }
 }

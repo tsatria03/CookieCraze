@@ -52,6 +52,9 @@ void update_boosts()
     double passed = now - boostClockMark;
     boostClockMark = now;
     if (passed <= 0) return;
+    // The boosts that run out during this call, announced together once the countdown is done.
+    string[] endedIds;
+    int[] endedSlots;
     for (int i = 0; i < boostSlotCount; i++)
     {
         if (boostSlotIds[i] == "") continue;
@@ -63,22 +66,56 @@ void update_boosts()
         stat_boost_minutes = safe_cap(stat_boost_minutes + min(passed, boostSlotLeft[i]) / 60000.0);
         boostSlotLeft[i] -= passed;
         if (boostSlotLeft[i] > 0) continue;
-        string boostName = boostSlotIds[i];
-        int idx = find_boost(boostSlotIds[i]);
-        if (idx >= 0) boostName = loadedBoosts[idx].name.lower();
+        endedIds.insert_last(boostSlotIds[i]);
+        endedSlots.insert_last(i);
         boostSlotIds[i] = "";
         boostSlotLeft[i] = 0;
         stat_boosts_completed++;
-        string msg = string_replace(boostExpireMessage, "%boost%", boostName, true);
-        msg = string_replace(msg, "%slot%", string(i + 1), true);
-        speak_buffer(msg, "boosts");
     }
+    announce_ended_boosts(endedIds, endedSlots);
     if (boostCashCarry >= 1)
     {
         double pay = floor(boostCashCarry);
         boostCashCarry -= pay;
         coins = floor(safe_cap(coins + pay));
         stat_coins_earned = safe_cap(stat_coins_earned + pay);
+    }
+}
+
+/* Announces the boosts that ended at the same moment. Boosts started together with activate all also end together, so
+several copies of one boost get one expire_summary_message line instead of a line each, the way a big gain of ranks
+gets one rank summary. A boost that ends alone, or every boost when the summary is left out of boosts.store, gets its
+own expire_message with its slot number. expire_sound plays once for the whole moment, however many ended, and stays
+quiet while the boosts buffer is muted, like the messages. */
+void announce_ended_boosts(string[]@ ids, int[]@ slots)
+{
+    if (ids.length() == 0) return;
+    int bufferIndex = get_buffer_index("boosts");
+    bool muted = bufferIndex >= 0 && buffers[bufferIndex].muted;
+    if (boostExpireSound != "" && !muted) pool.play_stationary("sounds/misc/" + resolve_sound(boostExpireSound), false);
+    bool[] done(ids.length());
+    for (uint i = 0; i < ids.length(); i++)
+    {
+        if (done[i]) continue;
+        string boostName = ids[i];
+        int idx = find_boost(ids[i]);
+        if (idx >= 0) boostName = loadedBoosts[idx].name.lower();
+        int count = 0;
+        for (uint j = i; j < ids.length(); j++)
+            if (ids[j] == ids[i]) count++;
+        if (count > 1 && boostExpireSummaryMessage != "")
+        {
+            for (uint j = i; j < ids.length(); j++)
+                if (ids[j] == ids[i]) done[j] = true;
+            string summary = string_replace(boostExpireSummaryMessage, "%boost%", boostName, true);
+            summary = string_replace(summary, "%count%", format_number(count), true);
+            speak_buffer(summary, "boosts");
+            continue;
+        }
+        done[i] = true;
+        string msg = string_replace(boostExpireMessage, "%boost%", boostName, true);
+        msg = string_replace(msg, "%slot%", string(slots[i] + 1), true);
+        speak_buffer(msg, "boosts");
     }
 }
 

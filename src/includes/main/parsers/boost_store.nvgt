@@ -42,6 +42,11 @@ boost_item[] loadedBoosts;
 // The most copies of one boost you may hold; 0 means no limit, like max_tickets.
 int boostMaxHold = 0;
 string boostExpireMessage = "Your %boost% boost has ended. Boost slot %slot% is now empty.";
+/* Spoken once for several copies of one boost that end at the same moment, like the rank summary. Empty when
+boosts.store leaves it out, and then every boost that ends gets its own expire_message, as before. */
+string boostExpireSummaryMessage = "";
+// Played once whenever boosts run out on their own, relative to sounds/misc like quests.table's reroll_sound. Empty plays nothing.
+string boostExpireSound = "";
 
 void parse_boosts_store(string filepath)
 {
@@ -50,6 +55,8 @@ void parse_boosts_store(string filepath)
     loadedBoosts.resize(0);
     boostMaxHold = 0;
     boostExpireMessage = "Your %boost% boost has ended. Boost slot %slot% is now empty.";
+    boostExpireSummaryMessage = "";
+    boostExpireSound = "";
     config_file f;
     if (!f.open(filepath)) return;
     while (!f.eof)
@@ -65,6 +72,8 @@ void parse_boosts_store(string filepath)
             string rest = line.substr(eq + 1);
             if (key == "max_boosts") { boostMaxHold = max(0, string_to_int(rest)); continue; }
             if (key == "expire_message") { boostExpireMessage = rest; continue; }
+            if (key == "expire_summary_message") { boostExpireSummaryMessage = rest; continue; }
+            if (key == "expire_sound") { boostExpireSound = rest; continue; }
             // Any other key=value line is a category: alias=Name|min_rank|hidden|currency|description
             string[] cparts = rest.split("|");
             if (cparts.length() < 4) continue;
