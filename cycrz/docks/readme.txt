@@ -1247,7 +1247,7 @@ Recommended for achievements tied to content locked behind a rank, such as minig
 Hidden achievements are also excluded from the total count until unlocked. For example, if there are 207 achievements but 128 are hidden and none unlocked, the menu will show 0 of 79, giving no indication that hidden achievements exist at all.
 
 reward_target
-Optional. The item granted when this achievement is unlocked. Must be one of coins for money, cookies, autocookie for auto cookies, manulcookie for manual cookies, or cookiespeed for baking speed. Leave the three reward fields off entirely to grant nothing.
+Optional. The item granted when this achievement is unlocked. Must be one of coins for money, cookies, autocookie for auto cookies, manulcookie for manual cookies, or cookiespeed for baking speed. No achievement that ships with the game gives baking speed, but the option is still there for modders. Leave the three reward fields off entirely to grant nothing.
 
 reward_amount
 Optional. How much of the item to grant. Supports rank scaling, so 2000*rank grants two thousand times the player's current rank, evaluated at the moment of unlock. A plain number like 500 grants a fixed amount.

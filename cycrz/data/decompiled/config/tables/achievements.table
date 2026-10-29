@@ -563,8 +563,8 @@ combos:combo_devoted:combos_started:300:true:true:Devoted to the Chain:Start %th
 combos:combo_obsessed:combos_started:500:true:true:Combo Obsessed:Start %threshold% combos. You barely notice when one ends because another has already begun.:Five hundred combos started. The button barely has time to cool down.
 combos:combo_compulsive:combos_started:1000:true:true:Compulsive Presser:Start %threshold% combos. A thousand beginnings and counting.:A thousand combos started means a thousand decisions to keep going. You made every one.
 combos:combo_relentless:combos_started:2500:true:true:Relentless Chain:Start %threshold% combos. The oven has stopped questioning your methods.:Two thousand five hundred combos. The oven has accepted this is simply how you bake.
-combos:combo_infinite_starter:combos_started:5000:true:true:Infinite Starter:Start %threshold% combos. Starting things is your greatest talent.:Five thousand starts. Whatever happens next, the beginning was always yours to own.:cookiespeed:1*rank:Your endless combos sharpen your hands into %amount% extra baking speed.
-combos:combo_eternal_starter:combos_started:10000:true:true:Eternal Rhythm:Start %threshold% combos. The combo system was not designed for someone this persistent.:Ten thousand combos started. The system was built for bakers. You are something else.:cookiespeed:2*rank:Eternal rhythm flows through your fingers, adding %amount% baking speed.
+combos:combo_infinite_starter:combos_started:5000:true:true:Infinite Starter:Start %threshold% combos. Starting things is your greatest talent.:Five thousand starts. Whatever happens next, the beginning was always yours to own.:manulcookie:25*rank:Your endless combos sharpen your hands into %amount% extra manual cookies.
+combos:combo_eternal_starter:combos_started:10000:true:true:Eternal Rhythm:Start %threshold% combos. The combo system was not designed for someone this persistent.:Ten thousand combos started. The system was built for bakers. You are something else.:manulcookie:50*rank:Eternal rhythm flows through your fingers, adding %amount% manual cookies.
 
 ; Combos — combos broken
 
@@ -576,8 +576,8 @@ combos:break_devoted:combos_broken:300:true:true:Chain Destroyer:Break %threshol
 combos:break_obsessed:combos_broken:500:true:true:Break Artist:Break %threshold% combos. At this point the break is part of the art.:Five hundred broken chains. Each one ended a chapter. Each one started another.
 combos:break_compulsive:combos_broken:1000:true:true:Shattered Rhythm:Break %threshold% combos. A thousand endings. A thousand new beginnings.:Breaking a thousand combos sounds like failure. It is actually just persistence wearing a different mask.
 combos:break_relentless:combos_broken:2500:true:true:Relentless Breaker:Break %threshold% combos. The combo system respects your perseverance even if it cannot show it.:Two thousand five hundred breaks. The system has nothing left to say about it.
-combos:break_infinite:combos_broken:5000:true:true:Infinite Breaker:Break %threshold% combos. Breaking is just another word for starting again.:Five thousand broken combos. Whatever you call this, quitting is not among the options.:cookiespeed:1*rank:Even breaking combos teaches your hands to move faster, for %amount% baking speed.
-combos:break_eternal:combos_broken:10000:true:true:Eternal Breaker:Break %threshold% combos. The chain has broken ten thousand times. It always comes back.:Ten thousand breaks and the chain still returns. Some things cannot be stopped by ending them.:cookiespeed:2*rank:A lifetime of broken combos has honed your reflexes into %amount% baking speed.
+combos:break_infinite:combos_broken:5000:true:true:Infinite Breaker:Break %threshold% combos. Breaking is just another word for starting again.:Five thousand broken combos. Whatever you call this, quitting is not among the options.:manulcookie:25*rank:Even breaking combos teaches your hands a thing or two, for %amount% manual cookies.
+combos:break_eternal:combos_broken:10000:true:true:Eternal Breaker:Break %threshold% combos. The chain has broken ten thousand times. It always comes back.:Ten thousand breaks and the chain still returns. Some things cannot be stopped by ending them.:manulcookie:50*rank:A lifetime of broken combos has honed your hands into %amount% manual cookies.
 
 ; Combos — highest combo reached
 
