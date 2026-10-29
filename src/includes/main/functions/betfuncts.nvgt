@@ -1,14 +1,18 @@
 /* Shared bet handling for every minigame that takes a bet. Each game used to carry its own copy of this code, and the
-copies drifted apart, so a fix in one game never reached the others. The item a bet is placed in is the position in the
-bet list: 0 cookies, 1 money, 2 auto cookies, 3 auto cookie speeds, 4 manual cookies. Money amounts are in cents. */
+copies drifted apart, so a fix in one game never reached the others. The item a bet is placed in is its position in the
+bet list, named by the BET_ constants below. Money amounts are in cents. Baking speed is not a bet item: it caps out
+after 95 purchases, so most of what you could win would be wasted. */
+const int BET_COOKIES = 0;
+const int BET_MONEY = 1;
+const int BET_AUTO = 2;
+const int BET_MANUAL = 3;
 
-// Fills a bet list with the five items, in the order the item numbers above use.
+// Fills a bet list with the four items, in the order the BET_ constants use.
 void bet_add_items(int list)
 {
     form.add_list_item(list, "Cookies");
     form.add_list_item(list, "Currency");
     form.add_list_item(list, "Auto Cookies");
-    form.add_list_item(list, "Auto Cookie Speeds");
     form.add_list_item(list, "Manual Cookies");
 }
 
@@ -28,33 +32,31 @@ void bet_clamp_balances()
 // How much of an item you have to bet with, in whole units.
 double bet_balance(int item)
 {
-    if (item == 0) return floor(cookies);
-    if (item == 1) return floor(coins);
-    if (item == 2) return floor(autocookie);
-    if (item == 3) return floor(cookiespeed);
+    if (item == BET_COOKIES) return floor(cookies);
+    if (item == BET_MONEY) return floor(coins);
+    if (item == BET_AUTO) return floor(autocookie);
     return floor(manulcookie);
 }
 
 // The item's name after an amount, such as 10 cookies. Money has none, since its amount already reads as dollars and cents.
 string bet_item_name(int item)
 {
-    if (item == 0) return "cookies";
-    if (item == 1) return "";
-    if (item == 2) return "auto cookies";
-    if (item == 3) return "auto cookie speeds";
+    if (item == BET_COOKIES) return "cookies";
+    if (item == BET_MONEY) return "";
+    if (item == BET_AUTO) return "auto cookies";
     return "manual cookies";
 }
 
 // An amount as it is spoken: dollars and cents for money, a plain number otherwise.
 string bet_amount_text(int item, double amount)
 {
-    return (item == 1) ? convert_to_currency(amount) : format_number(amount);
+    return (item == BET_MONEY) ? convert_to_currency(amount) : format_number(amount);
 }
 
 // An amount with its item, such as 10 cookies or $1.50.
 string bet_amount_with_item(int item, double amount)
 {
-    return (item == 1) ? convert_to_currency(amount) : format_number(amount) + " " + bet_item_name(item);
+    return (item == BET_MONEY) ? convert_to_currency(amount) : format_number(amount) + " " + bet_item_name(item);
 }
 
 // Every bet error plays the same fail sound and shows the same kind of dialog.
@@ -70,7 +72,7 @@ rather than refused. clampToBalance lowers the bet to what you have; roulette tu
 it stakes across all its bet types instead. */
 double read_bet(int item, string text, double minBet, double maxBet, bool clampToBalance = true)
 {
-    double amount = floor(item == 1 ? string_to_number(text) * 100.0 : string_to_number(text));
+    double amount = floor(item == BET_MONEY ? string_to_number(text) * 100.0 : string_to_number(text));
     if (amount <= 0)
     {
         bet_fail("Error! Please enter a valid bet amount.");
@@ -109,25 +111,23 @@ bool confirm_bet(int item, double amount, double threshold, bool usePercent, str
     return yes_no(question, true);
 }
 
-// Takes a bet out of the item it was placed in. Betting baking speed also slows baking by the same amount.
+// Takes a bet out of the item it was placed in.
 void take_bet(int item, double amount)
 {
-    if (item == 0) { cookies -= amount; cookies = floor(safe_cap(cookies)); }
-    else if (item == 1) { coins -= amount; coins = floor(safe_cap(coins)); }
-    else if (item == 2) { autocookie -= amount; autocookie = floor(safe_cap(autocookie)); }
-    else if (item == 3) { cookiespeed -= amount; clicktime += int(amount); cookiespeed = floor(safe_cap(cookiespeed)); }
-    else if (item == 4) { manulcookie -= amount; manulcookie = floor(safe_cap(manulcookie)); }
+    if (item == BET_COOKIES) { cookies -= amount; cookies = floor(safe_cap(cookies)); }
+    else if (item == BET_MONEY) { coins -= amount; coins = floor(safe_cap(coins)); }
+    else if (item == BET_AUTO) { autocookie -= amount; autocookie = floor(safe_cap(autocookie)); }
+    else if (item == BET_MANUAL) { manulcookie -= amount; manulcookie = floor(safe_cap(manulcookie)); }
 }
 
-/* Pays an amount back into the item that was bet. Baking speed goes through gain_cookiespeed, so it never passes its cap.
-Each game still counts its own money earned, since each works out its profit differently. */
+/* Pays an amount back into the item that was bet. Each game still counts its own money earned, since each works out its
+profit differently. */
 void pay_bet(int item, double amount)
 {
-    if (item == 0) { cookies += amount; cookies = floor(safe_cap(cookies)); }
-    else if (item == 1) { coins += amount; coins = floor(safe_cap(coins)); }
-    else if (item == 2) { autocookie += amount; autocookie = floor(safe_cap(autocookie)); }
-    else if (item == 3) gain_cookiespeed(amount);
-    else if (item == 4) { manulcookie += amount; manulcookie = floor(safe_cap(manulcookie)); }
+    if (item == BET_COOKIES) { cookies += amount; cookies = floor(safe_cap(cookies)); }
+    else if (item == BET_MONEY) { coins += amount; coins = floor(safe_cap(coins)); }
+    else if (item == BET_AUTO) { autocookie += amount; autocookie = floor(safe_cap(autocookie)); }
+    else if (item == BET_MANUAL) { manulcookie += amount; manulcookie = floor(safe_cap(manulcookie)); }
 }
 
 /* What the B key says in a betting minigame. Each of them keeps this current every frame, and again as soon as a bet is

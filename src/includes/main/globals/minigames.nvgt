@@ -349,7 +349,7 @@ if (payout !is null)
         /* Return the bet taken up front plus the winnings, so the net gain is unchanged from before. */
         stat_slot_wins++;
         pay_bet(selectedBet, betAmount + change);
-        if (selectedBet == 1) stat_coins_earned += change;
+        if (selectedBet == BET_MONEY) stat_coins_earned += change;
     }
     cookies = floor(safe_cap(cookies));
     coins = floor(safe_cap(coins));
@@ -453,7 +453,7 @@ check_achievements(loadedAchievements, achievementsUnlocked);
             {
                 double winnings = floor(safe_cap(betAmount * jacksConfig.natural_multiplier));
                 pay_bet(selectedBet, betAmount + winnings);
-                if (selectedBet == 1) stat_coins_earned += winnings;
+                if (selectedBet == BET_MONEY) stat_coins_earned += winnings;
                 stat_jack_wins++;
                 pool.play_stationary("sounds/minigames/" + resolve_sound(jacksConfig.win_sound), false);
                 string msg = jacksConfig.natural_message;
@@ -532,7 +532,7 @@ check_achievements(loadedAchievements, achievementsUnlocked);
                 on top of the returned bet, paying 3x and more than a natural blackjack. */
                 double winnings = floor(safe_cap(betAmount * max(0.0, jacksConfig.win_multiplier - 1.0)));
                 pay_bet(selectedBet, betAmount + winnings);
-                if (selectedBet == 1) stat_coins_earned += winnings;
+                if (selectedBet == BET_MONEY) stat_coins_earned += winnings;
                 pool.play_stationary("sounds/minigames/" + resolve_sound(jacksConfig.win_sound), false);
                 string msg = (d_points > 21 ? jacksConfig.dealer_bust_message : jacksConfig.win_message);
                 string winStr2 = bet_amount_text(selectedBet, winnings);
@@ -811,7 +811,7 @@ void dicegame()
                 double winAmount = floor(safe_cap(betAmount * payout.multiplier * diceScale));
                 string amtStr = bet_amount_text(selectedBet, winAmount);
                 pay_bet(selectedBet, winAmount);
-                if (selectedBet == 1) stat_coins_earned += max(0.0, winAmount - betAmount);
+                if (selectedBet == BET_MONEY) stat_coins_earned += max(0.0, winAmount - betAmount);
                 bet_lost_purchases(selectedBet, betAmount - winAmount);
                 string msg = payout.message;
                 int ph = msg.find("%roll%");
@@ -874,7 +874,7 @@ never smaller than the bet, since payouts are at least 1, so there is no loss fo
 void don_bank(int selectedBet, double betAmount, double pot)
 {
     pay_bet(selectedBet, pot);
-    if (selectedBet == 1) stat_coins_earned += max(0.0, pot - betAmount);
+    if (selectedBet == BET_MONEY) stat_coins_earned += max(0.0, pot - betAmount);
     stat_don_wins++;
 }
 
@@ -1248,7 +1248,7 @@ void highlowgame()
                     if (highlowmode) speak_buffer("Correct, and you reached the maximum streak of " + streak + "!");
                     else dlg_buffer("Correct, and you reached the maximum streak of " + streak + "!");
                     pay_bet(selectedBet, pot);
-                    if (selectedBet == 1) stat_coins_earned += max(0.0, pot - betAmount);
+                    if (selectedBet == BET_MONEY) stat_coins_earned += max(0.0, pot - betAmount);
                     bet_lost_purchases(selectedBet, betAmount - pot);
                     stat_highlow_wins++;
                     pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.win_sound), false);
@@ -1311,7 +1311,7 @@ void highlowgame()
             }
             double pot = floor(safe_cap(betAmount * currentMultiplier));
             pay_bet(selectedBet, pot);
-            if (selectedBet == 1) stat_coins_earned += max(0.0, pot - betAmount);
+            if (selectedBet == BET_MONEY) stat_coins_earned += max(0.0, pot - betAmount);
             bet_lost_purchases(selectedBet, betAmount - pot);
             stat_highlow_wins++;
             pool.play_stationary("sounds/minigames/" + resolve_sound(highlowConfig.win_sound), false);
@@ -1524,7 +1524,7 @@ void roulettegame()
             if (net > 0)
             {
                 stat_roulette_wins++;
-                if (selectedBet == 1) stat_coins_earned += net;
+                if (selectedBet == BET_MONEY) stat_coins_earned += net;
             }
             else if (net < 0)
                 stat_roulette_losses++;

@@ -300,13 +300,13 @@ void scale_purchases_after_loss(int target, double before, double after)
 }
 
 /* For minigame bets, called once a round is settled, after anything owed was handed back. lost is how much of the
-stake was not returned, so wins and pushes pass zero or less and change nothing. Only auto cookie (2) and manual
-cookie (4) bets have a purchase count to lower. */
+stake was not returned, so wins and pushes pass zero or less and change nothing. Only auto cookie and manual cookie
+bets have a purchase count to lower. */
 void bet_lost_purchases(int selectedBet, double lost)
 {
     if (lost <= 0) return;
-    if (selectedBet == 2) scale_purchases_after_loss(1, autocookie + lost, autocookie);
-    else if (selectedBet == 4) scale_purchases_after_loss(2, manulcookie + lost, manulcookie);
+    if (selectedBet == BET_AUTO) scale_purchases_after_loss(1, autocookie + lost, autocookie);
+    else if (selectedBet == BET_MANUAL) scale_purchases_after_loss(2, manulcookie + lost, manulcookie);
 }
 
 double apply_amount_effect(string target, double amount, int polarity, bool use_percent)

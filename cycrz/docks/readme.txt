@@ -232,7 +232,7 @@ Blackjack. Unlocked at rank 10.
 Beginner. It's the first unlock and introduces a simple card game with straightforward rules. Low stakes, easy to grasp.
 A card game where you bet an item of your choice and try to reach 21 without going over.
 
-You can bet money, cookies, auto cookies, manual cookies, or baking speed. When betting money, you enter the amount as a dollar value, for example type 1 to bet $1.00 or 0.50 to bet 50 cents. All other items are entered as whole numbers.
+You can bet money, cookies, auto cookies, or manual cookies. Baking speed cannot be bet in any minigame, since it is capped and most of what you could win would be wasted. When betting money, you enter the amount as a dollar value, for example type 1 to bet $1.00 or 0.50 to bet 50 cents. All other items are entered as whole numbers.
 A natural 21 on your opening two cards pays out at 1.5 times your bet. A standard win pays double, and a tie returns your original bet. The dealer stands at 17 by default.
 If you hit and reach exactly 21, you stand automatically and the dealer plays out their hand, so the round ends in a win, or a tie if the dealer also reaches 21.
 
