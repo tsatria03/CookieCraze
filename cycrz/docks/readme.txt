@@ -31,9 +31,10 @@ Keyboard commands
 
 In game.
 
-Letter, F: Announces how many cookies your auto baking produces each bake. If you have automated slots, it tells you how much each slot produces and how much you produce in total. Your prestige cookie bonus is included.
-Letter, J: Announces how many cookies each press of the bake button produces. If you have manual slots, it tells you how much each slot produces and how much you produce in total. Your prestige cookie bonus is included, but combo multipliers are not.
+Letter, F: Announces how many cookies your auto baking produces each bake. If you have automated slots, it tells you how much each slot produces and how much you produce in total. Your prestige cookie bonus is included. Running boosts are included too.
+Letter, J: Announces how many cookies each press of the bake button produces. If you have manual slots, it tells you how much each slot produces and how much you produce in total. Your prestige cookie bonus is included, but combo multipliers are not. Running boosts are included too.
 Letter, C: Announces your current cookie count.
+Letter, B: Announces every running boost and the time it has left. Copies of the same boost with the same time left are spoken together with a count.
 Letter, R: Announces your current rank, your current experience, and how much more experience is needed to reach the next rank.
 Letter, M: Announces how much money you currently have.
 Letter, A: Announces how many auto cookies you have.
@@ -74,8 +75,9 @@ F1: Toggles mute or unmute on the achievements buffer.
 F2: Toggles mute or unmute on the combos buffer.
 F3: Toggles mute or unmute on the events buffer.
 F4: Toggles mute or unmute on the ranks buffer.
+F5: Toggles mute or unmute on the boosts buffer.
 Shift plus Backslash: Exports the focused buffer to its log file in the logs folder, then clears that buffer. If the buffer is empty, nothing is exported.
-All of the buffer keys in this section, including the F1 through F4 mute keys, also work inside every minigame.
+All of the buffer keys in this section, including the F1 through F5 mute keys, also work inside every minigame.
 
 Button shortcuts.
 
@@ -85,6 +87,7 @@ Alt plus S: Opens the cookie store.
 Alt plus O: Turns baking mode on or off.
 Alt plus A: Opens your achievements.
 Alt plus M: Opens the baking slots manager.
+Alt plus N: Opens the boost slot manager.
 Alt plus I: Opens the baker info screen.
 Alt plus G: Opens the minigames.
 Alt plus Q: Opens your quests.
@@ -211,6 +214,10 @@ Buy scratch tickets using your money. Tickets are sold in tiers, with higher tie
 Cookie, auto cookie, and manual cookie prizes are sized by money value, so a prize gives as many items as its value would buy at current prices: plenty while items are cheap early on, and fewer later as they get more expensive. If a prize's value cannot buy even one item, you receive it as money instead.
 Each ticket you hold makes the next ticket of that tier cost a little more, and scratching tickets brings the price back down. Buying several at once costs exactly the same as buying them one at a time, and the number the shop says you can buy is how many you can really afford.
 By default, locked ticket tiers are shown with their required rank displayed. You can hide them entirely by disabling the show locked items option in the game settings.
+
+The boost shop.
+
+Buy timed boosts, which you run later in the boost slot manager. The boost shop is listed in the cookie store as buy boosts and unlocks at rank 100, along with the boost slot manager; below that rank it tells you it is locked. Boosts come in three categories. Auto baking boosts and manual baking boosts cost cookies, and general boosts cost money. Each boost you hold makes the next copy of it cost a little more, and using one brings the price back down. Buying several at once costs exactly the same as buying them one at a time, and the number the shop says you can buy is always what you can really afford. The Boosts section below explains what each boost does.
 
 Random events.
 While you play, the game fires random events that can affect your stats in unexpected ways.
@@ -340,7 +347,34 @@ You can purchase additional slots of either type. A new auto slot does nothing u
 Both submenus are locked behind a rank requirement, defaulting to rank 90.
 The slot manager menu itself is always accessible so you can see what is coming, but you cannot enter either submenu until you reach the required rank.
 
-Combos. Unlocked at rank 100.
+Boosts. Unlocked at rank 100.
+
+Advanced. Timed bonuses that reward planning which boosts to run, and when.
+Buy boosts in the cookie store, then run them in the boost slot manager for a temporary bonus.
+
+There are thirteen boosts. Each one lasts a set time once it starts.
+
+Oven overdrive: automatic baking makes 10 percent more cookies, for 25 minutes.
+Turbo bake: automatic baking happens 10 percent faster, for 20 minutes. The time between bakes never drops below 50 milliseconds.
+Oven sale: adding auto baking slots costs 10 percent less, for 6 minutes.
+Cheap circuits: automating a baking slot costs 10 percent less, for 9 minutes.
+Busy hands: every bake by hand makes 10 percent more cookies, for 12 minutes.
+Combo focus: your combo window lasts 10 percent longer, for 15 minutes.
+Helping hands: adding manual baking slots costs 10 percent less, for 7 minutes.
+Cookie frenzy: every bake, automatic or by hand, makes 10 percent more cookies, for 5 minutes.
+Clearance rack: single upgrades cost 10 percent less, for 8 minutes.
+Bargain hunter: bundles cost 10 percent less, for 10 minutes.
+Market rush: cookies sell for 10 percent more, for 30 minutes.
+Cash jar: you earn 2 dollars for every rank you have, every second, whether or not you are baking, for 35 minutes. If you rank up while it runs, it pays more from that moment on.
+Rank rush: every bake earns 10 percent more experience, for 45 minutes.
+
+To run a boost, open the boost slot manager from the main game screen, or press alt plus N. Add a slot buys boost slots, which cost $30.00 for the first one and a little more for each one after. Activate a slot lists your empty slots; choose one, then one of the boosts you hold, and pay a small activation fee, which also rises a little with every boost you start. When two or more slots are empty, activate all slots fills them all with copies of one boost you choose, and tells you if you ran out of copies before every slot was filled. End a slot lists your running boosts with their time left and stops one early, or all of them with end all slots, after asking you to confirm. An ended boost is not returned. The boost slot manager can always be opened, so you can see what is coming, but adding, activating, and ending slots are locked until rank 100.
+
+Running boosts count down in real time the whole time the game is open, on every screen and even when the game window is out of focus. They pause while the game is closed and carry on from where they were when you load your save. When a boost runs out, the boosts buffer tells you which boost ended and which slot is now empty; press F5 to mute it. Press B on the main game screen at any time to hear what is running. The F and J readouts include your running boosts.
+
+You can run the same boost in several slots at once, and copies multiply rather than add, so two 10 percent boosts give 21 percent and two 10 percent discounts leave 81 percent of the price. Prestige and new games end every running boost and clear your boost slots and the boosts you hold, and the activation fee starts over. Every boost, its price, strength, length, and category, the run out message, and the most copies of one boost you can hold are configurable in boosts.store, and the boost slot and activation prices in main.table.
+
+Combos. Unlocked at rank 110.
 
 Advanced. Demands consistent timing, significant progression in manual upgrades, and understanding of multiplier stacking to use effectively. Build a combo by pressing the bake button multiple times in quick succession. The combo does not activate immediately — you must reach a minimum number of consecutive presses within the time window before it kicks in. Once activated, a sound plays and a message announces that the combo has started. From that point, each press within the window increments your combo count and applies a multiplier to your manual cookie output. Reaching a combo tier plays a sound and announces the new multiplier. Missing the window at any point breaks your combo, plays a break sound, and resets everything back to zero.
 
@@ -400,7 +434,7 @@ Most stats shown here are tracked stats, meaning they are running totals that on
 Both screens begin with how long you have played. On the session screen this is the time since you loaded your game. On the lifetime screen it is your total time played on this save, counted up to your last save, so like every other stat, time since your last save is not kept if you quit without saving.
 On the session screen, highest combo reached, highest streak, and highest ride are your best this session, and auto slots idle is left out, since it describes your bakery right now rather than something you did.
 
-The statistics are divided into fourteen sections.
+The statistics are divided into fifteen sections.
 
 Baking.
 
@@ -419,6 +453,15 @@ Unlike the other stats, this one is not saved separately because it can go up an
 It is always calculated fresh from the current state of your bakery, similar to how a stock price reflects the current value rather than a running total.
 
 Manual slots purchased: counts every manual baking slot you have ever bought.
+
+Boosts.
+
+Boosts bought: counts every boost you buy, so buying 10 at once adds 10.
+Boosts activated: counts every boost you start, so activate all slots adds one for each slot it fills.
+Boost slots purchased: counts every boost slot you buy.
+Boosts completed: counts boosts that ran for their full time.
+Boosts ended early: counts boosts you ended yourself from the boost slot manager.
+Boost time used: the total time your boosts have run, added up across every slot, so two boosts running for a minute add two minutes.
 
 Combos.
 
@@ -530,7 +573,7 @@ Achievements.
 
 Track your progress and earn recognition for milestones across every part of the game.
 
-There are many achievements spread across all tracked statistics, including baking, baking slots manager, economy, upgrades, bundles, events, blackjack, the cookie flipper, the cookie lottery, the dice roller, double or nothing, higher or lower, roulette, the slot machine, quests, and combos.
+There are many achievements spread across all tracked statistics, including baking, baking slots manager, boosts, economy, upgrades, bundles, events, blackjack, the cookie flipper, the cookie lottery, the dice roller, double or nothing, higher or lower, roulette, the slot machine, quests, and combos.
 Each achievement has a name, a description, and a hint that tells you what you need to do to unlock it.
 
 Achievements are shown in a dedicated menu accessible from the main game interface. The menu is organised into categories covering baking, economy, events, minigames, and more.
@@ -582,7 +625,7 @@ Prestige.
 Reset your progress and earn a permanent bonus that carries into every future run.
 
 The prestige option is available from the quests screen.
-Prestige unlocks at rank 110. Once you reach it, pressing the prestige button opens a confirmation dialog explaining what resets and what carries over, whether you will receive a reward based on your current quest completion status, and a warning if you have not completed any quests this run, since you would earn no prestige points.
+Prestige unlocks at rank 120. Once you reach it, pressing the prestige button opens a confirmation dialog explaining what resets and what carries over, whether you will receive a reward based on your current quest completion status, and a warning if you have not completed any quests this run, since you would earn no prestige points.
 
 When you prestige, the following are reset: your money, cookies, rank, all upgrade purchases, baking slots, and baking and economy stats.
 The following are kept: your prestige level, all achievements and achievement progress, minigame unlocks, minigame stats, and preferences. Minigame stats for every minigame keep counting up as lifetime totals across all of your prestiges, while your quests count only what you do in each new run.
@@ -640,10 +683,11 @@ Buffers.
 Buffers are categorized message logs that keep track of everything that happens during your game.
 Instead of important messages disappearing after being spoken, they are stored in a buffer so you can review them at any time.
 
-There are eight buffer categories.
+There are nine buffer categories.
 
 All is a special aggregate buffer that receives a copy of every message from every other buffer. It gives you a single place to review all game activity in the order it occurred. It cannot be muted.
 Achievements holds messages for every achievement you earn during play.
+Boosts holds a message each time a running boost runs out.
 Combos holds messages from the manual baking combo system, including combo starts, tier milestones, and breaks.
 Critical holds important notifications like milestone rank rewards and locked minigame notices. It cannot be muted, so these messages always come through.
 Events holds messages from random events and flipper flips.
@@ -670,7 +714,7 @@ Nine of the files, ranks.table, slots.table, prestige.table, quests.table, lotte
 The parser uses them to know which format to expect. Do not remove or rename these headers, or the parser will not be able to read the file correctly.
 Each functional header has a warning comment placed directly below it inside the file as a reminder. That comment is cosmetic and can be removed, but the header itself must stay exactly as written.
 
-Six of the remaining files, baker.event, flipper.event, jacks.table, singles.store, tickets.store, and prestige.store, do not use functional section headers. Every line in those files follows the same format throughout.
+Seven of the remaining files, baker.event, flipper.event, jacks.table, singles.store, tickets.store, boosts.store, and prestige.store, do not use functional section headers. Every line in those files follows the same format throughout.
 They do have commented section headers starting with a semicolon for readability, but those are purely cosmetic and can be removed or changed freely.
 
 achievements.table uses a category alias system at the top of the file, the same way singles.store defines shop menus. Category aliases are defined as alias=Full Category Name lines before any achievement entries.
@@ -950,6 +994,52 @@ The prize pool id from lottery.table that is used when a ticket of this tier is 
 description
 Shown when the player highlights this ticket in the buy menu.
 
+boosts.store
+
+Location: data/decompiled/config/stores/boosts.store
+
+Defines the boosts sold in the cookie store, their categories, and two settings.
+
+Settings.
+
+max_boosts
+The most copies of any one boost you can hold. Set to 0 for no limit, which is the default.
+
+expire_message
+The text spoken into the boosts buffer when a running boost runs out. %boost% is replaced with the boost's name and %slot% with the boost slot number.
+
+Categories.
+Format: alias=Name|min_rank|hidden|currency|description
+
+Each category groups boosts in the buy boosts menu, the same way as the singles shop. Set currency to coins to price the category in money, written in cents, or cookies to price it in cookies.
+
+Boosts.
+Format: menu:boost_id:effect:base_cost:cost_multiplier:amount:duration:min_rank:hidden:description
+
+menu
+The alias of the category the boost belongs to.
+
+boost_id
+A unique id. The spoken name is built from it, so cookie_frenzy is spoken as Cookie frenzy.
+
+effect
+What the boost does. A line with any other effect is skipped. auto_production, manual_production, and all_production raise how many cookies automatic bakes, bakes by hand, or both make. bake_speed makes automatic baking faster. combo_window lengthens the combo window. sell_price raises the sell price. experience raises the experience every bake earns. singles_discount, bundles_discount, auto_slot_discount, manual_slot_discount, and automation_discount lower those prices. cash_per_second pays money every second.
+
+base_cost and cost_multiplier
+The price of the first copy, and how much each copy you hold raises the next one's price.
+
+amount
+The boost's strength as a percentage, so 10 means 10 percent. For cash_per_second it is the cents paid every second instead, and it can use rank operators the same way as baker.event, such as 200*rank. A boost whose amount gives nothing is skipped, since boosts never take anything away.
+
+duration
+How long the boost runs once started, in seconds. Anything below 30 is raised to 30.
+
+min_rank and hidden
+The rank needed to buy the boost, and whether it is hidden from the list until then, the same as in the singles shop.
+
+description
+The text shown in the buy boosts menu and the boost slot manager. %amount% is replaced with the amount, or for cash_per_second with the money paid each second at your current rank, and %duration% with the length, such as 25 minutes.
+
 main.table
 
 Location: data/decompiled/config/tables/main.table
@@ -991,6 +1081,18 @@ The cost of your first manual slot, in dollars. Defaults to 0.3.
 
 manual_slot_cost_multiplier
 How much each manual slot costs compared with the one before it. Defaults to 1.01. Values below 1 are raised to 1.
+
+boost_slot_base_cost
+The cost of your first boost slot, in dollars. Defaults to 30.
+
+boost_slot_cost_multiplier
+How much each boost slot costs compared with the one before it. Defaults to 1.01. Values below 1 are raised to 1.
+
+boost_activation_base_cost
+The cost of the first boost you activate in a run, in dollars. Defaults to 15.
+
+boost_activation_cost_multiplier
+How much each boost activation costs compared with the one before it. Defaults to 1.01. Values below 1 are raised to 1.
 
 Ranks section.
 
@@ -1074,6 +1176,13 @@ don_correct_calls = total winning calls in double or nothing, color or suit.
 don_suit_hits = total winning suit calls in double or nothing.
 don_jokers = total double or nothing rounds ended by a joker.
 don_highest_ride = the most winning calls made in a single double or nothing round. A lifetime best that only ever goes up.
+
+boosts_bought = total boosts bought, counting each copy in a bulk purchase.
+boosts_activated = total boosts started in boost slots, counting each slot activate all slots fills.
+boost_slots_purchased = total boost slots ever bought.
+boosts_completed = total boosts that ran for their full time.
+boost_minutes = total minutes boosts have run, added up across every slot.
+boosts_ended = total boosts ended early from the boost slot manager.
 
 slot_spins = total slot machine spins.
 slot_wins = total slot machine spins that returned a payout.
@@ -1699,6 +1808,7 @@ highlow = unlocks the higher or lower minigame.
 roulette = unlocks the roulette minigame.
 slots = unlocks the slot machine minigame.
 slotmanager = unlocks the baking slots manager. Also sets the rank gate for the baking slots manager menu automatically.
+boosts = unlocks boosts. Also sets the rank at which buy boosts in the cookie store and the boost slot manager's options unlock automatically.
 combos = unlocks the manual baking combo system.
 
 message
@@ -2006,6 +2116,13 @@ don_correct_calls = total winning calls in double or nothing, color or suit.
 don_suit_hits = total winning suit calls in double or nothing.
 don_jokers = total double or nothing rounds ended by a joker.
 don_highest_ride = the most winning calls made in a single double or nothing round. A lifetime best that only ever goes up.
+
+boosts_bought = total boosts bought, counting each copy in a bulk purchase.
+boosts_activated = total boosts started in boost slots, counting each slot activate all slots fills.
+boost_slots_purchased = total boost slots ever bought.
+boosts_completed = total boosts that ran for their full time.
+boost_minutes = total minutes boosts have run, added up across every slot.
+boosts_ended = total boosts ended early from the boost slot manager.
 
 slot_spins = total slot machine spins.
 slot_wins = total slot machine wins.

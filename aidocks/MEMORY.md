@@ -31,7 +31,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Design review 7.0](project_design_review_7_0.md) — 2026-10-25 evaluation, potential improvements only: runaway 1.01 economy (rank 90 in ~5 min), prestige spam, endless quests pre-done after prestige, minigames lack purpose, settings as cheats, readme onboarding + agreed readme reorganization and missing keys, small config gate/category issues; #8 store prices don't drop after losing auto/manual cookies (proposed: scale purchase count by share kept).
 
 ## Release status
-- [Release status](project_release_status.md) — 7.3 TAGGED V7.30 (2026-10-28), closed; tags = done with a version, releasing is separate (dev decides, e.g. after 7.5) — never assume a release; V7.0 latest public release; next is 7.4 (boosts), opens New in 7.4. + bumps version.txt.
+- [Release status](project_release_status.md) — 7.3 TAGGED V7.30 (2026-10-28), closed; tags = done with a version, releasing is separate (dev decides, e.g. after 7.5) — never assume a release; V7.0 latest public release; 7.4 open then FULL 10/10 (save/bet/bug fixes + boosts), looks complete for a V7.40 tag.
 
 ## Active plans (7.2)
 - [Config pack plan](project_config_pack_plan.md) — SHIPPED 7.2 (3 sections done): config moved to data/decompiled/config (loose, git) + data/compiled/config.crz (NVGT pack, gitignored); loose wins, pack is fallback; in-game export/import never delete; tools.py unchanged, dev deletes loose folder before compiling a release; miscellaneous menu has compile/decompile data config.
@@ -106,4 +106,4 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Session stats plan](project_session_stats_plan.md) — SHIPPED 7.2: Session/Lifetime statistics screens; Copy/Export/Close on those + achievement stats (exports replace stats/*_statistics.txt in AppData); exit results screen + settings toggle; snapshot-and-diff; 4 sections.
 - [Shared bet plan](project_shared_bet_plan.md) — 7.4 refactor PROPOSED (code #16): one betfuncts.nvgt for the 6 betting minigames; differences to keep; 5 sections.
 - [Double or nothing plan](project_double_or_nothing_plan.md) — SHIPPED 7.3: rank 50 red-or-black card gamble with a suit call (4x), 2 jokers as the edge, bank between rounds; 7 sections (achievements and quests separate), docs last.
-- [Boosts plan](project_boosts_plan.md) — AGREED, moved to 7.4 (2026-10-28), not built (6 sections): buy boosts in the cookie store (inventory), buy boost slots + activate like auto slots, no free slots; references surveyed; open questions listed.
+- [Boosts plan](project_boosts_plan.md) — SHIPPED 7.4: 13 timed boosts (cookie store buy boosts + boost slot manager, rank 100), real-time countdown, cash jar = flat cents per second with rank operators, 6 stats, 54 achievements, 21 quests; combos 110, prestige 120.
