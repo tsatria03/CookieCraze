@@ -17,6 +17,7 @@ while(true)
 {
 wait(5);
 form.monitor();
+update_boosts();
 clicker_game_input();
 autocookie = floor(safe_cap(autocookie));
 if(autocookie<=0)
@@ -443,6 +444,7 @@ if(key_pressed(KEY_J))
 if(key_pressed(KEY_F1)) toggle_buffer_by_name("achievements");
 if(key_pressed(KEY_F2)) toggle_buffer_by_name("combos");
 if(key_pressed(KEY_F3)) toggle_buffer_by_name("events");
+if(key_pressed(KEY_F5)) toggle_buffer_by_name("boosts");
 if(key_pressed(KEY_F4))
 {
 if(alt_is_down())

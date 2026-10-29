@@ -13,6 +13,7 @@ exit();
 else
 {
 create_buffer("achievements");
+create_buffer("boosts");
 create_buffer("combos");
 create_buffer("critical");
 create_buffer("events");
@@ -295,6 +296,8 @@ else
 }
 void reset_game_state()
 {
+// Prestige and new games reset everything boost-related: slots, running boosts, boosts held, and the activation price.
+reset_boosts();
 // Add this run's values to the lifetime banks before they are zeroed below.
 bank_run_stats();
 stat_cookies_baked=0;

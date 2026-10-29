@@ -1,0 +1,155 @@
+/* Boost state: the boosts you hold (loadedBoosts[i].owned), the boost slots you own, and what each slot is running.
+Running boosts count down in real time the whole time the game is open, on every screen and even when the window is
+out of focus, and pause only while the game is closed: each slot's time left is saved and resumes on load. */
+// The rank that unlocks boosts: the cookie store's buy boosts and the boost slot manager.
+int boostUnlockRank = 100;
+int boostSlotCount = 0;
+// Per slot: the id of the boost it is running, or "" when empty, and how many milliseconds it has left.
+string[] boostSlotIds;
+double[] boostSlotLeft;
+// Activations this run; each one raises the next activation's price, like automating a slot.
+double boostActivations = 0;
+timer boostClock;
+double boostClockMark = 0;
+
+// The index of a boost in loadedBoosts by id, or -1.
+int find_boost(string id)
+{
+    for (uint i = 0; i < loadedBoosts.length(); i++)
+        if (loadedBoosts[i].id == id) return int(i);
+    return -1;
+}
+
+// Keeps the slot lists the same length as the number of slots owned.
+void size_boost_slots()
+{
+    boostSlotIds.resize(boostSlotCount);
+    boostSlotLeft.resize(boostSlotCount);
+}
+
+// Everything boost-related back to a fresh run: no slots, nothing running, nothing held. Prestige and new games use this.
+void reset_boosts()
+{
+    boostSlotCount = 0;
+    boostSlotIds.resize(0);
+    boostSlotLeft.resize(0);
+    boostActivations = 0;
+    for (uint i = 0; i < loadedBoosts.length(); i++) loadedBoosts[i].owned = 0;
+    boostClockMark = boostClock.elapsed;
+}
+
+/* Counts every running boost down by the real time since the last call, and ends any that run out. Called every frame
+on the main screen, from every minigame's input, and before anything reads a boost, so time is never missed. */
+void update_boosts()
+{
+    double now = boostClock.elapsed;
+    double passed = now - boostClockMark;
+    boostClockMark = now;
+    if (passed <= 0) return;
+    for (int i = 0; i < boostSlotCount; i++)
+    {
+        if (boostSlotIds[i] == "") continue;
+        boostSlotLeft[i] -= passed;
+        if (boostSlotLeft[i] > 0) continue;
+        string boostName = boostSlotIds[i];
+        int idx = find_boost(boostSlotIds[i]);
+        if (idx >= 0) boostName = loadedBoosts[idx].name.lower();
+        boostSlotIds[i] = "";
+        boostSlotLeft[i] = 0;
+        string msg = string_replace(boostExpireMessage, "%boost%", boostName, true);
+        msg = string_replace(msg, "%slot%", string(i + 1), true);
+        speak_buffer(msg, "boosts");
+    }
+}
+
+// The current price of one more copy of a boost; each copy you hold raises it, like tickets.
+double get_boost_current_cost(boost_item@ b)
+{
+    return floor(safe_cap(b.base_cost * pow(b.cost_multiplier, b.owned)));
+}
+
+// qty copies cost the sum of their rising prices, the same as buying them one at a time.
+double get_boost_bulk_cost(boost_item@ b, double qty)
+{
+    return floor(calc_total_upgrade_cost(b.owned, qty, b.base_cost, b.cost_multiplier));
+}
+
+// What a boost's category is paid for with right now: cookies, or money in cents.
+double boost_balance(boost_item@ b)
+{
+    for (uint i = 0; i < loadedBoostCategories.length(); i++)
+        if (loadedBoostCategories[i].id == b.category_id) return (loadedBoostCategories[i].currency == "coins") ? floor(coins) : floor(cookies);
+    return floor(cookies);
+}
+
+bool boost_costs_money(boost_item@ b)
+{
+    for (uint i = 0; i < loadedBoostCategories.length(); i++)
+        if (loadedBoostCategories[i].id == b.category_id) return loadedBoostCategories[i].currency == "coins";
+    return false;
+}
+
+// A price spoken in the boost's own currency.
+string boost_price_text(boost_item@ b, double amount)
+{
+    if (boost_costs_money(b)) return convert_to_currency(amount);
+    return format_number(amount) + (amount == 1 ? " cookie" : " cookies");
+}
+
+// How many copies of a boost you can afford at the rising price, within max_boosts.
+double get_boost_max_buyable(boost_item@ b)
+{
+    double balance = boost_balance(b);
+    double n = calc_max_buyable(balance, b.owned, b.base_cost, b.cost_multiplier);
+    if (boostMaxHold > 0) n = min(n, double(boostMaxHold) - b.owned);
+    // The formula can round one copy too high; step down until the batch is really affordable.
+    while (n > 0 && get_boost_bulk_cost(b, n) > balance) n--;
+    return max(0.0, n);
+}
+
+void write_boosts()
+{
+    update_boosts();
+    sd.add("boostSlotCount", boostSlotCount);
+    sd.add("boostActivations", boostActivations);
+    for (int i = 0; i < boostSlotCount; i++)
+    {
+        sd.add("boostSlot_id_" + string(i), boostSlotIds[i]);
+        sd.add("boostSlot_left_" + string(i), boostSlotLeft[i]);
+    }
+    sd.add("boostOwnedCount", int(loadedBoosts.length()));
+    for (uint i = 0; i < loadedBoosts.length(); i++)
+    {
+        sd.add("boostOwned_id_" + string(i), loadedBoosts[i].id);
+        sd.add("boostOwned_count_" + string(i), loadedBoosts[i].owned);
+    }
+}
+
+// Runs after readdata has reset everything to a new game, so a save without boosts simply starts with none.
+void read_boosts()
+{
+    if (sd.d.exists("boostSlotCount")) boostSlotCount = max(0, sd.read_int("boostSlotCount"));
+    if (sd.d.exists("boostActivations")) boostActivations = max(0.0, sd.read_double("boostActivations"));
+    size_boost_slots();
+    for (int i = 0; i < boostSlotCount; i++)
+    {
+        string id = sd.d.exists("boostSlot_id_" + string(i)) ? sd.read_string("boostSlot_id_" + string(i)) : "";
+        double left = sd.d.exists("boostSlot_left_" + string(i)) ? sd.read_double("boostSlot_left_" + string(i)) : 0;
+        // A running boost that boosts.store no longer has, or with no time left, comes back as an empty slot.
+        if (id == "" || find_boost(id) < 0 || left <= 0) { id = ""; left = 0; }
+        boostSlotIds[i] = id;
+        boostSlotLeft[i] = left;
+    }
+    if (sd.d.exists("boostOwnedCount"))
+    {
+        int count = sd.read_int("boostOwnedCount");
+        for (int i = 0; i < count; i++)
+        {
+            string id = sd.read_string("boostOwned_id_" + string(i));
+            int idx = find_boost(id);
+            if (idx >= 0) loadedBoosts[idx].owned = max(0.0, sd.read_double("boostOwned_count_" + string(i)));
+        }
+    }
+    // Time spent closed does not count: the countdown resumes from the moment the save is loaded.
+    boostClockMark = boostClock.elapsed;
+}

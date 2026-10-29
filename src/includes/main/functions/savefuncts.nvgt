@@ -369,10 +369,12 @@ if (sd.d.exists("achievementCount"))
     }
 }
 init_achievements(loadedAchievements, achievementsUnlocked);
+read_boosts();
 }
 void writedata()
 {
 update_time_played();
+write_boosts();
 sd.add("autocookie",autocookie);
 sd.add("coins",coins);
 sd.add("cookies",cookies);

@@ -19,13 +19,13 @@ spades:black
 
 ; Sounds
 
+bank_sound=double_or_nothing/bank.ogg
 deal_sound=double_or_nothing/deal.ogg
 draw_sound=double_or_nothing/draw(1,2).ogg
 color_win_sound=double_or_nothing/color_win.ogg
 suit_win_sound=double_or_nothing/suit_win.ogg
 wrong_sound=double_or_nothing/lose.ogg
 joker_sound=double_or_nothing/joker.ogg
-bank_sound=double_or_nothing/bank.ogg
 
 ; Messages
 

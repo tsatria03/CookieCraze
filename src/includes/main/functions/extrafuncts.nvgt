@@ -982,6 +982,9 @@ void minigame_input(string game)
     if (key_pressed(KEY_F2)) toggle_buffer_by_name("combos");
     if (key_pressed(KEY_F3)) toggle_buffer_by_name("events");
     if (key_pressed(KEY_F4) && !alt_is_down()) toggle_buffer_by_name("ranks");
+    if (key_pressed(KEY_F5)) toggle_buffer_by_name("boosts");
+    // Boosts keep counting down in real time while a minigame is open.
+    update_boosts();
     // B reports your bet in every betting minigame. It lives here, not in each game's loop, so it also works during waits.
     if (key_pressed(KEY_B) && (game == "blackjack" || game == "slots" || game == "dice" || game == "don" || game == "highlow" || game == "roulette"))
         speak_buffer(betStatus);

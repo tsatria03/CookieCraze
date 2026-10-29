@@ -544,6 +544,7 @@ void shopmenu()
 setupmenu2();
 m.add_item("buy upgrades", "bmu");
 m.add_item("buy tickets", "bmt");
+m.add_item("buy boosts", "bmb");
 string cookieWord = (floor(cookies) == 1) ? "cookie" : "cookies";
 m.add_item("sell cookies. You currently have " + format_number(cookies) + " " + cookieWord + ". Description: Each cookie sells for " + convert_to_currency(cookieSellPrice) + ".", "slm");
 m.add_item("back", "back");
@@ -590,6 +591,20 @@ shopmenu();
 else
 {
 lottery_buy_menu();
+shopmenu();
+}
+}
+if(stm=="bmb")
+{
+if (rank < boostUnlockRank)
+{
+pool.play_stationary("sounds/store/error.ogg", false);
+dlgmessage_return("This shop is locked. Please reach rank " + string(boostUnlockRank) + " to access it.");
+shopmenu();
+}
+else
+{
+boost_buy_menu();
 shopmenu();
 }
 }
@@ -809,6 +824,171 @@ void lottery_buy_menu()
             string plural = (qty == 1) ? "" : "s";
             string ownedPlural = (loadedTickets[ticketIdx].owned == 1) ? "" : "s";
             dlgmessage_return("You bought " + format_number(qty) + " " + ticket.name + plural + " for " + convert_to_currency(totalCost) + ". You now have " + format_number(loadedTickets[ticketIdx].owned) + " " + ticket.name + ownedPlural + " in your inventory.");
+        }
+    }
+}
+
+/* The cookie store's boosts shop, modelled on the tickets shop: categories, then the boosts in one, then how many.
+Each category is paid for in its own currency, and every copy you hold raises the next one's price. */
+void boost_buy_menu()
+{
+    boost_category[] visibleCats;
+    for (uint i = 0; i < loadedBoostCategories.length(); i++)
+    {
+        boost_category@ cat = loadedBoostCategories[i];
+        if (cat.hidden && rank < cat.min_rank) continue;
+        bool hasBoosts = false;
+        for (uint j = 0; j < loadedBoosts.length(); j++)
+        {
+            if (loadedBoosts[j].category_id != cat.id) continue;
+            if (loadedBoosts[j].hidden && rank < loadedBoosts[j].min_rank) continue;
+            hasBoosts = true;
+            break;
+        }
+        if (hasBoosts) visibleCats.insert_last(cat);
+    }
+    if (visibleCats.length() == 0)
+    {
+        dlg_buffer("No boost categories are available yet.");
+        return;
+    }
+    string last_cat_id = "";
+    string last_boost_id = "";
+    while (true)
+    {
+        setupmenu(false);
+        for (uint i = 0; i < visibleCats.length(); i++)
+        {
+            if (rank < visibleCats[i].min_rank)
+            {
+                if (visibleCats[i].hidden || !show_locked_shops) continue;
+                string label = visibleCats[i].name + ". Unlocked at rank " + string(visibleCats[i].min_rank) + ".";
+                if (visibleCats[i].description != "") label += " Description: " + visibleCats[i].description;
+                m.add_item(label, "locked" + string(i));
+                continue;
+            }
+            int total = 0;
+            int affordable = 0;
+            for (uint j = 0; j < loadedBoosts.length(); j++)
+            {
+                if (loadedBoosts[j].category_id != visibleCats[i].id) continue;
+                if (loadedBoosts[j].hidden && rank < loadedBoosts[j].min_rank) continue;
+                total++;
+                if (rank < loadedBoosts[j].min_rank) continue;
+                if (get_boost_max_buyable(loadedBoosts[j]) >= 1) affordable++;
+            }
+            string label = visibleCats[i].name + ". Contains " + string(affordable) + " out of " + string(total) + " purchasable " + (total == 1 ? "boost" : "boosts") + ".";
+            if (visibleCats[i].description != "") label += " Description: " + visibleCats[i].description;
+            m.add_item(label, "cat" + string(i));
+        }
+        m.add_item("Back", "back");
+        m.intro_text = "Boosts menu. Please choose a category to browse.";
+        int start = 0;
+        if (last_cat_id != "")
+        {
+            int found = m.find_item_by_id(last_cat_id);
+            if (found != -1) start = found;
+        }
+        int res = m.run(start, true);
+        if (res == -1) return;
+        string sel = m.get_item_id(res);
+        if (sel == "back") return;
+        last_cat_id = sel;
+        if (sel.substr(0, 6) == "locked")
+        {
+            int lidx = string_to_int(sel.substr(6));
+            pool.play_stationary("sounds/store/error.ogg", false);
+            dlgmessage_return("This category is locked. You need to reach rank " + string(visibleCats[lidx].min_rank) + " to access it.");
+            continue;
+        }
+        boost_category@ cat = visibleCats[string_to_int(sel.substr(3))];
+        int[] catBoosts;
+        for (uint i = 0; i < loadedBoosts.length(); i++)
+        {
+            if (loadedBoosts[i].category_id != cat.id) continue;
+            if (loadedBoosts[i].hidden && rank < loadedBoosts[i].min_rank) continue;
+            catBoosts.insert_last(int(i));
+        }
+        while (true)
+        {
+            setupmenu(false);
+            for (uint i = 0; i < catBoosts.length(); i++)
+            {
+                boost_item@ b = loadedBoosts[catBoosts[i]];
+                bool locked = (rank < b.min_rank);
+                if (locked && !show_locked_shops) continue;
+                string label = b.name + ", costs " + boost_price_text(b, get_boost_current_cost(b)) + ".";
+                if (locked)
+                    label += " Unlocked at rank " + string(b.min_rank) + ".";
+                else if (boostMaxHold > 0 && b.owned >= boostMaxHold)
+                    label += " Inventory full.";
+                else
+                    label += " You can buy " + format_number(get_boost_max_buyable(b)) + ".";
+                label += " Description: " + boost_description(b);
+                m.add_item(label, "boost" + string(i));
+            }
+            m.add_item("Back", "back2");
+            m.intro_text = cat.name + ".";
+            int bstart = 0;
+            if (last_boost_id != "")
+            {
+                int found = m.find_item_by_id(last_boost_id);
+                if (found != -1) bstart = found;
+            }
+            int bres = m.run(bstart, true);
+            if (bres == -1) break;
+            string bsel = m.get_item_id(bres);
+            last_boost_id = bsel;
+            if (bsel == "back2") break;
+            int boostIdx = catBoosts[string_to_int(bsel.substr(5))];
+            boost_item@ boost = loadedBoosts[boostIdx];
+            if (rank < boost.min_rank)
+            {
+                pool.play_stationary("sounds/store/error.ogg", false);
+                dlgmessage_return("This boost is locked. You need to reach rank " + string(boost.min_rank) + " to buy it.");
+                continue;
+            }
+            if (boostMaxHold > 0 && boost.owned >= boostMaxHold)
+            {
+                pool.play_stationary("sounds/store/error.ogg", false);
+                dlgmessage_return("Your inventory is full. You can hold a maximum of " + format_number(boostMaxHold) + " of each boost. Use some first!");
+                continue;
+            }
+            double maxCanBuy = get_boost_max_buyable(boost);
+            vd.set_disallowed_chars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()[]{};:'\"\\|,.<>?/+-=`~_", false, "This character is not allowed.");
+            string qInput = vd.input_box("", "How many " + boost.name + " boosts would you like to buy? Press enter to buy the maximum amount.", string(maxCanBuy > 0 ? maxCanBuy : 1));
+            double qty = floor(string_to_number(qInput));
+            if (qty <= 0)
+            {
+                pool.play_stationary("sounds/store/error.ogg", false);
+                dlgmessage_return("Please enter a valid number to buy.");
+                continue;
+            }
+            if (boostMaxHold > 0 && boost.owned + qty > double(boostMaxHold))
+            {
+                pool.play_stationary("sounds/store/error.ogg", false);
+                dlgmessage_return("You can only hold " + format_number(boostMaxHold) + " of each boost. You currently have " + format_number(boost.owned) + ".");
+                continue;
+            }
+            double totalCost = get_boost_bulk_cost(boost, qty);
+            if (boost_balance(boost) < totalCost)
+            {
+                pool.play_stationary("sounds/store/error.ogg", false);
+                dlgmessage_return("Error! You can't afford " + format_number(qty) + " " + boost.name + (qty == 1 ? " boost" : " boosts") + "!");
+                continue;
+            }
+            if (boost_costs_money(boost))
+            {
+                coins = floor(safe_cap(coins - totalCost));
+                stat_coins_spent += totalCost;
+            }
+            else
+                cookies = floor(safe_cap(cookies - totalCost));
+            loadedBoosts[boostIdx].owned += qty;
+            pool.play_stationary("sounds/store/buy" + random(1, 4) + ".ogg", false);
+            pool.play_stationary("sounds/store/order.ogg", false);
+            double nowOwned = loadedBoosts[boostIdx].owned;
+            dlgmessage_return("You bought " + format_number(qty) + " " + boost.name + (qty == 1 ? " boost" : " boosts") + " for " + boost_price_text(boost, totalCost) + ". You now have " + format_number(nowOwned) + " " + boost.name + (nowOwned == 1 ? " boost" : " boosts") + " in your inventory.");
         }
     }
 }
