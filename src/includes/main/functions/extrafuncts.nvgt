@@ -526,12 +526,39 @@ void play_coin_sound(double amount)
 void reload_config(bool force = false)
 {
     if (config_loaded && !force) return;
+    /* Every table checked at launch is checked here too, with the same message, so a broken edit closes the game on
+    Control L just as it would on startup instead of leaving events, slots, or ranks empty. */
     loadedEvents = parse_baker_events("events/baker.event");
+    if (loadedEvents.length() == 0)
+    {
+        alert("Error", "Could not load event data from data/decompiled/config/events/baker.event. Please check the file and try again.");
+        exit();
+    }
     loadedFlipperEvents = parse_flipper_items("events/flipper.event");
+    if (loadedFlipperEvents.length() == 0)
+    {
+        alert("Error", "Could not load flipper event data from data/decompiled/config/events/flipper.event. Please check the file and try again.");
+        exit();
+    }
     slotSymbols.resize(0); slotPayouts.resize(0);
     parse_slots_table("tables/slots.table", slotSymbols, slotPayouts, slotReels, slotMinBet, slotMaxBet, slotConfirmThreshold, slotConfirmUsePercent);
+    if (slotSymbols.length() == 0 || slotPayouts.length() == 0)
+    {
+        alert("Error", "Could not load slot machine data from data/decompiled/config/tables/slots.table. Please check the file and try again.");
+        exit();
+    }
+    if (int(slotSymbols.length()) < slotMinSymbols)
+    {
+        alert("Error", "The min_symbols setting in data/decompiled/config/tables/slots.table is " + string(slotMinSymbols) + ", but only " + string(slotSymbols.length()) + " symbols are defined. Please add more symbols or lower min_symbols and try again.");
+        exit();
+    }
     rankSounds.resize(0); rankDefault.resize(0); rankRewards.resize(0);
     parse_ranks_table("tables/ranks.table", rankSounds, rankDefault, rankRewards);
+    if (rankSounds.length() == 0 || rankDefault.length() == 0)
+    {
+        alert("Error", "Could not load rank reward data from data/decompiled/config/tables/ranks.table. Please check the file and try again.");
+        exit();
+    }
     parse_jacks_table("tables/jacks.table", jacksConfig);
     parse_dice_table("tables/dice.table");
     /* Same checks as at launch: a table that loads nothing would leave its minigame with no deck or wheel to play,
