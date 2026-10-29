@@ -74,6 +74,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Flag todo prerequisites](feedback_flag_todo_prerequisites.md) — dev picks todo items at random; say up front if one needs another item or a decision first.
 - [Test steps one at a time](feedback_test_steps_one_at_a_time.md) — give testing steps one per message ("Step 1 of N"), wait for the result, then the next; never the whole list at once.
 - [Flag sections without tests](feedback_flag_sections_without_tests.md) — say plainly when a build section has no testing steps (plan and summary), and offer to merge it into a testable neighbour.
+- [Referenced game name](feedback_referenced_game_name.md) — never name the third-party reference game (user/CraftingKingdom-Windows-main) anywhere; call it "the referenced game".
 - [Pause after each fix](feedback_pause_after_each_fix.md) — after a fix + its docs, end the turn with the summary for review; never start the next item (reading, analysis, or its question) in the same reply, even in a batch.
 - [Bug list format](feedback_bug_list_format.md) — when listing bugs, split player-facing vs code (internal/modder/build), group each by game section, one line per bug with its memory id.
 - [Ask one question at a time](feedback_ask_one_question_at_a_time.md) — surface ONE question per turn and wait; don't batch a numbered list.

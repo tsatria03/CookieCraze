@@ -9,6 +9,8 @@ string[] boostSlotIds;
 double[] boostSlotLeft;
 // Activations this run; each one raises the next activation's price, like automating a slot.
 double boostActivations = 0;
+// Cash jar money earned but not yet paid, in fractions of a cent; paid out a whole cent at a time.
+double boostCashCarry = 0;
 timer boostClock;
 double boostClockMark = 0;
 
@@ -34,6 +36,7 @@ void reset_boosts()
     boostSlotIds.resize(0);
     boostSlotLeft.resize(0);
     boostActivations = 0;
+    boostCashCarry = 0;
     for (uint i = 0; i < loadedBoosts.length(); i++) loadedBoosts[i].owned = 0;
     boostClockMark = boostClock.elapsed;
 }
@@ -49,6 +52,10 @@ void update_boosts()
     for (int i = 0; i < boostSlotCount; i++)
     {
         if (boostSlotIds[i] == "") continue;
+        // The cash jar pays a flat amount every second, baking or not, for exactly the time it ran, never past its end.
+        int cidx = find_boost(boostSlotIds[i]);
+        if (cidx >= 0 && loadedBoosts[cidx].effect == "cash_per_second")
+            boostCashCarry += boost_cash_per_second(loadedBoosts[cidx]) * (min(passed, boostSlotLeft[i]) / 1000.0);
         boostSlotLeft[i] -= passed;
         if (boostSlotLeft[i] > 0) continue;
         string boostName = boostSlotIds[i];
@@ -60,6 +67,63 @@ void update_boosts()
         msg = string_replace(msg, "%slot%", string(i + 1), true);
         speak_buffer(msg, "boosts");
     }
+    if (boostCashCarry >= 1)
+    {
+        double pay = floor(boostCashCarry);
+        boostCashCarry -= pay;
+        coins = floor(safe_cap(coins + pay));
+        stat_coins_earned = safe_cap(stat_coins_earned + pay);
+    }
+}
+
+/* Every running boost with this effect multiplies its strength in: two 10 percent boosts make 1.21 times, since
+each copy multiplies on top of the last. The _now version skips the countdown so update_boosts can use it without calling itself. */
+double boost_multiplier_now(string effect)
+{
+    double mult = 1.0;
+    for (int i = 0; i < boostSlotCount; i++)
+    {
+        if (boostSlotIds[i] == "") continue;
+        int idx = find_boost(boostSlotIds[i]);
+        if (idx >= 0 && loadedBoosts[idx].effect == effect) mult *= 1.0 + loadedBoosts[idx].amount / 100.0;
+    }
+    return mult;
+}
+
+double boost_multiplier(string effect)
+{
+    update_boosts();
+    return boost_multiplier_now(effect);
+}
+
+// What a price is multiplied by under every running discount boost of this kind: two 10 percent discounts leave 81 percent.
+double boost_cost_factor(string effect)
+{
+    update_boosts();
+    double factor = 1.0;
+    for (int i = 0; i < boostSlotCount; i++)
+    {
+        if (boostSlotIds[i] == "") continue;
+        int idx = find_boost(boostSlotIds[i]);
+        if (idx >= 0 && loadedBoosts[idx].effect == effect) factor *= max(0.0, 1.0 - loadedBoosts[idx].amount / 100.0);
+    }
+    return factor;
+}
+
+// Production boosts for one kind of baking: its own boost and cookie frenzy, which boosts both.
+double boost_auto_production() { return boost_multiplier("auto_production") * boost_multiplier("all_production"); }
+double boost_manual_production() { return boost_multiplier("manual_production") * boost_multiplier("all_production"); }
+
+// The time between automatic bakes under bake speed boosts, never below the game's 50 millisecond floor.
+double boosted_clicktime()
+{
+    return max(50.0, double(clicktime) / boost_multiplier("bake_speed"));
+}
+
+// The price one cookie sells for under sell price boosts.
+double boosted_sell_price()
+{
+    return cookieSellPrice * boost_multiplier("sell_price");
 }
 
 // The current price of one more copy of a boost; each copy you hold raises it, like tickets.

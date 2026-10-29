@@ -111,17 +111,21 @@ double calc_total_upgrade_cost(double level, double quantity, double base_cost, 
         return safe_cap(startCost * quantity);
     return safe_cap(startCost * (pow(multiplier, quantity) - 1) / (multiplier - 1));
 }
+// Automating slots; the cheap circuits boost takes its discount off the whole price.
 double calc_automation_cost(double count, double baseCost, double multiplier)
 {
+    double factor = boost_cost_factor("automation_discount");
     if (multiplier <= 1.000001)
-        return safe_cap(baseCost * count);
-    return safe_cap(baseCost * (pow(multiplier, count) - 1) / (multiplier - 1));
+        return safe_cap(baseCost * count * factor);
+    return safe_cap(baseCost * (pow(multiplier, count) - 1) / (multiplier - 1) * factor);
 }
+// Adding auto slots; the oven sale boost takes its discount off the whole price.
 double calc_slot_cost(double count)
 {
+    double factor = boost_cost_factor("auto_slot_discount");
     if (slotMultiplier <= 1.000001)
-        return min(slotBaseCost * count, 1e308);
-    double result = slotBaseCost * (pow(slotMultiplier, count) - 1) / (slotMultiplier - 1);
+        return min(slotBaseCost * count * factor, 1e308);
+    double result = slotBaseCost * (pow(slotMultiplier, count) - 1) / (slotMultiplier - 1) * factor;
     if (result > 1e308 || result != result) return 1e308;
     return result;
 }

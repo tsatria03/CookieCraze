@@ -132,6 +132,7 @@ else if(manulcookie>=1)
     else
         manualGain = manulcookie;
     if (prestige_cookie_multiplier > 0) manualGain *= 1.0 + (prestige_cookie_multiplier / 100.0);
+    manualGain *= boost_manual_production();
     if (combosConfig.enabled && rank >= combosConfig.enabled_rank)
     {
         if (comboCount == 0)
@@ -148,7 +149,7 @@ else if(manulcookie>=1)
             {
                 preComboCount = 0;
                 comboCount = preComboTarget;
-                comboWindow = random(combosConfig.combo_window_min, combosConfig.combo_window_max);
+                comboWindow = int(random(combosConfig.combo_window_min, combosConfig.combo_window_max) * boost_multiplier("combo_window"));
                 combotimer.restart();
                 stat_combos_started++;
                 if (combosConfig.start_sound != "" && !buffer_muted("combos")) pool.play_stationary("sounds/" + combosConfig.start_sound, false);
@@ -160,7 +161,7 @@ else if(manulcookie>=1)
             comboCount++;
             if (comboCount > stat_highest_combo_reached) stat_highest_combo_reached = comboCount;
             if (comboCount > sessionHighestCombo) sessionHighestCombo = comboCount;
-            comboWindow = random(combosConfig.combo_window_min, combosConfig.combo_window_max);
+            comboWindow = int(random(combosConfig.combo_window_min, combosConfig.combo_window_max) * boost_multiplier("combo_window"));
             combotimer.restart();
             double comboMult = get_combo_multiplier(comboCount);
             manualGain *= comboMult;
@@ -192,7 +193,7 @@ else if(manulcookie>=1)
     }
     cookies += manualGain;
 stat_cookies_baked += manualGain;
-cookieXP += manualGain * cookieExpMod;
+cookieXP += manualGain * cookieExpMod * boost_multiplier("experience");
 stat_manual_bakes_performed++;
 pool.play_stationary("sounds/misc/manulbake.ogg", false);
 // Events can no longer be switched off in the settings; main.table's manual_event_chance of 0 is the only off switch.
@@ -221,7 +222,7 @@ shopmenu();
 }
 if(bakemode==1 and autocookie>=1)
 {
-if(clicktimer.elapsed>=clicktime)
+if(clicktimer.elapsed>=boosted_clicktime())
 {
 double autoGain = 0;
 if (autobakeSlots > 0)
@@ -241,9 +242,10 @@ else
 autoGain = autocookie;
 }
 if (prestige_cookie_multiplier > 0) autoGain *= 1.0 + (prestige_cookie_multiplier / 100.0);
+autoGain *= boost_auto_production();
 cookies += autoGain;
 stat_cookies_baked += autoGain;
-cookieXP += autoGain * cookieExpMod;
+cookieXP += autoGain * cookieExpMod * boost_multiplier("experience");
 stat_auto_bakes_performed++;
 if(bakesfx==true) pool.play_stationary("sounds/misc/autobake.ogg", false);
 attempt_autobaker_event(evchanse);
@@ -401,8 +403,11 @@ if (key_pressed(KEY_F))
     /* Mirrors the auto bake in the main loop, prestige cookie bonus included, and names both numbers:
     what each automated slot makes and what you make in total. */
     double bonus = (prestige_cookie_multiplier > 0) ? 1.0 + (prestige_cookie_multiplier / 100.0) : 1.0;
+    // Running boosts count too, both for how much each bake makes and for how often automatic baking happens.
+    bonus *= boost_auto_production();
+    int interval = int(floor(boosted_clicktime()));
     string period = "per second";
-    if (clicktime != 1000) period = "every " + clicktime + " milliseconds";
+    if (interval != 1000) period = "every " + interval + " milliseconds";
     if (slotCount > 0)
     {
         double cookiesPerSlot = autocookie * bonus;
@@ -427,8 +432,9 @@ speak_buffer("You have " + format_number(cookies) + " " + cookieCountWord + ".",
 if(key_pressed(KEY_J))
 {
     /* Mirrors the manual bake, prestige cookie bonus included, and describes manual slots the same way
-    F describes automated ones. Combo multipliers are left out, since they only last while a combo runs. */
+    F describes automated ones. Combo multipliers are left out, since they only last while a combo runs; running boosts are included. */
     double bonus = (prestige_cookie_multiplier > 0) ? 1.0 + (prestige_cookie_multiplier / 100.0) : 1.0;
+    bonus *= boost_manual_production();
     if (manualSlots > 0)
     {
         double perSlot = manulcookie * bonus;

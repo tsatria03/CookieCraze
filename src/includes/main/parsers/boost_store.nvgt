@@ -21,6 +21,8 @@ class boost_item
     double base_cost;
     double cost_multiplier;
     double amount;
+    // The amount as written, kept for the cash jar, whose cents per second may use rank operators such as 200*rank.
+    string amount_text;
     int duration;
     int min_rank;
     bool hidden;
@@ -30,7 +32,7 @@ class boost_item
 
 // Every effect a boost line may name. A line with any other effect is skipped, since nothing would apply it.
 const array<string> BOOST_EFFECTS = {"auto_production", "manual_production", "all_production", "bake_speed", "combo_window",
-    "sell_price", "experience", "money_per_second", "singles_discount", "bundles_discount", "auto_slot_discount",
+    "sell_price", "experience", "cash_per_second", "singles_discount", "bundles_discount", "auto_slot_discount",
     "manual_slot_discount", "automation_discount"};
 // The shortest a boost may run, in seconds; anything shorter is raised to it.
 const int BOOST_MIN_DURATION = 30;
@@ -85,9 +87,11 @@ void parse_boosts_store(string filepath)
         if (BOOST_EFFECTS.find(b.effect) < 0) continue;
         b.base_cost = max(0.0, string_to_number(parts[3]));
         b.cost_multiplier = max(1.0, string_to_number(parts[4]));
+        b.amount_text = parts[5];
         b.amount = string_to_number(parts[5]);
-        // Boosts never take anything away, so a line with no positive amount is skipped.
-        if (b.amount <= 0) continue;
+        // Boosts never take anything away, so a line with no positive amount is skipped. The cash jar is checked at rank 1.
+        if (b.effect == "cash_per_second") { if (eval_event_amount(b.amount_text, 1) <= 0) continue; }
+        else if (b.amount <= 0) continue;
         b.duration = max(BOOST_MIN_DURATION, string_to_int(parts[6]));
         b.min_rank = string_to_int(parts[7]);
         b.hidden = (parts[8] == "true");
@@ -124,9 +128,16 @@ string boost_duration_text(double seconds)
     return result;
 }
 
-// A boost's description with %amount% and %duration% filled in.
+// What the cash jar pays each second at your current rank, in cents.
+double boost_cash_per_second(boost_item@ b)
+{
+    return max(0.0, eval_event_amount(b.amount_text, rank));
+}
+
+// A boost's description with %amount% and %duration% filled in; the cash jar's amount is money at your current rank.
 string boost_description(boost_item@ b)
 {
-    string text = string_replace(b.description, "%amount%", format_number(b.amount), true);
+    string amountText = (b.effect == "cash_per_second") ? convert_to_currency(boost_cash_per_second(b)) : format_number(b.amount);
+    string text = string_replace(b.description, "%amount%", amountText, true);
     return string_replace(text, "%duration%", boost_duration_text(b.duration), true);
 }

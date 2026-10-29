@@ -89,3 +89,7 @@ All High items are done (7 fixed in 6.9, #4 won't fix). This is the remaining ba
 29. **Last-name error path** (`settings_menu.nvgt` ~302-304) plays the error sound without storing its slot, then destroys whatever `alertslot` held.
 30. **Slots freezes input 1–2 s** (`minigames.nvgt` ~342 plain `wait()` instead of `mini_wait_async`).
 31. **Earnings-per-sell can display Inf** (`extrafuncts.nvgt` ~512: `floor(cookies)*cookieSellPrice` not `safe_cap`ped).
+
+## Found 2026-10-28 (open)
+
+- **Singles shop reads raw item ids** — the buy upgrades list speaks the item id with underscores, e.g. "manual_cookie, costs 23 cents…", instead of a friendly name like "Manual cookie" (tickets and boosts build names from their ids). Noticed while testing boost discounts; the dev asked to fix it later. Not a boosts bug — existing behaviour of the singles store (menu.nvgt bakercategorymenu labels).
