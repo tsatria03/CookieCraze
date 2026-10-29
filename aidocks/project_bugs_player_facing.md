@@ -92,4 +92,4 @@ All High items are done (7 fixed in 6.9, #4 won't fix). This is the remaining ba
 
 ## Found 2026-10-28 (open)
 
-- **Singles shop reads raw item ids** — the buy upgrades list speaks the item id with underscores, e.g. "manual_cookie, costs 23 cents…", instead of a friendly name like "Manual cookie" (tickets and boosts build names from their ids). Noticed while testing boost discounts; the dev asked to fix it later. Not a boosts bug — existing behaviour of the singles store (menu.nvgt bakercategorymenu labels).
+- **FIXED (7.5, 2026-10-28): store_item_name() in single_store.nvgt, used by both bakercategorymenu labels.** **Singles shop reads raw item ids** — the buy upgrades list speaks the item id with underscores, e.g. "manual_cookie, costs 23 cents…", instead of a friendly name like "Manual cookie" (tickets and boosts build names from their ids). Noticed while testing boost discounts; the dev asked to fix it later. Not a boosts bug — existing behaviour of the singles store (menu.nvgt bakercategorymenu labels).

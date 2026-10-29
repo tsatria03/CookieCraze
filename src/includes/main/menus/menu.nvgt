@@ -1391,14 +1391,14 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
         if (items[i].min_rank > 0 && rank < items[i].min_rank)
         {
             if (items[i].hidden || !show_locked_shops) continue;
-            m.add_item(items[i].item_type + ". Unlocked at rank " + string(items[i].min_rank) + ". Description: " + items[i].description, "locked" + string(i));
+            m.add_item(store_item_name(items[i].item_type) + ". Unlocked at rank " + string(items[i].min_rank) + ". Description: " + items[i].description, "locked" + string(i));
             continue;
         }
         double level = (items[i].target == 2) ? manulcookie_purchases : (items[i].target == 3) ? cookiespeed_purchases : autocookie_purchases;
         double cost = buy_item(level, (items[i].base_cost * boost_cost_factor("singles_discount")), items[i].cost_multiplier);
         double maxbuy = cap_speed_maxbuy(items[i], calc_max_buyable(balance, level, (items[i].base_cost * boost_cost_factor("singles_discount")), items[i].cost_multiplier));
         string costStr = (chosenCurrency == "cookies") ? format_number(cost) + " baked cookies" : convert_to_currency(cost);
-        m.add_item(items[i].item_type + ", costs " + costStr + ". You can buy " + format_number(maxbuy) + ". Description: " + items[i].description, "item" + string(i));
+        m.add_item(store_item_name(items[i].item_type) + ", costs " + costStr + ". You can buy " + format_number(maxbuy) + ". Description: " + items[i].description, "item" + string(i));
     }
     bool anyAffordable = false;
     for (uint i = 0; i < items.length(); i++)
