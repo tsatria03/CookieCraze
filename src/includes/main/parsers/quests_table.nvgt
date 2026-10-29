@@ -617,6 +617,11 @@ string get_stat_display_name(string stat)
     else if (stat == STAT_ROULETTE_STRAIGHT_HITS)    return "roulette straight hits";
     else if (stat == STAT_ROULETTE_BREAKS)           return "roulette break-evens";
     else if (stat == STAT_AUTO_SLOTS_PURCHASED) return "auto slots purchased";
+    else if (stat == STAT_BOOSTS_BOUGHT) return "boosts bought";
+    else if (stat == STAT_BOOSTS_ACTIVATED) return "boosts activated";
+    else if (stat == STAT_BOOST_SLOTS_PURCHASED) return "boost slots purchased";
+    else if (stat == STAT_BOOSTS_COMPLETED) return "boosts completed";
+    else if (stat == STAT_BOOST_MINUTES) return "minutes of boosts used";
     else if (stat == STAT_AUTO_SLOTS_ENABLED)   return "auto slots enabled";
     else if (stat == STAT_RANK)                    return "rank";
     else if (stat == STAT_HIGHEST_COMBO_REACHED)   return "highest combo reached";

@@ -233,6 +233,42 @@ enable_auto_slots_30:Enable 30 auto slots:auto_slots_enabled:30:false:false:true
 enable_auto_slots_50:Enable 50 auto slots:auto_slots_enabled:50:false:false:true:4:Enable %threshold% auto baking slots.
 enable_auto_slots_100:Enable 100 auto slots:auto_slots_enabled:100:false:false:true:5:Enable %threshold% auto baking slots.
 
+; Boosts activated
+
+activate_boosts_endless:Activate %threshold% boosts:boosts_activated:10:false:false:false:1:1.25:true:1:Activate %threshold% boosts in the boost slot manager. Each time you finish it and prestige, it returns at a higher goal.
+
+; Boosts completed
+
+complete_boosts_5:Complete 5 boosts:boosts_completed:5:false:false:true:1:Let %threshold% boosts run their full time.
+complete_boosts_15:Complete 15 boosts:boosts_completed:15:false:false:true:2:Let %threshold% boosts run their full time.
+complete_boosts_30:Complete 30 boosts:boosts_completed:30:false:false:true:3:Let %threshold% boosts run their full time.
+complete_boosts_50:Complete 50 boosts:boosts_completed:50:false:false:true:4:Let %threshold% boosts run their full time.
+complete_boosts_100:Complete 100 boosts:boosts_completed:100:false:false:true:5:Let %threshold% boosts run their full time.
+
+; Boost slots purchased
+
+buy_boost_slots_1:Buy a boost slot:boost_slots_purchased:1:false:false:true:1:Buy a boost slot in the boost slot manager.
+buy_boost_slots_3:Buy 3 boost slots:boost_slots_purchased:3:false:false:true:2:Buy %threshold% boost slots in the boost slot manager.
+buy_boost_slots_5:Buy 5 boost slots:boost_slots_purchased:5:false:false:true:3:Buy %threshold% boost slots in the boost slot manager.
+buy_boost_slots_10:Buy 10 boost slots:boost_slots_purchased:10:false:false:true:4:Buy %threshold% boost slots in the boost slot manager.
+buy_boost_slots_20:Buy 20 boost slots:boost_slots_purchased:20:false:false:true:5:Buy %threshold% boost slots in the boost slot manager.
+
+; Boost time used
+
+use_boosts_30:Use 30 minutes of boosts:boost_minutes:30:false:false:true:1:Have boosts running for %threshold% minutes in total.
+use_boosts_60:Use 60 minutes of boosts:boost_minutes:60:false:false:true:2:Have boosts running for %threshold% minutes in total.
+use_boosts_120:Use 120 minutes of boosts:boost_minutes:120:false:false:true:3:Have boosts running for %threshold% minutes in total.
+use_boosts_300:Use 300 minutes of boosts:boost_minutes:300:false:false:true:4:Have boosts running for %threshold% minutes in total.
+use_boosts_600:Use 600 minutes of boosts:boost_minutes:600:false:false:true:5:Have boosts running for %threshold% minutes in total.
+
+; Boosts bought
+
+buy_boosts_5:Buy 5 boosts:boosts_bought:5:false:false:true:1:Buy %threshold% boosts from buy boosts in the cookie store.
+buy_boosts_15:Buy 15 boosts:boosts_bought:15:false:false:true:2:Buy %threshold% boosts from buy boosts in the cookie store.
+buy_boosts_30:Buy 30 boosts:boosts_bought:30:false:false:true:3:Buy %threshold% boosts from buy boosts in the cookie store.
+buy_boosts_50:Buy 50 boosts:boosts_bought:50:false:false:true:4:Buy %threshold% boosts from buy boosts in the cookie store.
+buy_boosts_100:Buy 100 boosts:boosts_bought:100:false:false:true:5:Buy %threshold% boosts from buy boosts in the cookie store.
+
 ; Highest combo reached
 
 reach_combo_50:Reach a combo of 50:highest_combo_reached:50:false:false:true:1:Reach a combo of %threshold% consecutive presses.
