@@ -1,0 +1,328 @@
+/* The boost slot manager, modelled on the baking slots manager's auto slots: add slots, start a boost in an empty
+slot, or end a running one. Its replies are spoken directly, like the baking slots manager's; only run-outs, which
+happen on their own during play, go to the boosts buffer. Each menu loops and returns rather than calling itself. */
+
+// What adding count boost slots costs now: each slot owned raises the next one's price.
+double boost_slot_cost(int count)
+{
+    double base = boostSlotStartCost * pow(boostSlotMultiplier, double(boostSlotCount));
+    return calc_slot_cost(count, base, boostSlotMultiplier);
+}
+
+// What count more activations cost now: every activation this run raises the next one's price, whichever boost it is.
+double boost_activation_cost(int count)
+{
+    double base = boostActivationStartCost * pow(boostActivationMultiplier, boostActivations);
+    return calc_slot_cost(count, base, boostActivationMultiplier);
+}
+
+int boost_running_count()
+{
+    int n = 0;
+    for (int i = 0; i < boostSlotCount; i++)
+        if (boostSlotIds[i] != "") n++;
+    return n;
+}
+
+// Time left in a slot, rounded up to whole seconds, such as 3 minutes, 20 seconds.
+string boost_slot_time_text(int slot)
+{
+    return boost_duration_text(ceil(boostSlotLeft[slot] / 1000.0));
+}
+
+// A boost's name as spoken inside a sentence: cookie frenzy rather than Cookie frenzy.
+string boost_spoken_name(string id)
+{
+    int idx = find_boost(id);
+    return (idx >= 0) ? loadedBoosts[idx].name.lower() : id;
+}
+
+void boost_error(string message)
+{
+    alertslot = pool.play_stationary("sounds/dlg/error.ogg", false);
+    dlg(message);
+    pool.destroy_sound(alertslot);
+}
+
+// Starts boost idx in slot, for the given time in seconds.
+void start_boost(int slot, int idx)
+{
+    boostSlotIds[slot] = loadedBoosts[idx].id;
+    boostSlotLeft[slot] = double(loadedBoosts[idx].duration) * 1000.0;
+    loadedBoosts[idx].owned -= 1;
+}
+
+// What the main game screen's B key says: how many boosts are running, then each one's name and time left.
+string boost_status_text()
+{
+    update_boosts();
+    int running = boost_running_count();
+    if (running == 0) return "You have no boosts running.";
+    string txt = "You have " + string(running) + (running == 1 ? " boost running." : " boosts running.");
+    /* Boosts with the same name and the same time left, such as copies started together by Activate ALL, are spoken
+    once with a count, in the order their first slot comes. The same boost with a different time stays separate. */
+    string[] groupNames;
+    string[] groupTimes;
+    int[] groupCounts;
+    for (int i = 0; i < boostSlotCount; i++)
+    {
+        if (boostSlotIds[i] == "") continue;
+        int idx = find_boost(boostSlotIds[i]);
+        string name = (idx >= 0) ? loadedBoosts[idx].name : boostSlotIds[i];
+        string timeText = boost_slot_time_text(i);
+        int found = -1;
+        for (uint g = 0; g < groupNames.length(); g++)
+            if (groupNames[g] == name && groupTimes[g] == timeText) { found = int(g); break; }
+        if (found >= 0) groupCounts[found]++;
+        else
+        {
+            groupNames.insert_last(name);
+            groupTimes.insert_last(timeText);
+            groupCounts.insert_last(1);
+        }
+    }
+    for (uint g = 0; g < groupNames.length(); g++)
+    {
+        string label = (groupCounts[g] == 1) ? groupNames[g] : string(groupCounts[g]) + " " + groupNames[g] + " boosts";
+        txt += " " + label + ", " + groupTimes[g] + " left.";
+    }
+    return txt;
+}
+
+void boost_slot_manager()
+{
+    while (true)
+    {
+        update_boosts();
+        setupmenu(false);
+        m.add_item("Add a slot", "add");
+        m.add_item("Activate a slot", "activate");
+        m.add_item("End a slot", "end");
+        m.add_item("Back", "back");
+        int running = boost_running_count();
+        int empty = boostSlotCount - running;
+        m.intro_text = "Boost slot manager. You have " + format_number(boostSlotCount) + (boostSlotCount == 1 ? " boost slot" : " boost slots") + ": " + format_number(running) + " active and " + format_number(empty) + " empty.";
+        int mres = m.run();
+        string sel = m.get_item_id(mres);
+        if (mres == -1 || sel == "back")
+        {
+            clickergame();
+            return;
+        }
+        // The menu itself is always open so you can see what is coming, like the baking slots manager; its options wait for the unlock rank.
+        if (rank < boostUnlockRank)
+        {
+            dlgmessage_return("Boost slots are locked. Please reach rank " + string(boostUnlockRank) + " to use this feature.");
+            continue;
+        }
+        if (sel == "add") add_boost_slots();
+        else if (sel == "activate") activate_boost_slots();
+        else if (sel == "end") end_boost_slots();
+    }
+}
+
+void add_boost_slots()
+{
+    int[] counts = {1, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000};
+    string last_id = "";
+    while (true)
+    {
+        setupmenu(false);
+        for (uint i = 0; i < counts.length(); i++)
+            m.add_item("Add " + format_number(counts[i]) + (counts[i] == 1 ? " boost slot for " : " boost slots for ") + convert_to_currency(boost_slot_cost(counts[i])), "add" + string(i));
+        m.add_item("Back", "back");
+        m.intro_text = "Add boost slots menu. You have " + format_number(boostSlotCount) + (boostSlotCount == 1 ? " boost slot." : " boost slots.");
+        int start = 0;
+        if (last_id != "")
+        {
+            int found = m.find_item_by_id(last_id);
+            if (found != -1) start = found;
+        }
+        int res = m.run(start, true);
+        if (res == -1) return;
+        string sel = m.get_item_id(res);
+        if (sel == "back") return;
+        last_id = sel;
+        int count = counts[string_to_int(sel.substr(3))];
+        double cost = boost_slot_cost(count);
+        if (coins < cost)
+        {
+            boost_error("Error! You can't afford " + format_number(count) + (count == 1 ? " new boost slot!" : " new boost slots!"));
+            continue;
+        }
+        coins = floor(safe_cap(coins - cost));
+        stat_coins_spent += cost;
+        boostSlotCount += count;
+        size_boost_slots();
+        pool.destroy_sound(alertslot);
+        alertslot = pool.play_stationary("sounds/misc/prodslot.ogg", false);
+        speak("Added " + format_number(count) + (count == 1 ? " boost slot" : " boost slots") + ". You now have " + format_number(boostSlotCount) + (boostSlotCount == 1 ? " boost slot." : " boost slots."));
+    }
+}
+
+// The boosts you hold, as indexes into loadedBoosts.
+int[] held_boosts()
+{
+    int[] held;
+    for (uint i = 0; i < loadedBoosts.length(); i++)
+        if (loadedBoosts[i].owned >= 1) held.insert_last(int(i));
+    return held;
+}
+
+void activate_boost_slots()
+{
+    while (true)
+    {
+        update_boosts();
+        int empty = boostSlotCount - boost_running_count();
+        if (empty <= 0)
+        {
+            boost_error(boostSlotCount == 0 ? "Error! You have no boost slots. Add a slot first." : "Error! There are no empty boost slots.");
+            return;
+        }
+        if (held_boosts().length() == 0)
+        {
+            boost_error("Error! You have no boosts to activate. You can buy them from buy boosts in the cookie store.");
+            return;
+        }
+        setupmenu(false);
+        for (int i = 0; i < boostSlotCount; i++)
+            if (boostSlotIds[i] == "") m.add_item("Boost slot " + string(i + 1) + " (empty)", "slot" + string(i));
+        if (empty > 1) m.add_item("Activate ALL slots", "all");
+        m.add_item("Back", "back");
+        m.intro_text = "Slot activation menu.";
+        int res = m.run();
+        if (res == -1) return;
+        string sel = m.get_item_id(res);
+        if (sel == "back") return;
+        // After a successful Activate ALL the slots are full, so go back to the manager instead of showing this list again.
+        if (sel == "all") { if (activate_all_boost_slots()) return; continue; }
+        int slot = string_to_int(sel.substr(4));
+        // The boosts you hold, then the price for this one activation.
+        int[] held = held_boosts();
+        setupmenu(false);
+        for (uint i = 0; i < held.length(); i++)
+        {
+            boost_item@ b = loadedBoosts[held[i]];
+            m.add_item(b.name + ", You have " + format_number(b.owned) + ". Description: " + boost_description(b), "b" + string(i));
+        }
+        m.add_item("Back", "back");
+        m.intro_text = "Boost slot " + string(slot + 1) + ". Which boost would you like to start?";
+        int bres = m.run();
+        if (bres == -1 || m.get_item_id(bres) == "back") continue;
+        int idx = held[string_to_int(m.get_item_id(bres).substr(1))];
+        double cost = boost_activation_cost(1);
+        setupmenu(false);
+        m.add_item("Activate this boost for " + convert_to_currency(cost), "go");
+        m.add_item("Back", "back");
+        m.intro_text = loadedBoosts[idx].name + " menu.";
+        int cres = m.run();
+        if (cres == -1 || m.get_item_id(cres) == "back") continue;
+        update_boosts();
+        if (boostSlotIds[slot] != "" || loadedBoosts[idx].owned < 1) continue;
+        if (coins < cost)
+        {
+            boost_error("Error! You can't afford to activate this boost!");
+            continue;
+        }
+        coins = floor(safe_cap(coins - cost));
+        stat_coins_spent += cost;
+        boostActivations += 1;
+        start_boost(slot, idx);
+        pool.destroy_sound(alertslot);
+        alertslot = pool.play_stationary("sounds/misc/autslot.ogg", false);
+        speak("Your " + loadedBoosts[idx].name.lower() + " boost has started. Boost slot " + string(slot + 1) + " is now active for " + boost_duration_text(loadedBoosts[idx].duration) + ".");
+        return;
+    }
+}
+
+/* Fills every empty slot it can with one boost you choose, never a boost you did not pick. If you hold fewer copies
+than there are empty slots, the rest stay empty and you are told why. */
+bool activate_all_boost_slots()
+{
+    update_boosts();
+    int empty = boostSlotCount - boost_running_count();
+    int[] held = held_boosts();
+    setupmenu(false);
+    for (uint i = 0; i < held.length(); i++)
+    {
+        boost_item@ b = loadedBoosts[held[i]];
+        int fills = int(min(double(empty), floor(b.owned)));
+        m.add_item(b.name + ", You have " + format_number(b.owned) + ". Fills " + format_number(fills) + (fills == 1 ? " slot for " : " slots for ") + convert_to_currency(boost_activation_cost(fills)) + ".", "b" + string(i));
+    }
+    m.add_item("Back", "back");
+    m.intro_text = "Activate all slots. Which boost would you like to fill your " + format_number(empty) + " empty slots with?";
+    int res = m.run();
+    if (res == -1 || m.get_item_id(res) == "back") return false;
+    int idx = held[string_to_int(m.get_item_id(res).substr(1))];
+    update_boosts();
+    empty = boostSlotCount - boost_running_count();
+    int fills = int(min(double(empty), floor(loadedBoosts[idx].owned)));
+    if (fills <= 0) return false;
+    double cost = boost_activation_cost(fills);
+    if (coins < cost)
+    {
+        boost_error("Error! You can't afford to activate all slots!");
+        return false;
+    }
+    coins = floor(safe_cap(coins - cost));
+    stat_coins_spent += cost;
+    boostActivations += fills;
+    int started = 0;
+    for (int i = 0; i < boostSlotCount && started < fills; i++)
+    {
+        if (boostSlotIds[i] != "") continue;
+        start_boost(i, idx);
+        started++;
+    }
+    pool.destroy_sound(alertslot);
+    alertslot = pool.play_stationary("sounds/misc/autslot.ogg", false);
+    string name = loadedBoosts[idx].name.lower();
+    string msg = (started == 1)
+        ? "Your " + name + " boost has started. 1 boost slot is now active for " + boost_duration_text(loadedBoosts[idx].duration) + "."
+        : "Your " + name + " boosts have started. " + format_number(started) + " boost slots are now active for " + boost_duration_text(loadedBoosts[idx].duration) + ".";
+    int left = empty - started;
+    if (left > 0) msg += " " + format_number(left) + (left == 1 ? " slot is" : " slots are") + " still empty because you ran out of " + loadedBoosts[idx].name + ".";
+    speak(msg);
+    return true;
+}
+
+void end_boost_slots()
+{
+    while (true)
+    {
+        update_boosts();
+        int running = boost_running_count();
+        if (running == 0)
+        {
+            boost_error("Error! No boosts are running.");
+            return;
+        }
+        setupmenu(false);
+        for (int i = 0; i < boostSlotCount; i++)
+            if (boostSlotIds[i] != "") m.add_item("Boost slot " + string(i + 1) + ": " + boost_spoken_name(boostSlotIds[i]) + ", " + boost_slot_time_text(i) + " left", "slot" + string(i));
+        if (running > 1) m.add_item("End ALL slots", "all");
+        m.add_item("Back", "back");
+        m.intro_text = "End boost slots menu.";
+        int res = m.run();
+        if (res == -1) return;
+        string sel = m.get_item_id(res);
+        if (sel == "back") return;
+        if (sel == "all")
+        {
+            if (!yes_no("Are you sure you want to end all " + format_number(running) + " running boosts? They will not be returned.")) continue;
+            for (int i = 0; i < boostSlotCount; i++) { boostSlotIds[i] = ""; boostSlotLeft[i] = 0; }
+            speak("All " + format_number(running) + " running boosts have ended.");
+            return;
+        }
+        int slot = string_to_int(sel.substr(4));
+        string name = boost_spoken_name(boostSlotIds[slot]);
+        if (!yes_no("Are you sure you want to end your " + name + " boost in boost slot " + string(slot + 1) + "? It will not be returned.")) continue;
+        update_boosts();
+        if (boostSlotIds[slot] == "") continue;
+        boostSlotIds[slot] = "";
+        boostSlotLeft[slot] = 0;
+        speak("Your " + name + " boost in boost slot " + string(slot + 1) + " has ended.");
+        return;
+    }
+}

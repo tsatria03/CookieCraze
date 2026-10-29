@@ -7,6 +7,7 @@ int shop=form.create_button("Cookie &store");
 int autobake=form.create_button("Enter baking m&ode");
 int achievementsBtn = form.create_button("&Achievements");
 int manageSlots = form.create_button("Baking slots &manager");
+int boostSlots = form.create_button("Boost slot ma&nager");
 int infoBtn=form.create_button("Baker &Info");
 int minigames=form.create_button("Mini &games");
 int questsBtn=form.create_button("&Quests");
@@ -65,6 +66,9 @@ clicktime=1000;
         {
 manage_baking_slots();
         }
+        // Always open, like the baking slots manager; its options say they are locked until rank boostUnlockRank.
+        if (form.is_pressed(boostSlots))
+            boost_slot_manager();
         if (form.is_pressed(achievementsBtn))
         {
             achievements_menu(loadedAchievements, achievementsUnlocked, loadedAchievementCategories);
@@ -441,6 +445,8 @@ if(key_pressed(KEY_J))
         speak_buffer("You produce " + format_number(totalManual) + " " + cookieWord + " per press.", "misc");
     }
 }
+// B speaks every running boost and its time left. Alt plus B bakes, so B only counts without Alt.
+if(!alt_is_down() && key_pressed(KEY_B)) speak_buffer(boost_status_text(), "misc");
 if(key_pressed(KEY_F1)) toggle_buffer_by_name("achievements");
 if(key_pressed(KEY_F2)) toggle_buffer_by_name("combos");
 if(key_pressed(KEY_F3)) toggle_buffer_by_name("events");
