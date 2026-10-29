@@ -12,6 +12,10 @@ auto_slot_base_cost=0.3
 auto_slot_cost_multiplier=1.01
 manual_slot_base_cost=0.3
 manual_slot_cost_multiplier=1.01
+boost_slot_base_cost=30
+boost_slot_cost_multiplier=1.01
+boost_activation_base_cost=15
+boost_activation_cost_multiplier=1.01
 
 [ranks]
 

@@ -9,6 +9,12 @@ automationBaseCost, slotBaseCost, and manualSlotBaseCost, which grow as you buy 
 double automationStartCost = 15;
 double slotStartCost = 30;
 double manualSlotStartCost = 30;
+/* What a boost slot and activating a boost cost at the start of a run, in cents, and how much each grows per purchase.
+Written in dollars in main.table like the other prices: $30.00 a slot and $15.00 an activation by default. */
+double boostSlotStartCost = 3000;
+double boostSlotMultiplier = 1.01;
+double boostActivationStartCost = 1500;
+double boostActivationMultiplier = 1.01;
 
 void reset_main_table_defaults()
 {
@@ -18,6 +24,10 @@ void reset_main_table_defaults()
     automationStartCost = 15;
     slotStartCost = 30;
     manualSlotStartCost = 30;
+    boostSlotStartCost = 3000;
+    boostSlotMultiplier = 1.01;
+    boostActivationStartCost = 1500;
+    boostActivationMultiplier = 1.01;
     automationMultiplier = 1.01;
     slotMultiplier = 1.01;
     manualSlotMultiplier = 1.01;
@@ -85,6 +95,10 @@ void parse_main_table(string filepath)
         else if (key == "auto_slot_cost_multiplier")   slotMultiplier = max(1.0, v);
         else if (key == "manual_slot_base_cost")       manualSlotStartCost = max(0.0, dollars_to_cents(v));
         else if (key == "manual_slot_cost_multiplier") manualSlotMultiplier = max(1.0, v);
+        else if (key == "boost_slot_base_cost")        boostSlotStartCost = max(0.0, dollars_to_cents(v));
+        else if (key == "boost_slot_cost_multiplier")  boostSlotMultiplier = max(1.0, v);
+        else if (key == "boost_activation_base_cost")  boostActivationStartCost = max(0.0, dollars_to_cents(v));
+        else if (key == "boost_activation_cost_multiplier") boostActivationMultiplier = max(1.0, v);
         else if (key == "rank_modifier")               { if (v > 0) cookiemod = v; }
         else if (key == "experience_modifier")         { if (v > 0) cookieExpMod = v; }
         else if (key == "auto_event_chance")           evchanse = clamp(v, 0, 100);

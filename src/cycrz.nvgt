@@ -74,6 +74,7 @@ parse_prestige_table("tables/prestige.table");
 parse_quests_table("tables/quests.table", loadedQuests);
 parse_lottery_table("tables/lottery.table");
 parse_tickets_store("stores/tickets.store");
+parse_boosts_store("stores/boosts.store");
 // Optional: a missing or broken main.table just keeps every built-in default.
 parse_main_table("tables/main.table");
 assign_quests();

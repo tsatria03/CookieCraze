@@ -1,0 +1,34 @@
+; Settings
+
+max_boosts=0
+expire_message=Your %boost% boost has ended. Boost slot %slot% is now empty.
+
+; Categories
+
+automenu=Auto Baking Boosts|0|false|cookies|Boosts for your automatic baking, paid for in cookies.
+manualmenu=Manual Baking Boosts|0|false|cookies|Boosts for baking by hand, paid for in cookies.
+generalmenu=General Boosts|0|false|coins|Boosts for the rest of your bakery, paid for in money.
+
+; Boosts
+
+; Auto baking boosts
+
+automenu:oven_overdrive:auto_production:3000000:1.01:10:1500:0:false:Your automatic baking makes %amount% percent more cookies for %duration%.
+automenu:turbo_bake:bake_speed:2000000:1.01:10:1200:0:false:Your ovens bake %amount% percent faster for %duration%.
+automenu:oven_sale:auto_slot_discount:1000000:1.01:10:360:0:false:Auto slots cost %amount% percent less for %duration%.
+automenu:cheap_circuits:automation_discount:1200000:1.01:10:540:0:false:Automating a slot costs %amount% percent less for %duration%.
+
+; Manual baking boosts
+
+manualmenu:busy_hands:manual_production:2500000:1.01:10:720:0:false:Every bake by hand makes %amount% percent more cookies for %duration%.
+manualmenu:combo_focus:combo_window:1500000:1.01:10:900:0:false:Your combo window lasts %amount% percent longer for %duration%.
+manualmenu:helping_hands:manual_slot_discount:1000000:1.01:10:420:0:false:Manual slots cost %amount% percent less for %duration%.
+
+; General boosts
+
+generalmenu:cookie_frenzy:all_production:75000000:1.01:10:300:0:false:Every bake, automatic or by hand, makes %amount% percent more cookies for %duration%.
+generalmenu:clearance_rack:singles_discount:25000000:1.01:10:480:0:false:Single upgrades cost %amount% percent less for %duration%.
+generalmenu:bargain_hunter:bundles_discount:30000000:1.01:10:600:0:false:Bundles cost %amount% percent less for %duration%.
+generalmenu:market_rush:sell_price:40000000:1.01:10:1800:0:false:Cookies sell for %amount% percent more for %duration%.
+generalmenu:cash_jar:money_per_second:35000000:1.01:10:2100:0:false:Every second, you are paid %amount% percent of what your automatic baking earns, for %duration%.
+generalmenu:rank_rush:experience:50000000:1.01:10:2700:0:false:Every bake earns %amount% percent more experience for %duration%.

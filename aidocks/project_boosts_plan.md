@@ -1,14 +1,14 @@
 ---
 name: project_boosts_plan
-description: "AGREED (2026-10-27, not built; planned for 7.3): boosts shop — buy boosts in the cookie store (inventory, like tickets), buy boost slots and activate them like auto slots. No free slots. First timed effects in the game."
+description: "AGREED (2026-10-27, not built; now 7.4, changelog slots 8-10 reserved): boosts shop — buy boosts in the cookie store (inventory, like tickets), buy boost slots and activate them like auto slots. No free slots. First timed effects in the game."
 metadata:
   node_type: memory
   type: project
 ---
 
-**MOVED TO 7.4 (dev, 2026-10-28)** — not 7.3. Its own changelog block; the ladder shift gets its own entry.
+**MOVED TO 7.4 (dev, 2026-10-28)** — not 7.3. The last 3 slots of the 7.4 changelog block (8–10) are reserved for boosts: the feature, the ladder shift, and one spare. Its own changelog block; the ladder shift gets its own entry.
 
-# Boosts (in discussion)
+# Boosts (agreed, not built)
 
 Todo item: "Add a temporary boosts shop where you spend cookies or coins on timed power-ups…". Discussed 2026-10-27.
 
@@ -44,7 +44,7 @@ Todo item: "Add a temporary boosts shop where you spend cookies or coins on time
 3i. **Default strengths (dev, 2026-10-27): 10 percent for every percentage boost** (production +10%, turbo bake 10% faster, combo window +10%, sell price +10%, experience +10%, every discount 10% off); cash jar stays 2 cents/second. Stacking: 2 copies = 1.21x, 4 = 1.46x.
 3j. **Cost multiplier 1.01 for every boost (dev, 2026-10-27)**, matching every line in singles.store (109 items, all 1.01) and tickets.store (all 1.01). **Base costs (dev approved 12 of 13, 2026-10-27; sized to rank-90 economy — singles user items cost ~0.5–1M cookies at rank 75, 5–10M at rank 100):** cookies — Oven sale 1,000,000; Helping hands 1,000,000; Cheap circuits 1,200,000; Combo focus 1,500,000; Turbo bake 2,000,000; Busy hands 2,500,000; Oven overdrive 3,000,000. Money (written in cents) — Clearance rack $250,000 (25000000); Bargain hunter $300,000 (30000000); Market rush $400,000 (40000000); Rank rush $500,000 (50000000); Cookie frenzy $750,000 (75000000). **Cash jar decided (dev, 2026-10-27):** effect `money_per_second` always means a percent of your auto earnings (auto cookies per second × current sell price), paid every second — default **10 percent**, base cost **$350,000 (35000000)**. The 2-cents-a-second idea is dropped. use_percent is NOT reused (elsewhere it means a percent of what you currently hold, which would compound). **So the boost line drops `use_percent`:** `menu:boost_id:effect:base_cost:cost_multiplier:amount:duration:min_rank:hidden:description`.
 3k. **main.table boost prices (dev, 2026-10-27), in [slots], written in DOLLARS like the rest of main.table:** `boost_slot_base_cost=30` ($30.00 to add a slot), `boost_slot_cost_multiplier=1.01`, `boost_activation_base_cost=15` ($15.00 to activate), `boost_activation_cost_multiplier=1.01` (dev changed from $100,000 / $25,000 — mirrors auto slot $0.30 / automation $0.15, ×100). Reset at prestige / new game like automation.
-4. Price model (fixed like tickets vs scaled to current production), boost duration, stacking, prestige reset of slots/inventory, config file (boosts.store).
+4. ~~Price model, duration, stacking, prestige reset, config file~~ — all decided above (3–3k).
 5. ~~Version~~ — **decided (dev, 2026-10-27): 7.3.** So the ladder shift also lands in 7.3 — **superseded: after double or nothing (shipped 2026-10-28) it is boost slot manager 100, combos 100→110, prestige 110→120**; the 7.2 prestige changelog entry keeps saying rank 100.
 
 ## Screen wording (dev approved, 2026-10-27)
@@ -54,11 +54,19 @@ Todo item: "Add a temporary boosts shop where you spend cookies or coins on time
 - Activate a slot: intro "Slot activation menu." / "Boost slot 3 (empty)" … / "Activate ALL slots" (2+ empty) / Back → owned-boost list → "Activate this boost for $X" / Back. Started: "Your cookie frenzy boost has started. Boost slot 2 is now active for 5 minutes."
 - End a slot: intro "End boost slots menu." / "Boost slot 1: cookie frenzy, 3 minutes, 20 seconds left" … / "End ALL slots" (2+ running) / Back. Confirms: "Are you sure you want to end your cookie frenzy boost in boost slot 1? It will not be returned." and "Are you sure you want to end all 2 running boosts? They will not be returned." (Yes/No, canceled on No/Escape).
 
-## Build sections (proposed — confirm with the dev before starting; 7.3 needs a version bump + new changelog block, ask the number)
+## Build sections (proposed — confirm with the dev before starting; goes in the already-open 7.4 block, entries 8–10)
 
-1. **Config:** boosts.store (settings `max_boosts=0`, `expire_message=…`; 3 category lines; 13 boost lines) + parser + main.table's 4 boost keys (dollars) in main_table.nvgt.
+1. **BUILT 2026-10-28:** cycrz/data/decompiled/config/stores/boosts.store (max_boosts=0, expire_message, categories automenu/manualmenu/generalmenu with min_rank 0 since the store option itself is gated at 100, 13 boosts with agreed costs/durations, amount 10); parsers/boost_store.nvgt (boost_category, boost_item with owned, BOOST_EFFECTS whitelist, BOOST_MIN_DURATION 30, loadedBoostCategories/loadedBoosts, boostMaxHold, boostExpireMessage, parse_boosts_store clears first, boost_duration_text, boost_description; name from id = first word capitalised, "Cookie frenzy"); main.table [slots] boost_slot_base_cost=30, boost_slot_cost_multiplier=1.01, boost_activation_base_cost=15, boost_activation_cost_multiplier=1.01 → boostSlotStartCost/boostActivationStartCost (cents) + multipliers; parsed at launch after tickets.store (no fatal empty check, like tickets) and in reload_config keeping owned by id. Was: **Config:** boosts.store (settings `max_boosts=0`, `expire_message=…`; 3 category lines; 13 boost lines) + parser + main.table's 4 boost keys (dollars) in main_table.nvgt.
 2. **Boost state + effects:** inventory, slots, running boosts with time left (pausing while closed), save/load, prestige/new-game reset; effect getters (multiplying copies) hooked into auto/manual production, bake speed (50 ms floor), combo window, sell price, XP, singles/bundles/slot/automation prices, cash jar payout; F and J include boosts; run-outs → boosts buffer (new, F5 mute) with expire_message.
 3. **Store:** cookie store "buy boosts" (locked below 100 like tickets), category → boost list with price, bulk buy at the proper geometric sum, max_boosts.
 4. **Boost slot manager:** main-screen "Boost slot ma&nager" (Alt+N) after Baking slots manager, rank 100; Add / Activate / End menus as worded above; B key readout.
-5. **Rank ladder:** boost unlock at 100 (ranks.table line + handle_rank_unlock), combos 90→110, prestige 100→120; baking slots manager 80→90 and the minigames after dice move up 10 when double or nothing lands at 50.
-6. **Docs:** readme (store, slot manager, keys B/F5/Alt+N, boosts.store + main.table references, ladder ranks), 7.3 changelog, todo Finished, memory. **The ladder shift (boost slot manager 100, combos 100→110, prestige 110→120, plus any same-rank clash in ranks.table) gets its OWN changelog entry, separate from the boosts entry (dev, 2026-10-28)** — like double or nothing's; check the 7.3 block has room (7 of 10 after double or nothing).
+5. **Rank ladder (updated 2026-10-28, after double or nothing):** boost unlock at 100 (ranks.table line + handle_rank_unlock), combos 100→110 (ranks.table + combos.table `enabled=true:110`), prestige 110→120 (prestige.table min_rank). The rank 150 stat bonus line stays clear.
+6. **Docs:** readme (store, slot manager, keys B/F5/Alt+N, boosts.store + main.table references, ladder ranks), 7.4 changelog, todo Finished, memory. **The ladder shift (boost slot manager 100, combos 100→110, prestige 110→120, plus any same-rank clash in ranks.table) gets its OWN changelog entry, separate from the boosts entry (dev, 2026-10-28)** — like double or nothing's; 7.4 block is at 7 of 10 with slots 8–10 reserved for boosts.
+
+## Since the plan was agreed (checked 2026-10-28)
+
+- Ticket bulk pricing was fixed in 7.2 (get_ticket_bulk_cost / get_ticket_max_buyable in lottery_table.nvgt) — reuse that pattern for boost bulk buys.
+- 7.3 reload lesson: boosts.store must also be parsed in reload_config, clearing its lists first, with a launch-style empty check if a missing file should be fatal; owned counts kept by id across Control L like tickets.
+- 7.4 load fix: readdata calls resetgame() first — boost state (slots, running boosts, inventory, activation count) must be reset in resetgame/reset_game_state so old saves start at defaults.
+- Minigames now use plain B for bets; the main game screen B for running boosts is a different screen, no clash (verify B is unused in game.nvgt).
+- **Achievements + quests: YES (dev, 2026-10-28)** — like the other progression features (baking slots manager has 45 achievements + auto-slot quests; combos 30 + combo quests). Adds TWO sections (achievements, quests — always separate) before docs, and needs boost stats. **Dev (2026-10-28): discuss the stats, achievements and quests when we reach those sections** — so the stats are decided and wired at the start of the achievements section (dec.nvgt, save/load, new-game reset, SESSION_STATS, quest baselines, statistics screen, get_stat_value), not in section 2. Proposal parked for then: boosts bought, boosts activated, boost slots purchased, boosts completed (ran full time), boost time used (minutes). Sections become 8: config, state+effects+stats, store, manager, ladder, achievements, quests, docs.

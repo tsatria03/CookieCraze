@@ -595,6 +595,17 @@ void reload_config(bool force = false)
         if (ownedTickets.get(loadedTickets[i].id, owned))
             loadedTickets[i].owned = owned;
     }
+    // Boosts you hold are kept across the re-parse by id, the same way as tickets.
+    dictionary ownedBoosts;
+    for (uint i = 0; i < loadedBoosts.length(); i++)
+        ownedBoosts.set(loadedBoosts[i].id, loadedBoosts[i].owned);
+    parse_boosts_store("stores/boosts.store");
+    for (uint i = 0; i < loadedBoosts.length(); i++)
+    {
+        double owned = 0;
+        if (ownedBoosts.get(loadedBoosts[i].id, owned))
+            loadedBoosts[i].owned = owned;
+    }
     loadedAchievements.resize(0);
     loadedAchievementCategories.resize(0);
     parse_achievements("tables/achievements.table", loadedAchievements, loadedAchievementCategories);

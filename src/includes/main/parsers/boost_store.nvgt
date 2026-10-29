@@ -1,0 +1,132 @@
+/* boosts.store: the timed boosts sold in the cookie store. Category lines work like singles.store's, and each boost
+line is menu:boost_id:effect:base_cost:cost_multiplier:amount:duration:min_rank:hidden:description, with duration in
+seconds. Prices are in cents for money categories and in cookies for cookie categories, like the other stores. */
+class boost_category
+{
+    string id;
+    string name;
+    int min_rank;
+    bool hidden;
+    // "cookies" or "coins", the item every boost in this category is paid for with.
+    string currency;
+    string description;
+}
+
+class boost_item
+{
+    string category_id;
+    string id;
+    string name;
+    string effect;
+    double base_cost;
+    double cost_multiplier;
+    double amount;
+    int duration;
+    int min_rank;
+    bool hidden;
+    string description;
+    double owned;
+}
+
+// Every effect a boost line may name. A line with any other effect is skipped, since nothing would apply it.
+const array<string> BOOST_EFFECTS = {"auto_production", "manual_production", "all_production", "bake_speed", "combo_window",
+    "sell_price", "experience", "money_per_second", "singles_discount", "bundles_discount", "auto_slot_discount",
+    "manual_slot_discount", "automation_discount"};
+// The shortest a boost may run, in seconds; anything shorter is raised to it.
+const int BOOST_MIN_DURATION = 30;
+
+boost_category[] loadedBoostCategories;
+boost_item[] loadedBoosts;
+// The most copies of one boost you may hold; 0 means no limit, like max_tickets.
+int boostMaxHold = 0;
+string boostExpireMessage = "Your %boost% boost has ended. Boost slot %slot% is now empty.";
+
+void parse_boosts_store(string filepath)
+{
+    // Start clean so Control L does not list every boost twice; missing settings return to their defaults.
+    loadedBoostCategories.resize(0);
+    loadedBoosts.resize(0);
+    boostMaxHold = 0;
+    boostExpireMessage = "Your %boost% boost has ended. Boost slot %slot% is now empty.";
+    config_file f;
+    if (!f.open(filepath)) return;
+    while (!f.eof)
+    {
+        string line = f.read_line();
+        while (line.length() > 0 && (line.substr(line.length() - 1) == "\n" || line.substr(line.length() - 1) == "\r"))
+            line = line.substr(0, line.length() - 1);
+        if (line.length() == 0 || line.substr(0, 1) == ";") continue;
+        int eq = line.find("=");
+        if (eq != -1)
+        {
+            string key = line.substr(0, eq);
+            string rest = line.substr(eq + 1);
+            if (key == "max_boosts") { boostMaxHold = max(0, string_to_int(rest)); continue; }
+            if (key == "expire_message") { boostExpireMessage = rest; continue; }
+            // Any other key=value line is a category: alias=Name|min_rank|hidden|currency|description
+            string[] cparts = rest.split("|");
+            if (cparts.length() < 4) continue;
+            boost_category cat;
+            cat.id = key;
+            cat.name = cparts[0];
+            cat.min_rank = string_to_int(cparts[1]);
+            cat.hidden = (cparts[2] == "true");
+            cat.currency = (cparts[3] == "coins") ? "coins" : "cookies";
+            cat.description = (cparts.length() > 4) ? cparts[4] : "";
+            loadedBoostCategories.insert_last(cat);
+            continue;
+        }
+        string[] parts = parse_delimited_line(line, 9);
+        if (parts.length() < 10) continue;
+        boost_item b;
+        b.category_id = parts[0];
+        b.id = parts[1];
+        b.effect = parts[2];
+        if (BOOST_EFFECTS.find(b.effect) < 0) continue;
+        b.base_cost = max(0.0, string_to_number(parts[3]));
+        b.cost_multiplier = max(1.0, string_to_number(parts[4]));
+        b.amount = string_to_number(parts[5]);
+        // Boosts never take anything away, so a line with no positive amount is skipped.
+        if (b.amount <= 0) continue;
+        b.duration = max(BOOST_MIN_DURATION, string_to_int(parts[6]));
+        b.min_rank = string_to_int(parts[7]);
+        b.hidden = (parts[8] == "true");
+        b.description = parts[9];
+        b.owned = 0;
+        // The spoken name comes from the id, like tickets: cookie_frenzy becomes Cookie frenzy.
+        string[] words = b.id.split("_");
+        string displayName = "";
+        for (uint i = 0; i < words.length(); i++)
+        {
+            if (words[i].length() == 0) continue;
+            if (displayName.length() == 0) displayName = words[i].substr(0, 1).upper() + words[i].substr(1);
+            else displayName += " " + words[i];
+        }
+        b.name = displayName;
+        loadedBoosts.insert_last(b);
+    }
+    f.close();
+}
+
+// A duration such as 25 minutes, or 1 minute, 30 seconds, for %duration% and the slot manager.
+string boost_duration_text(double seconds)
+{
+    int total = int(max(0.0, floor(seconds)));
+    int minutes = total / 60;
+    int secs = total % 60;
+    string result = "";
+    if (minutes > 0) result = string(minutes) + (minutes == 1 ? " minute" : " minutes");
+    if (secs > 0 || minutes == 0)
+    {
+        if (result.length() > 0) result += ", ";
+        result += string(secs) + (secs == 1 ? " second" : " seconds");
+    }
+    return result;
+}
+
+// A boost's description with %amount% and %duration% filled in.
+string boost_description(boost_item@ b)
+{
+    string text = string_replace(b.description, "%amount%", format_number(b.amount), true);
+    return string_replace(text, "%duration%", boost_duration_text(b.duration), true);
+}
