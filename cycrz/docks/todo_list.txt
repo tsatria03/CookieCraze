@@ -1,9 +1,9 @@
 ####These are the things that need to be finished for future versions of the game.
 
-****Unfinished. Stop several discount boosts running at once from making slots free, since each one takes up to 90% off on its own and together they can bring a price down to 0 cents, by making adding auto, manual, and boost slots, automating a slot, and activating a boost never cost less than 1 cent.
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Stop several discount boosts running at once from making slots free, since each one takes up to 90% off on its own and together they can bring a price down to 0 cents, by making adding auto, manual, and boost slots, automating a slot, and activating a boost never cost less than 1 cent.
 **Finished. Add prestige store upgrades that make boosts stronger or last longer, such as a permanent percentage increase to every boost's strength or to how long every boost runs.
 **Finished. Add prestige store upgrades that make baking slots and boost slots cheaper, such as permanent discounts on buying auto and manual slots, automating slots, buying boost slots, and activating boosts, working the same way as the existing passive upgrades.
 **Finished. Add a temporary boosts shop where you spend cookies or coins on timed power-ups, such as double production for 60 seconds, an auto-bake burst, or an extended combo window. It became boosts: thirteen timed boosts bought in the cookie store and run in the boost slot manager.

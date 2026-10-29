@@ -629,7 +629,7 @@ cookies -= cookiesToSell;
 coins += totalCoinsEarned;
 stat_coins_earned += totalCoinsEarned;
 play_coin_sound(totalCoinsEarned);
-dlgmessage_return("Successfully sold " + format_number(cookiesToSell) + " cookies for " + convert_to_currency(totalCoinsEarned) + "!");
+dlgmessage_return("Successfully sold " + count_text(cookiesToSell, "cookie", "cookies") + " for " + convert_to_currency(totalCoinsEarned) + "!");
 shopmenu();
 }
 if(stm=="back")
@@ -811,7 +811,7 @@ void lottery_buy_menu()
             if (lotteryMaxTickets > 0 && ticket.owned + qty > double(lotteryMaxTickets))
             {
                 pool.play_stationary("sounds/store/error.ogg", false);
-                dlgmessage_return("You can only hold " + format_number(lotteryMaxTickets) + " tickets of this type. You currently have " + format_number(ticket.owned) + ".");
+                dlgmessage_return("You can only hold " + count_text(lotteryMaxTickets, "ticket", "tickets") + " of this type. You currently have " + format_number(ticket.owned) + ".");
                 continue;
             }
             coins -= totalCost;
@@ -1320,7 +1320,7 @@ void bakermenu()
                 totalItems++;
                 if (items[j].min_rank > 0 && rank < items[j].min_rank) continue;
                 double level = (items[j].target == 2) ? manulcookie_purchases : (items[j].target == 3) ? cookiespeed_purchases : autocookie_purchases;
-                double cost = buy_item(level, (items[j].base_cost * boost_cost_factor("singles_discount")), items[j].cost_multiplier);
+                double cost = buy_item(level, discounted_base(items[j].base_cost, boost_cost_factor("singles_discount"), level, items[j].cost_multiplier), items[j].cost_multiplier);
                 if (menuBalance >= cost)
                     affordableItems++;
             }
@@ -1395,9 +1395,9 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
             continue;
         }
         double level = (items[i].target == 2) ? manulcookie_purchases : (items[i].target == 3) ? cookiespeed_purchases : autocookie_purchases;
-        double cost = buy_item(level, (items[i].base_cost * boost_cost_factor("singles_discount")), items[i].cost_multiplier);
-        double maxbuy = cap_speed_maxbuy(items[i], calc_max_buyable(balance, level, (items[i].base_cost * boost_cost_factor("singles_discount")), items[i].cost_multiplier));
-        string costStr = (chosenCurrency == "cookies") ? format_number(cost) + " baked cookies" : convert_to_currency(cost);
+        double cost = buy_item(level, discounted_base(items[i].base_cost, boost_cost_factor("singles_discount"), level, items[i].cost_multiplier), items[i].cost_multiplier);
+        double maxbuy = cap_speed_maxbuy(items[i], calc_max_buyable(balance, level, discounted_base(items[i].base_cost, boost_cost_factor("singles_discount"), level, items[i].cost_multiplier), items[i].cost_multiplier));
+        string costStr = (chosenCurrency == "cookies") ? count_text(cost, "baked cookie", "baked cookies") : convert_to_currency(cost);
         m.add_item(store_item_name(items[i].item_type) + ", costs " + costStr + ". You can buy " + format_number(maxbuy) + ". Description: " + items[i].description, "item" + string(i));
     }
     bool anyAffordable = false;
@@ -1406,7 +1406,7 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
         if (items[i].menu != chosenMenu) continue;
         if (items[i].min_rank > 0 && rank < items[i].min_rank) continue;
         double level = (items[i].target == 2) ? manulcookie_purchases : (items[i].target == 3) ? cookiespeed_purchases : autocookie_purchases;
-        double maxbuy = cap_speed_maxbuy(items[i], calc_max_buyable(balance, level, (items[i].base_cost * boost_cost_factor("singles_discount")), items[i].cost_multiplier));
+        double maxbuy = cap_speed_maxbuy(items[i], calc_max_buyable(balance, level, discounted_base(items[i].base_cost, boost_cost_factor("singles_discount"), level, items[i].cost_multiplier), items[i].cost_multiplier));
         if (maxbuy >= 1) { anyAffordable = true; break; }
     }
     if (anyAffordable)
@@ -1438,7 +1438,7 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
             if (items[i].menu != chosenMenu) continue;
             if (items[i].min_rank > 0 && rank < items[i].min_rank) continue;
             double level = (items[i].target == 2) ? manulcookie_purchases : (items[i].target == 3) ? cookiespeed_purchases : autocookie_purchases;
-            double maxbuy = cap_speed_maxbuy(items[i], calc_max_buyable(balance, level, (items[i].base_cost * boost_cost_factor("singles_discount")), items[i].cost_multiplier));
+            double maxbuy = cap_speed_maxbuy(items[i], calc_max_buyable(balance, level, discounted_base(items[i].base_cost, boost_cost_factor("singles_discount"), level, items[i].cost_multiplier), items[i].cost_multiplier));
             if (maxbuy > overallMax) overallMax = maxbuy;
         }
         vd.set_disallowed_chars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()[]{};:'\"\\|,.<>?/+-=`~_", false, "This character is not allowed.");
@@ -1459,10 +1459,10 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
             if (items[i].menu != chosenMenu) continue;
             if (items[i].min_rank > 0 && rank < items[i].min_rank) continue;
             double level = (items[i].target == 2) ? manulcookie_purchases : (items[i].target == 3) ? cookiespeed_purchases : autocookie_purchases;
-            double maxbuy = cap_speed_maxbuy(items[i], calc_max_buyable(balance, level, (items[i].base_cost * boost_cost_factor("singles_discount")), items[i].cost_multiplier));
+            double maxbuy = cap_speed_maxbuy(items[i], calc_max_buyable(balance, level, discounted_base(items[i].base_cost, boost_cost_factor("singles_discount"), level, items[i].cost_multiplier), items[i].cost_multiplier));
             if (maxbuy < 1) continue;
             double quantity = (bulkQuantity < maxbuy) ? bulkQuantity : maxbuy;
-            double totalCost = calc_total_upgrade_cost(level, quantity, (items[i].base_cost * boost_cost_factor("singles_discount")), items[i].cost_multiplier);
+            double totalCost = calc_total_upgrade_cost(level, quantity, discounted_base(items[i].base_cost, boost_cost_factor("singles_discount"), level, items[i].cost_multiplier), items[i].cost_multiplier);
             if (chosenCurrency == "cookies") { cookies -= totalCost; } else { coins -= totalCost; stat_coins_spent += totalCost; }
             totalSpent = safe_cap(totalSpent + totalCost);
             if (items[i].target == 1)
@@ -1524,7 +1524,7 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
             pool.play_stationary("sounds/store/buy" + random(1, 4) + ".ogg", false);
             pool.play_stationary("sounds/store/order.ogg", false);
             stat_singles_purchased++;
-            string spentStr = (chosenCurrency == "cookies") ? format_number(totalSpent) + " baked cookies" : convert_to_currency(totalSpent);
+            string spentStr = (chosenCurrency == "cookies") ? count_text(totalSpent, "baked cookie", "baked cookies") : convert_to_currency(totalSpent);
             dlgmessage_return("Bulk purchase complete! You gained " + log + " for a total of " + spentStr + ".");
         }
         else
@@ -1541,7 +1541,7 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
         }
         if (sel != "item" + string(i)) continue;
         double level = (items[i].target == 2) ? manulcookie_purchases : (items[i].target == 3) ? cookiespeed_purchases : autocookie_purchases;
-        double maxbuy = cap_speed_maxbuy(items[i], calc_max_buyable(balance, level, (items[i].base_cost * boost_cost_factor("singles_discount")), items[i].cost_multiplier));
+        double maxbuy = cap_speed_maxbuy(items[i], calc_max_buyable(balance, level, discounted_base(items[i].base_cost, boost_cost_factor("singles_discount"), level, items[i].cost_multiplier), items[i].cost_multiplier));
         if (items[i].target == 3 && max_useful_speed_copies(items[i]) <= 0)
         {
             pool.play_stationary("sounds/store/error.ogg", false);
@@ -1571,7 +1571,7 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
             double speedCap = max_useful_speed_copies(items[i]);
             if (quantity > speedCap) quantity = speedCap;
         }
-        double totalCost = calc_total_upgrade_cost(level, quantity, (items[i].base_cost * boost_cost_factor("singles_discount")), items[i].cost_multiplier);
+        double totalCost = calc_total_upgrade_cost(level, quantity, discounted_base(items[i].base_cost, boost_cost_factor("singles_discount"), level, items[i].cost_multiplier), items[i].cost_multiplier);
         if (balance >= totalCost)
         {
             if (chosenCurrency == "cookies") { cookies -= totalCost; } else { coins -= totalCost; stat_coins_spent += totalCost; }
@@ -1599,7 +1599,7 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
                     gain_cookiespeed(quantity * items[i].amount);
                 cookiespeed_purchases += quantity;
             }
-            double nextCost = buy_item(level + quantity, (items[i].base_cost * boost_cost_factor("singles_discount")), items[i].cost_multiplier);
+            double nextCost = buy_item(level + quantity, discounted_base(items[i].base_cost, boost_cost_factor("singles_discount"), level, items[i].cost_multiplier), items[i].cost_multiplier);
             pool.play_stationary("sounds/store/buy" + random(1, 4) + ".ogg", false);
             pool.play_stationary("sounds/store/order.ogg", false);
             string itemName = string_replace(items[i].item_type, "_", " ", true);
@@ -1611,8 +1611,8 @@ void bakercategorymenu(store_item[]@ items, string chosenMenu, string chosenCurr
             else
                 itemWord = itemName + "s";
             stat_singles_purchased++;
-            string costStr = (chosenCurrency == "cookies") ? format_number(totalCost) + " baked cookies" : convert_to_currency(totalCost);
-            string nextStr = (chosenCurrency == "cookies") ? format_number(nextCost) + " baked cookies" : convert_to_currency(nextCost);
+            string costStr = (chosenCurrency == "cookies") ? count_text(totalCost, "baked cookie", "baked cookies") : convert_to_currency(totalCost);
+            string nextStr = (chosenCurrency == "cookies") ? count_text(nextCost, "baked cookie", "baked cookies") : convert_to_currency(nextCost);
             dlgmessage_return("Purchase successful! You bought " + format_number(quantity) + " " + itemWord + " for " + costStr + ". Next upgrade will cost " + nextStr + ".");
         }
         else
@@ -1680,7 +1680,7 @@ double calc_bundle_total_qty(bundle_item@ bundle, store_item[]@ storeItems, doub
             if (storeItems[k].item_type == bundle.entries[j].item_type)
             {
                 double level = (storeItems[k].target == 2) ? manulcookie_purchases : (storeItems[k].target == 3) ? cookiespeed_purchases : autocookie_purchases;
-                total = safe_cap(total + calc_total_upgrade_cost(level, bundle_entry_qty(storeItems[k], bundle.entries[j].quantity * copies), (storeItems[k].base_cost * boost_cost_factor("bundles_discount")), storeItems[k].cost_multiplier));
+                total = safe_cap(total + calc_total_upgrade_cost(level, bundle_entry_qty(storeItems[k], bundle.entries[j].quantity * copies), discounted_base(storeItems[k].base_cost, boost_cost_factor("bundles_discount"), level, storeItems[k].cost_multiplier), storeItems[k].cost_multiplier));
                 break;
             }
         }
@@ -1845,7 +1845,7 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
         }
         double totalCost = calc_bundle_total(bundles[i], storeItems);
         double canAfford = max_affordable_bundle_copies(bundles[i], storeItems, balance);
-        string costStr = (chosenCurrency == "cookies") ? format_number(totalCost) + " baked cookies" : convert_to_currency(totalCost);
+        string costStr = (chosenCurrency == "cookies") ? count_text(totalCost, "baked cookie", "baked cookies") : convert_to_currency(totalCost);
         m.add_item(bundles[i].name + ". Costs " + costStr + ". You can buy " + format_number(canAfford) + ". Description: " + bundles[i].description, "bundle" + string(i));
     }
     bool anyBundleAffordable = false;
@@ -1930,7 +1930,7 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
             string boughtLog = join_spoken_list(boughtNames);
             pool.play_stationary("sounds/store/buy" + random(1, 4) + ".ogg", false);
             pool.play_stationary("sounds/store/order.ogg", false);
-            string spentStr = (chosenCurrency == "cookies") ? format_number(totalSpent) + " baked cookies" : convert_to_currency(totalSpent);
+            string spentStr = (chosenCurrency == "cookies") ? count_text(totalSpent, "baked cookie", "baked cookies") : convert_to_currency(totalSpent);
             dlgmessage_return("Bulk purchase complete! You bought up to " + format_number(passes) + " of each: " + boughtLog + ". You gained " + gainLog + " for a total of " + spentStr + ".");
         }
         else
@@ -2017,8 +2017,8 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
         stat_bundles_purchased += qty;
         pool.play_stationary("sounds/store/buy" + random(1, 4) + ".ogg", false);
         pool.play_stationary("sounds/store/order.ogg", false);
-        string grandStr = (chosenCurrency == "cookies") ? format_number(grandTotal) + " baked cookies" : convert_to_currency(grandTotal);
-        string nextBundleStr = (chosenCurrency == "cookies") ? format_number(nextBundleCost) + " baked cookies" : convert_to_currency(nextBundleCost);
+        string grandStr = (chosenCurrency == "cookies") ? count_text(grandTotal, "baked cookie", "baked cookies") : convert_to_currency(grandTotal);
+        string nextBundleStr = (chosenCurrency == "cookies") ? count_text(nextBundleCost, "baked cookie", "baked cookies") : convert_to_currency(nextBundleCost);
         dlgmessage_return("Purchase successful! You bought " + format_number(qty) + " " + bundles[idx].name + (qty != 1 ? "s" : "") + " for " + grandStr + ". You gained " + gainLog + ". Next bundle will cost " + nextBundleStr + ".");
         continue;
     }
@@ -2105,18 +2105,18 @@ add_auto_slots();
 void add_manual_slots()
 {
     setupmenu(false);
-    m.add_item("Add " + format_number(1) + " manual slot for "     + convert_to_currency((calc_slot_cost(1, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot1");
-    m.add_item("Add " + format_number(5) + " manual slots for "    + convert_to_currency((calc_slot_cost(5, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot2");
-    m.add_item("Add " + format_number(10) + " manual slots for "   + convert_to_currency((calc_slot_cost(10, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot3");
-    m.add_item("Add " + format_number(25) + " manual slots for "   + convert_to_currency((calc_slot_cost(25, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot4");
-    m.add_item("Add " + format_number(50) + " manual slots for "   + convert_to_currency((calc_slot_cost(50, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot5");
-    m.add_item("Add " + format_number(100) + " manual slots for "  + convert_to_currency((calc_slot_cost(100, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot6");
-    m.add_item("Add " + format_number(250) + " manual slots for "  + convert_to_currency((calc_slot_cost(250, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot7");
-    m.add_item("Add " + format_number(500) + " manual slots for "  + convert_to_currency((calc_slot_cost(500, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot8");
-    m.add_item("Add " + format_number(1000) + " manual slots for " + convert_to_currency((calc_slot_cost(1000, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot9");
-    m.add_item("Add " + format_number(2500) + " manual slots for " + convert_to_currency((calc_slot_cost(2500, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot10");
-    m.add_item("Add " + format_number(5000) + " manual slots for " + convert_to_currency((calc_slot_cost(5000, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot11");
-    m.add_item("Add " + format_number(10000) + " manual slots for "+ convert_to_currency((calc_slot_cost(10000, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot12");
+    m.add_item("Add " + format_number(1) + " manual slot for "     + convert_to_currency(calc_slot_cost(1, discounted_cost(manualSlotBaseCost, boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor()), manualSlotMultiplier)), "add_mslot1");
+    m.add_item("Add " + format_number(5) + " manual slots for "    + convert_to_currency(calc_slot_cost(5, discounted_cost(manualSlotBaseCost, boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor()), manualSlotMultiplier)), "add_mslot2");
+    m.add_item("Add " + format_number(10) + " manual slots for "   + convert_to_currency(calc_slot_cost(10, discounted_cost(manualSlotBaseCost, boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor()), manualSlotMultiplier)), "add_mslot3");
+    m.add_item("Add " + format_number(25) + " manual slots for "   + convert_to_currency(calc_slot_cost(25, discounted_cost(manualSlotBaseCost, boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor()), manualSlotMultiplier)), "add_mslot4");
+    m.add_item("Add " + format_number(50) + " manual slots for "   + convert_to_currency(calc_slot_cost(50, discounted_cost(manualSlotBaseCost, boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor()), manualSlotMultiplier)), "add_mslot5");
+    m.add_item("Add " + format_number(100) + " manual slots for "  + convert_to_currency(calc_slot_cost(100, discounted_cost(manualSlotBaseCost, boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor()), manualSlotMultiplier)), "add_mslot6");
+    m.add_item("Add " + format_number(250) + " manual slots for "  + convert_to_currency(calc_slot_cost(250, discounted_cost(manualSlotBaseCost, boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor()), manualSlotMultiplier)), "add_mslot7");
+    m.add_item("Add " + format_number(500) + " manual slots for "  + convert_to_currency(calc_slot_cost(500, discounted_cost(manualSlotBaseCost, boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor()), manualSlotMultiplier)), "add_mslot8");
+    m.add_item("Add " + format_number(1000) + " manual slots for " + convert_to_currency(calc_slot_cost(1000, discounted_cost(manualSlotBaseCost, boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor()), manualSlotMultiplier)), "add_mslot9");
+    m.add_item("Add " + format_number(2500) + " manual slots for " + convert_to_currency(calc_slot_cost(2500, discounted_cost(manualSlotBaseCost, boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor()), manualSlotMultiplier)), "add_mslot10");
+    m.add_item("Add " + format_number(5000) + " manual slots for " + convert_to_currency(calc_slot_cost(5000, discounted_cost(manualSlotBaseCost, boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor()), manualSlotMultiplier)), "add_mslot11");
+    m.add_item("Add " + format_number(10000) + " manual slots for "+ convert_to_currency(calc_slot_cost(10000, discounted_cost(manualSlotBaseCost, boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor()), manualSlotMultiplier)), "add_mslot12");
     m.add_item("Back", "back");
     m.intro_text = "Manual slots menu. You have " + format_number(manualSlots) + " manual " + (manualSlots == 1 ? "slot" : "slots") + ".";
     int start_pos = 0;
@@ -2151,7 +2151,7 @@ void add_manual_slots()
     if (sel == "add_mslot12") count = 10000;
     if (count > 0)
     {
-        double cost = (calc_slot_cost(count, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor());
+        double cost = calc_slot_cost(count, discounted_cost(manualSlotBaseCost, boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor()), manualSlotMultiplier);
         if (coins >= cost)
         {
             coins -= cost;

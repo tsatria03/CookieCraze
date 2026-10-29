@@ -6,7 +6,7 @@ metadata:
   type: project
 ---
 
-**7.5 OPENED (2026-10-28):** build/version.txt = 7.5; `New in 7.5.` block, minor (cap 10), **5 of 10** — singles shop friendly item names; prestige slot discounts; starting slots; boost power; boost duration (2026-10-29). Todo has one Unfinished item: 1 cent floor on slot, automation, and activation prices.
+**7.5 OPENED (2026-10-28):** build/version.txt = 7.5; `New in 7.5.` block, minor (cap 10), **6 of 10** — singles shop friendly item names; prestige slot discounts; starting slots; boost power; boost duration (2026-10-29, commits cd26369, 6a4e1c9, f6c00fc); 1 cent price floor (discounted_cost / discounted_base in extrafuncts: slots, automation, boost slots, activations, singles, bundles; 1 cookie in cookie shops). Todo list has no unfinished items. Plural fix (2026-10-29, entry 7): count_text(n, one, many) in extrafuncts picks the singular when format_number reads "1"; used for the 8 singles/bundles "baked cookies" strings, the C key, the sell message, and the ticket limit. **7 of 10.**
 
 **7.4 TAGGED V7.40 (dev, 2026-10-28, commit 37c444c) — CLOSED.** Block frozen at 10 of 10: B key in every betting minigame; don B wording; slots bet errors; scratch ticket load fix; prestige points overflow fix; save leak fix; completed quests kept; boosts achievements + quests; ladder shift (combos 110, prestige 120); boosts. Also in 7.4 without entries: shared bet functions (code #16), savedata port, Control L checks, speech typo, keyhook removal. **Next: 7.5** — the next player-facing change opens `New in 7.5.` and bumps build/version.txt to 7.5. Open backlog: the code/build items in the bug memories, plus the singles shop raw item names (player-facing, noted 2026-10-28). The todo list has no unfinished items.
 

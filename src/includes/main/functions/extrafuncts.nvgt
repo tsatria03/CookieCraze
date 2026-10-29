@@ -111,21 +111,36 @@ double calc_total_upgrade_cost(double level, double quantity, double base_cost, 
         return safe_cap(startCost * quantity);
     return safe_cap(startCost * (pow(multiplier, quantity) - 1) / (multiplier - 1));
 }
+/* A price after its discounts, never below 1 cent, or 1 cookie in a store that charges cookies, however many discounts
+stack up. Applied to the first price of a batch, so every later one, which only grows, stays above it too. A base price
+set below 1 in the config keeps its own value. */
+double discounted_cost(double baseCost, double factor)
+{
+    return max(min(baseCost, 1.0), baseCost * factor);
+}
+/* The same floor for the shops, where base_cost is the first purchase's price and each purchase raises it: the floor is
+applied to the price at the current level, then turned back into a base price the purchase formulas can use. */
+double discounted_base(double baseCost, double factor, double level, double multiplier)
+{
+    double scale = pow(multiplier, level);
+    if (scale <= 0 || scale > 1e300 || scale != scale) return baseCost * factor;
+    return discounted_cost(baseCost * scale, factor) / scale;
+}
 // Automating slots; the cheap circuits boost takes its discount off the whole price.
 double calc_automation_cost(double count, double baseCost, double multiplier)
 {
-    double factor = boost_cost_factor("automation_discount") * prestige_baking_slot_factor();
+    double base = discounted_cost(baseCost, boost_cost_factor("automation_discount") * prestige_baking_slot_factor());
     if (multiplier <= 1.000001)
-        return safe_cap(baseCost * count * factor);
-    return safe_cap(baseCost * (pow(multiplier, count) - 1) / (multiplier - 1) * factor);
+        return safe_cap(base * count);
+    return safe_cap(base * (pow(multiplier, count) - 1) / (multiplier - 1));
 }
 // Adding auto slots; the oven sale boost takes its discount off the whole price.
 double calc_slot_cost(double count)
 {
-    double factor = boost_cost_factor("auto_slot_discount") * prestige_baking_slot_factor();
+    double base = discounted_cost(slotBaseCost, boost_cost_factor("auto_slot_discount") * prestige_baking_slot_factor());
     if (slotMultiplier <= 1.000001)
-        return min(slotBaseCost * count * factor, 1e308);
-    double result = slotBaseCost * (pow(slotMultiplier, count) - 1) / (slotMultiplier - 1) * factor;
+        return min(base * count, 1e308);
+    double result = base * (pow(slotMultiplier, count) - 1) / (slotMultiplier - 1);
     if (result > 1e308 || result != result) return 1e308;
     return result;
 }
@@ -183,6 +198,12 @@ int string_to_int(string str)
     return isNegative ? -result : result;
 }
 
+// A count and its word, singular when the number reads as 1, such as 1 baked cookie or 2 baked cookies.
+string count_text(double n, string one, string many)
+{
+    string num = format_number(n);
+    return num + " " + (num == "1" ? one : many);
+}
 string format_number(double num, bool basic=false, bool scientific=false, bool short_suffix=true)
 {
     if (num == 0)
@@ -1060,7 +1081,7 @@ void minigame_input(string game)
     if (!control_is_down())
     {
         // Plain C and M only, since buffer_check_keys uses Shift C to copy and Shift M to mute.
-        if (!shift_is_down() && key_pressed(KEY_C)) speak_buffer("You have " + format_number(cookies) + " cookies.");
+        if (!shift_is_down() && key_pressed(KEY_C)) speak_buffer("You have " + count_text(cookies, "cookie", "cookies") + ".");
         if (!shift_is_down() && key_pressed(KEY_M)) announce_money();
         if (key_pressed(KEY_A)) announce_auto_cookies();
         if (key_pressed(KEY_S)) announce_baking_speed();
