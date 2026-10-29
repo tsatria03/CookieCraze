@@ -2,6 +2,7 @@
 
 baking=Baking
 baking_slots=Baking slots manager
+boosts=Boosts
 combos=Combos
 economy=Economy
 baker_events=Baker events
@@ -200,6 +201,63 @@ baking_slots:manual_tycoon:manual_slots_purchased:500:false:true:Manual Tycoon:P
 baking_slots:manual_overlord:manual_slots_purchased:1000:false:true:Manual Overlord:Purchase %threshold% manual baking slots. Other bakers have given up trying to keep pace.:An overlord of manual baking does not rest. The slots see to that.
 baking_slots:manual_empire:manual_slots_purchased:5000:false:true:Manual Empire:Purchase %threshold% manual baking slots. Historians will note that one baker pressed more than all others combined.:Empires of the hand are slower to build. But they last longer.:manulcookie:25*rank:Your legion of hands moves as one, adding %amount% manual cookies to every press.
 baking_slots:manual_singularity:manual_slots_purchased:10000:false:true:Manual Singularity:Purchase %threshold% manual baking slots. The bake button has filed for early retirement.:At a certain number of manual slots, the button becomes a formality.:manulcookie:50*rank:The bake button has surrendered, granting you %amount% manual cookies per press.
+
+; Boosts
+
+boosts:bst_first_purchase:boosts_bought:1:false:true:Window Shopper No More:Buy your first boost. A little help for later.:Every collection starts with one. This one comes with a timer.
+boosts:bst_stocking_up:boosts_bought:5:false:true:Stocking Up:Buy %threshold% boosts. The shelf is starting to fill.:A few spares never hurt anyone.
+boosts:bst_boost_regular:boosts_bought:10:false:true:Boost Regular:Buy %threshold% boosts. The shopkeeper knows your order.:Regulars do not need to read the shelf anymore.
+boosts:bst_bulk_buyer:boosts_bought:25:false:true:Bulk Buyer:Buy %threshold% boosts. Why buy one when you can buy a stack?:Stacks are cheaper on the nerves than single trips.
+boosts:bst_boost_hoarder:boosts_bought:50:false:true:Boost Hoarder:Buy %threshold% boosts. You might be preparing for something.:Some bakers save for a rainy day. You save for a fast one.
+boosts:bst_boost_baron:boosts_bought:100:false:true:Boost Baron:Buy %threshold% boosts. Your stockpile has a stockpile.:At a hundred boosts, the inventory needs its own inventory.
+boosts:bst_boost_tycoon:boosts_bought:250:false:true:Boost Tycoon:Buy %threshold% boosts. The store restocks just for you.:Some customers keep a shop in business. You are one of them.
+boosts:bst_boost_magnate:boosts_bought:500:false:true:Boost Magnate:Buy %threshold% boosts. You buy power by the crate.:Crates are just bigger stacks. You prefer crates.
+boosts:bst_boost_mogul:boosts_bought:1000:false:true:Boost Mogul:Buy %threshold% boosts. Nobody has bought more.:A thousand boosts. The store has started sending thank you cards.
+boosts:bst_boost_empire:boosts_bought:5000:false:true:Boost Empire:Buy %threshold% boosts. You have built an empire of extra.:At this point the store is part of your bakery.:coins:2000*rank:The boost store hands you %amount% for being its very best customer.
+boosts:bst_first_spark:boosts_activated:1:false:true:First Spark:Start your first boost. Your bakery feels the rush.:One boost running, and everything feels a little faster.
+boosts:bst_powered_up:boosts_activated:5:false:true:Powered Up:Start %threshold% boosts. You are getting the hang of it.:Five sparks make a small fire.
+boosts:bst_charged:boosts_activated:10:false:true:Fully Charged:Start %threshold% boosts. The slots hum with energy.:Ten boosts in, and your slots rarely sit empty.
+boosts:bst_overclocked:boosts_activated:25:false:true:Overclocked:Start %threshold% boosts. Normal speed is no longer enough.:Once you have felt a boost, baking without one feels slow.
+boosts:bst_turbocharged:boosts_activated:50:false:true:Turbocharged:Start %threshold% boosts. Your bakery runs hot.:Fifty boosts. The ovens have stopped asking questions.
+boosts:bst_supercharged:boosts_activated:100:false:true:Supercharged:Start %threshold% boosts. You live in the fast lane.:A hundred boosts started. Slow is a word you have forgotten.
+boosts:bst_boost_addict:boosts_activated:250:false:true:Boost Addict:Start %threshold% boosts. Every slot, every time.:There is always another boost to start. You always start it.
+boosts:bst_power_surge:boosts_activated:500:false:true:Power Surge:Start %threshold% boosts. The whole street feels it.:Five hundred boosts. The lights flicker when you open the manager.
+boosts:bst_unstoppable:boosts_activated:1000:false:true:Unstoppable:Start %threshold% boosts. Nothing slows you down.:A thousand boosts. Momentum is your natural state.
+boosts:bst_perpetual_boost:boosts_activated:2000:false:true:Perpetual Boost:Start %threshold% boosts. Your bakery has never known a quiet moment.:Two thousand boosts. The slots have not cooled down in a long time.
+boosts:bst_boost_singularity:boosts_activated:5000:false:true:Boost Singularity:Start %threshold% boosts. You are boosted by default.:Beyond a certain count, the boost is just how things are.:coins:2000*rank:Your endless boosting pays off in a burst of %amount%.
+boosts:bst_first_slot:boost_slots_purchased:1:false:true:Slot Ready:Buy your first boost slot. Now you have somewhere to put a boost.:A boost needs a home. You just built one.
+boosts:bst_slot_set:boost_slots_purchased:5:false:true:Slot Set:Buy %threshold% boost slots. Room for a few at once.:Five slots, five chances to run something big.
+boosts:bst_slot_bank:boost_slots_purchased:10:false:true:Slot Bank:Buy %threshold% boost slots. Your boosts have room to stack.:Ten slots. Stacking boosts starts to get serious.
+boosts:bst_slot_wall:boost_slots_purchased:25:false:true:Slot Wall:Buy %threshold% boost slots. A whole wall of boosting power.:Twenty five slots. The manager needs a longer list.
+boosts:bst_slot_hall:boost_slots_purchased:50:false:true:Slot Hall:Buy %threshold% boost slots. You need a bigger building.:Fifty slots. Every one of them is waiting to be filled.
+boosts:bst_slot_tower:boost_slots_purchased:100:false:true:Slot Tower:Buy %threshold% boost slots. The slots go up and up.:A hundred slots. You could run a boost for every hour of the week.
+boosts:bst_slot_city:boost_slots_purchased:250:false:true:Slot City:Buy %threshold% boost slots. A city of slots.:Two hundred and fifty slots. Activate all has never worked harder.
+boosts:bst_slot_world:boost_slots_purchased:500:false:true:Slot World:Buy %threshold% boost slots. More slots than anyone could need.:Five hundred slots. Need was never really the point.
+boosts:bst_full_run:boosts_completed:1:false:true:Full Run:Let a boost run its full time. Patience pays.:Your first boost ran all the way to the end. Every second counted.
+boosts:bst_seen_through:boosts_completed:5:false:true:Seen It Through:Let %threshold% boosts run their full time.:Five boosts finished. You let them work.
+boosts:bst_steady_runner:boosts_completed:10:false:true:Steady Runner:Let %threshold% boosts run their full time. You know how to wait.:Ten finished boosts. The timer is your friend.
+boosts:bst_long_haul:boosts_completed:25:false:true:Long Haul:Let %threshold% boosts run their full time.:Twenty five boosts, all of them used to the last second.
+boosts:bst_clockwatcher:boosts_completed:50:false:true:Clockwatcher:Let %threshold% boosts run their full time. You hear the timers in your sleep.:Fifty boosts finished. You could time a boost by ear.
+boosts:bst_waste_not:boosts_completed:100:false:true:Waste Not:Let %threshold% boosts run their full time. Not a second wasted.:A hundred boosts used to the end. Waste is not in your vocabulary.
+boosts:bst_timekeeper:boosts_completed:250:false:true:Timekeeper:Let %threshold% boosts run their full time.:Two hundred and fifty boosts finished. Time works for you now.
+boosts:bst_marathon:boosts_completed:500:false:true:Marathon Booster:Let %threshold% boosts run their full time. You go the distance.:Five hundred boosts finished. You never stop early.
+boosts:bst_endurance:boosts_completed:1000:false:true:Endurance:Let %threshold% boosts run their full time.:A thousand boosts, every one of them run to the end.
+boosts:bst_eternal_timer:boosts_completed:2500:false:true:Eternal Timer:Let %threshold% boosts run their full time. The countdown never scares you.:Two thousand five hundred boosts finished. The clock has given up trying.
+boosts:bst_ten_minutes:boost_minutes:10:false:true:Ten Minute Rush:Have boosts running for %threshold% minutes in total.:Ten minutes of boosting. A taste of the good life.
+boosts:bst_half_hour:boost_minutes:30:false:true:Half Hour Power:Have boosts running for %threshold% minutes in total.:Half an hour of boosts. The bakery has felt every minute.
+boosts:bst_hour_of_power:boost_minutes:60:false:true:Hour of Power:Have boosts running for %threshold% minutes in total.:A full hour of boosting. That adds up.
+boosts:bst_two_hours:boost_minutes:120:false:true:Double Shift:Have boosts running for %threshold% minutes in total.:Two hours of boosts. Your bakery works overtime.
+boosts:bst_five_hours:boost_minutes:300:false:true:Five Hour Fuel:Have boosts running for %threshold% minutes in total.:Five hours of boosting. The ovens have stopped resting.
+boosts:bst_ten_hours:boost_minutes:600:false:true:Ten Hour Tank:Have boosts running for %threshold% minutes in total.:Ten hours of boosts. Somewhere a timer is very tired.
+boosts:bst_day_of_boosts:boost_minutes:1500:false:true:A Day of Boosts:Have boosts running for %threshold% minutes in total.:More than a whole day of boosting. Time well spent.
+boosts:bst_boost_lifetime:boost_minutes:3000:false:true:Boost Lifetime:Have boosts running for %threshold% minutes in total.:Fifty hours of boosts. Your bakery has forgotten what normal feels like.
+boosts:bst_change_of_plans:boosts_ended:1:false:true:Change of Plans:End a boost early. Sometimes the moment passes.:You stopped a boost before its time. It happens.
+boosts:bst_second_thoughts:boosts_ended:5:false:true:Second Thoughts:End %threshold% boosts early.:Five boosts stopped short. You know what you want, eventually.
+boosts:bst_quick_switch:boosts_ended:10:false:true:Quick Switch:End %threshold% boosts early. Out with the old.:Ten boosts ended early to make room for something better.
+boosts:bst_fickle:boosts_ended:25:false:true:Fickle:End %threshold% boosts early. Commitment is overrated.:Twenty five boosts cut short. You like to keep your options open.
+boosts:bst_restless:boosts_ended:50:false:true:Restless:End %threshold% boosts early. Nothing runs to the end on your watch.:Fifty boosts ended early. The timers have started to worry.
+boosts:bst_boost_juggler:boosts_ended:100:false:true:Boost Juggler:End %threshold% boosts early. Always swapping, always tuning.:A hundred early endings. You treat boosts like a mixing desk.
+boosts:bst_master_of_change:boosts_ended:250:false:true:Master of Change:End %threshold% boosts early. You never let a boost settle.:Two hundred and fifty boosts ended early. Change is your only constant.
 
 ; Slot machine
 

@@ -875,6 +875,12 @@ string get_stat_progress_label(string stat)
     if (stat == STAT_AUTO_SLOTS_IDLE) return "auto slots idle";
     if (stat == STAT_QUESTS_COMPLETED) return "quests completed";
     if (stat == STAT_REROLLS_PERFORMED) return "rerolls performed";
+    if (stat == STAT_BOOSTS_BOUGHT) return "boosts bought";
+    if (stat == STAT_BOOSTS_ACTIVATED) return "boosts activated";
+    if (stat == STAT_BOOST_SLOTS_PURCHASED) return "boost slots purchased";
+    if (stat == STAT_BOOSTS_COMPLETED) return "boosts completed";
+    if (stat == STAT_BOOST_MINUTES) return "minutes of boosts used";
+    if (stat == STAT_BOOSTS_ENDED) return "boosts ended early";
     if (stat == STAT_COMBOS_STARTED) return "combos started";
     if (stat == STAT_COMBOS_BROKEN) return "combos broken";
     if (stat == STAT_HIGHEST_COMBO_REACHED) return "highest combo reached";

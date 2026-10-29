@@ -50,6 +50,7 @@ void start_boost(int slot, int idx)
     boostSlotIds[slot] = loadedBoosts[idx].id;
     boostSlotLeft[slot] = double(loadedBoosts[idx].duration) * 1000.0;
     loadedBoosts[idx].owned -= 1;
+    stat_boosts_activated++;
 }
 
 // What the main game screen's B key says: how many boosts are running, then each one's name and time left.
@@ -153,6 +154,7 @@ void add_boost_slots()
         coins = floor(safe_cap(coins - cost));
         stat_coins_spent += cost;
         boostSlotCount += count;
+        stat_boost_slots_purchased += count;
         size_boost_slots();
         pool.destroy_sound(alertslot);
         alertslot = pool.play_stationary("sounds/misc/prodslot.ogg", false);
@@ -312,6 +314,7 @@ void end_boost_slots()
         {
             if (!yes_no("Are you sure you want to end all " + format_number(running) + " running boosts? They will not be returned.")) continue;
             for (int i = 0; i < boostSlotCount; i++) { boostSlotIds[i] = ""; boostSlotLeft[i] = 0; }
+            stat_boosts_ended += running;
             speak("All " + format_number(running) + " running boosts have ended.");
             return;
         }
@@ -322,6 +325,7 @@ void end_boost_slots()
         if (boostSlotIds[slot] == "") continue;
         boostSlotIds[slot] = "";
         boostSlotLeft[slot] = 0;
+        stat_boosts_ended++;
         speak("Your " + name + " boost in boost slot " + string(slot + 1) + " has ended.");
         return;
     }

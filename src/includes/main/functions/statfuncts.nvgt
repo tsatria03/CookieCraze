@@ -22,7 +22,7 @@ void bank_run_stats()
 is noted then, and the session value is how far it has risen since. Lifetime values never drop during a session, so a
 prestige mid-session cannot make a session value go negative. Bests (highest combo, longest higher or lower streak)
 are not counts, so the session keeps its own best for each instead. */
-const array<string> SESSION_STATS = {"cookies_baked", "manual_bakes_performed", "auto_bakes_performed", "coins_earned", "coins_spent", "singles_purchased", "bundles_purchased", "baker_events_fired", "auto_slots_purchased", "manual_slots_purchased", "auto_slots_enabled", "combos_started", "combos_broken", "flipper_events_fired", "flipper_flips", "cookie_flips", "penny_flips", "dice_rolls", "dice_wins", "dice_losses", "don_games", "don_wins", "don_losses", "don_correct_calls", "don_suit_hits", "don_jokers","slot_spins", "slot_wins", "slot_losses", "blackjack_hands", "blackjack_wins", "blackjack_losses", "blackjack_pushes", "lottery_tickets_bought", "lottery_tickets_scratched", "lottery_wins", "lottery_losses", "highlow_games", "highlow_wins", "highlow_losses", "roulette_games", "roulette_wins", "roulette_losses", "roulette_straight_hits", "roulette_breaks", "quests_completed", "rerolls_performed"};
+const array<string> SESSION_STATS = {"cookies_baked", "manual_bakes_performed", "auto_bakes_performed", "coins_earned", "coins_spent", "singles_purchased", "bundles_purchased", "baker_events_fired", "auto_slots_purchased", "manual_slots_purchased", "auto_slots_enabled", "combos_started", "combos_broken", "flipper_events_fired", "flipper_flips", "cookie_flips", "penny_flips", "dice_rolls", "dice_wins", "dice_losses", "don_games", "don_wins", "don_losses", "don_correct_calls", "don_suit_hits", "don_jokers", "boosts_bought", "boosts_activated", "boost_slots_purchased", "boosts_completed", "boost_minutes", "boosts_ended", "slot_spins", "slot_wins", "slot_losses", "blackjack_hands", "blackjack_wins", "blackjack_losses", "blackjack_pushes", "lottery_tickets_bought", "lottery_tickets_scratched", "lottery_wins", "lottery_losses", "highlow_games", "highlow_wins", "highlow_losses", "roulette_games", "roulette_wins", "roulette_losses", "roulette_straight_hits", "roulette_breaks", "quests_completed", "rerolls_performed"};
 dictionary sessionBaseline;
 double sessionHighestCombo = 0;
 double sessionHighestStreak = 0;
@@ -107,6 +107,14 @@ string build_statistics_text(bool session)
     if (!session)
         txt += "Auto slots idle: " + format_number(double(baking_slots.length()) - double(autobakeSlots)) + "\r\n";
     txt += "Manual slots purchased: " + format_number(stat_for_view(STAT_MANUAL_SLOTS_PURCHASED, session)) + "\r\n";
+    txt += "\r\n";
+    txt += "Boosts\r\n";
+    txt += "Boosts bought: " + format_number(stat_for_view(STAT_BOOSTS_BOUGHT, session)) + "\r\n";
+    txt += "Boosts activated: " + format_number(stat_for_view(STAT_BOOSTS_ACTIVATED, session)) + "\r\n";
+    txt += "Boost slots purchased: " + format_number(stat_for_view(STAT_BOOST_SLOTS_PURCHASED, session)) + "\r\n";
+    txt += "Boosts completed: " + format_number(stat_for_view(STAT_BOOSTS_COMPLETED, session)) + "\r\n";
+    txt += "Boosts ended early: " + format_number(stat_for_view(STAT_BOOSTS_ENDED, session)) + "\r\n";
+    txt += "Boost time used: " + format_play_time(stat_for_view(STAT_BOOST_MINUTES, session) * 60000.0) + "\r\n";
     txt += "\r\n";
     txt += "Combos\r\n";
     txt += "Combos started: " + format_number(stat_for_view(STAT_COMBOS_STARTED, session)) + "\r\n";

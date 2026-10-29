@@ -123,6 +123,12 @@ double get_stat_value(string stat)
     if (stat == STAT_DON_SUIT_HITS) return stat_don_suit_hits;
     if (stat == STAT_DON_JOKERS) return stat_don_jokers;
     if (stat == STAT_DON_HIGHEST_RIDE) return stat_don_highest_ride;
+    if (stat == STAT_BOOSTS_BOUGHT) return stat_boosts_bought;
+    if (stat == STAT_BOOSTS_ACTIVATED) return stat_boosts_activated;
+    if (stat == STAT_BOOST_SLOTS_PURCHASED) return stat_boost_slots_purchased;
+    if (stat == STAT_BOOSTS_COMPLETED) return stat_boosts_completed;
+    if (stat == STAT_BOOST_MINUTES) return stat_boost_minutes;
+    if (stat == STAT_BOOSTS_ENDED) return stat_boosts_ended;
     if (stat == STAT_SLOT_SPINS) return stat_slot_spins;
     if (stat == STAT_SLOT_WINS) return stat_slot_wins;
     if (stat == STAT_SLOT_LOSSES) return stat_slot_losses;

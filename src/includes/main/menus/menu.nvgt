@@ -985,6 +985,7 @@ void boost_buy_menu()
             else
                 cookies = floor(safe_cap(cookies - totalCost));
             loadedBoosts[boostIdx].owned += qty;
+            stat_boosts_bought += qty;
             pool.play_stationary("sounds/store/buy" + random(1, 4) + ".ogg", false);
             pool.play_stationary("sounds/store/order.ogg", false);
             double nowOwned = loadedBoosts[boostIdx].owned;

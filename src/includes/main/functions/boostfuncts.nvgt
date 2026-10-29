@@ -56,6 +56,8 @@ void update_boosts()
         int cidx = find_boost(boostSlotIds[i]);
         if (cidx >= 0 && loadedBoosts[cidx].effect == "cash_per_second")
             boostCashCarry += boost_cash_per_second(loadedBoosts[cidx]) * (min(passed, boostSlotLeft[i]) / 1000.0);
+        // Boost time used counts every running boost, in minutes, for the time it really ran.
+        stat_boost_minutes = safe_cap(stat_boost_minutes + min(passed, boostSlotLeft[i]) / 60000.0);
         boostSlotLeft[i] -= passed;
         if (boostSlotLeft[i] > 0) continue;
         string boostName = boostSlotIds[i];
@@ -63,6 +65,7 @@ void update_boosts()
         if (idx >= 0) boostName = loadedBoosts[idx].name.lower();
         boostSlotIds[i] = "";
         boostSlotLeft[i] = 0;
+        stat_boosts_completed++;
         string msg = string_replace(boostExpireMessage, "%boost%", boostName, true);
         msg = string_replace(msg, "%slot%", string(i + 1), true);
         speak_buffer(msg, "boosts");
