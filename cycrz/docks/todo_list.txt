@@ -1,5 +1,7 @@
 ####These are the things that need to be finished for future versions of the game.
 
+****Unfinished. Add prestige store upgrades that make baking slots and boost slots cheaper, such as permanent discounts on buying auto and manual slots, automating slots, buying boost slots, and activating boosts, working the same way as the existing passive upgrades.
+****Unfinished. Add prestige store upgrades that make boosts stronger or last longer, such as a permanent percentage increase to every boost's strength or to how long every boost runs.
 
 ##These are the things that are already finished from earlier versions of the game.
 
