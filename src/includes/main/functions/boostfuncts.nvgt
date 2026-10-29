@@ -82,6 +82,21 @@ void update_boosts()
     }
 }
 
+/* A boost's strength after the prestige boost power upgrades: 20 percent power turns a 10 percent boost into 12.
+Discount boosts stop at 90 percent off, so no price ever drops to nothing. */
+double boosted_amount(boost_item@ b)
+{
+    double amt = b.amount * (1.0 + max(0.0, prestige_boost_power) / 100.0);
+    if (b.effect.find("discount") != -1) amt = min(90.0, amt);
+    return amt;
+}
+
+// How many seconds a boost runs after the prestige boost duration upgrades, to the nearest second.
+double boosted_duration(boost_item@ b)
+{
+    return floor(double(b.duration) * (1.0 + max(0.0, prestige_boost_duration) / 100.0) + 0.5);
+}
+
 /* Every running boost with this effect multiplies its strength in: two 10 percent boosts make 1.21 times, since
 each copy multiplies on top of the last. The _now version skips the countdown so update_boosts can use it without calling itself. */
 double boost_multiplier_now(string effect)
@@ -91,7 +106,7 @@ double boost_multiplier_now(string effect)
     {
         if (boostSlotIds[i] == "") continue;
         int idx = find_boost(boostSlotIds[i]);
-        if (idx >= 0 && loadedBoosts[idx].effect == effect) mult *= 1.0 + loadedBoosts[idx].amount / 100.0;
+        if (idx >= 0 && loadedBoosts[idx].effect == effect) mult *= 1.0 + boosted_amount(loadedBoosts[idx]) / 100.0;
     }
     return mult;
 }
@@ -111,7 +126,7 @@ double boost_cost_factor(string effect)
     {
         if (boostSlotIds[i] == "") continue;
         int idx = find_boost(boostSlotIds[i]);
-        if (idx >= 0 && loadedBoosts[idx].effect == effect) factor *= max(0.0, 1.0 - loadedBoosts[idx].amount / 100.0);
+        if (idx >= 0 && loadedBoosts[idx].effect == effect) factor *= max(0.0, 1.0 - boosted_amount(loadedBoosts[idx]) / 100.0);
     }
     return factor;
 }

@@ -6,7 +6,7 @@ metadata:
   type: project
 ---
 
-**7.5 OPENED (2026-10-28):** build/version.txt = 7.5; `New in 7.5.` block, minor (cap 10), **1 of 10** — singles shop friendly item names.
+**7.5 OPENED (2026-10-28):** build/version.txt = 7.5; `New in 7.5.` block, minor (cap 10), **5 of 10** — singles shop friendly item names; prestige slot discounts; starting slots; boost power; boost duration (2026-10-29). Todo has one Unfinished item: 1 cent floor on slot, automation, and activation prices.
 
 **7.4 TAGGED V7.40 (dev, 2026-10-28, commit 37c444c) — CLOSED.** Block frozen at 10 of 10: B key in every betting minigame; don B wording; slots bet errors; scratch ticket load fix; prestige points overflow fix; save leak fix; completed quests kept; boosts achievements + quests; ladder shift (combos 110, prestige 120); boosts. Also in 7.4 without entries: shared bet functions (code #16), savedata port, Control L checks, speech typo, keyhook removal. **Next: 7.5** — the next player-facing change opens `New in 7.5.` and bumps build/version.txt to 7.5. Open backlog: the code/build items in the bug memories, plus the singles shop raw item names (player-facing, noted 2026-10-28). The todo list has no unfinished items.
 

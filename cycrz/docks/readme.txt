@@ -372,7 +372,7 @@ To run a boost, open the boost slot manager from the main game screen, or press 
 
 Running boosts count down in real time the whole time the game is open, on every screen and even when the game window is out of focus. They pause while the game is closed and carry on from where they were when you load your save. When a boost runs out, the boosts buffer tells you which boost ended and which slot is now empty; press F5 to mute it. Press B on the main game screen at any time to hear what is running. The F and J readouts include your running boosts.
 
-You can run the same boost in several slots at once, and copies multiply rather than add, so two 10 percent boosts give 21 percent and two 10 percent discounts leave 81 percent of the price. Prestige and new games end every running boost and clear your boost slots and the boosts you hold, and the activation fee starts over. Every boost, its price, strength, length, and category, the run out message, and the most copies of one boost you can hold are configurable in boosts.store, and the boost slot and activation prices in main.table.
+You can run the same boost in several slots at once, and copies multiply rather than add, so two 10 percent boosts give 21 percent and two 10 percent discounts leave 81 percent of the price. Prestige and new games end every running boost and clear your boost slots and the boosts you hold, and the activation fee starts over; starting boost slots from the prestige store come back straight away. The prestige store can also make boosts stronger, longer, and cheaper to run. Every boost, its price, strength, length, and category, the run out message, and the most copies of one boost you can hold are configurable in boosts.store, and the boost slot and activation prices in main.table.
 
 Combos. Unlocked at rank 110.
 
@@ -627,7 +627,7 @@ Reset your progress and earn a permanent bonus that carries into every future ru
 The prestige option is available from the quests screen.
 Prestige unlocks at rank 120. Once you reach it, pressing the prestige button opens a confirmation dialog explaining what resets and what carries over, whether you will receive a reward based on your current quest completion status, and a warning if you have not completed any quests this run, since you would earn no prestige points.
 
-When you prestige, the following are reset: your money, cookies, rank, all upgrade purchases, baking slots, and baking and economy stats.
+When you prestige, the following are reset: your money, cookies, rank, all upgrade purchases, baking slots and boost slots apart from any your head start upgrades give you, and baking and economy stats.
 The following are kept: your prestige level, all achievements and achievement progress, minigame unlocks, minigame stats, and preferences. Minigame stats for every minigame keep counting up as lifetime totals across all of your prestiges, while your quests count only what you do in each new run.
 
 Whether you receive a reward depends on the require_all setting in quests.table. If you have not met the quest requirement, nothing is gained.
@@ -646,15 +646,15 @@ To check how many prestige points you have, open the prestige store. The store a
 
 The prestige store is divided into four categories.
 
-Standard Passive contains one-time upgrades that permanently boost your cookie production or reduce the experience needed to rank up, applied across every run from the moment you buy them.
+Standard Passive contains one-time upgrades that permanently boost your cookie production, reduce the experience needed to rank up, make baking slots and boost slots cheaper, or make your boosts stronger and last longer, applied across every run from the moment you buy them.
 
-Standard Head Start contains one-time upgrades that give you bonus resources at the beginning of each new run, such as starting coins, auto cookies, or manual cookies.
+Standard Head Start contains one-time upgrades that give you bonus resources at the beginning of each new run, such as starting coins, auto cookies, or manual cookies, or baking slots and boost slots that are already bought.
 
-Endless Passive contains infinite versions of the cookie and coin multipliers that you can keep buying forever, with no upper limit.
+Endless Passive contains infinite versions of the cookie and coin multipliers, the baking slot and boost slot discounts, and boost power and boost duration that you can keep buying forever, with no upper limit.
 
-Endless Head Start contains infinite versions of the starting coins, auto cookies, and manual cookies bonuses that you can keep buying forever, with no upper limit.
+Endless Head Start contains infinite versions of the starting coins, auto cookies, manual cookies, auto slots, manual slots, and boost slots bonuses that you can keep buying forever, with no upper limit.
 
-The two Endless categories unlock only once you have reached prestige level 10 and purchased every standard upgrade. Until then they show as locked when the show locked items setting is enabled, and are hidden when it is disabled. There is no endless rank discount, since the experience needed to rank up cannot be reduced without limit.
+The two Endless categories unlock only once you have reached prestige level 10 and purchased every standard upgrade. Until then they show as locked when the show locked items setting is enabled, and are hidden when it is disabled. Once they have opened, they stay open for that save, even if a later update adds new standard upgrades. There is no endless rank discount, since the experience needed to rank up cannot be reduced without limit.
 
 How prestige upgrades work.
 
@@ -662,7 +662,9 @@ The standard upgrades use a one-time purchase system. Each standard upgrade can 
 
 Passive bonus upgrades work as multipliers layered on top of your existing stats. For example, buying a cookie multiplier upgrade does not add to your auto cookie or manual cookie counts directly. Instead, every time a bake fires, the output is multiplied by the bonus percentage. So if you normally produce 100 cookies per bake and you have a 5% cookie multiplier, you produce 105 instead. The higher your stats grow through the normal shop, the more noticeable the multiplier becomes. Similarly, a coin multiplier does not change your cookie sell price. It multiplies the total payout after the price is applied, so larger sell batches benefit more.
 
-Head start upgrades work differently. They add a flat amount directly to your stats at the very start of each new run, before you have bought anything from the normal shop. For example, starting with 5 auto cookies means your run begins as if you had already purchased 5 auto cookies, giving you a head start on production without having to earn them from scratch. Head start upgrades do not affect your current run. They take effect the next time you start a new run after prestiging, so you will not notice them until your following playthrough.
+The baking slot discount makes adding auto and manual baking slots and automating a slot cheaper, and the boost slot discount makes adding boost slots and activating boosts cheaper. Each stacks up to 90 percent off in total, and works together with discount boosts by multiplying, so 50 percent off from the prestige store and a running 10 percent oven sale leave 45 percent of the price. Boost power makes every boost stronger by a share of its own strength, so 20 percent boost power turns a 10 percent boost into a 12 percent one and makes the cash jar pay 20 percent more, though no single discount boost ever takes more than 90 percent off. Boost duration makes every boost you activate run longer by its percentage, so 20 percent turns a 5 minute boost into 6 minutes, while boosts that are already running keep their time. The buy boosts menu and the boost slot manager describe every boost with its strength and length after these upgrades.
+
+Head start upgrades work differently. They add a flat amount directly to your stats at the very start of each new run, before you have bought anything from the normal shop. For example, starting with 5 auto cookies means your run begins as if you had already purchased 5 auto cookies, giving you a head start on production without having to earn them from scratch. Head start upgrades do not affect your current run. They take effect the next time you start a new run after prestiging, so you will not notice them until your following playthrough. Starting auto slots begin your run already automated. Starting slots of every kind are free, so they do not raise the price of the next slot you buy or count toward your slots purchased statistics.
 
 Passive bonus upgrades take effect immediately after purchase and apply to your current run without needing to prestige again.
 
@@ -1029,16 +1031,16 @@ base_cost and cost_multiplier
 The price of the first copy, and how much each copy you hold raises the next one's price.
 
 amount
-The boost's strength as a percentage, so 10 means 10 percent. For cash_per_second it is the cents paid every second instead, and it can use rank operators the same way as baker.event, such as 200*rank. A boost whose amount gives nothing is skipped, since boosts never take anything away.
+The boost's strength as a percentage, so 10 means 10 percent. For cash_per_second it is the cents paid every second instead, and it can use rank operators the same way as baker.event, such as 200*rank. A boost whose amount gives nothing is skipped, since boosts never take anything away. Prestige boost power upgrades raise every amount further in the game, but a discount never goes past 90 percent off.
 
 duration
-How long the boost runs once started, in seconds. Anything below 30 is raised to 30.
+How long the boost runs once started, in seconds. Anything below 30 is raised to 30. Prestige boost duration upgrades lengthen it when the boost starts.
 
 min_rank and hidden
 The rank needed to buy the boost, and whether it is hidden from the list until then, the same as in the singles shop.
 
 description
-The text shown in the buy boosts menu and the boost slot manager. %amount% is replaced with the amount, or for cash_per_second with the money paid each second at your current rank, and %duration% with the length, such as 25 minutes.
+The text shown in the buy boosts menu and the boost slot manager. %amount% is replaced with the amount, or for cash_per_second with the money paid each second at your current rank, and %duration% with the length, such as 25 minutes, both after any prestige boost power and boost duration upgrades.
 
 main.table
 
@@ -1995,9 +1997,16 @@ The item_id also determines what effect the upgrade has. The game recognises the
 cookie_multiplier = permanently increases all cookie production by a percentage each bake.
 coin_multiplier = permanently increases all money earned from selling cookies by a percentage.
 rank_discount = permanently reduces the experience required to rank up by a percentage.
+baking_slot_discount = permanently makes adding auto and manual baking slots and automating a slot cheaper by a percentage, up to 90 percent off in total.
+boost_slot_discount = permanently makes adding boost slots and activating boosts cheaper by a percentage, up to 90 percent off in total.
+boost_power = permanently makes every boost stronger by a percentage of its own strength, including the money the cash jar pays. A single discount boost never takes more than 90 percent off.
+boost_duration = permanently makes every boost you activate last longer by a percentage.
 starting_coins = gives bonus coins at the start of each new run after prestige.
 starting_autocookie = gives bonus auto cookies at the start of each new run after prestige.
 starting_manualcookie = gives bonus manual cookies at the start of each new run after prestige.
+starting_auto_slots = gives auto baking slots, already bought and automated, at the start of each new run after prestige.
+starting_manual_slots = gives manual baking slots at the start of each new run after prestige.
+starting_boost_slots = gives boost slots at the start of each new run after prestige.
 
 Each prefix is also matched when it appears inside a longer id, so an infinite upgrade named endless_cookie_multiplier is recognised as a cookie multiplier.
 
@@ -2017,7 +2026,7 @@ infinite
 Set to true to make this an endless upgrade that can be bought any number of times, with its point cost compounding by cost_multiplier each purchase and its effect stacking. Set to false for a normal one-time upgrade.
 
 amount
-The value applied when this upgrade is purchased. For multiplier and rank discount upgrades this is a percentage. For starting stat upgrades this is a flat amount added at the start of each run. For an infinite upgrade this amount is granted again with every purchase and stacks.
+The value applied when this upgrade is purchased. For multiplier, discount, boost power, and boost duration upgrades this is a percentage. For starting stat upgrades this is a flat amount added at the start of each run, and for starting slot upgrades it is a number of slots. For an infinite upgrade this amount is granted again with every purchase and stacks.
 
 description
 The text shown when the player highlights this item in the prestige store.

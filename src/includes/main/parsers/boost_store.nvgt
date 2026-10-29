@@ -128,16 +128,19 @@ string boost_duration_text(double seconds)
     return result;
 }
 
-// What the cash jar pays each second at your current rank, in cents.
+// What the cash jar pays each second at your current rank, in cents, after the prestige boost power upgrades.
 double boost_cash_per_second(boost_item@ b)
 {
-    return max(0.0, eval_event_amount(b.amount_text, rank));
+    return max(0.0, eval_event_amount(b.amount_text, rank)) * (1.0 + max(0.0, prestige_boost_power) / 100.0);
 }
 
-// A boost's description with %amount% and %duration% filled in; the cash jar's amount is money at your current rank.
+/* A boost's description with %amount% and %duration% filled in as the boost really runs, after prestige boost power and
+duration; the cash jar's amount is money at your current rank. Amounts keep up to two decimals, so 1 percent power shows. */
 string boost_description(boost_item@ b)
 {
-    string amountText = (b.effect == "cash_per_second") ? convert_to_currency(boost_cash_per_second(b)) : format_number(b.amount);
+    double amt = boosted_amount(b);
+    string amountText = (amt < 1000) ? ("" + round(amt, 2)) : format_number(amt);
+    if (b.effect == "cash_per_second") amountText = convert_to_currency(boost_cash_per_second(b));
     string text = string_replace(b.description, "%amount%", amountText, true);
-    return string_replace(text, "%duration%", boost_duration_text(b.duration), true);
+    return string_replace(text, "%duration%", boost_duration_text(boosted_duration(b)), true);
 }

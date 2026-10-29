@@ -739,6 +739,10 @@ void add_prestige_effect(string id, double amt)
         prestige_baking_slot_discount += amt;
     else if (id.find("boost_slot_discount") != -1)
         prestige_boost_slot_discount += amt;
+    else if (id.find("boost_power") != -1)
+        prestige_boost_power += amt;
+    else if (id.find("boost_duration") != -1)
+        prestige_boost_duration += amt;
     else if (id.find("starting_coins") != -1)
         prestige_starting_coins += amt;
     else if (id.find("starting_autocookie") != -1)
@@ -771,6 +775,8 @@ void apply_all_prestige_store_upgrades()
     prestige_rank_discount = 0;
     prestige_baking_slot_discount = 0;
     prestige_boost_slot_discount = 0;
+    prestige_boost_power = 0;
+    prestige_boost_duration = 0;
     prestige_starting_coins = 0;
     prestige_starting_autocookie = 0;
     prestige_starting_manualcookie = 0;

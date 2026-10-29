@@ -44,11 +44,11 @@ void boost_error(string message)
     pool.destroy_sound(alertslot);
 }
 
-// Starts boost idx in slot, for the given time in seconds.
+// Starts boost idx in slot, for its time in seconds after the prestige boost duration upgrades.
 void start_boost(int slot, int idx)
 {
     boostSlotIds[slot] = loadedBoosts[idx].id;
-    boostSlotLeft[slot] = double(loadedBoosts[idx].duration) * 1000.0;
+    boostSlotLeft[slot] = boosted_duration(loadedBoosts[idx]) * 1000.0;
     loadedBoosts[idx].owned -= 1;
     stat_boosts_activated++;
 }
@@ -234,7 +234,7 @@ void activate_boost_slots()
         start_boost(slot, idx);
         pool.destroy_sound(alertslot);
         alertslot = pool.play_stationary("sounds/misc/autslot.ogg", false);
-        speak("Your " + loadedBoosts[idx].name.lower() + " boost has started. Boost slot " + string(slot + 1) + " is now active for " + boost_duration_text(loadedBoosts[idx].duration) + ".");
+        speak("Your " + loadedBoosts[idx].name.lower() + " boost has started. Boost slot " + string(slot + 1) + " is now active for " + boost_duration_text(boosted_duration(loadedBoosts[idx])) + ".");
         return;
     }
 }
@@ -282,8 +282,8 @@ bool activate_all_boost_slots()
     alertslot = pool.play_stationary("sounds/misc/autslot.ogg", false);
     string name = loadedBoosts[idx].name.lower();
     string msg = (started == 1)
-        ? "Your " + name + " boost has started. 1 boost slot is now active for " + boost_duration_text(loadedBoosts[idx].duration) + "."
-        : "Your " + name + " boosts have started. " + format_number(started) + " boost slots are now active for " + boost_duration_text(loadedBoosts[idx].duration) + ".";
+        ? "Your " + name + " boost has started. 1 boost slot is now active for " + boost_duration_text(boosted_duration(loadedBoosts[idx])) + "."
+        : "Your " + name + " boosts have started. " + format_number(started) + " boost slots are now active for " + boost_duration_text(boosted_duration(loadedBoosts[idx])) + ".";
     int left = empty - started;
     if (left > 0) msg += " " + format_number(left) + (left == 1 ? " slot is" : " slots are") + " still empty because you ran out of " + loadedBoosts[idx].name + ".";
     speak(msg);
