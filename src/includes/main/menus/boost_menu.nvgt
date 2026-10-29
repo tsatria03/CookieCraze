@@ -2,10 +2,10 @@
 slot, or end a running one. Its replies are spoken directly, like the baking slots manager's; only run-outs, which
 happen on their own during play, go to the boosts buffer. Each menu loops and returns rather than calling itself. */
 
-// What adding count boost slots costs now: each slot owned raises the next one's price.
+// What adding count boost slots costs now: each slot bought raises the next one's price; free head start slots do not.
 double boost_slot_cost(int count)
 {
-    double base = boostSlotStartCost * pow(boostSlotMultiplier, double(boostSlotCount));
+    double base = boostSlotStartCost * pow(boostSlotMultiplier, double(boostSlotsBought));
     return calc_slot_cost(count, base, boostSlotMultiplier) * prestige_boost_slot_factor();
 }
 
@@ -154,6 +154,7 @@ void add_boost_slots()
         coins = floor(safe_cap(coins - cost));
         stat_coins_spent += cost;
         boostSlotCount += count;
+        boostSlotsBought += count;
         stat_boost_slots_purchased += count;
         size_boost_slots();
         pool.destroy_sound(alertslot);

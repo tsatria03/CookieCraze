@@ -32,6 +32,10 @@ bool prestigeEndlessUnlocked = false;
 double prestige_starting_autocookie = 0;
 double prestige_starting_coins = 0;
 double prestige_starting_manualcookie = 0;
+// Slots every new run starts with, from the head start upgrades. Free: they never raise slot prices or count as purchases.
+double prestige_starting_auto_slots = 0;
+double prestige_starting_manual_slots = 0;
+double prestige_starting_boost_slots = 0;
 // A double like money and cookies, since endless quests keep raising the payout past what an int can hold.
 double prestige_points = 0;
 int prestigeLevel = 0;

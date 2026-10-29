@@ -745,6 +745,12 @@ void add_prestige_effect(string id, double amt)
         prestige_starting_autocookie += amt;
     else if (id.find("starting_manualcookie") != -1)
         prestige_starting_manualcookie += amt;
+    else if (id.find("starting_auto_slots") != -1)
+        prestige_starting_auto_slots += amt;
+    else if (id.find("starting_manual_slots") != -1)
+        prestige_starting_manual_slots += amt;
+    else if (id.find("starting_boost_slots") != -1)
+        prestige_starting_boost_slots += amt;
 }
 void apply_prestige_store_upgrade(string item_id)
 {
@@ -768,6 +774,9 @@ void apply_all_prestige_store_upgrades()
     prestige_starting_coins = 0;
     prestige_starting_autocookie = 0;
     prestige_starting_manualcookie = 0;
+    prestige_starting_auto_slots = 0;
+    prestige_starting_manual_slots = 0;
+    prestige_starting_boost_slots = 0;
     prestige_store_item[] items;
     prestige_menu_def[] menus;
     parse_prestige_store("stores/prestige.store", items, menus);

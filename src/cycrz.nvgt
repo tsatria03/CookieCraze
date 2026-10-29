@@ -355,6 +355,16 @@ snapshot_quest_baselines();
 if (prestige_starting_coins > 0) { coins += prestige_starting_coins; stat_coins_earned += prestige_starting_coins; }
 if (prestige_starting_autocookie > 0) autocookie += prestige_starting_autocookie;
 if (prestige_starting_manualcookie > 0) manulcookie += prestige_starting_manualcookie;
+/* Head start slots. They are free, so the slot prices stay at their starting cost and nothing counts as a purchase:
+baking slot prices only grow when you buy, and boost slot prices follow the slots you bought, not the ones you own. */
+for (int i = 0; i < int(prestige_starting_auto_slots); i++)
+{
+    baking_slots.insert_last(true);
+    autobakeSlotEnabled.insert_last(true);
+    autobakeSlots++;
+}
+if (prestige_starting_manual_slots > 0) manualSlots += int(prestige_starting_manual_slots);
+if (prestige_starting_boost_slots > 0) { boostSlotCount += int(prestige_starting_boost_slots); size_boost_slots(); }
 xprequired = (cookiemod * (rank * (rank * 4)));
 if (prestige_rank_discount > 0) xprequired *= max(0.01, 1.0 - (prestige_rank_discount / 100.0));
 }

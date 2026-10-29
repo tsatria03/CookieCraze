@@ -20,6 +20,9 @@ passivemenu:boost_slot_discount_1:10:1:0:false:false:1:Makes boost slots and act
 headstartmenu:starting_coins_1:5:1:0:false:false:50:Begin each run with 50 cents already in your pocket.
 headstartmenu:starting_autocookie_1:5:1:0:false:false:1:Begin each run with 1 auto cookie already baked in.
 headstartmenu:starting_manualcookie_1:10:1:0:false:false:1:Begin each run with 1 manual cookie ready to go.
+headstartmenu:starting_auto_slots_1:5:1:0:false:false:1:Begin each run with 1 more auto baking slot already bought and automated.
+headstartmenu:starting_manual_slots_1:5:1:0:false:false:1:Begin each run with 1 more manual baking slot already bought.
+headstartmenu:starting_boost_slots_1:5:1:0:false:false:1:Begin each run with 1 more boost slot already bought.
 
 ; Prestige level 1
 
@@ -31,6 +34,9 @@ passivemenu:boost_slot_discount_2:25:1:1:false:false:2:Makes boost slots and act
 headstartmenu:starting_coins_2:10:1:1:false:false:100:Begin each run with $1.00 already in your pocket.
 headstartmenu:starting_autocookie_2:10:1:1:false:false:5:Begin each run with 5 auto cookies already baked in.
 headstartmenu:starting_manualcookie_2:15:1:1:false:false:5:Begin each run with 5 manual cookies ready to go.
+headstartmenu:starting_auto_slots_2:10:1:1:false:false:1:Begin each run with 1 more auto baking slot already bought and automated.
+headstartmenu:starting_manual_slots_2:10:1:1:false:false:1:Begin each run with 1 more manual baking slot already bought.
+headstartmenu:starting_boost_slots_2:10:1:1:false:false:1:Begin each run with 1 more boost slot already bought.
 
 ; Prestige level 2
 
@@ -42,6 +48,9 @@ passivemenu:boost_slot_discount_3:20:1:2:false:false:2:Makes boost slots and act
 headstartmenu:starting_coins_3:15:1:2:false:false:200:Begin each run with $2.00 already in your pocket.
 headstartmenu:starting_autocookie_3:15:1:2:false:false:8:Begin each run with 8 auto cookies already baked in.
 headstartmenu:starting_manualcookie_3:15:1:2:false:false:8:Begin each run with 8 manual cookies ready to go.
+headstartmenu:starting_auto_slots_3:15:1:2:false:false:2:Begin each run with 2 more auto baking slots already bought and automated.
+headstartmenu:starting_manual_slots_3:15:1:2:false:false:2:Begin each run with 2 more manual baking slots already bought.
+headstartmenu:starting_boost_slots_3:15:1:2:false:false:1:Begin each run with 1 more boost slot already bought.
 
 ; Prestige level 3
 
@@ -53,6 +62,9 @@ passivemenu:boost_slot_discount_4:50:1:3:false:false:3:Makes boost slots and act
 headstartmenu:starting_coins_4:25:1:3:false:false:500:Begin each run with $5.00 already in your pocket.
 headstartmenu:starting_autocookie_4:25:1:3:false:false:15:Begin each run with 15 auto cookies already baked in.
 headstartmenu:starting_manualcookie_4:25:1:3:false:false:15:Begin each run with 15 manual cookies ready to go.
+headstartmenu:starting_auto_slots_4:25:1:3:false:false:2:Begin each run with 2 more auto baking slots already bought and automated.
+headstartmenu:starting_manual_slots_4:25:1:3:false:false:2:Begin each run with 2 more manual baking slots already bought.
+headstartmenu:starting_boost_slots_4:25:1:3:false:false:1:Begin each run with 1 more boost slot already bought.
 
 ; Prestige level 4
 
@@ -64,6 +76,9 @@ passivemenu:boost_slot_discount_5:40:1:4:false:false:4:Makes boost slots and act
 headstartmenu:starting_coins_5:35:1:4:false:false:1000:Begin each run with $10.00 already in your pocket.
 headstartmenu:starting_autocookie_5:35:1:4:false:false:25:Begin each run with 25 auto cookies already baked in.
 headstartmenu:starting_manualcookie_5:35:1:4:false:false:25:Begin each run with 25 manual cookies ready to go.
+headstartmenu:starting_auto_slots_5:35:1:4:false:false:3:Begin each run with 3 more auto baking slots already bought and automated.
+headstartmenu:starting_manual_slots_5:35:1:4:false:false:3:Begin each run with 3 more manual baking slots already bought.
+headstartmenu:starting_boost_slots_5:35:1:4:false:false:1:Begin each run with 1 more boost slot already bought.
 
 ; Prestige level 5
 
@@ -75,6 +90,9 @@ passivemenu:boost_slot_discount_6:100:1:5:false:false:5:Makes boost slots and ac
 headstartmenu:starting_coins_6:50:1:5:false:false:2000:Begin each run with $20.00 already in your pocket.
 headstartmenu:starting_autocookie_6:50:1:5:false:false:50:Begin each run with 50 auto cookies already baked in.
 headstartmenu:starting_manualcookie_6:50:1:5:false:false:50:Begin each run with 50 manual cookies ready to go.
+headstartmenu:starting_auto_slots_6:50:1:5:false:false:3:Begin each run with 3 more auto baking slots already bought and automated.
+headstartmenu:starting_manual_slots_6:50:1:5:false:false:3:Begin each run with 3 more manual baking slots already bought.
+headstartmenu:starting_boost_slots_6:50:1:5:false:false:2:Begin each run with 2 more boost slots already bought.
 
 ; Prestige level 6
 
@@ -86,6 +104,9 @@ passivemenu:boost_slot_discount_7:75:1:6:false:false:6:Makes boost slots and act
 headstartmenu:starting_coins_7:60:1:6:false:false:3000:Begin each run with $30.00 already in your pocket.
 headstartmenu:starting_autocookie_7:60:1:6:false:false:75:Begin each run with 75 auto cookies already baked in.
 headstartmenu:starting_manualcookie_7:60:1:6:false:false:75:Begin each run with 75 manual cookies ready to go.
+headstartmenu:starting_auto_slots_7:60:1:6:false:false:4:Begin each run with 4 more auto baking slots already bought and automated.
+headstartmenu:starting_manual_slots_7:60:1:6:false:false:4:Begin each run with 4 more manual baking slots already bought.
+headstartmenu:starting_boost_slots_7:60:1:6:false:false:2:Begin each run with 2 more boost slots already bought.
 
 ; Prestige level 7
 
@@ -97,6 +118,9 @@ passivemenu:boost_slot_discount_8:80:1:7:false:false:7:Makes boost slots and act
 headstartmenu:starting_coins_8:70:1:7:false:false:5000:Begin each run with $50.00 already in your pocket.
 headstartmenu:starting_autocookie_8:70:1:7:false:false:100:Begin each run with 100 auto cookies already baked in.
 headstartmenu:starting_manualcookie_8:70:1:7:false:false:100:Begin each run with 100 manual cookies ready to go.
+headstartmenu:starting_auto_slots_8:70:1:7:false:false:5:Begin each run with 5 more auto baking slots already bought and automated.
+headstartmenu:starting_manual_slots_8:70:1:7:false:false:5:Begin each run with 5 more manual baking slots already bought.
+headstartmenu:starting_boost_slots_8:70:1:7:false:false:2:Begin each run with 2 more boost slots already bought.
 
 ; Prestige level 8
 
@@ -108,6 +132,9 @@ passivemenu:boost_slot_discount_9:90:1:8:false:false:8:Makes boost slots and act
 headstartmenu:starting_coins_9:80:1:8:false:false:7500:Begin each run with $75.00 already in your pocket.
 headstartmenu:starting_autocookie_9:80:1:8:false:false:125:Begin each run with 125 auto cookies already baked in.
 headstartmenu:starting_manualcookie_9:80:1:8:false:false:125:Begin each run with 125 manual cookies ready to go.
+headstartmenu:starting_auto_slots_9:80:1:8:false:false:6:Begin each run with 6 more auto baking slots already bought and automated.
+headstartmenu:starting_manual_slots_9:80:1:8:false:false:6:Begin each run with 6 more manual baking slots already bought.
+headstartmenu:starting_boost_slots_9:80:1:8:false:false:3:Begin each run with 3 more boost slots already bought.
 
 ; Prestige level 9
 
@@ -119,6 +146,9 @@ passivemenu:boost_slot_discount_10:95:1:9:false:false:9:Makes boost slots and ac
 headstartmenu:starting_coins_10:90:1:9:false:false:9000:Begin each run with $90.00 already in your pocket.
 headstartmenu:starting_autocookie_10:90:1:9:false:false:135:Begin each run with 135 auto cookies already baked in.
 headstartmenu:starting_manualcookie_10:90:1:9:false:false:135:Begin each run with 135 manual cookies ready to go.
+headstartmenu:starting_auto_slots_10:90:1:9:false:false:7:Begin each run with 7 more auto baking slots already bought and automated.
+headstartmenu:starting_manual_slots_10:90:1:9:false:false:7:Begin each run with 7 more manual baking slots already bought.
+headstartmenu:starting_boost_slots_10:90:1:9:false:false:3:Begin each run with 3 more boost slots already bought.
 
 ; Prestige level 10
 
@@ -130,6 +160,9 @@ passivemenu:boost_slot_discount_11:100:1:10:false:false:10:Makes boost slots and
 headstartmenu:starting_coins_11:100:1:10:false:false:10000:Begin each run with $100.00 already in your pocket.
 headstartmenu:starting_autocookie_11:100:1:10:false:false:150:Begin each run with 150 auto cookies already baked in.
 headstartmenu:starting_manualcookie_11:100:1:10:false:false:150:Begin each run with 150 manual cookies ready to go.
+headstartmenu:starting_auto_slots_11:100:1:10:false:false:8:Begin each run with 8 more auto baking slots already bought and automated.
+headstartmenu:starting_manual_slots_11:100:1:10:false:false:8:Begin each run with 8 more manual baking slots already bought.
+headstartmenu:starting_boost_slots_11:100:1:10:false:false:3:Begin each run with 3 more boost slots already bought.
 
 ; Endless items
 ; Infinite buys, unlocked at prestige level 10 once all standard upgrades are purchased. base_cost 1, cost_multiplier 1.01 (each purchase costs a little more).
@@ -141,3 +174,6 @@ endlesspassivemenu:endless_boost_slot_discount:1:1.01:10:false:true:1:An infinit
 endlessheadstartmenu:endless_starting_coins:1:1.01:10:false:true:10000:Begin each run with an extra $100.00 in your pocket.
 endlessheadstartmenu:endless_starting_autocookie:1:1.01:10:false:true:150:Begin each run with an extra 150 auto cookies already baked in.
 endlessheadstartmenu:endless_starting_manualcookie:1:1.01:10:false:true:150:Begin each run with an extra 150 manual cookies ready to go.
+endlessheadstartmenu:endless_starting_auto_slots:1:1.01:10:false:true:1:Begin each run with an extra auto baking slot, already bought and automated.
+endlessheadstartmenu:endless_starting_manual_slots:1:1.01:10:false:true:1:Begin each run with an extra manual baking slot, already bought.
+endlessheadstartmenu:endless_starting_boost_slots:1:1.01:10:false:true:1:Begin each run with an extra boost slot, already bought.

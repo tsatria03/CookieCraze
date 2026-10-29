@@ -4,6 +4,8 @@ out of focus, and pause only while the game is closed: each slot's time left is 
 // The rank that unlocks boosts: the cookie store's buy boosts and the boost slot manager.
 int boostUnlockRank = 100;
 int boostSlotCount = 0;
+// Boost slots bought this run. Prices follow this, so free head start slots never make the next slot dearer.
+int boostSlotsBought = 0;
 // Per slot: the id of the boost it is running, or "" when empty, and how many milliseconds it has left.
 string[] boostSlotIds;
 double[] boostSlotLeft;
@@ -33,6 +35,7 @@ void size_boost_slots()
 void reset_boosts()
 {
     boostSlotCount = 0;
+    boostSlotsBought = 0;
     boostSlotIds.resize(0);
     boostSlotLeft.resize(0);
     boostActivations = 0;
@@ -178,6 +181,7 @@ void write_boosts()
 {
     update_boosts();
     sd.add("boostSlotCount", boostSlotCount);
+    sd.add("boostSlotsBought", boostSlotsBought);
     sd.add("boostActivations", boostActivations);
     for (int i = 0; i < boostSlotCount; i++)
     {
@@ -196,6 +200,9 @@ void write_boosts()
 void read_boosts()
 {
     if (sd.d.exists("boostSlotCount")) boostSlotCount = max(0, sd.read_int("boostSlotCount"));
+    // Saves from before head start slots bought every slot they own.
+    boostSlotsBought = boostSlotCount;
+    if (sd.d.exists("boostSlotsBought")) boostSlotsBought = int(max(0.0, double(sd.read_int("boostSlotsBought"))));
     if (sd.d.exists("boostActivations")) boostActivations = max(0.0, sd.read_double("boostActivations"));
     size_boost_slots();
     for (int i = 0; i < boostSlotCount; i++)
