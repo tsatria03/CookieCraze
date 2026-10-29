@@ -289,6 +289,7 @@ else
     prestige_points=0;
     prestigePurchased.resize(0);
     prestigeEndlessCounts.delete_all();
+    prestigeEndlessUnlocked = false;
     stat_highest_combo_reached=0;
     stat_combos_started=0;
     stat_combos_broken=0;

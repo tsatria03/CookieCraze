@@ -114,7 +114,7 @@ double calc_total_upgrade_cost(double level, double quantity, double base_cost, 
 // Automating slots; the cheap circuits boost takes its discount off the whole price.
 double calc_automation_cost(double count, double baseCost, double multiplier)
 {
-    double factor = boost_cost_factor("automation_discount");
+    double factor = boost_cost_factor("automation_discount") * prestige_baking_slot_factor();
     if (multiplier <= 1.000001)
         return safe_cap(baseCost * count * factor);
     return safe_cap(baseCost * (pow(multiplier, count) - 1) / (multiplier - 1) * factor);
@@ -122,7 +122,7 @@ double calc_automation_cost(double count, double baseCost, double multiplier)
 // Adding auto slots; the oven sale boost takes its discount off the whole price.
 double calc_slot_cost(double count)
 {
-    double factor = boost_cost_factor("auto_slot_discount");
+    double factor = boost_cost_factor("auto_slot_discount") * prestige_baking_slot_factor();
     if (slotMultiplier <= 1.000001)
         return min(slotBaseCost * count * factor, 1e308);
     double result = slotBaseCost * (pow(slotMultiplier, count) - 1) / (slotMultiplier - 1) * factor;
@@ -735,6 +735,10 @@ void add_prestige_effect(string id, double amt)
         prestige_coin_multiplier += amt;
     else if (id.find("rank_discount") != -1)
         prestige_rank_discount += amt;
+    else if (id.find("baking_slot_discount") != -1)
+        prestige_baking_slot_discount += amt;
+    else if (id.find("boost_slot_discount") != -1)
+        prestige_boost_slot_discount += amt;
     else if (id.find("starting_coins") != -1)
         prestige_starting_coins += amt;
     else if (id.find("starting_autocookie") != -1)
@@ -759,6 +763,8 @@ void apply_all_prestige_store_upgrades()
     prestige_cookie_multiplier = 0;
     prestige_coin_multiplier = 0;
     prestige_rank_discount = 0;
+    prestige_baking_slot_discount = 0;
+    prestige_boost_slot_discount = 0;
     prestige_starting_coins = 0;
     prestige_starting_autocookie = 0;
     prestige_starting_manualcookie = 0;
@@ -790,6 +796,42 @@ void apply_all_prestige_store_upgrades()
         }
     }
 }
+// What a price is multiplied by under the prestige slot discounts, which never take off more than 90 percent.
+double prestige_baking_slot_factor()
+{
+    return 1.0 - min(90.0, max(0.0, prestige_baking_slot_discount)) / 100.0;
+}
+double prestige_boost_slot_factor()
+{
+    return 1.0 - min(90.0, max(0.0, prestige_boost_slot_discount)) / 100.0;
+}
+
+/* Whether the Endless menus are open. Once this save has cleared every Standard upgrade they stay open, even if a later
+update adds new Standard tiers; new players still have to clear every tier, new ones included, to open them. */
+bool standard_prestige_cleared()
+{
+    if (prestigeEndlessUnlocked) return true;
+    if (all_standard_prestige_purchased()) prestigeEndlessUnlocked = true;
+    return prestigeEndlessUnlocked;
+}
+
+/* For saves from before prestigeEndlessUnlocked: if they had already reached Endless, by owning an Endless upgrade or
+every upgrade of the six original Standard tracks, they keep it after this update. */
+bool prestige_endless_reached_before()
+{
+    if (prestigeEndlessCounts.get_keys().length() > 0) return true;
+    string[] tracks = {"cookie_multiplier", "coin_multiplier", "rank_discount", "starting_coins", "starting_autocookie", "starting_manualcookie"};
+    for (uint t = 0; t < tracks.length(); t++)
+    {
+        for (int n = 1; n <= 11; n++)
+        {
+            string id = tracks[t] + "_" + n;
+            if (prestigePurchased.find(id) < 0) return false;
+        }
+    }
+    return true;
+}
+
 bool all_standard_prestige_purchased()
 {
     prestige_store_item[] items;

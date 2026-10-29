@@ -6,14 +6,14 @@ happen on their own during play, go to the boosts buffer. Each menu loops and re
 double boost_slot_cost(int count)
 {
     double base = boostSlotStartCost * pow(boostSlotMultiplier, double(boostSlotCount));
-    return calc_slot_cost(count, base, boostSlotMultiplier);
+    return calc_slot_cost(count, base, boostSlotMultiplier) * prestige_boost_slot_factor();
 }
 
 // What count more activations cost now: every activation this run raises the next one's price, whichever boost it is.
 double boost_activation_cost(int count)
 {
     double base = boostActivationStartCost * pow(boostActivationMultiplier, boostActivations);
-    return calc_slot_cost(count, base, boostActivationMultiplier);
+    return calc_slot_cost(count, base, boostActivationMultiplier) * prestige_boost_slot_factor();
 }
 
 int boost_running_count()

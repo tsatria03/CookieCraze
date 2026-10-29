@@ -1041,7 +1041,7 @@ void prestige_store_menu()
         questsmenu();
         return;
     }
-    bool standardCleared = all_standard_prestige_purchased();
+    bool standardCleared = standard_prestige_cleared();
     bool anyLeft = false;
     for (uint i = 0; i < items.length(); i++)
     {
@@ -1123,7 +1123,7 @@ void prestige_store_menu()
 }
 void prestige_store_category_menu(prestige_store_item[]@ items, string chosenMenu)
 {
-    bool standardCleared = all_standard_prestige_purchased();
+    bool standardCleared = standard_prestige_cleared();
     bool anyAvailable = false;
     for (uint i = 0; i < items.length(); i++)
     {
@@ -2105,18 +2105,18 @@ add_auto_slots();
 void add_manual_slots()
 {
     setupmenu(false);
-    m.add_item("Add " + format_number(1) + " manual slot for "     + convert_to_currency((calc_slot_cost(1, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount"))), "add_mslot1");
-    m.add_item("Add " + format_number(5) + " manual slots for "    + convert_to_currency((calc_slot_cost(5, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount"))), "add_mslot2");
-    m.add_item("Add " + format_number(10) + " manual slots for "   + convert_to_currency((calc_slot_cost(10, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount"))), "add_mslot3");
-    m.add_item("Add " + format_number(25) + " manual slots for "   + convert_to_currency((calc_slot_cost(25, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount"))), "add_mslot4");
-    m.add_item("Add " + format_number(50) + " manual slots for "   + convert_to_currency((calc_slot_cost(50, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount"))), "add_mslot5");
-    m.add_item("Add " + format_number(100) + " manual slots for "  + convert_to_currency((calc_slot_cost(100, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount"))), "add_mslot6");
-    m.add_item("Add " + format_number(250) + " manual slots for "  + convert_to_currency((calc_slot_cost(250, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount"))), "add_mslot7");
-    m.add_item("Add " + format_number(500) + " manual slots for "  + convert_to_currency((calc_slot_cost(500, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount"))), "add_mslot8");
-    m.add_item("Add " + format_number(1000) + " manual slots for " + convert_to_currency((calc_slot_cost(1000, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount"))), "add_mslot9");
-    m.add_item("Add " + format_number(2500) + " manual slots for " + convert_to_currency((calc_slot_cost(2500, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount"))), "add_mslot10");
-    m.add_item("Add " + format_number(5000) + " manual slots for " + convert_to_currency((calc_slot_cost(5000, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount"))), "add_mslot11");
-    m.add_item("Add " + format_number(10000) + " manual slots for "+ convert_to_currency((calc_slot_cost(10000, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount"))), "add_mslot12");
+    m.add_item("Add " + format_number(1) + " manual slot for "     + convert_to_currency((calc_slot_cost(1, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot1");
+    m.add_item("Add " + format_number(5) + " manual slots for "    + convert_to_currency((calc_slot_cost(5, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot2");
+    m.add_item("Add " + format_number(10) + " manual slots for "   + convert_to_currency((calc_slot_cost(10, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot3");
+    m.add_item("Add " + format_number(25) + " manual slots for "   + convert_to_currency((calc_slot_cost(25, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot4");
+    m.add_item("Add " + format_number(50) + " manual slots for "   + convert_to_currency((calc_slot_cost(50, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot5");
+    m.add_item("Add " + format_number(100) + " manual slots for "  + convert_to_currency((calc_slot_cost(100, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot6");
+    m.add_item("Add " + format_number(250) + " manual slots for "  + convert_to_currency((calc_slot_cost(250, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot7");
+    m.add_item("Add " + format_number(500) + " manual slots for "  + convert_to_currency((calc_slot_cost(500, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot8");
+    m.add_item("Add " + format_number(1000) + " manual slots for " + convert_to_currency((calc_slot_cost(1000, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot9");
+    m.add_item("Add " + format_number(2500) + " manual slots for " + convert_to_currency((calc_slot_cost(2500, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot10");
+    m.add_item("Add " + format_number(5000) + " manual slots for " + convert_to_currency((calc_slot_cost(5000, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot11");
+    m.add_item("Add " + format_number(10000) + " manual slots for "+ convert_to_currency((calc_slot_cost(10000, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor())), "add_mslot12");
     m.add_item("Back", "back");
     m.intro_text = "Manual slots menu. You have " + format_number(manualSlots) + " manual " + (manualSlots == 1 ? "slot" : "slots") + ".";
     int start_pos = 0;
@@ -2151,7 +2151,7 @@ void add_manual_slots()
     if (sel == "add_mslot12") count = 10000;
     if (count > 0)
     {
-        double cost = (calc_slot_cost(count, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount"));
+        double cost = (calc_slot_cost(count, manualSlotBaseCost, manualSlotMultiplier) * boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor());
         if (coins >= cost)
         {
             coins -= cost;

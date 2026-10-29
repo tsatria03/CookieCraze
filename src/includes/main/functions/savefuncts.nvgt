@@ -357,6 +357,10 @@ cookieXP = sd.read_double("cookieXP");
 else
 cookieXP = cookiemod * ((rank - 1) * ((rank - 1) * 4));
 // Recompute prestige upgrade effects from the just-loaded purchases and endless counts, so every load path applies them (not just startup).
+/* Endless stays open once reached. Saves from before this setting existed are checked against what they had bought
+before this update added new Standard tiers. */
+if (sd.d.exists("prestigeEndlessUnlocked")) prestigeEndlessUnlocked = sd.read_bool("prestigeEndlessUnlocked");
+else prestigeEndlessUnlocked = prestige_endless_reached_before();
 apply_all_prestige_store_upgrades();
 // prestige_rank_discount is only known after the line above, so re-apply the rank discount to xprequired now, matching what check_rank and startup do. Without this the loaded threshold ignores the discount until the next rank up.
 if (prestige_rank_discount > 0) xprequired *= max(0.01, 1.0 - (prestige_rank_discount / 100.0));
@@ -404,6 +408,7 @@ for (uint i = 0; i < autobakeSlotEnabled.length(); i++)
 }
 sd.add("baking_slot_count", baking_slots.length());
 sd.add("prestigeLevel", prestigeLevel);
+sd.add("prestigeEndlessUnlocked", prestigeEndlessUnlocked);
 sd.add("prestige_points", prestige_points);
 sd.add("prestigeStoreSchema", 2);
 sd.add("prestigePurchasedCount", int(prestigePurchased.length()));
