@@ -76,6 +76,9 @@ void parse_ranks_table(string filepath, rank_sound_item[]@ sounds_out, rank_rewa
             item.message    = parts[5];
             if (item.unlock == "slotmanager")
                 slotManagerUnlockRank = item.rank;
+            // The boosts line sets the rank the cookie store's buy boosts and the boost slot manager unlock at.
+            if (item.unlock == "boosts")
+                boostUnlockRank = item.rank;
             rewards_out.insert_last(item);
         }
     }
@@ -201,6 +204,8 @@ void handle_rank_unlock(string unlock)
     else if (unlock == "roulette")
         pool.play_stationary("sounds/misc/alert_big.ogg", false);
     else if (unlock == "slotmanager")
+        pool.play_stationary("sounds/misc/alert_big.ogg", false);
+    else if (unlock == "boosts")
         pool.play_stationary("sounds/misc/alert_big.ogg", false);
     else if (unlock == "combos")
         pool.play_stationary("sounds/misc/alert_big.ogg", false);

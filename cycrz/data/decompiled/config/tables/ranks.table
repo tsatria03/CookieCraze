@@ -39,7 +39,8 @@ Ouch, %name%! You climbed %ranks% ranks, from rank %from% to rank %rank%, but lo
 70:coins:200*rank:200*rank:roulette:Congratulations %name%! You've successfully unlocked the roulette minigame! You've also earned an extra %amount% for your hard work. Keep it up!
 80:coins:200*rank:200*rank:slots:Congratulations %name%! You've successfully unlocked the slot machine minigame! You've also earned an extra %amount% for your hard work. Keep it up!
 90:coins:200*rank:200*rank:slotmanager:Incredible work, %name%! You've reached rank %rank% and unlocked the baking slot manager! You can now automate and configure your baking slots. You've also earned an extra %amount% for your hard work. Keep it up!
-100:coins:200*rank:200*rank:combos:Incredible work, %name%! You've reached rank %rank% and unlocked the manual baking combo system! Build up consecutive presses to multiply your cookie output. You've also earned an extra %amount% for your hard work. Keep it up!
+100:coins:200*rank:200*rank:boosts:Incredible work, %name%! You've reached rank %rank% and unlocked boosts! You can now buy boosts in the cookie store and run them in the boost slot manager. You've also earned an extra %amount% for your hard work. Keep it up!
+110:coins:200*rank:200*rank:combos:Incredible work, %name%! You've reached rank %rank% and unlocked the manual baking combo system! Build up consecutive presses to multiply your cookie output. You've also earned an extra %amount% for your hard work. Keep it up!
 
 ; Stat bonuses
 
