@@ -386,7 +386,7 @@ speak_buffer("You're currently rank " + format_number(rank) + " with " + format_
 if(key_pressed(KEY_P))
 {
 string pointWord = (prestige_points == 1) ? "point" : "points";
-speak_buffer("You have " + format_number(prestige_points) + " prestige " + pointWord + " to spend in the prestige store.", "misc");
+speak_buffer("You have " + format_number(prestige_points) + " " + pointWord + " to spend in the prestige store.", "misc");
 }
 if(!control_is_down() && key_pressed(KEY_L))
 {
@@ -457,6 +457,7 @@ if(key_pressed(KEY_F1)) toggle_buffer_by_name("achievements");
 if(key_pressed(KEY_F2)) toggle_buffer_by_name("combos");
 if(key_pressed(KEY_F3)) toggle_buffer_by_name("events");
 if(key_pressed(KEY_F5)) toggle_buffer_by_name("boosts");
+if(key_pressed(KEY_F6)) toggle_buffer_by_name("quests");
 if(key_pressed(KEY_F4))
 {
 if(alt_is_down())

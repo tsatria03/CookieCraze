@@ -209,6 +209,19 @@ if (sd.d.exists("activeQuestCount"))
     if (!restore_active_quests(savedQuestIds))
         assign_quests();
 }
+/* The quests that already paid their reward this run. Saves from before quest rewards have none, so every quest already
+finished is marked as paid: rewards only come for quests finished after the update. */
+questsRewarded.delete_all();
+if (sd.d.exists("questRewardedCount"))
+{
+    int rcount = sd.read_int("questRewardedCount");
+    for (int i = 0; i < rcount; i++)
+    {
+        string rkey = "questRewarded_" + string(i);
+        if (sd.d.exists(rkey)) questsRewarded.set(sd.read_string(rkey), true);
+    }
+}
+else mark_finished_quests_rewarded();
 if (sd.d.exists("stat_cookies_baked")) stat_cookies_baked = sd.read_double("stat_cookies_baked");
 // Lifetime banks for the stats prestige resets, and time played; older saves have neither and start them at 0.
 lifetimeBank.delete_all();
@@ -425,6 +438,10 @@ for (uint i = 0; i < endlessKeys.length(); i++)
 }
 sd.add("questRerollCount", questRerollCount);
 sd.add("activeQuestCount", int(activeQuests.length()));
+string[] rewardedKeys = questsRewarded.get_keys();
+sd.add("questRewardedCount", int(rewardedKeys.length()));
+for (uint i = 0; i < rewardedKeys.length(); i++)
+    sd.add("questRewarded_" + string(i), rewardedKeys[i]);
 for (uint i = 0; i < activeQuests.length(); i++)
     sd.add("activeQuest_" + string(i), activeQuests[i].id);
 string[] completedKeys = completedQuestIds.get_keys();

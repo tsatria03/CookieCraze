@@ -183,6 +183,8 @@ void check_achievements(achievement_item[]@ achievements, dictionary@ unlocked)
             show_achievement(achievements[i]);
         }
     }
+    // Quests are paid at the same moments achievements are checked: every frame on the main screen and in each minigame.
+    check_quest_rewards();
 }
 
 string grant_achievement_reward(achievement_item@ item)

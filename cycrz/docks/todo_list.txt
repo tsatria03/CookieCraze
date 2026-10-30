@@ -1,12 +1,12 @@
 ####These are the things that need to be finished for future versions of the game.
 
-****Unfinished. Make quests give a reward the moment you finish them, paying an amount of money that grows with your rank and with the quest's difficulty, or a fitting item for some quests, announced in a new quests buffer with its own sound, on top of the prestige points quests already earn.
 ****Unfinished. Add a prize wheel minigame where you bet an item and spin a 24 wedge wheel, adding prizes to a pot and choosing after each spin to spin again or bank it, with a rare jackpot, a wedge that doubles the pot, free boosts and scratch tickets, and Bankrupt and Lose a Turn wedges that end the round, along with achievements and quests for it.
 ****Unfinished. Add offline progress, so loading a save pays a share of your automatic baking for the time you were away, up to a limit, with the share and the limit set in main.table and one message telling you how long you were gone and what your ovens baked.
 ****Unfinished. Add a daily bonus with a play streak, giving a reward that grows with your rank and with each day in a row you play, and resets if you miss a day.
 
 ##These are the things that are already finished from earlier versions of the game.
 
+**Finished. Make quests give a reward the moment you finish them, paying an amount of money that grows with your rank and with the quest's difficulty, or a fitting item for some quests, announced in a new quests buffer with its own sound, on top of the prestige points quests already earn.
 **Finished. Stop several discount boosts running at once from making slots free, since each one takes up to 90% off on its own and together they can bring a price down to 0 cents, by making adding auto, manual, and boost slots, automating a slot, and activating a boost never cost less than 1 cent.
 **Finished. Add prestige store upgrades that make boosts stronger or last longer, such as a permanent percentage increase to every boost's strength or to how long every boost runs.
 **Finished. Add prestige store upgrades that make baking slots and boost slots cheaper, such as permanent discounts on buying auto and manual slots, automating slots, buying boost slots, and activating boosts, working the same way as the existing passive upgrades.

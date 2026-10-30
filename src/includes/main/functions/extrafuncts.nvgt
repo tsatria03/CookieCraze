@@ -645,7 +645,10 @@ void reload_config(bool force = false)
     loadedQuests.resize(0);
     parse_quests_table("tables/quests.table", loadedQuests);
     if (!restore_active_quests(activeQuestIds))
+    {
         assign_quests();
+        mark_finished_quests_rewarded();
+    }
     apply_all_prestige_store_upgrades();
     /* main.table's multipliers, modifiers, event chances, and sell price apply at once; its starting values and
     start costs wait for the next new game or prestige. A changed rank_modifier moves the next rank's threshold,
@@ -1069,6 +1072,7 @@ void minigame_input(string game)
     if (key_pressed(KEY_F3)) toggle_buffer_by_name("events");
     if (key_pressed(KEY_F4) && !alt_is_down()) toggle_buffer_by_name("ranks");
     if (key_pressed(KEY_F5)) toggle_buffer_by_name("boosts");
+    if (key_pressed(KEY_F6)) toggle_buffer_by_name("quests");
     // Boosts keep counting down in real time while a minigame is open.
     update_boosts();
     // B reports your bet in every betting minigame. It lives here, not in each game's loop, so it also works during waits.

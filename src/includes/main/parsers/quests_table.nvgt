@@ -35,6 +35,22 @@ class reroll_history_entry
 }
 
 quests_config questsConfig;
+/* Quest rewards. Each quest pays its difficulty's default reward the moment it is finished, unless the [rewards]
+section of quests.table gives it its own. Index is the difficulty, 1 to 10; an empty target pays nothing. */
+string[] questDefaultRewardTarget;
+string[] questDefaultRewardAmount;
+string questCompleteMessage = "Quest complete! %quest%. You received %reward%.";
+string questCompleteSound = "";
+class quest_reward_override
+{
+    string id;
+    string target;
+    string amount;
+    string message;
+}
+quest_reward_override[] questRewardOverrides;
+// The active quests that have already paid their reward this run, so each one pays once. Saved with the game.
+dictionary questsRewarded;
 quest_item[] loadedQuests;
 quest_item[] activeQuests;
 dictionary completedQuestIds;
@@ -100,6 +116,14 @@ double quest_stat_progress(string stat)
 void parse_quests_table(string filepath, quest_item[]@ quests_out)
 {
     quests_out.resize(0);
+    // Rewards return to their defaults on every load, so Control L picks up a removed line.
+    questDefaultRewardTarget.resize(0);
+    questDefaultRewardTarget.resize(11);
+    questDefaultRewardAmount.resize(0);
+    questDefaultRewardAmount.resize(11);
+    questCompleteMessage = "Quest complete! %quest%. You received %reward%.";
+    questCompleteSound = "";
+    questRewardOverrides.resize(0);
     config_file f;
     if (!f.open(filepath))
         return;
@@ -113,6 +137,7 @@ void parse_quests_table(string filepath, quest_item[]@ quests_out)
             continue;
         if (line == "[settings]") { section = "settings"; continue; }
         if (line == "[quests]") { section = "quests"; continue; }
+        if (line == "[rewards]") { section = "rewards"; continue; }
         if (section == "settings")
         {
             int eq = line.find("=");
@@ -131,6 +156,19 @@ void parse_quests_table(string filepath, quest_item[]@ quests_out)
             else if (key == "reroll_multiplier") questsConfig.reroll_multiplier = string_to_number(val);
             else if (key == "reroll_sound")           questsConfig.reroll_sound = val;
             else if (key == "reroll_message")         questsConfig.reroll_message = val;
+            else if (key == "quest_complete_message") questCompleteMessage = val;
+            else if (key == "quest_complete_sound") questCompleteSound = val;
+            else if (key.length() > 7 && key.substr(0, 7) == "reward_")
+            {
+                // reward_3=coins:400*rank is the default reward for difficulty 3 quests.
+                int diff = string_to_int(key.substr(7));
+                int sep = val.find(":");
+                if (diff >= 1 && diff <= 10 && sep > 0 && quest_reward_target_ok(val.substr(0, sep)))
+                {
+                    questDefaultRewardTarget[diff] = val.substr(0, sep);
+                    questDefaultRewardAmount[diff] = val.substr(sep + 1);
+                }
+            }
             else if (key == "reroll_warning") { questsConfig.reroll_warning = string_to_int(val); if (questsConfig.reroll_warning < 1) questsConfig.reroll_warning = 1; if (questsConfig.reroll_warning > 5) questsConfig.reroll_warning = 5; }
         }
         else if (section == "quests")
@@ -172,8 +210,99 @@ void parse_quests_table(string filepath, quest_item[]@ quests_out)
             }
             quests_out.insert_last(item);
         }
+        else if (section == "rewards")
+        {
+            // quest_id:target:amount:message, the message optional and free to contain colons.
+            string[] parts = parse_delimited_line(line, 3);
+            if (parts.length() < 3 || !quest_reward_target_ok(parts[1]) || parts[2] == "") continue;
+            quest_reward_override o;
+            o.id = parts[0];
+            o.target = parts[1];
+            o.amount = parts[2];
+            o.message = (parts.length() >= 4) ? parts[3] : "";
+            questRewardOverrides.insert_last(o);
+        }
     }
     f.close();
+}
+
+// Quest rewards give money, cookies, auto cookies, or manual cookies. Baking speed is left out on purpose.
+bool quest_reward_target_ok(string target)
+{
+    return target == "coins" || target == "cookies" || target == "autocookie" || target == "manulcookie";
+}
+
+bool quest_is_complete(quest_item@ q)
+{
+    return quest_stat_progress(q.stat) >= q.threshold;
+}
+
+/* Marks every active quest that is already finished as paid, without paying it. A quest only pays when you finish it
+after it was handed to you, so a run's new quests, a rerolled quest, or quests finished before this update loaded
+never pay for nothing. Quests on a personal best, such as your highest combo, can start a run already finished. */
+void mark_finished_quests_rewarded()
+{
+    for (uint i = 0; i < activeQuests.length(); i++)
+        if (quest_is_complete(activeQuests[i])) questsRewarded.set(activeQuests[i].id, true);
+}
+
+// Pays and announces every active quest finished since the last check. Runs wherever achievements are checked.
+void check_quest_rewards()
+{
+    for (uint i = 0; i < activeQuests.length(); i++)
+    {
+        if (questsRewarded.exists(activeQuests[i].id)) continue;
+        if (!quest_is_complete(activeQuests[i])) continue;
+        questsRewarded.set(activeQuests[i].id, true);
+        grant_quest_reward(activeQuests[i]);
+    }
+}
+
+/* Pays a finished quest: its own reward from the [rewards] section, or else the default for its difficulty, using the
+highest difficulty with a default at or below it. Amounts can use rank, such as 400*rank. */
+void grant_quest_reward(quest_item@ q)
+{
+    string target = "";
+    string amountText = "";
+    string message = questCompleteMessage;
+    bool found = false;
+    for (uint i = 0; i < questRewardOverrides.length(); i++)
+    {
+        if (questRewardOverrides[i].id != q.id) continue;
+        target = questRewardOverrides[i].target;
+        amountText = questRewardOverrides[i].amount;
+        if (questRewardOverrides[i].message != "") message = questRewardOverrides[i].message;
+        found = true;
+        break;
+    }
+    if (!found && questDefaultRewardTarget.length() == 11)
+    {
+        for (int d = endless_difficulty(q); d >= 1; d--)
+        {
+            if (questDefaultRewardTarget[d] == "") continue;
+            target = questDefaultRewardTarget[d];
+            amountText = questDefaultRewardAmount[d];
+            break;
+        }
+    }
+    double amount = (target == "") ? 0 : floor(eval_event_amount(amountText, rank));
+    string rewardText = "";
+    if (amount > 0)
+    {
+        apply_amount_effect(target, amount, 1, false);
+        if (target == "coins") rewardText = convert_to_currency(amount);
+        else if (target == "cookies") rewardText = count_text(amount, "cookie", "cookies");
+        else if (target == "autocookie") rewardText = count_text(amount, "auto cookie", "auto cookies");
+        else rewardText = count_text(amount, "manual cookie", "manual cookies");
+    }
+    // A quest with no reward still announces itself, just without the reward sentence.
+    if (rewardText == "") message = "Quest complete! %quest%.";
+    message = string_replace(message, "%quest%", q.name, true);
+    message = string_replace(message, "%reward%", rewardText, true);
+    message = string_replace(message, "%amount%", rewardText, true);
+    // The sound goes quiet with the quests buffer, the same as its message.
+    if (questCompleteSound != "" && !buffer_muted("quests")) pool.play_stationary("sounds/misc/" + resolve_sound(questCompleteSound), false);
+    speak_buffer(message, "quests");
 }
 
 double get_quest_endless_count(string id)
@@ -515,6 +644,8 @@ void reroll_quest(int questIndex)
     /* The new quest is a fresh copy from the table, so fill its %threshold% and move an endless quest to its
     current goal. Only this one is escalated, since the others already were and escalating is not repeatable. */
     escalate_quest(activeQuests[questIndex]);
+    // A quest rerolled in already finished does not pay, or rerolling could buy rewards.
+    if (quest_is_complete(activeQuests[questIndex])) questsRewarded.set(activeQuests[questIndex].id, true);
     reroll_history_entry rentry;
     rentry.old_name = oldQuestName;
     rentry.new_name = activeQuests[questIndex].name;

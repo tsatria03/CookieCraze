@@ -76,8 +76,9 @@ F2: Toggles mute or unmute on the combos buffer.
 F3: Toggles mute or unmute on the events buffer.
 F4: Toggles mute or unmute on the ranks buffer.
 F5: Toggles mute or unmute on the boosts buffer.
+F6: Toggles mute or unmute on the quests buffer.
 Shift plus Backslash: Exports the focused buffer to its log file in the logs folder, then clears that buffer. If the buffer is empty, nothing is exported.
-All of the buffer keys in this section, including the F1 through F5 mute keys, also work inside every minigame.
+All of the buffer keys in this section, including the F1 through F6 mute keys, also work inside every minigame.
 
 Button shortcuts.
 
@@ -602,6 +603,8 @@ Rerolling a quest replaces only the currently focused quest with a new one of th
 
 Some quests are endless. Instead of a one-time goal, an endless quest escalates every time you complete it and prestige, returning the next cycle at a higher target, and it can never be permanently finished. Your rank quest is endless and always present, and several others, such as baking cookies, earning and spending money, buying upgrades, and playing each minigame, rotate through the random pool. Every endless quest you complete permanently increases the prestige points you earn on all future prestiges, so the deeper you push them the more each prestige pays out.
 
+Every quest also pays a reward the moment you finish it, on top of the prestige points quests earn when you prestige. Most quests pay money that grows with your rank and with the quest's difficulty, while some pay a fitting item instead, such as auto cookies for quests about auto baking slots or manual cookies for combo quests. A quest complete message names the quest and what you received, with its own sound, in the new quests buffer; press F6 to mute it. Each quest pays once per run. A quest that is already finished when you get it, such as one on your best combo, or one you reroll into, does not pay, and quests you had finished before this feature was added were not paid either.
+
 Quest progress counts only what you do during the current run. Many stats, such as blackjack hands, dice rolls, and lottery tickets scratched, are kept as lifetime totals across every prestige, so a quest on one of them measures how far you have come since the run began rather than your lifetime total. That way no quest, endless or not, is already complete the moment it is assigned. Rank quests compare your current rank, and quests on your three personal bests, your highest combo, your longest higher or lower streak, and your highest double or nothing ride, compare your best ever.
 
 To view your quests, press the Quests button in the main game interface.
@@ -670,7 +673,8 @@ Passive bonus upgrades take effect immediately after purchase and apply to your 
 
 Since each standard upgrade can only be bought once, the standard side of the store shrinks over time as you work through it. Once you have purchased everything available at your current prestige level, the standard categories have nothing left to offer until you reach a higher prestige level that unlocks new items. Once you have cleared every standard upgrade at prestige level 10, the Endless categories open up, and from that point your prestige points always have somewhere to go, because endless upgrades never run out. This makes the standard upgrades most valuable in the early and middle stages of your prestige journey, where they meaningfully reduce the grind of each new run, while the endless upgrades become the long term sink for every run after that.
 
-Each standard upgrade in the prestige store can only be purchased once, and once bought it is removed from the shop permanently. Endless upgrades are never removed, since they can always be bought again. If all standard upgrades in a category are purchased, that category is removed from the store. The store also remembers the category and upgrade you chose last, the same way the cookie store's shops do, so after a purchase you stay on that upgrade, or on the one that took its place if it was a standard upgrade. Choosing back clears what that menu remembers. If all upgrades available at your current prestige level are purchased and the Endless categories are not yet open, opening the store returns you to the quests screen with a message reminding you that more upgrades unlock at higher prestige levels. Locked items and categories follow the same show locked items setting as the other shops. Items locked behind a higher prestige level show the required level when show locked items is enabled, or are hidden entirely when it is disabled. The Endless categories behave the same way, showing their requirement to clear the standard upgrades at prestige level 10 when show locked items is enabled, or hidden when it is disabled.
+Each standard upgrade in the prestige store can only be purchased once, and once bought it is removed from the shop permanently. Endless upgrades are never removed, since they can always be bought again. If all standard upgrades in a category are purchased, that category is removed from the store.
+The store also remembers the category and upgrade you chose last, the same way the cookie store's shops do, so after a purchase you stay on that upgrade, or on the one that took its place if it was a standard upgrade. Choosing back clears what that menu remembers. If all upgrades available at your current prestige level are purchased and the Endless categories are not yet open, opening the store returns you to the quests screen with a message reminding you that more upgrades unlock at higher prestige levels. Locked items and categories follow the same show locked items setting as the other shops. Items locked behind a higher prestige level show the required level when show locked items is enabled, or are hidden entirely when it is disabled. The Endless categories behave the same way, showing their requirement to clear the standard upgrades at prestige level 10 when show locked items is enabled, or hidden when it is disabled.
 
 All prestige store upgrades, costs, point requirements, and effects are fully configurable in prestige.store.
 
@@ -2090,6 +2094,17 @@ The sound file to play when the player rerolls. Relative to sounds/misc/.
 reroll_message
 The message spoken after a successful reroll. Use %cost% as a placeholder for the amount deducted.
 
+reward_1 through reward_10
+Format: reward_3=target:amount
+
+The reward every quest of that difficulty pays the moment it is finished, unless the rewards section gives it its own. The target is coins for money, cookies, autocookie for auto cookies, or manulcookie for manual cookies; baking speed cannot be a quest reward. The amount supports rank scaling, so 400*rank pays four hundred times the player's current rank, worked out when the quest is finished. Money amounts are in cents. A quest whose difficulty has no reward line uses the nearest lower difficulty that has one, so an endless quest that has climbed past difficulty 5 pays the difficulty 5 reward. Leave every reward line out to give no rewards; quests then just announce that they are complete.
+
+quest_complete_message
+The message spoken into the quests buffer when a quest is finished. %quest% is replaced with the quest's name and %reward% with what it paid, which reads as dollars and cents for money.
+
+quest_complete_sound
+The sound played when a quest is finished, relative to sounds/misc/. It stays quiet while the quests buffer is muted. Remove this line to play no sound.
+
 Quests section.
 Format: id:name:stat:threshold:use_percent:required:advance:difficulty:growth:infinite:difficulty_step:description
 
@@ -2226,6 +2241,11 @@ The following placeholders are available and will be replaced at display time.
 %percent% = the player's current progress as a percentage of the threshold.
 
 Keep the description focused on what the quest is asking, and let the game handle reporting the progress.
+
+Rewards section.
+Format: quest_id:target:amount:message
+
+Optional. Gives a quest its own reward in place of its difficulty's default from the settings section. One line per quest, using the quest's id. The target and amount work the same as in the reward settings, so a quest can pay auto cookies with 4*rank. The message is optional and may contain colons; %amount% and %reward% are replaced with what it paid, and %quest% with the quest's name. Without a message, quest_complete_message is used. A quest not listed here pays its difficulty's default.
 
 lottery.table
 

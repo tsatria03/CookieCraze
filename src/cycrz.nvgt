@@ -19,6 +19,7 @@ create_buffer("critical");
 create_buffer("events");
 create_buffer("general");
 create_buffer("misc");
+create_buffer("quests");
 create_buffer("ranks");
 loadedEvents = parse_baker_events("events/baker.event");
 if (loadedEvents.length() == 0)
@@ -365,6 +366,9 @@ for (int i = 0; i < int(prestige_starting_auto_slots); i++)
 }
 if (prestige_starting_manual_slots > 0) manualSlots += int(prestige_starting_manual_slots);
 if (prestige_starting_boost_slots > 0) { boostSlotCount += int(prestige_starting_boost_slots); size_boost_slots(); }
+// A new run's quests start unpaid, apart from any already finished when handed out, which never pay.
+questsRewarded.delete_all();
+mark_finished_quests_rewarded();
 xprequired = (cookiemod * (rank * (rank * 4)));
 if (prestige_rank_discount > 0) xprequired *= max(0.01, 1.0 - (prestige_rank_discount / 100.0));
 }

@@ -10,6 +10,13 @@ reroll_multiplier=1.01
 reroll_warning=3
 reroll_sound=questroll.ogg
 reroll_message=Quest rerolled! Good luck with your new objective!
+reward_1=coins:100*rank
+reward_2=coins:200*rank
+reward_3=coins:400*rank
+reward_4=coins:700*rank
+reward_5=coins:1000*rank
+quest_complete_message=Quest complete! %quest%. You received %reward%.
+quest_complete_sound=questcomp.ogg
 
 [quests]
 
@@ -280,3 +287,21 @@ reach_combo_225:Reach a combo of 225:highest_combo_reached:225:false:false:true:
 ; Combos started
 
 start_combos_endless:Start %threshold% combos:combos_started:5:false:false:false:1:1.25:true:1:Start %threshold% combos. Each time you finish it and prestige, it returns at a higher goal.
+
+[rewards]
+
+buy_auto_slots_5:autocookie:2*rank:Your new auto baking slots came with %amount% to keep them busy.
+enable_auto_slots_5:autocookie:2*rank:Your automated bakery thanks you with %amount%.
+buy_auto_slots_15:autocookie:4*rank:Your new auto baking slots came with %amount% to keep them busy.
+enable_auto_slots_15:autocookie:4*rank:Your automated bakery thanks you with %amount%.
+buy_auto_slots_30:autocookie:6*rank:Your new auto baking slots came with %amount% to keep them busy.
+enable_auto_slots_30:autocookie:6*rank:Your automated bakery thanks you with %amount%.
+buy_auto_slots_50:autocookie:8*rank:Your new auto baking slots came with %amount% to keep them busy.
+enable_auto_slots_50:autocookie:8*rank:Your automated bakery thanks you with %amount%.
+buy_auto_slots_100:autocookie:10*rank:Your new auto baking slots came with %amount% to keep them busy.
+enable_auto_slots_100:autocookie:10*rank:Your automated bakery thanks you with %amount%.
+reach_combo_50:manulcookie:2*rank:Your quick hands earned you %amount%.
+reach_combo_100:manulcookie:4*rank:Your quick hands earned you %amount%.
+reach_combo_150:manulcookie:6*rank:Your quick hands earned you %amount%.
+reach_combo_200:manulcookie:8*rank:Your quick hands earned you %amount%.
+reach_combo_225:manulcookie:10*rank:Your quick hands earned you %amount%.

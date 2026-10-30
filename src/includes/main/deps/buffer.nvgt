@@ -63,7 +63,7 @@ buffers.insert_last(allbuffer);
 buffer buffer1(name);
 /* Background announcements queue behind whatever is being spoken instead of cutting it off;
 everything else, including keys the player presses, still interrupts. */
-if (name == "achievements" || name == "combos" || name == "events" || name == "ranks") buffer1.interrupt = false;
+if (name == "achievements" || name == "combos" || name == "events" || name == "quests" || name == "ranks") buffer1.interrupt = false;
 buffers.insert_last(buffer1);
 }
 void add_buffer_item(string buffername, string itemname, bool speakMessage = true)
