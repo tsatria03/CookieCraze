@@ -3,7 +3,7 @@
 gain_cookies:gain.ogg,give.ogg:1:cookies:15*rank:30*rank:false:100:Jackpot! You gained %amount% cookies!
 lose_cookies:lose.ogg,bee(1,4).ogg:2:cookies:15*rank:30*rank:false:100:Oh no! You lost %amount% cookies.
 gain_coins:gain.ogg,give.ogg,coin50.ogg:1:coins:15*rank:30*rank:false:100:Lucky flip! You gained %amount%.
-lose_coins:lose.ogg,cointoss.ogg:2:coins:15*rank:30*rank:false:100:Unfortunate flip! You lost %amount%.
+lose_coins:lose.ogg,misc/cointoss.ogg:2:coins:15*rank:30*rank:false:100:Unfortunate flip! You lost %amount%.
 gain_autocookie:gain.ogg,give.ogg:1:autocookie:1*rank:5*rank:false:100:Lucky flip! You gained %amount% auto-cookies. Your auto-baking rate has increased.
 lose_autocookie:lose.ogg:2:autocookie:1*rank:5*rank:false:100:Bad luck! You lost %amount% auto-cookies. Your auto-baking rate has decreased.
 gain_manulcookie:gain.ogg,give.ogg:1:manulcookie:1*rank:5*rank:false:100:Nice! You gained %amount% manual cookies. You can now bake more cookies with each click.
