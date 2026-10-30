@@ -120,11 +120,11 @@ void announce_ended_boosts(string[]@ ids, int[]@ slots)
 }
 
 /* A boost's strength after the prestige boost power upgrades: 20 percent power turns a 10 percent boost into 12.
-Discount boosts stop at 90 percent off, so no price ever drops to nothing. */
+Discount boosts stop at 99 percent off, so no price ever drops to nothing. */
 double boosted_amount(boost_item@ b)
 {
     double amt = b.amount * (1.0 + max(0.0, prestige_boost_power) / 100.0);
-    if (b.effect.find("discount") != -1) amt = min(90.0, amt);
+    if (b.effect.find("discount") != -1) amt = min(99.0, amt);
     return amt;
 }
 

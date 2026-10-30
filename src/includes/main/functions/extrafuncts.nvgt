@@ -835,14 +835,14 @@ void apply_all_prestige_store_upgrades()
         }
     }
 }
-// What a price is multiplied by under the prestige slot discounts, which never take off more than 90 percent.
+// What a price is multiplied by under the prestige slot discounts, which never take off more than 99 percent.
 double prestige_baking_slot_factor()
 {
-    return 1.0 - min(90.0, max(0.0, prestige_baking_slot_discount)) / 100.0;
+    return 1.0 - min(99.0, max(0.0, prestige_baking_slot_discount)) / 100.0;
 }
 double prestige_boost_slot_factor()
 {
-    return 1.0 - min(90.0, max(0.0, prestige_boost_slot_discount)) / 100.0;
+    return 1.0 - min(99.0, max(0.0, prestige_boost_slot_discount)) / 100.0;
 }
 
 /* Whether the Endless menus are open. Once this save has cleared every Standard upgrade they stay open, even if a later
@@ -898,7 +898,7 @@ void show_prestige_summary(int level, double rankReached, int questsDone, int qu
     if (pointsEarned > 0)
     {
         string pointWord = (pointsEarned == 1) ? "point" : "points";
-        txt += "Your dedication paid off! You earned " + format_number(pointsEarned) + " prestige " + pointWord + " to spend in the prestige store.\r\n";
+        txt += "Your dedication paid off! You earned " + format_number(pointsEarned) + " " + pointWord + " to spend in the prestige store.\r\n";
     }
     else
         txt += "No prestige points were earned this run. Complete quests before prestiging to earn points.\r\n";

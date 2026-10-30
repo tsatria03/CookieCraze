@@ -23,10 +23,10 @@ class prestige_run
 double prestige_coin_multiplier = 0;
 double prestige_cookie_multiplier = 0;
 double prestige_rank_discount = 0;
-// Percent off baking slots (auto, manual, automation) and boost slots (slots, activations); applied capped at 90.
+// Percent off baking slots (auto, manual, automation) and boost slots (slots, activations); applied capped at 99.
 double prestige_baking_slot_discount = 0;
 double prestige_boost_slot_discount = 0;
-// Percent stronger and percent longer every boost is. Discount boosts still never take off more than 90 percent.
+// Percent stronger and percent longer every boost is. Discount boosts still never take off more than 99 percent.
 double prestige_boost_power = 0;
 double prestige_boost_duration = 0;
 /* True once this save has cleared every Standard upgrade, which opens the Endless menus for good. Kept so an update that

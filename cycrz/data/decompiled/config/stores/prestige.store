@@ -191,8 +191,8 @@ headstartmenu:starting_boost_slots_11:100:1:10:false:false:3:Begin each run with
 
 endlesspassivemenu:endless_cookie_multiplier:1:1.01:10:false:true:1:An infinite 1% boost to all cookie production. Stacks with every purchase.
 endlesspassivemenu:endless_coin_multiplier:1:1.01:10:false:true:1:An infinite 1% boost to all money earned from selling cookies. Stacks with every purchase.
-endlesspassivemenu:endless_baking_slot_discount:1:1.01:10:false:true:1:An infinite 1% discount on auto baking slots, manual baking slots, and automating a slot. Stacks with every purchase, up to 90% off in total.
-endlesspassivemenu:endless_boost_slot_discount:1:1.01:10:false:true:1:An infinite 1% discount on boost slots and activating boosts. Stacks with every purchase, up to 90% off in total.
+endlesspassivemenu:endless_baking_slot_discount:1:1.01:10:false:true:1:An infinite 1% discount on auto baking slots, manual baking slots, and automating a slot. Stacks with every purchase, up to 99% off in total.
+endlesspassivemenu:endless_boost_slot_discount:1:1.01:10:false:true:1:An infinite 1% discount on boost slots and activating boosts. Stacks with every purchase, up to 99% off in total.
 endlesspassivemenu:endless_boost_power:1:1.01:10:false:true:1:An infinite 1% boost to the strength of every boost. Stacks with every purchase.
 endlesspassivemenu:endless_boost_duration:1:1.01:10:false:true:1:An infinite 1% boost to how long every boost you activate lasts. Stacks with every purchase.
 endlessheadstartmenu:endless_starting_coins:1:1.01:10:false:true:10000:Begin each run with an extra $100.00 in your pocket.
