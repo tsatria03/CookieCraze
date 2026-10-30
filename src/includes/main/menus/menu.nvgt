@@ -1030,6 +1030,20 @@ double prestige_endless_cost(prestige_store_item@ item, double fromCount, double
     if (raw > whole) whole += 1;
     return whole;
 }
+/* Where a prestige store menu opens: on the item you chose last time, the way the cookie store's shops do. A standard
+upgrade leaves the list once bought, and a category once it is empty, so when the remembered item is gone the menu opens
+at the place it had instead, on whatever took its place, never past the last item before back. */
+int prestige_menu_start(string lastId, int lastPos)
+{
+    if (lastId == "") return 0;
+    int found = m.find_item_by_id(lastId);
+    if (found != -1) return found;
+    int lastItem = int(m.items.length()) - 2;
+    if (lastItem < 0) return 0;
+    if (lastPos > lastItem) return lastItem;
+    return (lastPos < 0) ? 0 : lastPos;
+}
+
 void prestige_store_menu()
 {
     prestige_store_item[] items;
@@ -1087,6 +1101,8 @@ void prestige_store_menu()
                 if (double(prestige_points) >= nextCost)
                     affordableItems++;
             }
+            // A category with nothing left to buy, such as a fully bought standard one, is left out of the list.
+            if (totalItems == 0) continue;
             string itemWord = (totalItems == 1) ? "item" : "items";
             string label = menus[i].name + ". Contains " + string(affordableItems) + " out of " + string(totalItems) + " purchasable " + itemWord + ".";
             if (menus[i].description != "")
@@ -1095,12 +1111,14 @@ void prestige_store_menu()
         }
     }
     m.add_item("back", "back");
-    string pointWord = (prestige_points == 1) ? "point" : "points";
-    m.intro_text = "Prestige store. Please choose a category to browse. You have " + format_number(prestige_points) + " prestige " + pointWord + " available to spend.";
-    int mres = m.run(0, true);
+    m.intro_text = "Prestige store. Please choose a category to browse.";
+    int mres = m.run(prestige_menu_start(prestige_last_cat_id, prestige_last_cat_pos), true);
     string sel = m.get_item_id(mres);
+    if (mres != -1) { prestige_last_cat_id = sel; prestige_last_cat_pos = mres - 1; }
     if (mres == -1 || sel == "back")
     {
+        prestige_last_cat_id = "";
+        prestige_last_cat_pos = 0;
         questsmenu();
         return;
     }
@@ -1169,10 +1187,13 @@ void prestige_store_category_menu(prestige_store_item[]@ items, string chosenMen
     }
     m.add_item("back", "back");
     m.intro_text = chosenMenu + ".";
-    int mres = m.run(0, true);
+    int mres = m.run(prestige_menu_start(prestige_last_item_id, prestige_last_item_pos), true);
     string sel = m.get_item_id(mres);
+    if (mres != -1) { prestige_last_item_id = sel; prestige_last_item_pos = mres - 1; }
     if (mres == -1 || sel == "back")
     {
+        prestige_last_item_id = "";
+        prestige_last_item_pos = 0;
         prestige_store_menu();
         return;
     }

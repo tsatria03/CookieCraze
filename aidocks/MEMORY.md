@@ -31,7 +31,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Design review 7.0](project_design_review_7_0.md) — 2026-10-25 evaluation, potential improvements only: runaway 1.01 economy (rank 90 in ~5 min), prestige spam, endless quests pre-done after prestige, minigames lack purpose, settings as cheats, readme onboarding + agreed readme reorganization and missing keys, small config gate/category issues; #8 store prices don't drop after losing auto/manual cookies (proposed: scale purchase count by share kept).
 
 ## Release status
-- [Release status](project_release_status.md) — 7.5 TAGGED V7.50 (2026-10-29, 1964f3e), closed; 7.4 V7.40; tags = done with a version, releasing is separate (dev decides) — never assume a release; **7.5 RELEASED 2026-10-29, latest public release**; next is 7.6 (quest rewards first, then prize wheel).
+- [Release status](project_release_status.md) — 7.5 TAGGED V7.50 (2026-10-29, re-released, tag now on ea6b47d), closed; 7.4 V7.40; tags = done with a version, releasing is separate (dev decides) — never assume a release; **7.5 RELEASED 2026-10-29, latest public release**; next is 7.6 (quest rewards first, then prize wheel).
 
 ## Active plans (7.2)
 - [Config pack plan](project_config_pack_plan.md) — SHIPPED 7.2 (3 sections done): config moved to data/decompiled/config (loose, git) + data/compiled/config.crz (NVGT pack, gitignored); loose wins, pack is fallback; in-game export/import never delete; tools.py unchanged, dev deletes loose folder before compiling a release; miscellaneous menu has compile/decompile data config.
@@ -107,6 +107,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Prestige slot plan](project_prestige_slot_plan.md) — 7.5 DONE: prestige slot discounts, starting slots, boost power, boost duration (built, tested, documented); follow-up todo: 1 cent price floor.
 - [Prize wheel plan](project_prize_wheel_plan.md) — 7.6 minigame, design + 6-section plan APPROVED (not built): bet an item, 24-wedge wheel, spin-again pot, Bankrupt/Lose a Turn, jackpot, double, boost/ticket prizes, max_spins, roulette spin settings, own sounds only; unlocks rank 70, ladder shift to prestige 130; on the todo list.
 - [Speed bet removal plan](project_speed_bet_removal_plan.md) — 7.5: remove baking speed from minigame bets, flipper events and lottery prizes (approved lottery weights); keep in store and baker.event; 2 sections.
+- [Prestige menu memory plan](project_prestige_menu_memory_plan.md) — 7.6, planned first: prestige store remembers menu position like the cookie store; dev adding one more related item.
 - [Quest rewards plan](project_quest_rewards_plan.md) — 7.6 FIRST feature (approved, not built): quests pay a rank-scaled money default per difficulty (overrides allowed) the moment they finish, new quests buffer F6, questcomp.ogg, no back pay; on the todo list.
 - [Shared bet plan](project_shared_bet_plan.md) — 7.4 refactor PROPOSED (code #16): one betfuncts.nvgt for the 6 betting minigames; differences to keep; 5 sections.
 - [Double or nothing plan](project_double_or_nothing_plan.md) — SHIPPED 7.3: rank 50 red-or-black card gamble with a suit call (4x), 2 jokers as the edge, bank between rounds; 7 sections (achievements and quests separate), docs last.

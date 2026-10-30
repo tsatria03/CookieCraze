@@ -1047,8 +1047,6 @@ void set_save_slot(int slot)
 everywhere: M money, A auto cookies, S baking speed, N manual cookies (C cookies is handled by each screen). */
 void announce_money()
 {
-    pool.destroy_sound(coinslot);
-    if (coins > 0) coinslot = pool.play_stationary("sounds/misc/cointoss.ogg", false);
     speak_buffer("You have " + convert_to_currency(coins) + " available to spend", "misc");
 }
 void announce_auto_cookies()

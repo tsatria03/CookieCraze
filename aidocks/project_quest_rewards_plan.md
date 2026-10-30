@@ -1,6 +1,6 @@
 ---
 name: project_quest_rewards_plan
-description: "7.6 first feature, design + 2-section plan APPROVED (2026-10-29), not built: quests pay an item reward (money, cookies, auto cookies, manual cookies; rank-scaled like achievement rewards) the moment they finish, on top of prestige points. Dev chose this over permanent quest bonuses (which would duplicate the prestige store). Draft + open questions; nothing approved or built."
+description: "7.6 first feature, design + 2-section plan APPROVED (2026-10-29), not built: quests pay an item reward (money, cookies, auto cookies, manual cookies; rank-scaled like achievement rewards) the moment they finish, on top of prestige points. Dev chose this over permanent quest bonuses (which would duplicate the prestige store). All design questions answered."
 metadata:
   node_type: memory
   type: project

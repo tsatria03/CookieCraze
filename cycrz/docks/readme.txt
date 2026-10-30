@@ -362,8 +362,8 @@ Busy hands: every bake by hand makes 10 percent more cookies, for 12 minutes.
 Combo focus: your combo window lasts 10 percent longer, for 15 minutes.
 Helping hands: adding manual baking slots costs 10 percent less, for 7 minutes.
 Cookie frenzy: every bake, automatic or by hand, makes 10 percent more cookies, for 5 minutes.
-Clearance rack: single upgrades cost 10 percent less, for 8 minutes.
 Bargain hunter: bundles cost 10 percent less, for 10 minutes.
+Clearance rack: single upgrades cost 10 percent less, for 8 minutes.
 Market rush: cookies sell for 10 percent more, for 30 minutes.
 Cash jar: you earn 2 dollars for every rank you have, every second, whether or not you are baking, for 35 minutes. If you rank up while it runs, it pays more from that moment on.
 Rank rush: every bake earns 10 percent more experience, for 45 minutes.
@@ -642,7 +642,7 @@ The prestige store becomes available after your first prestige. A prestige store
 
 Prestige points are earned each time you prestige. The number awarded is the points_per_prestige setting in prestige.table multiplied by your total quest completions, counting every one-time quest you have ever finished plus every time you have completed an endless quest. This total carries across runs and keeps growing rather than resetting each prestige, so your payout increases the more quests you complete over your whole progression. However, you only earn points if at least one of your quests is complete when you prestige; a run where you complete nothing pays no points at all, and the prestige confirmation warns you before you go ahead. By default the points_per_prestige value also scales with your prestige level, so the deeper you prestige, the more each completion is worth.
 
-To check how many prestige points you have, open the prestige store. The store announces your current balance when it opens.
+To check how many prestige points you have, press P on the main game screen.
 
 The prestige store is divided into four categories.
 
@@ -670,7 +670,7 @@ Passive bonus upgrades take effect immediately after purchase and apply to your 
 
 Since each standard upgrade can only be bought once, the standard side of the store shrinks over time as you work through it. Once you have purchased everything available at your current prestige level, the standard categories have nothing left to offer until you reach a higher prestige level that unlocks new items. Once you have cleared every standard upgrade at prestige level 10, the Endless categories open up, and from that point your prestige points always have somewhere to go, because endless upgrades never run out. This makes the standard upgrades most valuable in the early and middle stages of your prestige journey, where they meaningfully reduce the grind of each new run, while the endless upgrades become the long term sink for every run after that.
 
-Each standard upgrade in the prestige store can only be purchased once, and once bought it is removed from the shop permanently. Endless upgrades are never removed, since they can always be bought again. If all standard upgrades in a category are purchased, entering that category shows a message instead of an empty menu. If all upgrades available at your current prestige level are purchased and the Endless categories are not yet open, opening the store returns you to the quests screen with a message reminding you that more upgrades unlock at higher prestige levels. Locked items and categories follow the same show locked items setting as the other shops. Items locked behind a higher prestige level show the required level when show locked items is enabled, or are hidden entirely when it is disabled. The Endless categories behave the same way, showing their requirement to clear the standard upgrades at prestige level 10 when show locked items is enabled, or hidden when it is disabled.
+Each standard upgrade in the prestige store can only be purchased once, and once bought it is removed from the shop permanently. Endless upgrades are never removed, since they can always be bought again. If all standard upgrades in a category are purchased, that category is removed from the store. The store also remembers the category and upgrade you chose last, the same way the cookie store's shops do, so after a purchase you stay on that upgrade, or on the one that took its place if it was a standard upgrade. Choosing back clears what that menu remembers. If all upgrades available at your current prestige level are purchased and the Endless categories are not yet open, opening the store returns you to the quests screen with a message reminding you that more upgrades unlock at higher prestige levels. Locked items and categories follow the same show locked items setting as the other shops. Items locked behind a higher prestige level show the required level when show locked items is enabled, or are hidden entirely when it is disabled. The Endless categories behave the same way, showing their requirement to clear the standard upgrades at prestige level 10 when show locked items is enabled, or hidden when it is disabled.
 
 All prestige store upgrades, costs, point requirements, and effects are fully configurable in prestige.store.
 
