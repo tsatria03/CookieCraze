@@ -43,11 +43,27 @@ SRC_DIR      = os.path.join(REPO_DIR, "src")                     # entry .nvgt l
 ASSETS_DIR   = os.path.join(REPO_DIR, NVGT_OUT)                  # asset folder (data/docks/sounds); its name == NVGT_OUT
 BUNDLE       = os.path.join(SRC_DIR, NVGT_OUT)                   # nvgt -c (run from src) produces this bundle folder
 VERSION_NVGT = os.path.join(SRC_DIR, "includes", "version.nvgt") # mirror of build/version.txt, read by the running game
+CONFIG_LOOSE = os.path.join(ASSETS_DIR, "data", "decompiled")              # editable config files, kept out of releases
+CONFIG_PACK  = os.path.join(ASSETS_DIR, "data", "compiled", "config.crz")  # the packed config a release ships instead
 ASSET_FOLDERS = ["data", "docks", "lib", "sounds"]              # copied into the bundle after compile (pragmas were dropped). lib is optional: skipped if the folder is absent (see the copy loop); it would hold runtime DLLs / plugins / helper exes if this game ever needs them.
 
 SKIP = 0
 DO = 1
 SILENT_SKIP = 2
+
+def stale_config_files():
+    """The loose config files changed after config.crz was made, newest first, as paths inside data/decompiled."""
+    if not os.path.isdir(CONFIG_LOOSE) or not os.path.isfile(CONFIG_PACK):
+        return []
+    pack_time = os.path.getmtime(CONFIG_PACK)
+    newer = []
+    for root, _dirs, files in os.walk(CONFIG_LOOSE):
+        for name in files:
+            path = os.path.join(root, name)
+            when = os.path.getmtime(path)
+            if when > pack_time:
+                newer.append((when, os.path.relpath(path, CONFIG_LOOSE).replace(os.sep, "/")))
+    return [name for _when, name in sorted(newer, reverse=True)]
 
 def ask(prompt):
     return input(f"{prompt} (Y/N): ").strip().upper() == "Y"
@@ -411,6 +427,30 @@ def run_release(skip_compile, skip_package, skip_release, skip_website, skip_emp
         do_compile = ask("Do you want to compile this project?")
 
     if do_compile:
+        # A release ships only the packed config, so the pack must exist before compiling. Games without loose config
+        # files skip this check.
+        if os.path.isdir(CONFIG_LOOSE) and not os.path.isfile(CONFIG_PACK):
+            print("WARNING: data/compiled/config.crz was not found.")
+            print("Make the pack first: in the game, choose miscellaneous menu from the main menu, then compile data config.")
+            print("Then compile again. Compilation cancelled.")
+            return
+        # A pack older than a loose file would ship old config, so name the newer files and let the user decide.
+        stale = stale_config_files()
+        if stale:
+            print("WARNING: these config files changed after config.crz was last made, so the release would not include")
+            print("those changes:")
+            for name in stale[:10]:
+                print(f"  {name}")
+            if len(stale) > 10:
+                print(f"  and {len(stale) - 10} more")
+            print("To include them, compile data config again in the game first.")
+            print()
+            if not interactive:
+                print("ERROR: Refusing to compile with an out of date config.crz in non-interactive mode.")
+                return
+            if not ask("Compile anyway with the older pack?"):
+                print("Compilation cancelled.")
+                return
         print("Compiling NVGT source...")
         sync_version_file(version)
         # Source compiles from src/; run nvgt -c there so the bundle lands in src/<name>.
@@ -429,6 +469,12 @@ def run_release(skip_compile, skip_package, skip_release, skip_website, skip_emp
                 print(f"ERROR: missing asset folder: {asset_src}")
                 return
             shutil.copytree(asset_src, os.path.join(BUNDLE, folder), dirs_exist_ok=True)
+        # Drop the loose config from the bundle only, so the release reads config.crz and players cannot edit the files
+        # without decompiling it. The loose files in the repo are left alone.
+        bundle_loose = os.path.join(BUNDLE, "data", "decompiled")
+        if os.path.isdir(bundle_loose):
+            shutil.rmtree(bundle_loose)
+            print("Removed the decompiled config folder from the bundle; the release uses config.crz.")
         print("Replacing compiled output in release folder...")
         dest = os.path.join(RELEASE_DIR, NVGT_OUT)
         if os.path.exists(dest):
