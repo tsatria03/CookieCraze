@@ -21,6 +21,26 @@ class prestige_store_item
     string description;
 }
 
+/* A prestige upgrade's name as players hear it, built from its id, which never changes since purchases are saved by
+it: underscores become spaces, the internal words autocookie, manualcookie, and coins read as auto cookies, manual
+cookies, and money, and the first letter is capitalized, so starting_autocookie_3 reads Starting auto cookies 3. */
+string prestige_item_name(string id)
+{
+    string[] words = id.split("_");
+    string name = "";
+    for (uint i = 0; i < words.length(); i++)
+    {
+        string w = words[i];
+        if (w == "") continue;
+        if (w == "autocookie") w = "auto cookies";
+        else if (w == "manualcookie" || w == "manulcookie") w = "manual cookies";
+        else if (w == "coin" || w == "coins") w = "money";
+        name += (name == "" ? "" : " ") + w;
+    }
+    if (name.length() == 0) return id;
+    return name.substr(0, 1).upper() + name.substr(1);
+}
+
 void parse_prestige_store(string filepath, prestige_store_item[]@ items_out, prestige_menu_def[]@ menus_out)
 {
     config_file f;

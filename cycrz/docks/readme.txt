@@ -2001,7 +2001,7 @@ menu
 The alias of the category this item belongs to.
 
 item_id
-The internal identifier for this upgrade. Must be unique across all entries. Also used as the display name in the shop, with underscores replaced by spaces.
+The internal identifier for this upgrade. Must be unique across all entries. The shop also builds the upgrade's name from it: underscores become spaces, the words autocookie, manualcookie, and coins read as auto cookies, manual cookies, and money, and the first letter is capitalized, so starting_autocookie_3 is shown as Starting auto cookies 3. Do not rename the id of an upgrade players may already own, since purchases are saved by id.
 
 The item_id also determines what effect the upgrade has. The game recognises the following prefixes.
 

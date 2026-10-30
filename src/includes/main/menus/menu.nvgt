@@ -1168,7 +1168,7 @@ void prestige_store_category_menu(prestige_store_item[]@ items, string chosenMen
                 reason = "Unlocked at prestige level " + string(items[i].min_level) + ".";
             else
                 reason = "Unlocked once you have purchased every standard prestige upgrade.";
-            m.add_item(string_replace(items[i].item_id, "_", " ", true) + ". " + reason + " Description: " + items[i].description, "locked" + string(i));
+            m.add_item(prestige_item_name(items[i].item_id) + ". " + reason + " Description: " + items[i].description, "locked" + string(i));
             continue;
         }
         if (items[i].infinite)
@@ -1177,12 +1177,12 @@ void prestige_store_category_menu(prestige_store_item[]@ items, string chosenMen
             double nextCost = prestige_endless_cost(items[i], owned, 1);
             double maxbuy = calc_max_buyable(double(prestige_points), owned, items[i].cost, items[i].cost_multiplier);
             string pointWord = (nextCost == 1) ? "point" : "points";
-            m.add_item(string_replace(items[i].item_id, "_", " ", true) + ", costs " + format_number(nextCost) + " prestige " + pointWord + ". You can buy " + format_number(maxbuy) + ". Description: " + items[i].description, "item" + string(i));
+            m.add_item(prestige_item_name(items[i].item_id) + ", costs " + format_number(nextCost) + " prestige " + pointWord + ". You can buy " + format_number(maxbuy) + ". Description: " + items[i].description, "item" + string(i));
         }
         else
         {
             string pointWord = (items[i].cost == 1) ? "point" : "points";
-            m.add_item(string_replace(items[i].item_id, "_", " ", true) + ", costs " + string(items[i].cost) + " prestige " + pointWord + ". Description: " + items[i].description, "item" + string(i));
+            m.add_item(prestige_item_name(items[i].item_id) + ", costs " + string(items[i].cost) + " prestige " + pointWord + ". Description: " + items[i].description, "item" + string(i));
         }
     }
     m.add_item("back", "back");
@@ -1223,7 +1223,7 @@ void prestige_store_category_menu(prestige_store_item[]@ items, string chosenMen
                 pool.play_stationary("sounds/store/error.ogg", false);
                 double one = prestige_endless_cost(items[i], owned, 1);
                 string oneWord = (one == 1) ? "point" : "points";
-                dlgmessage_return("Error! You can't afford another " + string_replace(items[i].item_id, "_", " ", true) + ". The next one costs " + format_number(one) + " prestige " + oneWord + ".");
+                dlgmessage_return("Error! You can't afford another " + prestige_item_name(items[i].item_id) + ". The next one costs " + format_number(one) + " prestige " + oneWord + ".");
                 prestige_store_category_menu(items, chosenMenu);
                 return;
             }
@@ -1257,7 +1257,7 @@ void prestige_store_category_menu(prestige_store_item[]@ items, string chosenMen
             double newNext = prestige_endless_cost(items[i], owned + qty, 1);
             string boughtWord = (totalCost == 1) ? "point" : "points";
             string nextWord = (newNext == 1) ? "point" : "points";
-            dlgmessage_return("Purchase successful! You bought " + format_number(qty) + " " + string_replace(items[i].item_id, "_", " ", true) + " for " + format_number(totalCost) + " prestige " + boughtWord + ". Next upgrade will cost " + format_number(newNext) + " prestige " + nextWord + ".");
+            dlgmessage_return("Purchase successful! You bought " + format_number(qty) + " " + prestige_item_name(items[i].item_id) + " for " + format_number(totalCost) + " prestige " + boughtWord + ". Next upgrade will cost " + format_number(newNext) + " prestige " + nextWord + ".");
             prestige_store_category_menu(items, chosenMenu);
             return;
         }
@@ -1276,7 +1276,7 @@ void prestige_store_category_menu(prestige_store_item[]@ items, string chosenMen
         pool.play_stationary("sounds/store/buy" + random(1, 4) + ".ogg", false);
         pool.play_stationary("sounds/store/order.ogg", false);
         string pointWord = (items[i].cost == 1) ? "point" : "points";
-        dlgmessage_return("Purchase successful! You bought " + string_replace(items[i].item_id, "_", " ", true) + " for " + string(items[i].cost) + " prestige " + pointWord + ".");
+        dlgmessage_return("Purchase successful! You bought " + prestige_item_name(items[i].item_id) + " for " + string(items[i].cost) + " prestige " + pointWord + ".");
         prestige_store_category_menu(items, chosenMenu);
         return;
     }
