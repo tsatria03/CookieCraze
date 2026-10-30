@@ -132,7 +132,7 @@ void add_boost_slots()
         for (uint i = 0; i < counts.length(); i++)
             m.add_item("Add " + format_number(counts[i]) + (counts[i] == 1 ? " boost slot for " : " boost slots for ") + convert_to_currency(boost_slot_cost(counts[i])), "add" + string(i));
         m.add_item("Back", "back");
-        m.intro_text = "Add boost slots menu. You have " + format_number(boostSlotCount) + (boostSlotCount == 1 ? " boost slot." : " boost slots.");
+        m.intro_text = "Add boost slots menu.";
         int start = 0;
         if (last_id != "")
         {

@@ -2062,7 +2062,7 @@ m.add_item("Add " + format_number(2500) + " auto slots for " + convert_to_curren
 m.add_item("Add " + format_number(5000) + " auto slots for " + convert_to_currency(calc_slot_cost(5000)), "add_slot11");
 m.add_item("Add " + format_number(10000) + " auto slots for " + convert_to_currency(calc_slot_cost(10000)), "add_slot12");
     m.add_item("Back", "back");
-    m.intro_text = "Auto slots menu.";
+    m.intro_text = "Add a slot menu.";
     int start_pos = 0;
     if (last_menu_id != "")
     {
@@ -2139,7 +2139,7 @@ void add_manual_slots()
     m.add_item("Add " + format_number(5000) + " manual slots for " + convert_to_currency(calc_slot_cost(5000, discounted_cost(manualSlotBaseCost, boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor()), manualSlotMultiplier)), "add_mslot11");
     m.add_item("Add " + format_number(10000) + " manual slots for "+ convert_to_currency(calc_slot_cost(10000, discounted_cost(manualSlotBaseCost, boost_cost_factor("manual_slot_discount") * prestige_baking_slot_factor()), manualSlotMultiplier)), "add_mslot12");
     m.add_item("Back", "back");
-    m.intro_text = "Manual slots menu. You have " + format_number(manualSlots) + " manual " + (manualSlots == 1 ? "slot" : "slots") + ".";
+    m.intro_text = "Add a slot menu.";
     int start_pos = 0;
     if (last_menu_id != "")
     {
@@ -2154,7 +2154,7 @@ void add_manual_slots()
     if (mres == -1 || sel == "back")
     {
         last_menu_id = "";
-        manage_baking_slots();
+        manual_slots_menu();
         return;
     }
     int count = 0;
@@ -2193,6 +2193,27 @@ void add_manual_slots()
             pool.destroy_sound(alertslot);
             add_manual_slots();
         }
+    }
+}
+// The manual slots menu, like the auto slots menu: your slot count, then add a slot, which opens the slot packs.
+void manual_slots_menu()
+{
+    setupmenu(false);
+    m.add_item("Add a slot", "add");
+    m.add_item("Back", "back");
+    m.intro_text = "Manual slots menu. You have " + format_number(manualSlots) + " manual " + (manualSlots == 1 ? "slot" : "slots") + ".";
+    int mres = m.run();
+    string selected = m.get_item_id(mres);
+    if (mres == -1 || selected == "back")
+    {
+        manage_baking_slots();
+        return;
+    }
+    if (selected == "add")
+    {
+        last_menu_id = "";
+        add_manual_slots();
+        return;
     }
 }
 void auto_slots_menu()
@@ -2249,8 +2270,7 @@ void manage_baking_slots()
             manage_baking_slots();
             return;
         }
-        last_menu_id = "";
-        add_manual_slots();
+        manual_slots_menu();
         return;
     }
     if (selected == "auto")
