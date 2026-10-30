@@ -226,7 +226,7 @@ While you play, the game fires random events that can affect your stats in unexp
 Events can give or take auto cookies, manual cookies, baking speed, and more.
 Some are percentage-based, and others are flat amounts.
 Events fire automatically during gameplay and are fully configurable in baker.event.
-Events are part of the challenge and cannot be switched off in the game settings. If their announcements get to be too much, press F3 to mute the events buffer: the events still happen, but you no longer hear them.
+You can switch events off in the game settings with two checkboxes, enable player events during auto baking and enable player events during manual baking, which sit just after the auto bake sound option and are both on by default. Turning one off stops that kind of event from happening at all. If you would rather keep the events but stop hearing them, press F3 to mute the events buffer instead: the events still happen, but you no longer hear them. Cookie flipper events are separate and are chosen in the flipper itself.
 
 Blackjack. Unlocked at rank 10.
 

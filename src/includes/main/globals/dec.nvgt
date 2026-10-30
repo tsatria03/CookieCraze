@@ -1,6 +1,9 @@
 const string APPDATA_DIR = DIRECTORY_APPDATA + "tsatria03/CookieCraze/";
 
 bool bakesfx = true;
+// Whether baker events can fire while auto baking and while baking by hand; game settings checkboxes, on by default.
+bool playervents = true;
+bool playervents2 = true;
 bool exitsfx = true;
 bool comborepeats = true;
 bool sessionresults = true;

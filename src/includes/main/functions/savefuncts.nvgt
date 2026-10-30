@@ -574,6 +574,14 @@ if(st.d.exists("bakesfx"))
 {
 bakesfx=st.read_bool("bakesfx");
 }
+if(st.d.exists("playervents"))
+{
+playervents=st.read_bool("playervents");
+}
+if(st.d.exists("playervents2"))
+{
+playervents2=st.read_bool("playervents2");
+}
 if(st.d.exists("exitsfx"))
 {
 exitsfx=st.read_bool("exitsfx");
@@ -648,6 +656,8 @@ main.table. Older gamesets.crz files still hold them, but they are never read ag
 void reset_game_settings()
 {
 bakesfx=true;
+playervents=true;
+playervents2=true;
 exitsfx=true;
 comborepeats=true;
 sessionresults=true;
@@ -685,6 +695,8 @@ writepreffs2();
 void writepreffs()
 {
 st.add("bakesfx",bakesfx);
+st.add("playervents",playervents);
+st.add("playervents2",playervents2);
 st.add("exitsfx",exitsfx);
 st.add("comborepeats",comborepeats);
 st.add("sessionresults",sessionresults);

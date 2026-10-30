@@ -1,6 +1,6 @@
 ---
 name: project_prize_wheel_plan
-description: "Planned minigame (7.6 or later, IN DISCUSSION 2026-10-29): a prize wheel that stands apart from the cookie flipper — fixed weighted wheel, spin-again pot with Bankrupt and Lose a Turn, prizes the flipper can't give; achievements and quests wanted. Draft blueprint + open questions; nothing approved or built."
+description: "7.6 minigame, design + 6-section plan APPROVED 2026-10-29, not built: bet an item, 24-wedge wheel, spin-again pot, Bankrupt/Lose a Turn, jackpot, double, boost/ticket prizes, max_spins, roulette spin settings, own sounds; unlocks rank 70 with a ladder shift to prestige 130. **Moved to 7.7 (dev, 2026-10-30).** Balance settled: 4 Bankrupt wedges."
 metadata:
   node_type: memory
   type: project
@@ -18,7 +18,7 @@ The flipper is free, 50/50 good or bad, you pick its events, and its outcomes ar
 - **Spin-again pot:** prize wedges add to a round pot; after each spin you spin again or bank. **Bankrupt** empties the pot and ends the round; **Lose a Turn** ends the round but you keep (bank) the pot — the TV show's real rules.
 - **Prizes the flipper can't give:** a rare **jackpot**, a **free boost** copy, a **scratch ticket**, a **double** wedge that doubles the pot, plus rank-scaled money/cookies/auto cookies/manual cookies/speed.
 
-## Draft config (wheel table)
+## Draft config (wheel table) — SUPERSEDED by the example table format below
 
 Settings: unlock/entry cost fields, spin timing (ticks, delay, growth — as roulette), sounds, messages with tokens. Wedges section, one line per wedge kind: `id:Name:count:type:target:min:max:sound:message` — count = how many wedges of the wheel it covers (its odds = count / total); type = prize | jackpot | double | boost | ticket | nothing | bankrupt | lose_turn; amounts use rank operators like flipper.event.
 
@@ -49,7 +49,11 @@ Rounds played, spins, rounds banked, bankrupts, lose a turns, jackpots (signatur
 
 Format: settings (min_bet, max_bet, confirm_threshold, max_spins=10, roulette spin timing), sounds (spin, land, bet(1,3), bank), messages (start, bank, limit), then [wedges] `Name:count:type:amount:sound:message` (types prize/double/boost/ticket/nothing/lose_turn/bankrupt; amount = multiple of the bet, or copies for boost/ticket; tokens %wedge% %amount% %item% %pot% %bet% %spins% %boost% %ticket%). **Simulation (best play by dynamic programming, 10-spin limit):** the "about half / 1x / 2x" sizes were far too generous (best play returned 1.3 to 1.7 times the bet). Example uses small 0.05, medium 0.1, big 0.3, huge 0.6, jackpot 3 = best play returns about 0.94 (6% house edge). **Finding to raise in section 1:** with only 2 Bankrupt wedges in 24, best play is nearly always to spin to the limit (banking after one spin returns about 0.22); banking only pays off once the pot passes roughly 5 times the bet, so the spin-or-bank choice rarely matters. Options: more Bankrupt wedges, a bigger double/jackpot pull, or accept it.
 
-## Section plan (APPROVED by the dev 2026-10-29; for 7.6 after quest rewards ([[project_quest_rewards_plan]] is 7.6's first feature), not to be built until the dev says so; on the todo list as Unfinished)
+## Balance decision (dev, 2026-10-30): 4 Bankrupt wedges
+
+Settles the spin-or-bank finding. Wheel stays 24 wedges: small 5, **medium 4 (was 6)**, big 3, huge 1, jackpot 1, double 1, free boost 1, scratch ticket 1, nothing 1, lose a turn 2, **bankrupt 4 (was 2)**. Prizes about 1.6 times the example: small 0.08, medium 0.16, big 0.48, huge 0.96, jackpot 4.8 times the bet (fine-tune by simulation when writing the table; a rounded 0.08/0.15/0.5/1/5 set returned 98%, too generous). Simulation (10-spin limit): best play 95%, always spinning 72%, banking pays off from about 2.75 times the bet — so the choice matters. Bankrupt comes up 1 spin in 6.
+
+## Section plan (APPROVED by the dev 2026-10-29; **moved to 7.7 (dev, 2026-10-30)**, not to be built until the dev says so; on the todo list as Unfinished)
 
 1. **Table + parser** — prize_wheel.table (settings incl. max_spins, spin timing, sounds, messages; [wedges] with the approved 24-wedge wheel, multipliers set by a simulation so best play loses a little); parsers/prize_wheel_table.nvgt; parse call + load guard in cycrz.nvgt; reload_config with empty checks. Tests: launches; Control L with a broken table is refused.
 2. **The game** — state and stats (dec, save/load, new-game reset, SESSION_STATS, quest_baseline_stats, statistics screen block), prizewheelgame() + input (bet via betfuncts, spin loop, pot, spin again / bank, Bankrupt, Lose a Turn, double, jackpot, boost and ticket prizes, max_spins auto-bank, B key, wheel info button, auto/manual checkbox), minigame_input dispatch, panel button at rank 70, reset_game_settings default. Tests: several.
