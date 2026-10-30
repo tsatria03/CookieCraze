@@ -32,7 +32,7 @@ class boost_item
 
 // Every effect a boost line may name. A line with any other effect is skipped, since nothing would apply it.
 const array<string> BOOST_EFFECTS = {"auto_production", "manual_production", "all_production", "bake_speed", "combo_window",
-    "sell_price", "experience", "cash_per_second", "singles_discount", "bundles_discount", "auto_slot_discount",
+    "sell_price", "experience", "cash_per_second", "singles_discount", "bundles_discount", "store_discount", "auto_slot_discount",
     "manual_slot_discount", "automation_discount"};
 // The shortest a boost may run, in seconds; anything shorter is raised to it.
 const int BOOST_MIN_DURATION = 30;

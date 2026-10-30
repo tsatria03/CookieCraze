@@ -353,7 +353,7 @@ Boosts. Unlocked at rank 100.
 Advanced. Timed bonuses that reward planning which boosts to run, and when.
 Buy boosts in the cookie store, then run them in the boost slot manager for a temporary bonus.
 
-There are thirteen boosts. Each one lasts a set time once it starts.
+There are fourteen boosts. Each one lasts a set time once it starts.
 
 Oven overdrive: automatic baking makes 10 percent more cookies, for 25 minutes.
 Turbo bake: automatic baking happens 10 percent faster, for 20 minutes. The time between bakes never drops below 50 milliseconds.
@@ -365,6 +365,7 @@ Helping hands: adding manual baking slots costs 10 percent less, for 7 minutes.
 Cookie frenzy: every bake, automatic or by hand, makes 10 percent more cookies, for 5 minutes.
 Bargain hunter: bundles cost 10 percent less, for 10 minutes.
 Clearance rack: single upgrades cost 10 percent less, for 8 minutes.
+Shopping spree: single upgrades and bundles both cost 10 percent less, for 5 minutes.
 Market rush: cookies sell for 10 percent more, for 30 minutes.
 Cash jar: you earn 2 dollars for every rank you have, every second, whether or not you are baking, for 35 minutes. If you rank up while it runs, it pays more from that moment on.
 Rank rush: every bake earns 10 percent more experience, for 45 minutes.
@@ -1036,7 +1037,7 @@ boost_id
 A unique id. The spoken name is built from it, so cookie_frenzy is spoken as Cookie frenzy.
 
 effect
-What the boost does. A line with any other effect is skipped. auto_production, manual_production, and all_production raise how many cookies automatic bakes, bakes by hand, or both make. bake_speed makes automatic baking faster. combo_window lengthens the combo window. sell_price raises the sell price. experience raises the experience every bake earns. singles_discount, bundles_discount, auto_slot_discount, manual_slot_discount, and automation_discount lower those prices. cash_per_second pays money every second.
+What the boost does. A line with any other effect is skipped. auto_production, manual_production, and all_production raise how many cookies automatic bakes, bakes by hand, or both make. bake_speed makes automatic baking faster. combo_window lengthens the combo window. sell_price raises the sell price. experience raises the experience every bake earns. singles_discount, bundles_discount, auto_slot_discount, manual_slot_discount, and automation_discount lower those prices, and store_discount lowers both single upgrade and bundle prices. cash_per_second pays money every second.
 
 base_cost and cost_multiplier
 The price of the first copy, and how much each copy you hold raises the next one's price.

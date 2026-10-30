@@ -31,6 +31,7 @@ manualmenu:helping_hands:manual_slot_discount:1000000:1.01:10:420:0:false:Adding
 generalmenu:cookie_frenzy:all_production:75000000:1.01:10:300:0:false:Every bake, automatic or by hand, makes %amount% percent more cookies for %duration%.
 generalmenu:bargain_hunter:bundles_discount:30000000:1.01:10:600:0:false:Bundles cost %amount% percent less for %duration%.
 generalmenu:clearance_rack:singles_discount:25000000:1.01:10:480:0:false:Single upgrades cost %amount% percent less for %duration%.
+generalmenu:shopping_spree:store_discount:60000000:1.01:10:300:0:false:Single upgrades and bundles both cost %amount% percent less for %duration%.
 generalmenu:market_rush:sell_price:40000000:1.01:10:1800:0:false:Cookies sell for %amount% percent more for %duration%.
 generalmenu:cash_jar:cash_per_second:35000000:1.01:200*rank:2100:0:false:You earn %amount% every second for %duration%, whether or not you are baking.
 generalmenu:rank_rush:experience:50000000:1.01:10:2700:0:false:Every bake earns %amount% percent more experience for %duration%.
