@@ -19,7 +19,7 @@ From the main menu, choose game menu, then new game, and pick an empty save slot
 Your first few minutes.
 
 You start with 10 cents and 1 manual cookie, so each press of the bake cookies button bakes one cookie. The bake cookies button is focused when the game screen opens, so just press enter or space, or press Alt B from anywhere on the screen.
-To earn money, open the cookie store with Alt S, choose sell cookies, and press enter to sell everything you have. Each cookie sells for 50 cents by default.
+To earn money, open the cookie store with Alt S, choose sell cookies, and press enter to sell everything you have. Each cookie sells for $1.00 by default.
 In the cookie store, choose buy upgrades, then singles, then automatic baking items, and buy an auto cookie. It costs 10 cents, so you can afford one straight away.
 Once you have at least one auto cookie, turn on baking mode with Alt O. Your cookies now bake by themselves on a timer, even while you are not pressing anything, and you can keep pressing the bake cookies button at the same time for extra cookies on top.
 From there, keep selling and buying more auto cookies, manual cookies, and baking speed. Baking earns experience, and every rank you reach pays you money. Ranks 10 through 90 unlock the minigames and other features along the way.
@@ -132,7 +132,7 @@ You can bake manually by pressing the bake button, or let auto-baking handle it 
 
 To sell cookies and earn money, enter the cookie store and choose the sell option. You will be prompted to type how many cookies you want to sell, with the maximum amount already filled in. Press enter to sell everything you have, or type a smaller number to sell only part of your supply.
 
-Each cookie sells for 50 cents by default. Modders can change the price in main.table. The more you bake before selling, the larger your payout.
+Each cookie sells for $1.00 by default. Modders can change the price in main.table. The more you bake before selling, the larger your payout.
 
 Baking mode is a toggle that activates automatic cookie production. To enable it, you need at least one auto cookie. Once active, cookies are baked automatically on a timed cycle without any input needed.
 
@@ -1127,7 +1127,7 @@ The percent of bake button presses on which a baker event can fire. Defaults to 
 Selling section.
 
 sell_price
-How much each cookie sells for, in dollars. Defaults to 0.5, which is 50 cents. The lowest is 0.01, one cent, and there is no highest. Lottery cookie prizes and stores that charge in cookies use this price too.
+How much each cookie sells for, in dollars. Defaults to 1, which is $1.00. The lowest is 0.01, one cent, and there is no highest. Lottery cookie prizes and stores that charge in cookies use this price too.
 
 achievements.table
 

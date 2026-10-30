@@ -35,7 +35,7 @@ void reset_main_table_defaults()
     cookieExpMod = 1;
     evchanse = 2;
     evchanse2 = 2;
-    cookieSellPrice = 50;
+    cookieSellPrice = 100;
 }
 
 // A value is used only if it is a plain number, such as 10, 1.01, or 0.5; anything else keeps the default.
