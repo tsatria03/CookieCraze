@@ -23,6 +23,10 @@ class achievement_item
 void parse_achievements(string filepath, achievement_item[]@ items, achievement_category[]@ categories)
 {
     dictionary categoryAliases;
+    // Rewards from the optional [rewards] section, applied once every achievement is read: id -> target|amount|message.
+    string[] rewardIds;
+    string[] rewardLines;
+    string section = "";
     config_file f;
     if (!f.open(filepath))
         return;
@@ -33,6 +37,22 @@ void parse_achievements(string filepath, achievement_item[]@ items, achievement_
             line = line.substr(0, line.length() - 1);
         if (line.length() == 0 || line.substr(0, 2) == "//" || line.substr(0, 1) == "#" || line.substr(0, 1) == ";")
             continue;
+        /* Section headers. Everything before the first one is categories and achievements, as in files from before
+        sections existed; [rewards] lists achievement_id:target:amount:message, the message free to contain colons. */
+        if (line.substr(0, 1) == "[" && line.substr(line.length() - 1) == "]")
+        {
+            section = line;
+            continue;
+        }
+        if (section == "[rewards]")
+        {
+            string[] rparts = parse_delimited_line(line, 3);
+            if (rparts.length() < 3 || rparts[0] == "" || rparts[1] == "" || rparts[2] == "") continue;
+            rewardIds.insert_last(rparts[0]);
+            rewardLines.insert_last(line.substr(rparts[0].length() + 1));
+            continue;
+        }
+        if (section != "") continue;
         int eq = line.find("=");
         if (eq != -1)
         {
@@ -89,6 +109,19 @@ void parse_achievements(string filepath, achievement_item[]@ items, achievement_
         items.insert_last(item);
     }
     f.close();
+    // A reward in the [rewards] section replaces any reward written on the achievement's own line.
+    for (uint r = 0; r < rewardIds.length(); r++)
+    {
+        string[] rp = parse_delimited_line(rewardLines[r], 2);
+        for (uint i = 0; i < items.length(); i++)
+        {
+            if (items[i].id != rewardIds[r]) continue;
+            items[i].reward_target = rp[0];
+            items[i].reward_amount = (rp.length() >= 2) ? rp[1] : "";
+            items[i].reward_message = (rp.length() >= 3) ? rp[2] : "";
+            break;
+        }
+    }
 }
 
 achievement_item[] parse_achievements_items(string filepath)

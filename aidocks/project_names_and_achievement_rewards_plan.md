@@ -1,6 +1,6 @@
 ---
 name: project_names_and_achievement_rewards_plan
-description: "7.6 entries 8-9 APPROVED (2026-10-30): proper prestige store item names (prestige_item_name: autocookie -> auto cookies, manualcookie -> manual cookies, coin/coins -> money, capitalized; ids unchanged) and achievement rewards moved into a [rewards] section of achievements.table (old inline fields still read). Built one at a time, prestige names first."
+description: "7.6 entries 8-9 DONE (2026-10-30): proper prestige store item names (prestige_item_name: autocookie -> auto cookies, manualcookie -> manual cookies, coin/coins -> money, capitalized; ids unchanged) and achievement rewards moved into a [rewards] section of achievements.table (old inline fields still read). Built one at a time, prestige names first."
 metadata:
   node_type: memory
   type: project
@@ -21,3 +21,4 @@ achievements.table gains section headers: everything before the first header is 
 ## Build log
 
 - **Part 1 (prestige names) BUILT, PASSED, DOCS DONE 2026-10-30:** prestige_item_name in prestige_store.nvgt, used in the 6 menu.nvgt spots; Endless Head Start read Endless starting money / auto cookies / manual cookies; a purchase read "You bought 1 Endless money multiplier for 145 prestige points". Readme item_id reference updated; 7.6 changelog entry 8 of 10.
+- **Part 2 (achievement rewards section) BUILT, PASSED, DOCS DONE 2026-10-30:** 45 reward lines stripped to 9 fields, [rewards] section appended (verified: old and new files parse to identical achievements + rewards); parser reads section headers (before the first header = categories + achievements), applies [rewards] after reading, section wins over inline fields. Test: Slot Singularity temporarily at 1 paid 528.75 thousand auto cookies (50*rank at rank 10,575); dev saved first and quit without saving; achievements.table restored. Readme achievements.table reference + section-header overview updated; 7.6 changelog entry 9 of 10.

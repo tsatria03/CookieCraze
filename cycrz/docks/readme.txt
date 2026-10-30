@@ -724,7 +724,7 @@ Each functional header has a warning comment placed directly below it inside the
 Seven of the remaining files, baker.event, flipper.event, jacks.table, singles.store, tickets.store, boosts.store, and prestige.store, do not use functional section headers. Every line in those files follows the same format throughout.
 They do have commented section headers starting with a semicolon for readability, but those are purely cosmetic and can be removed or changed freely.
 
-achievements.table uses a category alias system at the top of the file, the same way singles.store defines shop menus. Category aliases are defined as alias=Full Category Name lines before any achievement entries.
+achievements.table uses an optional [rewards] section header at the end of the file for achievement rewards, and a category alias system at the top of the file, the same way singles.store defines shop menus. Category aliases are defined as alias=Full Category Name lines before any achievement entries.
 Each achievement line then begins with its category alias as the first field. The categories drive the achievements menu and achievement statistics screen dynamically, so the order and names are entirely up to you.
 
 bundles.store uses one functional section header, [bundles], which marks where the bundle definitions begin.
@@ -1145,7 +1145,7 @@ You cannot hide a category directly. Instead, the game hides a category automati
 
 Achievement format: category:id:stat:threshold:silent:hidden:name:description:hint
 
-An achievement can optionally grant a reward when unlocked by appending three more fields: category:id:stat:threshold:silent:hidden:name:description:hint:reward_target:reward_amount:reward_message. Most achievements leave these off and grant nothing.
+An achievement can optionally grant a reward when unlocked. Rewards are listed in a rewards section at the end of the file, described below, so most achievement lines stay short. Older files that append the three reward fields to the achievement line itself, category:id:stat:threshold:silent:hidden:name:description:hint:reward_target:reward_amount:reward_message, still work, and a reward in the rewards section replaces one written on the line. Most achievements grant nothing.
 
 category
 The alias of the category this achievement belongs to, as defined in the aliases section above.
@@ -1257,8 +1257,13 @@ Required. Set to true to completely hide this achievement from the achievements 
 Recommended for achievements tied to content locked behind a rank, such as minigames, so players are not shown entries for systems they have not encountered yet. Once unlocked, a hidden achievement appears in both screens like any other achievement.
 Hidden achievements are also excluded from the total count until unlocked. For example, if there are 207 achievements but 128 are hidden and none unlocked, the menu will show 0 of 79, giving no indication that hidden achievements exist at all.
 
+Rewards section.
+Format: achievement_id:reward_target:reward_amount:reward_message
+
+Optional. Starts with a [rewards] header after the last achievement. Each line gives one achievement its reward, using the achievement's id. The message may contain colons. Everything before the first section header is read as categories and achievements, so files without a rewards section work as before. The three reward fields are described below.
+
 reward_target
-Optional. The item granted when this achievement is unlocked. Must be one of coins for money, cookies, autocookie for auto cookies, manulcookie for manual cookies, or cookiespeed for baking speed. No achievement that ships with the game gives baking speed, but the option is still there for modders. Leave the three reward fields off entirely to grant nothing.
+Optional. The item granted when this achievement is unlocked. Must be one of coins for money, cookies, autocookie for auto cookies, manulcookie for manual cookies, or cookiespeed for baking speed. No achievement that ships with the game gives baking speed, but the option is still there for modders. Leave an achievement out of the rewards section to grant nothing.
 
 reward_amount
 Optional. How much of the item to grant. Supports rank scaling, so 2000*rank grants two thousand times the player's current rank, evaluated at the moment of unlock. A plain number like 500 grants a fixed amount.
