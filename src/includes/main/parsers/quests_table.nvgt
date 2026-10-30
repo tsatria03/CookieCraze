@@ -259,7 +259,9 @@ void check_quest_rewards()
 }
 
 /* Pays a finished quest: its own reward from the [rewards] section, or else the default for its difficulty, using the
-highest difficulty with a default at or below it. Amounts can use rank, such as 400*rank. */
+highest difficulty with a default at or below it. Amounts can use rank, such as 400*rank. An endless quest is paid by the
+difficulty it starts at in quests.table, not the one it has climbed to: it returns every run, and its reward already grows
+with your rank, so paying the top default each time would make it worth more than every other quest. */
 void grant_quest_reward(quest_item@ q)
 {
     string target = "";
@@ -277,7 +279,13 @@ void grant_quest_reward(quest_item@ q)
     }
     if (!found && questDefaultRewardTarget.length() == 11)
     {
-        for (int d = endless_difficulty(q); d >= 1; d--)
+        int startDifficulty = q.difficulty;
+        if (q.infinite)
+        {
+            for (uint i = 0; i < loadedQuests.length(); i++)
+                if (loadedQuests[i].id == q.id) { startDifficulty = loadedQuests[i].difficulty; break; }
+        }
+        for (int d = startDifficulty; d >= 1; d--)
         {
             if (questDefaultRewardTarget[d] == "") continue;
             target = questDefaultRewardTarget[d];
