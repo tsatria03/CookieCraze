@@ -252,6 +252,8 @@ int prestige_last_cat_pos = 0;
 string prestige_last_item_id = "";
 int prestige_last_item_pos = 0;
 string last_menu_id = "";
+// The sell menu's last chosen line, so selling again starts there.
+string sell_last_id = "";
 string shopmenu_last_id = "";
 int playergender = 0;
 string currentSaveSlot = APPDATA_DIR + "saves/game1.crz";

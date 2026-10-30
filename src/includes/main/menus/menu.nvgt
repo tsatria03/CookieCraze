@@ -610,27 +610,7 @@ shopmenu();
 }
 if(stm=="slm")
 {
-vd.set_disallowed_chars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()[]{};:'\"\\|,.<>?/+-=`~_", false, "This character is not allowed.");
-double sellableCookies = floor(cookies);
-string sailam=vd.input_box("","How many cookies would you like to sell? Press enter to sell the maximum amount.", string(sellableCookies));
-double cookiesToSell = floor(string_to_number(sailam));
-    if (cookiesToSell <= 0)
-    {
-        pool.destroy_sound(alertslot);
-        pool.play_stationary("sounds/store/fail.ogg", false);
-        dlgmessage_return("Error! Please enter a valid number of cookies to sell!");
-        shopmenu();
-    }
-    if (cookiesToSell > sellableCookies)
-        cookiesToSell = sellableCookies;
-double totalCoinsEarned = safe_cap(cookiesToSell * boosted_sell_price());
-if (prestige_coin_multiplier > 0) totalCoinsEarned *= 1.0 + (prestige_coin_multiplier / 100.0);
-cookies -= cookiesToSell;
-coins += totalCoinsEarned;
-stat_coins_earned += totalCoinsEarned;
-play_coin_sound(totalCoinsEarned);
-dlgmessage_return("Successfully sold " + count_text(cookiesToSell, "cookie", "cookies") + " for " + convert_to_currency(totalCoinsEarned) + "!");
-shopmenu();
+sell_cookies_menu();
 }
 if(stm=="back")
 {
@@ -1064,7 +1044,7 @@ void prestige_store_menu()
     }
     if (!anyLeft)
     {
-        dlgmessage_return("You have purchased every available upgrade in the prestige store. Keep prestiging to unlock more.");
+        dlgmessage_return("You have purchased every available upgrade in the store. Keep prestiging to unlock more.");
         questsmenu();
         return;
     }
@@ -1080,7 +1060,7 @@ void prestige_store_menu()
             if (prestigeLevel < menus[i].min_level)
                 reason = "Unlocked at prestige level " + string(menus[i].min_level) + ".";
             else
-                reason = "Unlocked once you have purchased every standard prestige upgrade.";
+                reason = "Unlocked once you have purchased every standard upgrade.";
             string label = menus[i].name + ". " + reason;
             if (menus[i].description != "")
                 label += " Description: " + menus[i].description;
@@ -1130,7 +1110,7 @@ void prestige_store_menu()
         if (prestigeLevel < menus[idx].min_level)
             reason = "You need to reach prestige level " + string(menus[idx].min_level) + " to access it.";
         else
-            reason = "You need to purchase every standard prestige upgrade first.";
+            reason = "You need to purchase every standard upgrade first.";
         dlgmessage_return("This category is locked. " + reason);
         prestige_store_menu();
         return;
@@ -1167,7 +1147,7 @@ void prestige_store_category_menu(prestige_store_item[]@ items, string chosenMen
             if (prestigeLevel < items[i].min_level)
                 reason = "Unlocked at prestige level " + string(items[i].min_level) + ".";
             else
-                reason = "Unlocked once you have purchased every standard prestige upgrade.";
+                reason = "Unlocked once you have purchased every standard upgrade.";
             m.add_item(prestige_item_name(items[i].item_id) + ". " + reason + " Description: " + items[i].description, "locked" + string(i));
             continue;
         }
@@ -1206,7 +1186,7 @@ void prestige_store_category_menu(prestige_store_item[]@ items, string chosenMen
             if (prestigeLevel < items[i].min_level)
                 reason = "You need to reach prestige level " + string(items[i].min_level) + " to purchase it.";
             else
-                reason = "You need to purchase every standard prestige upgrade first.";
+                reason = "You need to purchase every standard upgrade first.";
             dlgmessage_return("This item is locked. " + reason);
             prestige_store_category_menu(items, chosenMenu);
             return;
@@ -2046,6 +2026,60 @@ void bundlecategorymenu(bundle_item[]@ bundles, string chosenMenu, string chosen
     }
 }
 
+// What selling count cookies pays right now: the sell price with any sell price boosts, then the prestige money multiplier.
+double sell_payout(double count)
+{
+    double total = safe_cap(count * boosted_sell_price());
+    if (prestige_coin_multiplier > 0) total = safe_cap(total * (1.0 + prestige_coin_multiplier / 100.0));
+    return total;
+}
+
+/* The cookie store's sell menu, laid out like the add a slot menus: packs of cookies, each with what it really pays,
+and sell all at the end. Choosing one sells straight away and comes back to the same line. */
+void sell_cookies_menu()
+{
+    double[] packs = {1.0, 5.0, 10.0, 25.0, 50.0, 100.0, 250.0, 500.0, 1000.0, 2500.0, 5000.0, 10000.0};
+    double owned = floor(cookies);
+    setupmenu(false);
+    for (uint i = 0; i < packs.length(); i++)
+        m.add_item("Sell " + count_text(packs[i], "cookie", "cookies") + " for " + convert_to_currency(sell_payout(packs[i])), "sell" + string(i));
+    m.add_item("Sell all " + count_text(owned, "cookie", "cookies") + " for " + convert_to_currency(sell_payout(owned)), "sellall");
+    m.add_item("Back", "back");
+    m.intro_text = "Sell cookies menu.";
+    int start_pos = 0;
+    if (sell_last_id != "")
+    {
+        int found = m.find_item_by_id(sell_last_id);
+        if (found != -1) start_pos = found;
+    }
+    int mres = m.run(start_pos, true);
+    string sel = m.get_item_id(mres);
+    if (mres != -1) sell_last_id = sel;
+    if (mres == -1 || sel == "back")
+    {
+        sell_last_id = "";
+        shopmenu();
+        return;
+    }
+    double count = (sel == "sellall") ? owned : packs[string_to_int(sel.substr(4))];
+    if (count < 1 || count > owned)
+    {
+        pool.destroy_sound(alertslot);
+        pool.play_stationary("sounds/store/fail.ogg", false);
+        dlgmessage_return(owned < 1 ? "Error! You have no cookies to sell!" : "Error! You don't have enough cookies to sell that many!");
+        sell_cookies_menu();
+        return;
+    }
+    double earned = sell_payout(count);
+    cookies -= count;
+    coins += earned;
+    stat_coins_earned += earned;
+    play_coin_sound(earned);
+    // Spoken rather than shown in a dialog, so selling again is one press away, like adding slots.
+    speak("Successfully sold " + count_text(count, "cookie", "cookies") + " for " + convert_to_currency(earned) + "!");
+    sell_cookies_menu();
+}
+
 void add_auto_slots()
 {
     setupmenu(false);
@@ -2714,14 +2748,14 @@ void questsmenu()
 
 void start_prestige()
 {
-    string confirmText = "Are you sure you want to prestige? Your cookies, money, rank, upgrades, and baking slots will be reset. Your achievements, minigame stats, and prestige bonus will be kept.";
+    string confirmText = "Are you sure you want to prestige? Your cookies, money, rank, upgrades, and baking slots will be reset. Your achievements, minigame stats, and permanent upgrades will be kept.";
     bool willGetReward = quests_reward_earned();
     if (!willGetReward)
-        confirmText += " Warning: you have not met the quest requirement, so you will not receive any reward for this prestige.";
+        confirmText += " Warning: you have not met the quest requirement, so you will not receive any reward this time.";
     else
         confirmText += " You have met the quest requirement and will receive your reward.";
     if (!any_quest_complete())
-        confirmText += " You have not completed any quests this run, so you will not earn any prestige points either.";
+        confirmText += " You have not completed any quests this run, so you will not earn any points either.";
     if (!yes_no(confirmText))
     {
         // Prestige is only started from the quests screen, so a cancel goes back there rather than to the main game screen.

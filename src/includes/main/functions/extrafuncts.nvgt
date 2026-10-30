@@ -901,7 +901,7 @@ void show_prestige_summary(int level, double rankReached, int questsDone, int qu
         txt += "Your dedication paid off! You earned " + format_number(pointsEarned) + " " + pointWord + " to spend in the prestige store.\r\n";
     }
     else
-        txt += "No prestige points were earned this run. Complete quests before prestiging to earn points.\r\n";
+        txt += "No points were earned this run. Complete quests before prestiging to earn them.\r\n";
     form.reset();
     form.create_window("Prestige summary", false);
     int summaryBox = form.create_input_box("Prestige summary", txt, read_only:true, multiline:true);
