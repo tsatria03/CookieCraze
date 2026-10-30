@@ -431,10 +431,13 @@ speak_buffer("You have " + format_number(cookies) + " " + cookieCountWord + ".",
 }
 if(key_pressed(KEY_J))
 {
-    /* Mirrors the manual bake, prestige cookie bonus included, and describes manual slots the same way
-    F describes automated ones. Combo multipliers are left out, since they only last while a combo runs; running boosts are included. */
+    /* Mirrors the manual bake, prestige cookie bonus and running boosts included, and describes manual slots the same way
+    F describes automated ones. While a combo window is open, the multiplier your next press would get is included too,
+    so the numbers say what that press will really make; outside a combo they are the plain amounts. */
     double bonus = (prestige_cookie_multiplier > 0) ? 1.0 + (prestige_cookie_multiplier / 100.0) : 1.0;
     bonus *= boost_manual_production();
+    if (combosConfig.enabled && rank >= combosConfig.enabled_rank && comboCount > 0 && combotimer.elapsed < comboWindow)
+        bonus *= get_combo_multiplier(comboCount + 1);
     if (manualSlots > 0)
     {
         double perSlot = manulcookie * bonus;
@@ -451,7 +454,7 @@ if(key_pressed(KEY_J))
         speak_buffer("You produce " + format_number(totalManual) + " " + cookieWord + " per press.", "misc");
     }
 }
-// B speaks every running boost and its time left. Alt plus B bakes, so B only counts without Alt.
+// B speaks how many boosts are running and which, grouped by name. Alt plus B bakes, so B only counts without Alt.
 if(!alt_is_down() && key_pressed(KEY_B)) speak_buffer(boost_status_text(), "misc");
 if(key_pressed(KEY_F1)) toggle_buffer_by_name("achievements");
 if(key_pressed(KEY_F2)) toggle_buffer_by_name("combos");

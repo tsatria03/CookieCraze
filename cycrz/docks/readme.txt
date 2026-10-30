@@ -32,7 +32,7 @@ Keyboard commands
 In game.
 
 Letter, F: Announces how many cookies your auto baking produces each bake. If you have automated slots, it tells you how much each slot produces and how much you produce in total. Your prestige cookie bonus is included. Running boosts are included too.
-Letter, J: Announces how many cookies each press of the bake button produces. If you have manual slots, it tells you how much each slot produces and how much you produce in total. Your prestige cookie bonus is included, but combo multipliers are not. Running boosts are included too.
+Letter, J: Announces how many cookies each press of the bake button produces. If you have manual slots, it tells you how much each slot produces and how much you produce in total. Your prestige cookie bonus and running boosts are included, and while a combo is running, so is the combo multiplier your next press would get.
 Letter, C: Announces your current cookie count.
 Letter, B: Announces how many boosts are running and which ones, with copies of the same boost spoken together with a count, such as 20 Rank rush boosts. It does not read their times; the end a slot list in the boost slot manager gives every boost's time left.
 Letter, R: Announces your current rank, your current experience, and how much more experience is needed to reach the next rank.
