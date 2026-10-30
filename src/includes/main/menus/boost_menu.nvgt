@@ -60,32 +60,29 @@ string boost_status_text()
     int running = boost_running_count();
     if (running == 0) return "You have no boosts running.";
     string txt = "You have " + string(running) + (running == 1 ? " boost running." : " boosts running.");
-    /* Boosts with the same name and the same time left, such as copies started together by Activate ALL, are spoken
-    once with a count, in the order their first slot comes. The same boost with a different time stays separate. */
+    /* Copies of the same boost are spoken once with a count, in the order their first slot comes, however they were
+    started. No times are read here: the boost slot manager's end a slot list gives every boost's time left. */
     string[] groupNames;
-    string[] groupTimes;
     int[] groupCounts;
     for (int i = 0; i < boostSlotCount; i++)
     {
         if (boostSlotIds[i] == "") continue;
         int idx = find_boost(boostSlotIds[i]);
         string name = (idx >= 0) ? loadedBoosts[idx].name : boostSlotIds[i];
-        string timeText = boost_slot_time_text(i);
         int found = -1;
         for (uint g = 0; g < groupNames.length(); g++)
-            if (groupNames[g] == name && groupTimes[g] == timeText) { found = int(g); break; }
+            if (groupNames[g] == name) { found = int(g); break; }
         if (found >= 0) groupCounts[found]++;
         else
         {
             groupNames.insert_last(name);
-            groupTimes.insert_last(timeText);
             groupCounts.insert_last(1);
         }
     }
     for (uint g = 0; g < groupNames.length(); g++)
     {
-        string label = (groupCounts[g] == 1) ? groupNames[g] : string(groupCounts[g]) + " " + groupNames[g] + " boosts";
-        txt += " " + label + ", " + groupTimes[g] + " left.";
+        string label = (groupCounts[g] == 1) ? groupNames[g] : format_number(groupCounts[g]) + " " + groupNames[g] + " boosts";
+        txt += " " + label + ".";
     }
     return txt;
 }

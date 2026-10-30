@@ -31,7 +31,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Design review 7.0](project_design_review_7_0.md) — 2026-10-25 evaluation, potential improvements only: runaway 1.01 economy (rank 90 in ~5 min), prestige spam, endless quests pre-done after prestige, minigames lack purpose, settings as cheats, readme onboarding + agreed readme reorganization and missing keys, small config gate/category issues; #8 store prices don't drop after losing auto/manual cookies (proposed: scale purchase count by share kept).
 
 ## Release status
-- [Release status](project_release_status.md) — 7.5 TAGGED V7.50 (2026-10-29, re-released, tag now on ea6b47d), closed; 7.4 V7.40; tags = done with a version, releasing is separate (dev decides) — never assume a release; **7.5 RELEASED 2026-10-29, latest public release**; next is 7.6 (quest rewards first, then prize wheel).
+- [Release status](project_release_status.md) — 7.6 TAGGED V7.60 (0e5c3e4) and RELEASED 2026-10-30, latest public release; 7.5 V7.50; tags = done with a version, releasing is the dev's call — never assume one; next is 7.7 (prize wheel, offline progress, daily bonus).
 
 ## Active plans (7.2)
 - [Config pack plan](project_config_pack_plan.md) — SHIPPED 7.2 (3 sections done): config moved to data/decompiled/config (loose, git) + data/compiled/config.crz (NVGT pack, gitignored); loose wins, pack is fallback; in-game export/import never delete; tools.py unchanged, dev deletes loose folder before compiling a release; miscellaneous menu has compile/decompile data config.

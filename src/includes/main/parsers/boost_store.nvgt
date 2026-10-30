@@ -124,12 +124,19 @@ void parse_boosts_store(string filepath)
 // A duration such as 25 minutes, or 1 minute, 30 seconds, for %duration% and the slot manager.
 string boost_duration_text(double seconds)
 {
-    int total = int(max(0.0, floor(seconds)));
-    int minutes = total / 60;
-    int secs = total % 60;
+    // Hours appear once a time reaches 60 minutes, so a long boost reads 17 hours, 15 minutes, not 1035 minutes.
+    double total = max(0.0, floor(seconds));
+    double hours = floor(total / 3600);
+    int minutes = int(floor((total - hours * 3600) / 60));
+    int secs = int(total - hours * 3600 - minutes * 60);
     string result = "";
-    if (minutes > 0) result = string(minutes) + (minutes == 1 ? " minute" : " minutes");
-    if (secs > 0 || minutes == 0)
+    if (hours > 0) result = format_number(hours) + (hours == 1 ? " hour" : " hours");
+    if (minutes > 0)
+    {
+        if (result.length() > 0) result += ", ";
+        result += string(minutes) + (minutes == 1 ? " minute" : " minutes");
+    }
+    if (secs > 0 || (minutes == 0 && hours == 0))
     {
         if (result.length() > 0) result += ", ";
         result += string(secs) + (secs == 1 ? " second" : " seconds");
