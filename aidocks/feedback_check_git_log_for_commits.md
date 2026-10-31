@@ -16,3 +16,5 @@ The dev commits their own work between turns (often several commits you didn't m
 **Outside step testing, when the dev says a fix "passed", "past", "works", "is good" or similar (dev, 2026-10-25):** run `git log` to see whether they've already committed it, and say so — don't ask whether to commit first.
 
 **How to apply:** Don't commit or push unless explicitly asked (see the global rules). When commit state matters, look it up rather than guessing. Related: [[feedback_stage_commits_before_big_changes]].
+
+**Always check the latest commit before starting a section (dev, 2026-10-30):** when the dev says they are ready for the next section, run git log / git status FIRST to confirm the previous section was committed and the tree is clean, then start building. Slipped once on 2026-10-30 (went straight to reading code for the singles section).
