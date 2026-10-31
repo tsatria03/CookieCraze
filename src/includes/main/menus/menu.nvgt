@@ -777,46 +777,84 @@ void lottery_buy_menu()
                 dlgmessage_return("Your inventory is full. You can hold a maximum of " + format_number(lotteryMaxTickets) + ". Scratch some first!");
                 continue;
             }
-            double cost = get_ticket_current_cost(@ticket);
-            double maxCanBuy = get_ticket_max_buyable(@ticket);
-            vd.set_disallowed_chars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()[]{};:'\"\\|,.<>?/+-=`~_", false, "This character is not allowed.");
-            string qInput = vd.input_box("", "How many " + ticket.name + "s would you like to buy? Press enter to buy the maximum amount.", string(maxCanBuy > 0 ? maxCanBuy : 1));
-            double qty = string_to_number(qInput);
-            if (qty <= 0)
+            // The pack menu will not open when you cannot buy even one of this ticket, the same as the boost shop.
+            if (get_ticket_max_buyable(@ticket) < 1)
             {
                 pool.play_stationary("sounds/store/error.ogg", false);
-                dlgmessage_return("Please enter a valid number to buy.");
+                if (coins < 1)
+                    dlgmessage_return("Error! You have no money to buy tickets with!");
+                else
+                    dlgmessage_return("Error! You can't afford another " + ticket.name + "! The next one costs " + convert_to_currency(get_ticket_current_cost(@ticket)) + ".");
                 continue;
             }
-            double totalCost = get_ticket_bulk_cost(@ticket, qty);
-            if (coins < totalCost)
-            {
-                pool.play_stationary("sounds/store/error.ogg", false);
-                dlgmessage_return("Error! You can't afford " + format_number(qty) + " " + ticket.name + (qty != 1 ? "s" : "") + "!");
-                continue;
-            }
-            if (lotteryMaxTickets > 0 && ticket.owned + qty > double(lotteryMaxTickets))
-            {
-                pool.play_stationary("sounds/store/error.ogg", false);
-                dlgmessage_return("You can only hold " + count_text(lotteryMaxTickets, "ticket", "tickets") + " of this type. You currently have " + format_number(ticket.owned) + ".");
-                continue;
-            }
-            coins -= totalCost;
-            coins = floor(coins);
-            stat_coins_spent += totalCost;
-            loadedTickets[ticketIdx].owned += qty;
-            stat_lottery_tickets_bought += qty;
-            pool.play_stationary("sounds/store/buy" + random(1, 4) + ".ogg", false);
-            pool.play_stationary("sounds/store/order.ogg", false);
-            string plural = (qty == 1) ? "" : "s";
-            string ownedPlural = (loadedTickets[ticketIdx].owned == 1) ? "" : "s";
-            dlgmessage_return("You bought " + format_number(qty) + " " + ticket.name + plural + " for " + convert_to_currency(totalCost) + ". You now have " + format_number(loadedTickets[ticketIdx].owned) + " " + ticket.name + ownedPlural + " in your inventory.");
+            ticket_pack_menu(ticketIdx);
         }
     }
 }
 
-/* The cookie store's boosts shop, modelled on the tickets shop: categories, then the boosts in one, then how many.
-Each category is paid for in its own currency, and every copy you hold raises the next one's price. */
+/* A scratch ticket's pack menu, the same as a boost's: buy 1 up to 10,000, then buy max, each with its real price,
+buying straight away. A purchase is spoken and keeps you on its line, except buy max or a purchase that leaves you unable
+to buy another, which shows the message in a dialog and goes back to the ticket list. */
+void ticket_pack_menu(int ticketIdx)
+{
+    double[] packs = shop_pack_sizes();
+    string lastPackId = "";
+    while (true)
+    {
+        lottery_ticket_item@ ticket = loadedTickets[ticketIdx];
+        double maxCanBuy = get_ticket_max_buyable(@ticket);
+        setupmenu(false);
+        for (uint i = 0; i < packs.length(); i++)
+            m.add_item("Buy " + count_text(packs[i], ticket.name, ticket.name + "s") + " for " + convert_to_currency(get_ticket_bulk_cost(@ticket, packs[i])), "pack" + string(i));
+        // Buy max reads as buy all: everything you can afford.
+        m.add_item("Buy all " + ticket.name + "s" + ((maxCanBuy >= 1) ? " for " + convert_to_currency(get_ticket_bulk_cost(@ticket, maxCanBuy)) : ""), "packmax");
+        m.add_item("Back", "back");
+        m.intro_text = ticket.name + " menu. You have " + convert_to_currency(coins) + ".";
+        int start = 0;
+        if (lastPackId != "")
+        {
+            int found = m.find_item_by_id(lastPackId);
+            if (found != -1) start = found;
+        }
+        int res = m.run(start, true);
+        if (res == -1) return;
+        string sel = m.get_item_id(res);
+        if (sel == "back") return;
+        lastPackId = sel;
+        bool isMax = (sel == "packmax");
+        double qty = isMax ? maxCanBuy : packs[string_to_int(sel.substr(4))];
+        if (lotteryMaxTickets > 0 && ticket.owned + max(qty, 1.0) > double(lotteryMaxTickets))
+        {
+            pool.play_stationary("sounds/store/error.ogg", false);
+            dlgmessage_return("You can only hold " + count_text(lotteryMaxTickets, "ticket", "tickets") + " of this type. You currently have " + format_number(ticket.owned) + ".");
+            continue;
+        }
+        double totalCost = (qty >= 1) ? get_ticket_bulk_cost(@ticket, qty) : 0;
+        if (qty < 1 || coins < totalCost)
+        {
+            double shown = max(qty, 1.0);
+            pool.play_stationary("sounds/store/error.ogg", false);
+            dlgmessage_return("Error! You can't afford " + format_number(shown) + " " + ticket.name + (shown != 1 ? "s" : "") + "!");
+            continue;
+        }
+        coins -= totalCost;
+        coins = floor(coins);
+        stat_coins_spent += totalCost;
+        loadedTickets[ticketIdx].owned += qty;
+        stat_lottery_tickets_bought += qty;
+        pool.play_stationary("sounds/store/buy" + random(1, 4) + ".ogg", false);
+        pool.play_stationary("sounds/store/order.ogg", false);
+        double nowOwned = loadedTickets[ticketIdx].owned;
+        string msg = "You bought " + format_number(qty) + " " + ticket.name + (qty == 1 ? "" : "s") + " for " + convert_to_currency(totalCost) + ". You now have " + format_number(nowOwned) + " " + ticket.name + (nowOwned == 1 ? "" : "s") + " in your inventory.";
+        if (isMax || get_ticket_max_buyable(loadedTickets[ticketIdx]) < 1)
+        {
+            dlgmessage_return(msg);
+            return;
+        }
+        speak(msg);
+    }
+}
+
 // The pack sizes every shop's pack menu offers, the same as the sell cookies menu.
 double[] shop_pack_sizes()
 {
@@ -838,8 +876,9 @@ void boost_pack_menu(int boostIdx)
         double maxCanBuy = get_boost_max_buyable(boost);
         setupmenu(false);
         for (uint i = 0; i < packs.length(); i++)
-            m.add_item("Buy " + format_number(packs[i]) + " for " + boost_price_text(boost, get_boost_bulk_cost(boost, packs[i])), "pack" + string(i));
-        m.add_item((maxCanBuy >= 1) ? "Buy max for " + boost_price_text(boost, get_boost_bulk_cost(boost, maxCanBuy)) : "Buy max", "packmax");
+            m.add_item("Buy " + count_text(packs[i], boost.name + " boost", boost.name + " boosts") + " for " + boost_price_text(boost, get_boost_bulk_cost(boost, packs[i])), "pack" + string(i));
+        // Buy max reads as buy all: everything you can afford.
+        m.add_item("Buy all " + boost.name + " boosts" + ((maxCanBuy >= 1) ? " for " + boost_price_text(boost, get_boost_bulk_cost(boost, maxCanBuy)) : ""), "packmax");
         m.add_item("Back", "back");
         m.intro_text = boost.name + " menu. You have " + boost_price_text(boost, boost_balance(boost)) + ".";
         int start = 0;
@@ -891,6 +930,8 @@ void boost_pack_menu(int boostIdx)
     }
 }
 
+/* The cookie store's boosts shop, modelled on the tickets shop: categories, then the boosts in one, then its pack menu.
+Each category is paid for in its own currency, and every copy you hold raises the next one's price. */
 void boost_buy_menu()
 {
     boost_category[] visibleCats;
