@@ -110,6 +110,7 @@ The `[[name]]` links in `CLAUDE.md` and across these memories resolve to `aidock
 - [Prestige menu memory plan](project_prestige_menu_memory_plan.md) — 7.6, planned first: prestige store remembers menu position like the cookie store; dev adding one more related item.
 - [Names and achievement rewards plan](project_names_and_achievement_rewards_plan.md) — 7.6 entries 8-9: proper prestige item names; achievement rewards moved to a [rewards] section.
 - [Shop pack menus plan](project_shop_pack_menus_plan.md) — idea, not scheduled: buying shops get pack menus like the 7.7 sell menu, one store at a time (boosts/tickets easy, singles/bundles medium); keep the buy-all options; several entries + big readme update.
+- [Store split idea](project_store_split_idea.md) — much later, on the todo list: baking store after the slots manager, tickets in the lottery, boost shop after the boost slot manager; after the pack menus.
 - [Event toggles plan](project_event_toggles_plan.md) — 7.6: bring back the two game settings checkboxes that switch baker events off during auto / manual baking (removed in 7.2); main.table untouched.
 - [Quest rewards plan](project_quest_rewards_plan.md) — 7.6 FIRST feature (approved, not built): quests pay a rank-scaled money default per difficulty (overrides allowed) the moment they finish, new quests buffer F6, questcomp.ogg, no back pay; on the todo list.
 - [Shared bet plan](project_shared_bet_plan.md) — 7.4 refactor PROPOSED (code #16): one betfuncts.nvgt for the 6 betting minigames; differences to keep; 5 sections.

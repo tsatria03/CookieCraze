@@ -4,6 +4,7 @@
 ****Unfinished. Add a prize wheel minigame where you bet an item and spin a 24 wedge wheel, adding prizes to a pot and choosing after each spin to spin again or bank it, with a rare jackpot, a wedge that doubles the pot, free boosts and scratch tickets, and Bankrupt and Lose a Turn wedges that end the round, along with achievements and quests for it.
 ****Unfinished. Add offline progress, so loading a save pays a share of your automatic baking for the time you were away, up to a limit, with the share and the limit set in main.table and one message telling you how long you were gone and what your ovens baked.
 ****Unfinished. Add a daily bonus with a play streak, giving a reward that grows with your rank and with each day in a row you play, and resets if you miss a day.
+****Unfinished. Split the cookie store into shops placed where they are used: rename it the baking store and place it after the baking slots manager on the main game screen, move the ticket shop into the cookie lottery, and move the boost shop onto the main game screen after the boost slot manager.
 
 ##These are the things that are already finished from earlier versions of the game.
 

@@ -1,6 +1,6 @@
 ---
 name: project_shop_pack_menus_plan
-description: "IDEA RECORDED (2026-10-30), not approved or scheduled: overhaul the buying shops to use pack menus like the 7.7 sell cookies menu — per item, Buy 1 / 5 / 10 ... / Buy max with real prices, buying instantly — one store at a time. Expect several changelog entries and a big readme update. Version undetermined; wait for the dev. On the todo list as Unfinished (2026-10-30); the dev moved it to the TOP of the unfinished items, ahead of the prize wheel, offline progress and the daily bonus."
+description: "PLANNED for 7.7 entries 8-10 (2026-10-30), all design questions answered, not built yet: overhaul the buying shops to use pack menus like the 7.7 sell cookies menu — per item, Buy 1 / 5 / 10 ... / Buy max with real prices, buying instantly — one store at a time. Expect several changelog entries and a big readme update. Version undetermined; wait for the dev. On the todo list as Unfinished (2026-10-30); the dev moved it to the TOP of the unfinished items, ahead of the prize wheel, offline progress and the daily bonus."
 metadata:
   node_type: memory
   type: project
@@ -23,7 +23,7 @@ metadata:
 - **Scratch tickets** (easy): rising price; max_tickets limit.
 - **Single upgrades** (medium): money or cookie prices by category, percent vs flat items, the baking speed cap (cap_speed_maxbuy), and the existing category-level buy all.
 - **Bundles** (medium): price is the sum of several items' rising prices; speed inside bundles respects its cap; existing buy all.
-- Suggested order: boosts or tickets first to settle the pattern, then singles and bundles; after the first, a shared pack-menu helper so later shops plug in their price and buy functions.
+- (Superseded by Q1/Q9: boosts, tickets, singles, bundles, then the prestige store's Endless upgrades.) Suggested order: boosts or tickets first to settle the pattern, then singles and bundles; after the first, a shared pack-menu helper so later shops plug in their price and buy functions.
 
 ## Existing buy-all options (keep them)
 
@@ -35,3 +35,16 @@ metadata:
 ## Docs expectations
 
 Several changelog entries (likely one per store, maybe more), and a big readme update: every shop's buying description in the cookie store section, plus the getting started purchase instructions.
+
+## Decisions (ask ONE at a time, record each)
+
+- **Q1 store order (dev, 2026-10-30): boosts, then scratch tickets, then single upgrades, then bundles last.**
+- **Q2 (dev, 2026-10-30): NO input boxes anywhere — menu only.** No "Buy a custom amount" line; packs and Buy max only, like the seller. (Implies the buy-all options' "how many of each" input boxes also become menus.)
+- **Q3 (dev, 2026-10-30): pack sizes match the cookie seller** — 1, 5, 10, 25, 50, 100, 250, 500, 1,000, 2,500, 5,000, 10,000, then Buy max before Back.
+- **Q4 (dev, 2026-10-30): option A, list every pack always** with its price, like the add a slot menus and the seller; choosing one you can't afford plays the error sound, shows an error such as "Error! You can't afford 1,000 Manual cookies!", buys nothing, and returns to the menu.
+- **Q5 (dev, 2026-10-30): option A, spoken like the seller** (stay on the line). **Exceptions, like the seller's last-cookie sale:** Buy max, and any purchase after which you can no longer afford even 1 more of that item (e.g. you could only afford 1), show the message in a dialog (dlgmessage_return) and leave the pack menu. Errors use dialogs.
+- **Q6 (dev, 2026-10-30): one level up** — after a Buy max or a can't-afford-another purchase, the dialog closes onto the item list (e.g. the singles category list), still on the item just bought, like the seller going up to the cookie store.
+- **Q7 (dev, 2026-10-30): option A** — the buy-all options open their own pack menu worded "of each": Buy 1 of each for $X ... Buy 10,000 of each, then Buy max of each before Back; each label is the total for every affordable item in the category; same spoken / dialog / one-level-up rules. Bundles' "Buy one of every affordable bundle" is renamed **"Buy all affordable bundles"** (it buys more than one).
+- **Q8 (dev, 2026-10-30): the pack menu intro gives the item's name and your balance in the currency it is priced in** — "Manual cookie menu. You have $83,960.00.", or cookies for cookie-priced categories ("Baking gloves menu. You have 2.4 thousand cookies."). Buy max line shows only its price ("Buy max for $X"), like sell all. No "you can buy N" in the intro (the item list one level up still says it); owned counts via the stat keys. Buy-all "of each" menus presumably the same pattern (category name + balance).
+- **Q9 (dev, 2026-10-30): option A** — the prestige store's two Endless categories (Endless Passive, Endless Head Start; 12 upgrades, today an input box "How many would you like to buy?") get the same pack menu as a **fifth store after bundles**: intro with the upgrade name and your prestige points, packs priced in points, Buy max before Back, same spoken / dialog / one-level-up rules. **Standard Passive and Standard Head Start stay one-press purchases** (each tier is bought once, so there is nothing to choose an amount of).
+- **Changelog plan (dev, 2026-10-30): 3 entries, finishing 7.7 at 10 of 10** — (1) boosts + scratch tickets together, (2) single upgrades + bundles together (incl. the "of each" buy-all menus and the bundles rename), (3) the prestige store's Endless upgrades. Readme updated per store as each section's docs. If a hidden bug does turn up, fold it into its store's entry or move it to 7.8.
