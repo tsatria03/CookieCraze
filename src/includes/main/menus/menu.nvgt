@@ -545,7 +545,7 @@ setupmenu2();
 m.add_item("buy upgrades", "bmu");
 m.add_item("buy tickets", "bmt");
 m.add_item("buy boosts", "bmb");
-m.add_item("sell cookies. Description: Each cookie sells for " + convert_to_currency(boosted_sell_price()) + ".", "slm");
+m.add_item("sell cookies", "slm");
 m.add_item("back", "back");
 m.intro_text="Welcome to the cookie store. What would you like to do?";
 int shop_start = 0;
