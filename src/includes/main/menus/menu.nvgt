@@ -817,6 +817,80 @@ void lottery_buy_menu()
 
 /* The cookie store's boosts shop, modelled on the tickets shop: categories, then the boosts in one, then how many.
 Each category is paid for in its own currency, and every copy you hold raises the next one's price. */
+// The pack sizes every shop's pack menu offers, the same as the sell cookies menu.
+double[] shop_pack_sizes()
+{
+    double[] packs = {1.0, 5.0, 10.0, 25.0, 50.0, 100.0, 250.0, 500.0, 1000.0, 2500.0, 5000.0, 10000.0};
+    return packs;
+}
+
+/* A boost's pack menu, like the sell cookies menu: buy 1 up to 10,000, then buy max, each with its real price, buying
+straight away. Every pack is listed; one you cannot afford or hold gives an error and buys nothing. A purchase is spoken
+and keeps you on its line, except buy max or a purchase that leaves you unable to buy another, which shows the message in
+a dialog and goes back to the boost list. */
+void boost_pack_menu(int boostIdx)
+{
+    double[] packs = shop_pack_sizes();
+    string lastPackId = "";
+    while (true)
+    {
+        boost_item@ boost = loadedBoosts[boostIdx];
+        double maxCanBuy = get_boost_max_buyable(boost);
+        setupmenu(false);
+        for (uint i = 0; i < packs.length(); i++)
+            m.add_item("Buy " + format_number(packs[i]) + " for " + boost_price_text(boost, get_boost_bulk_cost(boost, packs[i])), "pack" + string(i));
+        m.add_item((maxCanBuy >= 1) ? "Buy max for " + boost_price_text(boost, get_boost_bulk_cost(boost, maxCanBuy)) : "Buy max", "packmax");
+        m.add_item("Back", "back");
+        m.intro_text = boost.name + " menu. You have " + boost_price_text(boost, boost_balance(boost)) + ".";
+        int start = 0;
+        if (lastPackId != "")
+        {
+            int found = m.find_item_by_id(lastPackId);
+            if (found != -1) start = found;
+        }
+        int res = m.run(start, true);
+        if (res == -1) return;
+        string sel = m.get_item_id(res);
+        if (sel == "back") return;
+        lastPackId = sel;
+        bool isMax = (sel == "packmax");
+        double qty = isMax ? maxCanBuy : packs[string_to_int(sel.substr(4))];
+        if (boostMaxHold > 0 && boost.owned + max(qty, 1.0) > double(boostMaxHold))
+        {
+            pool.play_stationary("sounds/store/error.ogg", false);
+            dlgmessage_return("You can only hold " + format_number(boostMaxHold) + " of each boost. You currently have " + format_number(boost.owned) + ".");
+            continue;
+        }
+        double totalCost = (qty >= 1) ? get_boost_bulk_cost(boost, qty) : 0;
+        if (qty < 1 || boost_balance(boost) < totalCost)
+        {
+            double shown = max(qty, 1.0);
+            pool.play_stationary("sounds/store/error.ogg", false);
+            dlgmessage_return("Error! You can't afford " + format_number(shown) + " " + boost.name + (shown == 1 ? " boost" : " boosts") + "!");
+            continue;
+        }
+        if (boost_costs_money(boost))
+        {
+            coins = floor(safe_cap(coins - totalCost));
+            stat_coins_spent += totalCost;
+        }
+        else
+            cookies = floor(safe_cap(cookies - totalCost));
+        loadedBoosts[boostIdx].owned += qty;
+        stat_boosts_bought += qty;
+        pool.play_stationary("sounds/store/buy" + random(1, 4) + ".ogg", false);
+        pool.play_stationary("sounds/store/order.ogg", false);
+        double nowOwned = loadedBoosts[boostIdx].owned;
+        string msg = "You bought " + format_number(qty) + " " + boost.name + (qty == 1 ? " boost" : " boosts") + " for " + boost_price_text(boost, totalCost) + ". You now have " + format_number(nowOwned) + " " + boost.name + (nowOwned == 1 ? " boost" : " boosts") + " in your inventory.";
+        if (isMax || get_boost_max_buyable(loadedBoosts[boostIdx]) < 1)
+        {
+            dlgmessage_return(msg);
+            return;
+        }
+        speak(msg);
+    }
+}
+
 void boost_buy_menu()
 {
     boost_category[] visibleCats;
@@ -941,42 +1015,17 @@ void boost_buy_menu()
                 dlgmessage_return("Your inventory is full. You can hold a maximum of " + format_number(boostMaxHold) + " of each boost. Use some first!");
                 continue;
             }
-            double maxCanBuy = get_boost_max_buyable(boost);
-            vd.set_disallowed_chars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()[]{};:'\"\\|,.<>?/+-=`~_", false, "This character is not allowed.");
-            string qInput = vd.input_box("", "How many " + boost.name + " boosts would you like to buy? Press enter to buy the maximum amount.", string(maxCanBuy > 0 ? maxCanBuy : 1));
-            double qty = floor(string_to_number(qInput));
-            if (qty <= 0)
+            // Like the sell cookies menu, the pack menu will not open when you cannot buy even one of this boost.
+            if (get_boost_max_buyable(boost) < 1)
             {
                 pool.play_stationary("sounds/store/error.ogg", false);
-                dlgmessage_return("Please enter a valid number to buy.");
+                if (boost_balance(boost) < 1)
+                    dlgmessage_return(boost_costs_money(boost) ? "Error! You have no money to buy boosts with!" : "Error! You have no cookies to buy boosts with!");
+                else
+                    dlgmessage_return("Error! You can't afford another " + boost.name + " boost! The next one costs " + boost_price_text(boost, get_boost_current_cost(boost)) + ".");
                 continue;
             }
-            if (boostMaxHold > 0 && boost.owned + qty > double(boostMaxHold))
-            {
-                pool.play_stationary("sounds/store/error.ogg", false);
-                dlgmessage_return("You can only hold " + format_number(boostMaxHold) + " of each boost. You currently have " + format_number(boost.owned) + ".");
-                continue;
-            }
-            double totalCost = get_boost_bulk_cost(boost, qty);
-            if (boost_balance(boost) < totalCost)
-            {
-                pool.play_stationary("sounds/store/error.ogg", false);
-                dlgmessage_return("Error! You can't afford " + format_number(qty) + " " + boost.name + (qty == 1 ? " boost" : " boosts") + "!");
-                continue;
-            }
-            if (boost_costs_money(boost))
-            {
-                coins = floor(safe_cap(coins - totalCost));
-                stat_coins_spent += totalCost;
-            }
-            else
-                cookies = floor(safe_cap(cookies - totalCost));
-            loadedBoosts[boostIdx].owned += qty;
-            stat_boosts_bought += qty;
-            pool.play_stationary("sounds/store/buy" + random(1, 4) + ".ogg", false);
-            pool.play_stationary("sounds/store/order.ogg", false);
-            double nowOwned = loadedBoosts[boostIdx].owned;
-            dlgmessage_return("You bought " + format_number(qty) + " " + boost.name + (qty == 1 ? " boost" : " boosts") + " for " + boost_price_text(boost, totalCost) + ". You now have " + format_number(nowOwned) + " " + boost.name + (nowOwned == 1 ? " boost" : " boosts") + " in your inventory.");
+            boost_pack_menu(boostIdx);
         }
     }
 }
