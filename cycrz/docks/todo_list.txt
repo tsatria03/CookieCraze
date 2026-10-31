@@ -1,5 +1,6 @@
 ####These are the things that need to be finished for future versions of the game.
 
+****Unfinished. Rework buying in the cookie store's shops to work like the sell cookies menu, one shop at a time, so choosing an item lists packs such as buy 1, buy 5, and buy max, each with its real price, and buys straight away, while keeping the options that buy several of every item at once.
 ****Unfinished. Add a prize wheel minigame where you bet an item and spin a 24 wedge wheel, adding prizes to a pot and choosing after each spin to spin again or bank it, with a rare jackpot, a wedge that doubles the pot, free boosts and scratch tickets, and Bankrupt and Lose a Turn wedges that end the round, along with achievements and quests for it.
 ****Unfinished. Add offline progress, so loading a save pays a share of your automatic baking for the time you were away, up to a limit, with the share and the limit set in main.table and one message telling you how long you were gone and what your ovens baked.
 ****Unfinished. Add a daily bonus with a play streak, giving a reward that grows with your rank and with each day in a row you play, and resets if you miss a day.
