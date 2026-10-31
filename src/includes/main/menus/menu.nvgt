@@ -609,6 +609,14 @@ shopmenu();
 }
 if(stm=="slm")
 {
+// With nothing to sell the menu would only offer packs you cannot fill, so it refuses to open.
+if (floor(cookies) < 1)
+{
+pool.play_stationary("sounds/store/fail.ogg", false);
+dlgmessage_return("Error! You have no cookies to sell!");
+shopmenu();
+}
+else
 sell_cookies_menu();
 }
 if(stm=="back")
@@ -2066,7 +2074,9 @@ void sell_cookies_menu()
         pool.destroy_sound(alertslot);
         pool.play_stationary("sounds/store/fail.ogg", false);
         dlgmessage_return(owned < 1 ? "Error! You have no cookies to sell!" : "Error! You don't have enough cookies to sell that many!");
-        sell_cookies_menu();
+        // With no cookies left there is nothing more to sell here, so it goes back to the cookie store.
+        if (owned < 1) { sell_last_id = ""; shopmenu(); }
+        else sell_cookies_menu();
         return;
     }
     double earned = sell_payout(count);
@@ -2074,9 +2084,20 @@ void sell_cookies_menu()
     coins += earned;
     stat_coins_earned += earned;
     play_coin_sound(earned);
-    // Spoken rather than shown in a dialog, so selling again is one press away, like adding slots.
-    speak("Successfully sold " + count_text(count, "cookie", "cookies") + " for " + convert_to_currency(earned) + "!");
-    sell_cookies_menu();
+    string soldMsg = "Successfully sold " + count_text(count, "cookie", "cookies") + " for " + convert_to_currency(earned) + "!";
+    /* Selling your last cookie, such as with sell all, shows the message in a dialog and goes back to the cookie store,
+    since the sell menu would refuse to open now. Any other sale is spoken, so selling again is one press away. */
+    if (floor(cookies) < 1)
+    {
+        dlgmessage_return(soldMsg);
+        sell_last_id = "";
+        shopmenu();
+    }
+    else
+    {
+        speak(soldMsg);
+        sell_cookies_menu();
+    }
 }
 
 void add_auto_slots()

@@ -130,7 +130,7 @@ Bake cookies and sell them to earn money. The more you bake, the higher your ran
 
 You can bake manually by pressing the bake button, or let auto-baking handle it passively. Every cookie baked counts toward your rank progress. Your earnings per bake scale with your rank, so the further you progress, the faster money accumulates.
 
-To sell cookies and earn money, enter the cookie store and choose sell cookies. The sell cookies menu lists packs of 1, 5, 10, 25, 50, 100, 250, 500, 1,000, 2,500, 5,000, and 10,000 cookies, then sell all, which sells every cookie you have. Each line tells you exactly what it pays, including any sell price boost and your prestige money multiplier. Choosing a line sells straight away and tells you what you earned, and you stay on that line so you can sell again. If you do not have enough cookies for a pack, nothing is sold.
+To sell cookies and earn money, enter the cookie store and choose sell cookies. The sell cookies menu lists packs of 1, 5, 10, 25, 50, 100, 250, 500, 1,000, 2,500, 5,000, and 10,000 cookies, then sell all, which sells every cookie you have. Each line tells you exactly what it pays, including any sell price boost and your prestige money multiplier. Choosing a line sells straight away and tells you what you earned, and you stay on that line so you can sell again. If you do not have enough cookies for a pack, nothing is sold. If you have no cookies at all, the sell cookies menu will not open, and selling your last cookie, such as with sell all, shows what you earned in a dialog and takes you back to the cookie store.
 
 Each cookie sells for $1.00 by default. Modders can change the price in main.table. The more you bake before selling, the larger your payout.
 
