@@ -1,6 +1,6 @@
 ---
 name: project_prize_wheel_plan
-description: "7.6 minigame, design + 6-section plan APPROVED 2026-10-29, not built: bet an item, 24-wedge wheel, spin-again pot, Bankrupt/Lose a Turn, jackpot, double, boost/ticket prizes, max_spins, roulette spin settings, own sounds; unlocks rank 70 with a ladder shift to prestige 130. **Moved to 7.7 (dev, 2026-10-30).** Balance settled: 4 Bankrupt wedges."
+description: "7.6 minigame, design + 6-section plan APPROVED 2026-10-29, not built: bet an item, 24-wedge wheel, spin-again pot, Bankrupt/Lose a Turn, jackpot, double, boost/ticket prizes, max_spins, roulette spin settings, own sounds; unlocks rank 70 with a ladder shift to prestige 130. **On hold, version undetermined (dev, 2026-10-30) — wait for the dev to say they are ready.** Balance settled: 4 Bankrupt wedges."
 metadata:
   node_type: memory
   type: project

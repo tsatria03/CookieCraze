@@ -545,8 +545,7 @@ setupmenu2();
 m.add_item("buy upgrades", "bmu");
 m.add_item("buy tickets", "bmt");
 m.add_item("buy boosts", "bmb");
-string cookieWord = (floor(cookies) == 1) ? "cookie" : "cookies";
-m.add_item("sell cookies. You currently have " + format_number(cookies) + " " + cookieWord + ". Description: Each cookie sells for " + convert_to_currency(boosted_sell_price()) + ".", "slm");
+m.add_item("sell cookies. Description: Each cookie sells for " + convert_to_currency(boosted_sell_price()) + ".", "slm");
 m.add_item("back", "back");
 m.intro_text="Welcome to the cookie store. What would you like to do?";
 int shop_start = 0;
@@ -2043,9 +2042,9 @@ void sell_cookies_menu()
     setupmenu(false);
     for (uint i = 0; i < packs.length(); i++)
         m.add_item("Sell " + count_text(packs[i], "cookie", "cookies") + " for " + convert_to_currency(sell_payout(packs[i])), "sell" + string(i));
-    m.add_item("Sell all " + count_text(owned, "cookie", "cookies") + " for " + convert_to_currency(sell_payout(owned)), "sellall");
+    m.add_item("Sell all cookies for " + convert_to_currency(sell_payout(owned)), "sellall");
     m.add_item("Back", "back");
-    m.intro_text = "Sell cookies menu.";
+    m.intro_text = "Sell cookies menu. You currently have " + count_text(owned, "cookie", "cookies") + ".";
     int start_pos = 0;
     if (sell_last_id != "")
     {
