@@ -41,7 +41,7 @@ Letter, A: Announces how many auto cookies you have.
 Letter, S: Announces your current baking speed and how long each bake takes.
 Letter, N: Announces how many manual cookies you have.
 Letter, L: Announces your current prestige level.
-Letter, P: Announces how many prestige points you have to spend in the prestige store.
+Letter, P: Announces how many prestige points you have available to spend in the prestige store.
 Control S: Saves your game progress.
 Control L: Reloads all configuration files and your save data without restarting the game, taking you back to your last save. Useful when editing config files. If there is no save to reload, only the configuration files are reloaded.
 Escape: Opens a prompt asking whether you want to quit.
@@ -659,6 +659,8 @@ The two Endless categories unlock only once you have reached prestige level 10 a
 How prestige upgrades work.
 
 The standard upgrades use a one-time purchase system. Each standard upgrade can only ever be bought once. Once purchased, it is immediately active and stays active permanently across every future run, including after further prestiges. You will never need to buy it again, and you cannot buy it a second time even if you wanted to. The endless upgrades are the exception. They are infinite and can be bought as many times as you like, with each purchase costing a little more prestige points than the last and adding another stack of its bonus. This gives your prestige points a permanent place to go once you have cleared the standard store.
+
+Choosing an endless upgrade opens its own menu instead of asking how many to buy, the same as the cookie store's shops. Its intro tells you how many prestige points you have, then it lists packs from buy 1 to buy 10,000, such as buy 5 Endless cookie multipliers for the real price of all five, and buy all Endless cookie multipliers, which buys as many as you can afford, before back. Every price is rounded up to a whole prestige point. Choosing a pack buys exactly that many straight away and speaks what you bought, keeping you on that line so you can buy again. Buy all, or a purchase after which you cannot afford another, shows what you bought in a dialog and takes you back to the category. A pack you cannot afford gives an error and buys nothing, and if you cannot afford even one, the upgrade's menu will not open and tells you what the next one costs. Standard upgrades are still bought with a single press.
 
 Passive bonus upgrades work as multipliers layered on top of your existing stats. For example, buying a cookie multiplier upgrade does not add to your auto cookie or manual cookie counts directly. Instead, every time a bake fires, the output is multiplied by the bonus percentage. So if you normally produce 100 cookies per bake and you have a 5% cookie multiplier, you produce 105 instead. The higher your stats grow through the normal shop, the more noticeable the multiplier becomes. Similarly, a coin multiplier does not change your cookie sell price. It multiplies the total payout after the price is applied, so larger sell batches benefit more.
 

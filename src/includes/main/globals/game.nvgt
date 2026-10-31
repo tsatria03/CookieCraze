@@ -385,8 +385,7 @@ speak_buffer("You're currently rank " + format_number(rank) + " with " + format_
 }
 if(key_pressed(KEY_P))
 {
-string pointWord = (prestige_points == 1) ? "point" : "points";
-speak_buffer("You have " + format_number(prestige_points) + " " + pointWord + " to spend in the prestige store.", "misc");
+speak_buffer("You have " + prestige_points_text(prestige_points) + " available to spend.", "misc");
 }
 if(!control_is_down() && key_pressed(KEY_L))
 {

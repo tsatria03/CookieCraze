@@ -1107,6 +1107,79 @@ double prestige_endless_cost(prestige_store_item@ item, double fromCount, double
     if (raw > whole) whole += 1;
     return whole;
 }
+// How many copies of an endless upgrade your prestige points buy, after each total is rounded up to a whole point.
+double prestige_endless_max(prestige_store_item@ item)
+{
+    double owned = prestige_endless_count(item.item_id);
+    double maxq = calc_max_buyable(double(prestige_points), owned, item.cost, item.cost_multiplier);
+    while (maxq >= 1 && prestige_endless_cost(item, owned, maxq) > double(prestige_points))
+        maxq -= 1;
+    return maxq;
+}
+// An endless upgrade's name for more than one, such as Endless cookie multipliers; money names stay as they are.
+string prestige_plural(string name)
+{
+    if (name.length() >= 5 && name.substr(name.length() - 5) == "money") return name;
+    return single_plural(name);
+}
+string prestige_points_text(double n)
+{
+    return count_text(n, "prestige point", "prestige points");
+}
+/* An endless upgrade's pack menu, like the cookie store's shops: buy 1 up to 10,000, then buy all, each with its real
+price in prestige points, buying straight away. A purchase is spoken and keeps you on its line, except buy all or a purchase
+that leaves you unable to buy another, which shows the message in a dialog and goes back to the category. */
+void prestige_endless_pack_menu(prestige_store_item@ item)
+{
+    double[] packs = shop_pack_sizes();
+    string name = prestige_item_name(item.item_id);
+    string plural = prestige_plural(name);
+    string lastPackId = "";
+    while (true)
+    {
+        double owned = prestige_endless_count(item.item_id);
+        double maxq = prestige_endless_max(item);
+        setupmenu(false);
+        for (uint i = 0; i < packs.length(); i++)
+            m.add_item("Buy " + format_number(packs[i]) + " " + (packs[i] == 1 ? name : plural) + " for " + prestige_points_text(prestige_endless_cost(item, owned, packs[i])), "pack" + string(i));
+        m.add_item("Buy all " + plural + ((maxq >= 1) ? " for " + prestige_points_text(prestige_endless_cost(item, owned, maxq)) : ""), "packmax");
+        m.add_item("Back", "back");
+        m.intro_text = name + " menu. You have " + prestige_points_text(prestige_points) + ".";
+        int start = 0;
+        if (lastPackId != "")
+        {
+            int found = m.find_item_by_id(lastPackId);
+            if (found != -1) start = found;
+        }
+        int res = m.run(start, true);
+        if (res == -1) return;
+        string sel = m.get_item_id(res);
+        if (sel == "back") return;
+        lastPackId = sel;
+        bool isMax = (sel == "packmax");
+        double qty = isMax ? maxq : packs[string_to_int(sel.substr(4))];
+        double totalCost = (qty >= 1) ? prestige_endless_cost(item, owned, qty) : 0;
+        if (qty < 1 || double(prestige_points) < totalCost)
+        {
+            double shown = max(qty, 1.0);
+            pool.play_stationary("sounds/store/error.ogg", false);
+            dlgmessage_return("Error! You can't afford " + format_number(shown) + " " + (shown == 1 ? name : plural) + "!");
+            continue;
+        }
+        prestige_points -= totalCost;
+        prestigeEndlessCounts.set(item.item_id, owned + qty);
+        apply_all_prestige_store_upgrades();
+        pool.play_stationary("sounds/store/buy" + random(1, 4) + ".ogg", false);
+        pool.play_stationary("sounds/store/order.ogg", false);
+        string msg = "Purchase successful! You bought " + format_number(qty) + " " + (qty == 1 ? name : plural) + " for " + prestige_points_text(totalCost) + ". Next upgrade will cost " + prestige_points_text(prestige_endless_cost(item, owned + qty, 1)) + ".";
+        if (isMax || prestige_endless_max(item) < 1)
+        {
+            dlgmessage_return(msg);
+            return;
+        }
+        speak(msg);
+    }
+}
 /* Where a prestige store menu opens: on the item you chose last time, the way the cookie store's shops do. A standard
 upgrade leaves the list once bought, and a category once it is empty, so when the remembered item is gone the menu opens
 at the place it had instead, on whatever took its place, never past the last item before back. */
@@ -1252,7 +1325,7 @@ void prestige_store_category_menu(prestige_store_item[]@ items, string chosenMen
         {
             double owned = prestige_endless_count(items[i].item_id);
             double nextCost = prestige_endless_cost(items[i], owned, 1);
-            double maxbuy = calc_max_buyable(double(prestige_points), owned, items[i].cost, items[i].cost_multiplier);
+            double maxbuy = prestige_endless_max(items[i]);
             string pointWord = (nextCost == 1) ? "point" : "points";
             m.add_item(prestige_item_name(items[i].item_id) + ", costs " + format_number(nextCost) + " prestige " + pointWord + ". You can buy " + format_number(maxbuy) + ". Description: " + items[i].description, "item" + string(i));
         }
@@ -1291,50 +1364,18 @@ void prestige_store_category_menu(prestige_store_item[]@ items, string chosenMen
         if (sel != "item" + string(i)) continue;
         if (items[i].infinite)
         {
-            double owned = prestige_endless_count(items[i].item_id);
-            double maxAffordable = calc_max_buyable(double(prestige_points), owned, items[i].cost, items[i].cost_multiplier);
-            if (maxAffordable >= 1 && prestige_endless_cost(items[i], owned, maxAffordable) > double(prestige_points))
-                maxAffordable -= 1;
-            if (maxAffordable < 1)
+            // The pack menu will not open when you cannot buy even one, the same as the cookie store's shops.
+            if (prestige_endless_max(items[i]) < 1)
             {
                 pool.play_stationary("sounds/store/error.ogg", false);
-                double one = prestige_endless_cost(items[i], owned, 1);
-                string oneWord = (one == 1) ? "point" : "points";
-                dlgmessage_return("Error! You can't afford another " + prestige_item_name(items[i].item_id) + ". The next one costs " + format_number(one) + " prestige " + oneWord + ".");
+                if (prestige_points < 1)
+                    dlgmessage_return("Error! You have no prestige points to buy upgrades with!");
+                else
+                    dlgmessage_return("Error! You can't afford another " + prestige_item_name(items[i].item_id) + "! The next one costs " + prestige_points_text(prestige_endless_cost(items[i], prestige_endless_count(items[i].item_id), 1)) + ".");
                 prestige_store_category_menu(items, chosenMenu);
                 return;
             }
-            vd.set_disallowed_chars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@#$%^&*()[]{};:'\"\\|,.<>?/+-=`~_", false, "This character is not allowed.");
-            string qInput = vd.input_box("", "How many would you like to buy? Press enter to buy the maximum amount.", string(round(maxAffordable, 0)));
-            if (qInput == "")
-            {
-                prestige_store_category_menu(items, chosenMenu);
-                return;
-            }
-            double qty = floor(string_to_number(qInput));
-            if (qty < 1)
-            {
-                pool.play_stationary("sounds/store/error.ogg", false);
-                dlgmessage_return("Error! Please enter a valid number to buy!");
-                prestige_store_category_menu(items, chosenMenu);
-                return;
-            }
-            if (qty > maxAffordable) qty = maxAffordable;
-            double totalCost = prestige_endless_cost(items[i], owned, qty);
-            while (qty > 1 && totalCost > double(prestige_points))
-            {
-                qty -= 1;
-                totalCost = prestige_endless_cost(items[i], owned, qty);
-            }
-            prestige_points -= totalCost;
-            prestigeEndlessCounts.set(items[i].item_id, owned + qty);
-            apply_all_prestige_store_upgrades();
-            pool.play_stationary("sounds/store/buy" + random(1, 4) + ".ogg", false);
-            pool.play_stationary("sounds/store/order.ogg", false);
-            double newNext = prestige_endless_cost(items[i], owned + qty, 1);
-            string boughtWord = (totalCost == 1) ? "point" : "points";
-            string nextWord = (newNext == 1) ? "point" : "points";
-            dlgmessage_return("Purchase successful! You bought " + format_number(qty) + " " + prestige_item_name(items[i].item_id) + " for " + format_number(totalCost) + " prestige " + boughtWord + ". Next upgrade will cost " + format_number(newNext) + " prestige " + nextWord + ".");
+            prestige_endless_pack_menu(items[i]);
             prestige_store_category_menu(items, chosenMenu);
             return;
         }
